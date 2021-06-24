@@ -16,3 +16,7 @@
 .fusen div {
   width: 140px;
 }
+
+#hidden-fusen {
+  visibility: hidden;
+}
