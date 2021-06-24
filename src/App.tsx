@@ -1,73 +1,7 @@
-import React, {
-  createRef,
-  DragEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createRef, DragEventHandler, useEffect, useState } from "react";
+import { CSSProperties } from "styled-components";
+import { adjustFontSize, AdjustFontSize } from "./AdjustFontSize";
 import "./App.css";
-const INITIAL = 128;
-const cache = { "": INITIAL } as { [key: string]: number };
-
-const adjustFontSize = (text: string): number => {
-  if (cache[text] !== undefined) {
-    return cache[text];
-  }
-  const x = document.getElementById("hidden-fusen") as HTMLDivElement;
-  (x.children[0] as HTMLDivElement).innerText = text;
-  cache[text] = INITIAL;
-  x.style.fontSize = cache[text] + "px";
-  while (true) {
-    if (x.scrollHeight > 100) {
-      cache[text] -= 1;
-      x.style.fontSize = cache[text] + "px";
-      continue;
-    } else if (x.scrollHeight < 100) {
-      // cache[text] += 1;
-      // x.style.fontSize = cache[text] + "px";
-      // continue;
-    }
-    break;
-  }
-  if (cache[text] === 0) {
-    cache[text] = 1;
-    x.style.fontSize = cache[text] + "px";
-  }
-  return cache[text];
-};
-// @ts-ignore
-window.adjust = () => {
-  Array.from(document.getElementsByClassName("fusen")).forEach((_x) => {
-    const x = _x as HTMLDivElement;
-    if (cache[x.innerText] === undefined) {
-      cache[x.innerText] = INITIAL;
-    }
-    // let left = 1;
-    // let right = INITIAL;
-    // let current = INITIAL;
-    // let step = INITIAL / 2;
-    // while (true) {
-    //   if (x.scrollHeight > 100) {
-    //     cache[x.innerText] -= step;
-
-    // }
-    while (true) {
-      if (x.scrollHeight > 100) {
-        cache[x.innerText] -= 1;
-        x.style.fontSize = cache[x.innerText] + "px";
-        continue;
-      } else if (x.scrollHeight < 100) {
-        cache[x.innerText] += 1;
-        x.style.fontSize = cache[x.innerText] + "px";
-        continue;
-      }
-      break;
-    }
-    if (x.style.fontSize === "0px") {
-      x.style.fontSize = "1px";
-    }
-  });
-};
 
 type Props = {
   text: string;
@@ -75,13 +9,19 @@ type Props = {
 };
 
 const Fusen: React.FC<Props> = ({ children, text, id }) => {
-  const [fontSize, setFontSize] = useState(1);
-  console.log(text, fontSize);
+  let [fontSize, setFontSize] = useState(1);
   const self = createRef<HTMLDivElement>();
 
   useEffect(() => {
     setFontSize(adjustFontSize(text));
   }, [text]);
+
+  const style: CSSProperties = { fontSize };
+  const tooLong = fontSize === 0;
+  if (tooLong) {
+    style.fontSize = 1;
+    style.alignItems = "flex-start";
+  }
 
   const onDragEnd: DragEventHandler<HTMLDivElement> = (e) => {
     console.log(e);
@@ -99,7 +39,7 @@ const Fusen: React.FC<Props> = ({ children, text, id }) => {
       ref={self}
       draggable={true}
       id={id}
-      style={{ fontSize: fontSize }}
+      style={style}
       onDragEnd={onDragEnd}
     >
       <div>{text}</div>
@@ -113,9 +53,9 @@ function App() {
     let a = 1;
     let b = 1;
     const texts = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 11; i++) {
       [a, b] = [b, a + b];
-      texts.push("あ".repeat(a));
+      texts.push(">" + "あ".repeat(a));
     }
     setTexts(texts);
   }, []);
@@ -124,9 +64,7 @@ function App() {
       {texts.map((text) => (
         <Fusen text={text} />
       ))}
-      <div className="fusen" id="hidden-fusen">
-        <div id="hidden-fusen-text"></div>
-      </div>
+      <AdjustFontSize />
     </div>
   );
 }
