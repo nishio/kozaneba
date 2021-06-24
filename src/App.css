@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.fusen {
+  background: #fff;
+  width: 140px;
+  height: 100px;
+  color: #000;
+  word-wrap: break-word;
+  overflow: hidden;
+  font-size: 100px;
+  /* display: flex;
+  justify-content: center; */
+}
+.fusen span {
+  vertical-align: middle;
+}
