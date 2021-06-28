@@ -41,6 +41,7 @@ const Fusen: React.FC<Props> = ({ children, text, id }) => {
       id={id}
       style={style}
       onDragEnd={onDragEnd}
+      data-testid={text}
     >
       <div>{text}</div>
     </div>
@@ -61,9 +62,11 @@ function App() {
   }, []);
   return (
     <div className="App">
-      {texts.map((text) => (
-        <Fusen text={text} />
-      ))}
+      <div id="canvas">
+        {texts.map((text) => (
+          <Fusen text={text} />
+        ))}
+      </div>
       <AdjustFontSize />
     </div>
   );
