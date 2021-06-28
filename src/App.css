@@ -12,6 +12,7 @@
   align-items: center;
   align-content: center;
   border: #aaa 1px solid;
+  position: absolute;
 }
 .fusen div {
   width: 140px;
@@ -19,4 +20,8 @@
 
 #hidden-fusen {
   visibility: hidden;
+}
+
+#canvas {
+  position: relative;
 }

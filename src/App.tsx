@@ -4,19 +4,23 @@ import { adjustFontSize, AdjustFontSize } from "./AdjustFontSize";
 import "./App.css";
 
 type Props = {
-  text: string;
+  value: VFusen;
   id?: string;
 };
 
-const Fusen: React.FC<Props> = ({ children, text, id }) => {
+const Fusen: React.FC<Props> = ({ children, value, id }) => {
   let [fontSize, setFontSize] = useState(1);
   const self = createRef<HTMLDivElement>();
 
   useEffect(() => {
-    setFontSize(adjustFontSize(text));
-  }, [text]);
+    setFontSize(adjustFontSize(value.text));
+  }, [value.text]);
 
-  const style: CSSProperties = { fontSize };
+  const style: CSSProperties = {
+    fontSize,
+    left: value.x + "px",
+    top: value.y + "px",
+  };
   const tooLong = fontSize === 0;
   if (tooLong) {
     style.fontSize = 1;
@@ -41,30 +45,39 @@ const Fusen: React.FC<Props> = ({ children, text, id }) => {
       id={id}
       style={style}
       onDragEnd={onDragEnd}
-      data-testid={text}
+      data-testid={value.text}
     >
-      <div>{text}</div>
+      <div>{value.text}</div>
     </div>
   );
 };
 
+type VFusen = {
+  text: string;
+  x: number;
+  y: number;
+};
 function App() {
-  const [texts, setTexts] = useState([] as string[]);
+  const [fusens, setFusens] = useState([] as VFusen[]);
   useEffect(() => {
     let a = 1;
     let b = 1;
-    const texts = [];
+    const fusens = [];
     for (let i = 0; i < 11; i++) {
       [a, b] = [b, a + b];
-      texts.push(">" + "あ".repeat(a));
+      fusens.push({
+        text: ">" + "あ".repeat(a),
+        x: 50 * i,
+        y: 50 * i,
+      });
     }
-    setTexts(texts);
+    setFusens(fusens);
   }, []);
   return (
     <div className="App">
       <div id="canvas">
-        {texts.map((text) => (
-          <Fusen text={text} />
+        {fusens.map((fusen) => (
+          <Fusen value={fusen} />
         ))}
       </div>
       <AdjustFontSize />
