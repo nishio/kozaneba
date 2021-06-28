@@ -1,7 +1,9 @@
 import React, { createRef, DragEventHandler, useEffect, useState } from "react";
+import { useGlobal } from "reactn";
 import { CSSProperties } from "styled-components";
 import { adjustFontSize, AdjustFontSize } from "./AdjustFontSize";
 import "./App.css";
+import { VFusen } from "./VFusen";
 
 type Props = {
   value: VFusen;
@@ -52,13 +54,8 @@ const Fusen: React.FC<Props> = ({ children, value, id }) => {
   );
 };
 
-type VFusen = {
-  text: string;
-  x: number;
-  y: number;
-};
 function App() {
-  const [fusens, setFusens] = useState([] as VFusen[]);
+  const [fusens, setFusens] = useGlobal("fusens");
   useEffect(() => {
     let a = 1;
     let b = 1;
@@ -72,7 +69,8 @@ function App() {
       });
     }
     setFusens(fusens);
-  }, []);
+  });
+
   return (
     <div className="App">
       <div id="canvas">
