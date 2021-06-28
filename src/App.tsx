@@ -69,7 +69,7 @@ function App() {
       });
     }
     setFusens(fusens);
-  });
+  }, [setFusens]);
 
   return (
     <div className="App">
