@@ -8,8 +8,8 @@ import { getGlobal, setGlobal } from "reactn";
 
 setGlobal(INITIAL_GLOBAL_STATE);
 const movidea = {
-  getGlobal: getGlobal,
-  setGlobal: setGlobal,
+  getGlobal,
+  setGlobal,
 };
 
 const debug = {};
