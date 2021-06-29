@@ -22,9 +22,13 @@ describe('adjust font size', () => {
   })
 
   it('fusen sizes', () => {
-    cy.get('.fusen').should('have.length', 12)
-      .first().should("have.css", "font-size", "66px")
+    cy.get('.fusen').should('have.length', 12).first()
+      .should("have.css", "font-size", "66px")
+      .should("not.have.css", "align-items", "flex-start")
     cy.get('.fusen').eq(1).should("have.css", "font-size", "53px")
     cy.get('.fusen').eq(2).should("have.css", "font-size", "38px")
+    cy.get('.fusen').eq(10)
+      .should("have.css", "font-size", "10px")
+      .should("have.css", "align-items", "flex-start")
   })
 })
