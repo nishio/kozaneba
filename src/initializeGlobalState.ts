@@ -1,12 +1,7 @@
-import { setGlobal } from "reactn";
 import { VFusen } from "./VFusen";
 
-const INITIAL_GLOBAL_STATE = {
+export const INITIAL_GLOBAL_STATE = {
   fusens: [] as VFusen[],
-};
-
-export const initializeGlobalState = () => {
-  setGlobal(INITIAL_GLOBAL_STATE);
 };
 
 type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;

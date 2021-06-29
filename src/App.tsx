@@ -1,6 +1,8 @@
+import { monitorEventLoopDelay } from "perf_hooks";
 import React, { createRef, DragEventHandler, useEffect, useState } from "react";
-import { useGlobal } from "reactn";
+import { getGlobal, setGlobal, useGlobal } from "reactn";
 import { CSSProperties } from "styled-components";
+import { setInterval } from "timers";
 import { adjustFontSize, AdjustFontSize } from "./AdjustFontSize";
 import "./App.css";
 import { VFusen } from "./VFusen";
@@ -18,10 +20,13 @@ const Fusen: React.FC<Props> = ({ children, value, id }) => {
     setFontSize(adjustFontSize(value.text));
   }, [value.text]);
 
+  const x = value.x ?? 0;
+  const y = value.y ?? 0;
+
   const style: CSSProperties = {
     fontSize,
-    left: value.x + "px",
-    top: value.y + "px",
+    left: x + "px",
+    top: y + "px",
   };
   const tooLong = fontSize === 0;
   if (tooLong) {
@@ -55,21 +60,29 @@ const Fusen: React.FC<Props> = ({ children, value, id }) => {
 };
 
 function App() {
-  const [fusens, setFusens] = useGlobal("fusens");
+  const [fusens] = useGlobal("fusens");
+  console.log("render");
+  const f = () => {
+    console.log(window.movidea.getGlobal());
+  };
   useEffect(() => {
-    let a = 1;
-    let b = 1;
-    const fusens = [];
-    for (let i = 0; i < 11; i++) {
-      [a, b] = [b, a + b];
-      fusens.push({
-        text: ">" + "あ".repeat(a),
-        x: 50 * i,
-        y: 50 * i,
-      });
-    }
-    setFusens(fusens);
-  }, [setFusens]);
+    console.log("useEffect");
+    // let a = 1;
+    // let b = 1;
+    // const fusens = [];
+    // for (let i = 0; i < 11; i++) {
+    //   [a, b] = [b, a + b];
+    //   fusens.push({
+    //     text: ">" + "あ".repeat(a),
+    //     x: 50 * i,
+    //     y: 50 * i,
+    //   });
+    // }
+    // console.log("setGlobal in useEffect");
+    // setGlobal({ fusens });
+    // window.movidea.foo();
+    // setInterval(f, 1000);
+  }, []);
 
   return (
     <div className="App">
