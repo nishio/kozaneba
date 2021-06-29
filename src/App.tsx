@@ -20,11 +20,11 @@ const Fusen: React.FC<Props> = ({ children, value, id }) => {
 
   const x = value.x ?? 0;
   const y = value.y ?? 0;
-
+  const scale = 1;
   const style: CSSProperties = {
     fontSize,
-    left: x + "px",
-    top: y + "px",
+    left: x - (scale * 140) / 2 + "px",
+    top: y - (scale * 100) / 2 + "px",
   };
   const tooLong = fontSize === 0;
   if (tooLong) {
@@ -66,9 +66,11 @@ function App() {
   return (
     <div className="App">
       <div id="canvas">
-        {fusens.map((fusen) => (
-          <Fusen value={fusen} />
-        ))}
+        <div id="center">
+          {fusens.map((fusen) => (
+            <Fusen value={fusen} />
+          ))}
+        </div>
       </div>
       <AdjustFontSize />
     </div>
