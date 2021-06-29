@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { getGlobal, setGlobal } from "reactn";
+
 describe('adjust font size', () => {
   beforeEach(() => {
     cy.visit('/')
@@ -14,40 +14,17 @@ describe('adjust font size', () => {
         y: 50 * i,
       });
     }
-    cy.window().then(target => {
-      window.target = target;
-    })
     cy.window().its('movidea').then(movidea => {
-      window.movidea = movidea;
-      console.log(movidea)
-      // console.log(movidea.getGlobal())
-      // debugger;
-      // movidea.setGlobal({ fusens });
-      // movidea.Provider.setGlobal({ fusens });
-
-      // movidea.setGlobal({ fusens: [{ text: "1" }] });
-      // movidea.Provider.setGlobal({ fusens: [{ text: "2" }] });
-      // window.target.movidea.Provider.setGlobal({ fusens: [{ text: "2" }] })
-      // setGlobal({ fusens });
-      console.log("movidea resolved")
-      // setTimeout(movidea.foo, 1000)
-      movidea.foo()
-
-      console.log(fusens)
-      console.log("ok")
-      console.log(movidea.getGlobal())
+      setTimeout(() => {
+        movidea.setGlobal({ fusens });        
+      })
     });
-    // cy.window().its('movidea').invoke("setGlobal", {fusens})
   })
 
-  it('first fusen', () => {
-    // aa
-    cy.get('.fusen[data-testid=">あ"]').should("have.css", "font-size", "66px")
+  it('fusen sizes', () => {
+    cy.get('.fusen').should('have.length', 12)
+      .first().should("have.css", "font-size", "66px")
+    cy.get('.fusen').eq(1).should("have.css", "font-size", "53px")
+    cy.get('.fusen').eq(2).should("have.css", "font-size", "38px")
   })
-  it('second fusen', () => {
-    cy.get('.fusen').should('have.length', 12).eq(1).should("have.css", "font-size", "53px")
-  })
-  // it('third fusen', () => {
-  //   cy.get('.fusen').eq(2).should("have.css", "font-size", "38px")
-  // })
 })

@@ -4,19 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { INITIAL_GLOBAL_STATE } from "./initializeGlobalState";
-import { createProvider } from "reactn";
+import { getGlobal, setGlobal } from "reactn";
 
-const Provider = createProvider(INITIAL_GLOBAL_STATE);
-
+setGlobal(INITIAL_GLOBAL_STATE);
 const movidea = {
-  getGlobal: Provider.getGlobal,
-  setGlobal: Provider.setGlobal,
-  Provider,
-  foo: () => {
-    console.log("foo start");
-    Provider.setGlobal({ fusens: [{ text: "1", x: 0, y: 0 }] });
-    console.log("foo end");
-  },
+  getGlobal: getGlobal,
+  setGlobal: setGlobal,
 };
 
 const debug = {};
@@ -33,9 +26,7 @@ window.debug = debug;
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider>
-      <App />
-    </Provider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );
