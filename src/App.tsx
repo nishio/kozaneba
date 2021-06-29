@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="App">
       <div id="canvas">
-        <Center id="center">
+        <Center>
           {fusens.map((fusen) => (
             <Fusen value={fusen} />
           ))}

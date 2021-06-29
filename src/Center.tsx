@@ -1,6 +1,7 @@
+import { useGlobal } from "reactn";
 import styled from "styled-components";
 
-export const Center = styled.div`
+const CenterDiv = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -10,3 +11,15 @@ export const Center = styled.div`
   overflow: visible;
   transform: scale(1) translate(0px, 0px);
 `;
+
+export const Center: React.FC<{}> = ({ children }) => {
+  const [g] = useGlobal();
+  const style = {
+    transform: `scale(${g.scale}) translate(${g.trans_x}px, ${g.trans_y}px)`,
+  };
+  return (
+    <CenterDiv style={style} id="center">
+      {children}
+    </CenterDiv>
+  );
+};

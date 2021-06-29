@@ -32,10 +32,13 @@ describe('adjust font size', () => {
       expect(x[0].getBoundingClientRect().x).equal(431);
       expect(x[0].getBoundingClientRect().y).equal(451);
     })
-    cy.get("#center").then(x => {
-      window.c = x;
-      x.css("transform", "scale(0.5)")
-    })
+
+    cy.window().its('movidea').then(movidea => {
+      setTimeout(() => {
+        movidea.setGlobal({ scale: 0.5 });        
+      })
+    });
+
     cy.contains("+").should((x) => {
       expect(x[0].getBoundingClientRect().x).equal(215.5);
       expect(x[0].getBoundingClientRect().y).equal(225.5);
