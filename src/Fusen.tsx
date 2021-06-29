@@ -1,4 +1,4 @@
-import React, { createRef, DragEventHandler, useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { VFusen } from "./VFusen";
@@ -50,15 +50,15 @@ export const Fusen: React.FC<Props> = ({ children, value, id }) => {
     style.alignItems = "flex-start";
   }
 
-  const onDragEnd: DragEventHandler<HTMLDivElement> = (e) => {
-    console.log(e);
-    if (self.current !== null) {
-      self.current.style.position = "absolute";
-      self.current.style.left = e.clientX + "px";
-      self.current.style.top = e.clientY + "px";
-      e.preventDefault();
-    }
-  };
+  // const onDragEnd: DragEventHandler<HTMLDivElement> = (e) => {
+  //   console.log(e);
+  //   if (self.current !== null) {
+  //     self.current.style.position = "absolute";
+  //     self.current.style.left = e.clientX + "px";
+  //     self.current.style.top = e.clientY + "px";
+  //     e.preventDefault();
+  //   }
+  // };
 
   return (
     <FusenDiv className="fusen" ref={self} id={id} style={style}>
