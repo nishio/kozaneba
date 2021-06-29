@@ -1,5 +1,5 @@
 import React, { createRef, DragEventHandler, useEffect, useState } from "react";
-import { CSSProperties } from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { VFusen } from "./VFusen";
 
@@ -7,6 +7,27 @@ type Props = {
   value: VFusen;
   id?: string;
 };
+
+const FusenDiv = styled.div`
+  background: #ffc;
+  opacity: 0.8;
+  width: 140px;
+  height: 100px;
+  color: #000;
+  word-wrap: break-word;
+  overflow: hidden;
+  font-size: 100px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  border: #aaa 1px solid;
+  position: absolute;
+`;
+
+const FusenDiv2 = styled.div`
+  width: 140px;
+`;
 export const Fusen: React.FC<Props> = ({ children, value, id }) => {
   let [fontSize, setFontSize] = useState(1);
   const self = createRef<HTMLDivElement>();
@@ -40,15 +61,8 @@ export const Fusen: React.FC<Props> = ({ children, value, id }) => {
   };
 
   return (
-    <div
-      className="fusen"
-      ref={self}
-      draggable={true}
-      id={id}
-      style={style}
-      onDragEnd={onDragEnd}
-    >
-      <div>{value.text}</div>
-    </div>
+    <FusenDiv className="fusen" ref={self} id={id} style={style}>
+      <FusenDiv2>{value.text}</FusenDiv2>
+    </FusenDiv>
   );
 };

@@ -1,23 +1,3 @@
-.fusen {
-  background: #ffc;
-  opacity: 0.8;
-  width: 140px;
-  height: 100px;
-  color: #000;
-  word-wrap: break-word;
-  overflow: hidden;
-  font-size: 100px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  border: #aaa 1px solid;
-  position: absolute;
-}
-.fusen div {
-  width: 140px;
-}
-
 #hidden-fusen {
   visibility: hidden;
   position: absolute;
