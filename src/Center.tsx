@@ -7,9 +7,7 @@ const CenterDiv = styled.div`
   left: 50%;
   width: 0px;
   height: 0px;
-  background-color: blue;
   overflow: visible;
-  transform: scale(1) translate(0px, 0px);
 `;
 
 export const Center: React.FC<{}> = ({ children }) => {
