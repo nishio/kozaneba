@@ -4,10 +4,13 @@ import { AdjustFontSize } from "./AdjustFontSize";
 import "./App.css";
 import { Center } from "./Center";
 import { Fusen } from "./Fusen";
+import { fusenToFusenItem } from "./fusenToFusenItem";
+import { idToDom } from "./idToDom";
 import { onWheel } from "./onWheel";
 
 function App() {
   const [fusens] = useGlobal("fusens");
+  const [drawOrder] = useGlobal("drawOrder");
   console.log("render");
   useEffect(() => {
     console.log("useEffect");
@@ -19,8 +22,9 @@ function App() {
       <div id="canvas">
         <Center>
           {fusens.map((fusen) => (
-            <Fusen value={fusen} />
+            <Fusen value={fusenToFusenItem(fusen)} />
           ))}
+          {drawOrder.map(idToDom)}
         </Center>
       </div>
       <AdjustFontSize />

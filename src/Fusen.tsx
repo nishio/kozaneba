@@ -1,10 +1,10 @@
 import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
-import { VFusen } from "./VFusen";
+import { FusenItem } from "./initializeGlobalState";
 
 type Props = {
-  value: VFusen;
+  value: FusenItem;
   id?: string;
 };
 
@@ -36,8 +36,8 @@ export const Fusen: React.FC<Props> = ({ children, value, id }) => {
     setFontSize(adjustFontSize(value.text));
   }, [value.text]);
 
-  const x = value.x ?? 0;
-  const y = value.y ?? 0;
+  const x = value.position[0] ?? 0;
+  const y = value.position[1] ?? 0;
   const scale = 1;
   const style: CSSProperties = {
     fontSize,
