@@ -11,8 +11,8 @@ export const onWheel = (e: WheelEvent) => {
   } else {
     setGlobal((g) => {
       return {
-        trans_x: g.trans_x - e.deltaX,
-        trans_y: g.trans_y - e.deltaY,
+        trans_x: g.trans_x - e.deltaX / g.scale,
+        trans_y: g.trans_y - e.deltaY / g.scale,
       };
     });
   }
