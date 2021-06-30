@@ -1,8 +1,12 @@
 /// <reference types="cypress" />
 
+
 describe('adjust font size', () => {
   beforeEach(() => {
     cy.visit('/')
+  })
+
+  it('fusen sizes', () => {
     let a = 1;
     let b = 1;
     const fusens = [];
@@ -14,15 +18,14 @@ describe('adjust font size', () => {
         y: 50 * i,
       });
     }
+
     cy.window().its('movidea').then(movidea => {
       setTimeout(() => {
         movidea.setGlobal({ fusens });        
       })
     });
-  })
 
-  it('fusen sizes', () => {
-    cy.get('.fusen').should('have.length', 12).first()
+    cy.get('.fusen').should('have.length', 11).first()
       .should("have.css", "font-size", "66px")
       .should("not.have.css", "align-items", "flex-start")
     cy.get('.fusen').eq(1).should("have.css", "font-size", "53px")
@@ -31,4 +34,5 @@ describe('adjust font size', () => {
       .should("have.css", "font-size", "10px")
       .should("have.css", "align-items", "flex-start")
   })
+  
 })

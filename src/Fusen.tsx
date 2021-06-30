@@ -8,7 +8,7 @@ type Props = {
   id?: string;
 };
 
-const FusenDiv = styled.div`
+export const FusenDiv = styled.div`
   background: #ffc;
   opacity: 0.8;
   width: 140px;
@@ -25,7 +25,7 @@ const FusenDiv = styled.div`
   position: absolute;
 `;
 
-const FusenDiv2 = styled.div`
+export const FusenDiv2 = styled.div`
   width: 140px;
 `;
 export const Fusen: React.FC<Props> = ({ children, value, id }) => {

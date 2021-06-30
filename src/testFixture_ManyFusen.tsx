@@ -1,6 +1,6 @@
 import { setGlobal } from "reactn";
 
-const testFixture_ManyFusen = () => {
+export const testFixture_ManyFusen = () => {
   const fusens = [];
   for (let x = -10; x < 11; x++) {
     for (let y = -10; y < 11; y++) {

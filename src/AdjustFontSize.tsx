@@ -1,13 +1,21 @@
 import React from "react";
+import styled from "styled-components";
+import { FusenDiv, FusenDiv2 } from "./Fusen";
 
 export const INITIAL = 128;
 export const cache = { "": INITIAL } as { [key: string]: number };
 
+const HiddenFusenDiv = styled(FusenDiv)`
+  visibility: hidden;
+  background-color: blue;
+  position: absolute;
+  top: 0;
+`;
 export const AdjustFontSize = () => {
   return (
-    <div className="fusen" id="hidden-fusen" data-testid="hidden-fusen">
-      <div id="hidden-fusen-text"></div>
-    </div>
+    <HiddenFusenDiv id="hidden-fusen" data-testid="hidden-fusen">
+      <FusenDiv2 id="hidden-fusen-text"></FusenDiv2>
+    </HiddenFusenDiv>
   );
 };
 
