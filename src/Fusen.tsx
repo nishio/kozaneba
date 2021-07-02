@@ -4,14 +4,17 @@ import { adjustFontSize } from "./AdjustFontSize";
 import { FusenItem } from "./initializeGlobalState";
 import { TOffset } from "./TOffset";
 
+const FUSEN_WIDTH = 130;
+const FUSEN_HEIGHT = 100;
+
 export const getBoundingBox = (item: FusenItem) => {
   const [x, y] = item.position;
   const scale = item.scale;
   return {
-    top: y - 50 * scale,
-    left: x - 70 * scale,
-    bottom: y + 50 * scale,
-    right: x + 70 * scale,
+    top: y - (FUSEN_WIDTH / 2) * scale,
+    left: x - (FUSEN_HEIGHT / 2) * scale,
+    bottom: y + (FUSEN_WIDTH / 2) * scale,
+    right: x + (FUSEN_HEIGHT / 2) * scale,
   };
 };
 type Props = {
@@ -22,8 +25,8 @@ type Props = {
 export const FusenDiv = styled.div`
   background: #ffc;
   opacity: 0.8;
-  width: 140px;
-  height: 100px;
+  width: ${FUSEN_WIDTH}px;
+  height: ${FUSEN_HEIGHT}px;
   color: #000;
   word-wrap: break-word;
   overflow: hidden;
@@ -34,6 +37,7 @@ export const FusenDiv = styled.div`
   align-content: center;
   border: #aaa 1px solid;
   position: absolute;
+  line-height: 0.9;
 `;
 
 export const FusenDiv2 = styled.div`
@@ -52,8 +56,8 @@ export const Fusen: React.FC<Props> = ({ value, offset }) => {
 
   const style: CSSProperties = {
     fontSize,
-    left: offset.x + x - (scale * 140) / 2 + "px",
-    top: offset.y + y - (scale * 100) / 2 + "px",
+    left: offset.x + x - (scale * FUSEN_WIDTH) / 2 + "px",
+    top: offset.y + y - (scale * FUSEN_HEIGHT) / 2 + "px",
     width: 140 * scale + "px",
     height: 100 * scale + "px",
   };

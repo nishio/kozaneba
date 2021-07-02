@@ -5,7 +5,7 @@ import { getBoundingBox as getFusenBoundingBox } from "./Fusen";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
 
-const PADDING = 50;
+const PADDING = 25;
 const BORDER = 5;
 type BoundingBox = { left: number; top: number; right: number; bottom: number };
 const getGroupBoundingBox = (x: GroupItem): BoundingBox => {
