@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { idToDom } from "./idToDom";
 import { GroupItem, ItemId } from "./initializeGlobalState";
 import { getBoundingBox as getFusenBoundingBox } from "./Fusen";
 import { getGlobal } from "reactn";
+import { idsToDom } from "./idsToDom";
 
 const PADDING = 50;
+const BORDER = 5;
 type BoundingBox = { left: number; top: number; right: number; bottom: number };
 const getGroupBoundingBox = (x: GroupItem): BoundingBox => {
   const { left, top, right, bottom } = getItemsBoundingBox(x.items);
@@ -57,24 +58,29 @@ const getItemsBoundingBox = (items: ItemId[]) => {
   return { left, right, top, bottom };
 };
 
-export const Group: React.FC<Props> = ({ value, id }) => {
+export const Group: React.FC<Props> = ({ value, offset }) => {
   const b = getGroupBoundingBox(value);
+  const width = b.right - b.left;
+  const height = b.bottom - b.top;
   const style = {
     top: b.top,
     left: b.left,
-    height: b.bottom - b.top,
-    width: b.right - b.left,
+    height,
+    width,
+  };
+  const new_offset = {
+    x: offset.x + width / 2 - BORDER,
+    y: offset.y + height / 2 - BORDER,
   };
   return (
-    <>
-      <GroupDiv style={style}></GroupDiv>
-      {value.items.map(idToDom)}
-    </>
+    <GroupDiv style={style} key={value.id} data-testid={value.id}>
+      {idsToDom(value.items, new_offset)}
+    </GroupDiv>
   );
 };
 type Props = {
   value: GroupItem;
-  id?: string;
+  offset: { x: number; y: number };
 };
 
 /**
@@ -87,6 +93,6 @@ export const GROUP_EXPANSION = 50;
  */
 const GroupDiv = styled.div`
   background: #eee;
-  border: 5px solid #ccc;
+  border: ${BORDER}px solid #ccc;
   position: absolute;
 `;

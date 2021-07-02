@@ -2,6 +2,7 @@ import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { FusenItem } from "./initializeGlobalState";
+import { TOffset } from "./TOffset";
 
 export const getBoundingBox = (x: FusenItem) => {
   return {
@@ -11,10 +12,9 @@ export const getBoundingBox = (x: FusenItem) => {
     right: x.position[0] + 70,
   };
 };
-
 type Props = {
   value: FusenItem;
-  id?: string;
+  offset: TOffset;
 };
 
 export const FusenDiv = styled.div`
@@ -37,7 +37,7 @@ export const FusenDiv = styled.div`
 export const FusenDiv2 = styled.div`
   width: 140px;
 `;
-export const Fusen: React.FC<Props> = ({ children, value, id }) => {
+export const Fusen: React.FC<Props> = ({ value, offset }) => {
   let [fontSize, setFontSize] = useState(1);
   const self = createRef<HTMLDivElement>();
 
@@ -50,8 +50,8 @@ export const Fusen: React.FC<Props> = ({ children, value, id }) => {
   const scale = 1;
   const style: CSSProperties = {
     fontSize,
-    left: x - (scale * 140) / 2 + "px",
-    top: y - (scale * 100) / 2 + "px",
+    left: offset.x + x - (scale * 140) / 2 + "px",
+    top: offset.y + y - (scale * 100) / 2 + "px",
   };
   const tooLong = fontSize === 0;
   if (tooLong) {
@@ -70,7 +70,13 @@ export const Fusen: React.FC<Props> = ({ children, value, id }) => {
   // };
 
   return (
-    <FusenDiv className="fusen" ref={self} id={id} style={style}>
+    <FusenDiv
+      className="fusen"
+      ref={self}
+      data-testid={value.id}
+      key={value.id}
+      style={style}
+    >
       <FusenDiv2>{value.text}</FusenDiv2>
     </FusenDiv>
   );

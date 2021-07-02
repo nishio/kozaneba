@@ -26,30 +26,14 @@ describe('group', () => {
 
   it('position', () => {
     cy.viewport(500, 500)
-    cy.contains("+").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(181);
-      expect(x[0].getBoundingClientRect().y).equal(201);
+    cy.get("div[data-testid='1']").should((x) => {
+      expect(x[0].getBoundingClientRect().x).equal(30);
+      expect(x[0].getBoundingClientRect().y).equal(150);
     })
-    cy.contains("*").should(x => {
+    cy.get("div[data-testid='2']").should(x => {
       window.a = x;
-      expect(x[0].getBoundingClientRect().x).equal(431);
-      expect(x[0].getBoundingClientRect().y).equal(451);
-    })
-
-    cy.window().its('movidea').then(movidea => {
-      setTimeout(() => {
-        movidea.setGlobal({ scale: 0.5 });        
-      })
-    });
-
-    cy.contains("+").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(215.5);
-      expect(x[0].getBoundingClientRect().y).equal(225.5);
-    })
-    cy.contains("*").should(x => {
-      window.a = x;
-      expect(x[0].getBoundingClientRect().x).equal(340.5);
-      expect(x[0].getBoundingClientRect().y).equal(350.5);
+      expect(x[0].getBoundingClientRect().x).equal(80);
+      expect(x[0].getBoundingClientRect().y).equal(200);
     })
   })
 })

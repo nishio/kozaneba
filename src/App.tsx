@@ -5,7 +5,7 @@ import "./App.css";
 import { Center } from "./Center";
 import { Fusen } from "./Fusen";
 import { fusenToFusenItem } from "./fusenToFusenItem";
-import { idToDom } from "./idToDom";
+import { idsToDom } from "./idsToDom";
 import { onWheel } from "./onWheel";
 
 function App() {
@@ -16,15 +16,15 @@ function App() {
     console.log("useEffect");
     window.addEventListener("wheel", onWheel, { passive: false });
   }, []);
-
+  const offset = { x: 0, y: 0 };
   return (
     <div className="App">
       <div id="canvas">
         <Center>
           {fusens.map((fusen) => (
-            <Fusen value={fusenToFusenItem(fusen)} />
+            <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
           ))}
-          {drawOrder.map(idToDom)}
+          {idsToDom(drawOrder, offset)}
         </Center>
       </div>
       <AdjustFontSize />
