@@ -1,7 +1,3 @@
-/// <reference types="cypress" />
-
-const importRegroupJSON = (json) => {};
-
 describe("group, simple, read from JSON", () => {
   beforeEach(() => {
     cy.visit("/");
@@ -10,10 +6,7 @@ describe("group, simple, read from JSON", () => {
         .its("movidea")
         .then((movidea) => {
           setTimeout(() => {
-            movidea.setGlobal({
-              drawOrder: json.drawOrder,
-              itemStore: json.itemStore,
-            });
+            movidea.setGlobal(movidea.importRegroupJSON(json));
             movidea.setGlobal({
               scale: 0.05,
               trans_x: -8478.724335797999,

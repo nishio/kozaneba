@@ -5,11 +5,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { INITIAL_GLOBAL_STATE } from "./initializeGlobalState";
 import { getGlobal, setGlobal } from "reactn";
+import { importRegroupJSON } from "./importRegroupJSON";
 
 setGlobal(INITIAL_GLOBAL_STATE);
 const movidea = {
   getGlobal,
   setGlobal,
+  importRegroupJSON,
 };
 
 const debug = {};
