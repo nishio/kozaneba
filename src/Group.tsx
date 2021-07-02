@@ -64,13 +64,13 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const height = b.bottom - b.top;
   const relative_x = value.position[0];
   const relative_y = value.position[1];
-  const top = b.top + relative_y;
-  const left = b.left + relative_x;
+  const top = offset.y + b.top + relative_y;
+  const left = offset.x + b.left + relative_x;
   const style = { top, left, height, width };
-
+  console.log(offset);
   const new_offset = {
-    x: offset.x + width / 2 - BORDER,
-    y: offset.y + height / 2 - BORDER,
+    x: width / 2 - BORDER,
+    y: height / 2 - BORDER,
   };
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
