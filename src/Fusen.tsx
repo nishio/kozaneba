@@ -6,16 +6,18 @@ import { TOffset } from "./TOffset";
 
 const FUSEN_WIDTH = 130;
 const FUSEN_HEIGHT = 100;
-
+const BORDER = 1;
 export const getBoundingBox = (item: FusenItem) => {
   const [x, y] = item.position;
   const scale = item.scale;
-  return {
-    top: y - (FUSEN_WIDTH / 2) * scale,
-    left: x - (FUSEN_HEIGHT / 2) * scale,
-    bottom: y + (FUSEN_WIDTH / 2) * scale,
-    right: x + (FUSEN_HEIGHT / 2) * scale,
+  const b = {
+    top: y - (FUSEN_HEIGHT / 2) * scale,
+    left: x - (FUSEN_WIDTH / 2) * scale,
+    bottom: y + (FUSEN_HEIGHT / 2) * scale,
+    right: x + (FUSEN_WIDTH / 2) * scale,
   };
+  console.log(item.text, item.scale, b);
+  return b;
 };
 type Props = {
   value: FusenItem;
@@ -58,8 +60,8 @@ export const Fusen: React.FC<Props> = ({ value, offset }) => {
     fontSize,
     left: offset.x + x - (scale * FUSEN_WIDTH) / 2 + "px",
     top: offset.y + y - (scale * FUSEN_HEIGHT) / 2 + "px",
-    width: 140 * scale + "px",
-    height: 100 * scale + "px",
+    width: FUSEN_WIDTH * scale + "px",
+    height: FUSEN_HEIGHT * scale + "px",
   };
   const tooLong = fontSize === 0;
   if (tooLong) {

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("group", () => {
+describe("nested group", () => {
   beforeEach(() => {
     cy.visit("/");
     const json = {
@@ -48,18 +48,18 @@ describe("group", () => {
   it("position", () => {
     cy.viewport(500, 500);
     cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(80);
-      expect(x[0].getBoundingClientRect().y).equal(100);
-    });
-    cy.get("div[data-testid='3']").should((x) => {
-      window.a = x;
-      expect(x[0].getBoundingClientRect().x).equal(180);
-      expect(x[0].getBoundingClientRect().y).equal(200);
+      expect(x[0].getBoundingClientRect().x).equal(130);
+      expect(x[0].getBoundingClientRect().y).equal(145);
     });
     cy.get("div[data-testid='2']").should((x) => {
       window.a = x;
-      expect(x[0].getBoundingClientRect().x).equal(130);
-      expect(x[0].getBoundingClientRect().y).equal(150);
+      expect(x[0].getBoundingClientRect().x).equal(155);
+      expect(x[0].getBoundingClientRect().y).equal(170);
+    });
+    cy.get("div[data-testid='3']").should((x) => {
+      window.a = x;
+      expect(x[0].getBoundingClientRect().x).equal(185);
+      expect(x[0].getBoundingClientRect().y).equal(200);
     });
   });
 });

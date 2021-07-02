@@ -1,25 +1,25 @@
 /// <reference types="cypress" />
 
-describe("scaled fusen", () => {
+describe("scaled fusen group", () => {
   beforeEach(() => {
     cy.visit("/");
 
     const json = {
-      drawOrder: [2, 3],
+      drawOrder: [1],
       itemStore: {
+        1: {
+          type: "group",
+          id: 1,
+          position: [0, 0],
+          nameplate: null,
+          isOpen: true,
+          items: [2],
+        },
         2: {
           type: "piece",
           id: 2,
-          position: [-100, 0],
+          position: [0, 0],
           text: "ABC",
-          compact: true,
-          scale: 1,
-        },
-        3: {
-          type: "piece",
-          id: 3,
-          position: [100, 0],
-          text: "DEF",
           compact: true,
           scale: 2,
         },
@@ -36,7 +36,6 @@ describe("scaled fusen", () => {
   });
 
   it("fusen sizes", () => {
-    cy.contains("ABC").should("have.css", "width", "130px");
-    cy.contains("DEF").should("have.css", "width", "260px");
+    cy.contains("ABC").should("have.css", "width", "260px");
   });
 });

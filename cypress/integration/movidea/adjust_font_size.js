@@ -1,12 +1,11 @@
 /// <reference types="cypress" />
 
-
-describe('adjust font size', () => {
+describe("adjust font size", () => {
   beforeEach(() => {
-    cy.visit('/')
-  })
+    cy.visit("/");
+  });
 
-  it('fusen sizes', () => {
+  it("fusen sizes", () => {
     let a = 1;
     let b = 1;
     const fusens = [];
@@ -19,20 +18,24 @@ describe('adjust font size', () => {
       });
     }
 
-    cy.window().its('movidea').then(movidea => {
-      setTimeout(() => {
-        movidea.setGlobal({ fusens });        
-      })
-    });
+    cy.window()
+      .its("movidea")
+      .then((movidea) => {
+        setTimeout(() => {
+          movidea.setGlobal({ fusens });
+        });
+      });
 
-    cy.get('.fusen').should('have.length', 11).first()
-      .should("have.css", "font-size", "66px")
-      .should("not.have.css", "align-items", "flex-start")
-    cy.get('.fusen').eq(1).should("have.css", "font-size", "53px")
-    cy.get('.fusen').eq(2).should("have.css", "font-size", "38px")
-    cy.get('.fusen').eq(10)
+    cy.get(".fusen")
+      .should("have.length", 11)
+      .first()
+      .should("have.css", "font-size", "81px")
+      .should("not.have.css", "align-items", "flex-start");
+    cy.get(".fusen").eq(1).should("have.css", "font-size", "49px");
+    cy.get(".fusen").eq(2).should("have.css", "font-size", "49px");
+    cy.get(".fusen")
+      .eq(10)
       .should("have.css", "font-size", "10px")
-      .should("have.css", "align-items", "flex-start")
-  })
-  
-})
+      .should("have.css", "align-items", "flex-start");
+  });
+});

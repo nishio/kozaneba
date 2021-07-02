@@ -55,22 +55,25 @@ const getItemsBoundingBox = (items: ItemId[]) => {
       bottom = b.bottom;
     }
   });
-  return { left, right, top, bottom };
+  const r = { left, right, top, bottom };
+  console.log(r);
+  return r;
 };
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const b = getGroupBoundingBox(value);
+  console.log("Group", b);
   const width = b.right - b.left;
   const height = b.bottom - b.top;
   const relative_x = value.position[0];
   const relative_y = value.position[1];
-  const top = offset.y + b.top + relative_y;
-  const left = offset.x + b.left + relative_x;
+  const top = offset.y + b.top + relative_y - BORDER;
+  const left = offset.x + b.left + relative_x - BORDER;
   const style = { top, left, height, width };
   console.log(offset);
   const new_offset = {
-    x: width / 2 - BORDER,
-    y: height / 2 - BORDER,
+    x: width / 2,
+    y: height / 2,
   };
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>

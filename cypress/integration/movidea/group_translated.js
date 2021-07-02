@@ -45,14 +45,14 @@ describe("group, tralslated", () => {
       });
   });
 
-  it("position", () => {
+  it("main", () => {
     cy.viewport(500, 500);
     cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(80);
-      expect(x[0].getBoundingClientRect().y).equal(170);
+      expect(x[0].getBoundingClientRect().x).equal(105);
+      expect(x[0].getBoundingClientRect().y).equal(190);
     });
     cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(130);
+      expect(x[0].getBoundingClientRect().x).equal(135);
       expect(x[0].getBoundingClientRect().y).equal(220);
     });
   });
