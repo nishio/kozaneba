@@ -5,6 +5,7 @@ export type FusenItem = {
   text: string;
   position: number[];
   id: ItemId;
+  scale: number;
 };
 
 export type GroupItem = {
@@ -13,6 +14,7 @@ export type GroupItem = {
   position: number[];
   items: ItemId[];
   id: ItemId;
+  scale: number;
 };
 
 type Item = FusenItem | GroupItem;
