@@ -57,7 +57,7 @@ const getItemsBoundingBox = (items: ItemId[]) => {
   return { left, right, top, bottom };
 };
 
-export const Group: React.FC<Props> = ({ children, value, id }) => {
+export const Group: React.FC<Props> = ({ value, id }) => {
   const b = getGroupBoundingBox(value);
   const style = {
     top: b.top,

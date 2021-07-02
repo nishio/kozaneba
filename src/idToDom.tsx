@@ -1,4 +1,3 @@
-import { values } from "cypress/types/lodash";
 import { getGlobal } from "reactn";
 import { Fusen } from "./Fusen";
 
