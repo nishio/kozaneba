@@ -62,12 +62,12 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const b = getGroupBoundingBox(value);
   const width = b.right - b.left;
   const height = b.bottom - b.top;
-  const style = {
-    top: b.top,
-    left: b.left,
-    height,
-    width,
-  };
+  const relative_x = value.position[0];
+  const relative_y = value.position[1];
+  const top = b.top + relative_y;
+  const left = b.left + relative_x;
+  const style = { top, left, height, width };
+
   const new_offset = {
     x: offset.x + width / 2 - BORDER,
     y: offset.y + height / 2 - BORDER,
