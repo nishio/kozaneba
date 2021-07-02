@@ -1,13 +1,15 @@
-import React from "react";
+import { values } from "cypress/types/lodash";
 import { getGlobal } from "reactn";
 import { Fusen } from "./Fusen";
+
+import { Group } from "./Group";
 
 export const idToDom = (id: string) => {
   const item = getGlobal().itemStore[id];
   if (item.type === "piece") {
-    return <Fusen value={item} />;
+    return <Fusen value={item} key={id} data-testid={id} />;
   } else if (item.type === "group") {
-    return null;
+    return <Group value={item} key={id} data-testid={id} />;
   }
   return null;
 };

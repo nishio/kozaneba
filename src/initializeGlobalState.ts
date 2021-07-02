@@ -6,17 +6,18 @@ export type FusenItem = {
   position: number[];
 };
 
-type GroupItem = {
+export type GroupItem = {
   type: "group";
   title: string;
   position: number[];
+  items: ItemId[];
 };
 
 type Item = FusenItem | GroupItem;
 enum ItemIdBrand {
   _ = "",
 }
-type ItemId = ItemIdBrand & string;
+export type ItemId = ItemIdBrand & string;
 
 export const INITIAL_GLOBAL_STATE = {
   fusens: [] as VFusen[],

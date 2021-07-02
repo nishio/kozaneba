@@ -3,6 +3,15 @@ import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { FusenItem } from "./initializeGlobalState";
 
+export const getBoundingBox = (x: FusenItem) => {
+  return {
+    top: x.position[1] - 50,
+    left: x.position[0] - 70,
+    bottom: x.position[1] + 50,
+    right: x.position[0] + 70,
+  };
+};
+
 type Props = {
   value: FusenItem;
   id?: string;
