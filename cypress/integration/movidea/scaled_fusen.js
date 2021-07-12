@@ -38,5 +38,13 @@ describe("scaled fusen", () => {
   it("fusen sizes", () => {
     cy.contains("ABC").should("have.css", "width", "130px");
     cy.contains("DEF").should("have.css", "width", "260px");
+    cy.window()
+      .its("movidea")
+      .then((movidea) => {
+        movidea.updateGlobal((g) => {
+          g.itemStore["3"].scale = 3;
+        });
+      });
+    cy.contains("DEF").should("have.css", "width", "390px");
   });
 });
