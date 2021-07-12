@@ -12,9 +12,34 @@
 // You can read more here:
 // https://on.cypress.io/configuration
 // ***********************************************************
+/// <reference types="cypress" />
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+// import "@testing-library/cypress/add-commands";
+// import "@cypress/code-coverage/support";
+
+// import "./commands";
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+import { TMovidea } from "../../src/exposeGlobal";
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      movidea(callback: (movidea: TMovidea) => void): Chainable<Element>;
+    }
+  }
+}
+
+Cypress.Commands.add("movidea", (callback: (movidea: TMovidea) => void) => {
+  return cy
+    .window()
+    .its("movidea")
+    .then((m) => {
+      setTimeout(() => {
+        callback(m);
+      });
+    });
+});

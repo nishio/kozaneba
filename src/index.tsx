@@ -4,29 +4,11 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { INITIAL_GLOBAL_STATE } from "./initializeGlobalState";
-import { getGlobal, setGlobal } from "reactn";
-import { importRegroupJSON } from "./importRegroupJSON";
-import { updateGlobal } from "./updateGlobal";
+import { setGlobal } from "reactn";
+import { exposeGlobal } from "./exposeGlobal";
 
 setGlobal(INITIAL_GLOBAL_STATE);
-const movidea = {
-  getGlobal,
-  setGlobal,
-  updateGlobal,
-  importRegroupJSON,
-};
-
-const debug = {};
-
-declare global {
-  interface Window {
-    debug: any;
-    movidea: typeof movidea;
-  }
-}
-
-window.movidea = movidea;
-window.debug = debug;
+exposeGlobal();
 
 ReactDOM.render(
   <React.StrictMode>

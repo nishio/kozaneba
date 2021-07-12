@@ -70,7 +70,6 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const top = offset.y + b.top + relative_y - BORDER;
   const left = offset.x + b.left + relative_x - BORDER;
   const style = { top, left, height, width };
-  console.log(offset);
   const new_offset = {
     x: width / 2,
     y: height / 2,

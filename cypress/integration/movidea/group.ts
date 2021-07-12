@@ -33,16 +33,12 @@ describe("group", () => {
       },
     };
 
-    cy.window()
-      .its("movidea")
-      .then((movidea) => {
-        setTimeout(() => {
-          movidea.setGlobal({
-            drawOrder: json.drawOrder,
-            itemStore: json.itemStore,
-          });
-        });
+    cy.movidea((movidea) => {
+      movidea.setGlobal({
+        drawOrder: json.drawOrder,
+        itemStore: json.itemStore,
       });
+    });
   });
 
   it("main", () => {
@@ -52,8 +48,22 @@ describe("group", () => {
       expect(x[0].getBoundingClientRect().y).equal(170);
     });
     cy.get("div[data-testid='2']").should((x) => {
-      window.a = x;
       expect(x[0].getBoundingClientRect().x).equal(85);
+      expect(x[0].getBoundingClientRect().y).equal(200);
+    });
+
+    cy.movidea((movidea) => {
+      movidea.updateGlobal((g) => {
+        g.itemStore["1"].position = [100, 0];
+      });
+    });
+
+    cy.get("div[data-testid='1']").should((x) => {
+      expect(x[0].getBoundingClientRect().x).equal(155);
+      expect(x[0].getBoundingClientRect().y).equal(170);
+    });
+    cy.get("div[data-testid='2']").should((x) => {
+      expect(x[0].getBoundingClientRect().x).equal(185);
       expect(x[0].getBoundingClientRect().y).equal(200);
     });
   });
