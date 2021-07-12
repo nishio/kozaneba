@@ -37,7 +37,7 @@ export const FusenDiv = styled.div`
   display: flex;
   align-items: center;
   align-content: center;
-  border: #aaa 1px solid;
+  border: #aaa ${BORDER}px solid;
   position: absolute;
   line-height: 0.9;
 `;
