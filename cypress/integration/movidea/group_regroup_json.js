@@ -8,9 +8,9 @@ describe("group, simple, read from JSON", () => {
           setTimeout(() => {
             movidea.setGlobal(movidea.importRegroupJSON(json));
             movidea.setGlobal({
-              scale: 0.05,
-              trans_x: -8478.724335797999,
-              trans_y: -814.0828777889735,
+              scale: 0.25,
+              trans_x: -5891.603451566465,
+              trans_y: -433.93161227995006,
             });
           });
         });
@@ -18,7 +18,7 @@ describe("group, simple, read from JSON", () => {
   });
 
   it("position", () => {
-    cy.viewport(500, 500);
+    cy.viewport(800, 500);
     // cy.get("div[data-testid='1']").should((x) => {
     //   expect(x[0].getBoundingClientRect().x).equal(30);
     //   expect(x[0].getBoundingClientRect().y).equal(150);
