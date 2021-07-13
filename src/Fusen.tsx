@@ -4,9 +4,9 @@ import { adjustFontSize } from "./AdjustFontSize";
 import { FusenItem, ItemId } from "./initializeGlobalState";
 import { TOffset } from "./TOffset";
 
-const FUSEN_WIDTH = 130;
-const FUSEN_HEIGHT = 100;
-const BORDER = 1;
+export const FUSEN_WIDTH = 130;
+export const FUSEN_HEIGHT = 100;
+export const FUSEN_BORDER = 1;
 export const getBoundingBox = (item: FusenItem) => {
   const [x, y] = item.position;
   const scale = item.scale;
@@ -38,7 +38,7 @@ export const FusenDiv = styled.div`
   display: flex;
   align-items: center;
   align-content: center;
-  border: #aaa ${BORDER}px solid;
+  border: #aaa ${FUSEN_BORDER}px solid;
   position: absolute;
   line-height: 0.9;
 `;

@@ -1,7 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { FusenItem, GroupItem, ItemId } from "./initializeGlobalState";
-import { Fusen, getBoundingBox as getFusenBoundingBox } from "./Fusen";
+import { GroupItem, ItemId } from "./initializeGlobalState";
+import {
+  Fusen,
+  FUSEN_BORDER,
+  FUSEN_HEIGHT,
+  FUSEN_WIDTH,
+  getBoundingBox as getFusenBoundingBox,
+} from "./Fusen";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
 
@@ -60,19 +66,48 @@ const getItemsBoundingBox = (items: ItemId[]) => {
   return r;
 };
 
+const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
+  const [x, y] = value.position;
+  const scale = value.scale;
+  const width = FUSEN_WIDTH + FUSEN_BORDER * 2 + PADDING * 2;
+  const height = FUSEN_HEIGHT + FUSEN_BORDER * 2 + PADDING * 2;
+  const top = y - (height / 2) * scale;
+  const left = x - (width / 2) * scale;
+
+  // const b = {
+  //   top: ,
+  //   bottom: y + (FUSEN_HEIGHT / 2) * scale,
+  //   right: x + (FUSEN_WIDTH / 2) * scale,
+  // };
+  // console.log(item.text, item.scale, b);
+  // return b;
+
+  // const width;
+
+  // const width = ;
+  // const height = b.bottom - b.top + title_height;
+  // const relative_x = value.position[0];
+  // const relative_y = value.position[1];
+  // const top = offset.y + b.top + relative_y - BORDER;
+  // const left = offset.x + b.left + relative_x - BORDER;
+  const style = { top, left, height, width };
+  const new_offset = {
+    x: width / 2,
+    y: height / 2,
+  };
+
+  return (
+    <GroupDiv style={style} key={value.id} data-testid={value.id}>
+      <Fusen offset={new_offset} value={{ ...value, text: "A B" }} />
+    </GroupDiv>
+  );
+};
+
 export const Group: React.FC<Props> = ({ value, offset }) => {
   if (value.isOpen === false) {
-    return (
-      <Fusen
-        offset={offset}
-        value={{ ...value, text: "A B" }}
-        custom_style={{ border: `${BORDER}px solid #ddd` }}
-      />
-    );
-    // return <ClosedGroup offset={offset} value={value}></ClosedGroup>;
+    return <ClosedGroup offset={offset} value={value} />;
   }
   const b = getGroupBoundingBox(value);
-  console.log("Group", b);
   const title = value.title ?? "";
   const title_height = title.length !== 0 ? 24 : 0;
   const width = b.right - b.left;
