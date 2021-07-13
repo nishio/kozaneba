@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { GroupItem, ItemId } from "./initializeGlobalState";
-import { getBoundingBox as getFusenBoundingBox } from "./Fusen";
+import { FusenItem, GroupItem, ItemId } from "./initializeGlobalState";
+import { Fusen, getBoundingBox as getFusenBoundingBox } from "./Fusen";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
 
@@ -61,6 +61,10 @@ const getItemsBoundingBox = (items: ItemId[]) => {
 };
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
+  if (value.isOpen === false) {
+    return null;
+    // return <ClosedGroup offset={offset} value={value}></ClosedGroup>;
+  }
   const b = getGroupBoundingBox(value);
   console.log("Group", b);
   const title = value.title;
@@ -98,12 +102,12 @@ export const GROUP_EXPANSION = 50;
  */
 const GroupDiv = styled.div`
   background: #eee;
-  border: ${BORDER}px solid #ccc;
+  border: ${BORDER}px solid #ddd;
   position: absolute;
 `;
 
 const GroupTitle = styled.span`
-  background: #ccc;
+  background: #ddd;
   position: absolute;
   font-size: 21px;
   width: 100%;
@@ -111,3 +115,43 @@ const GroupTitle = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
+
+// const AdjustableText: React.FC<{}> = () => {
+
+// };
+// export const ClosedGroup: React.FC<Props> = ({ value, offset }) => {
+//   let [fontSize, setFontSize] = useState(1);
+//   const self = createRef<HTMLDivElement>();
+//   const x = value.position[0] ?? 0;
+//   const y = value.position[1] ?? 0;
+//   const scale = value.scale;
+
+//   useEffect(() => {
+//     setFontSize(adjustFontSize(value.text) * scale);
+//   }, [value.text, scale]);
+
+//   const style: CSSProperties = {
+//     fontSize,
+//     left: offset.x + x - (scale * FUSEN_WIDTH) / 2 + "px",
+//     top: offset.y + y - (scale * FUSEN_HEIGHT) / 2 + "px",
+//     width: FUSEN_WIDTH * scale + "px",
+//     height: FUSEN_HEIGHT * scale + "px",
+//   };
+//   const tooLong = fontSize === 0;
+//   if (tooLong) {
+//     style.fontSize = 1;
+//     style.alignItems = "flex-start";
+//   }
+
+//   return (
+//     <FusenDiv
+//       className="fusen"
+//       ref={self}
+//       data-testid={value.id}
+//       key={value.id}
+//       style={style}
+//     >
+//       <FusenDiv2>{value.text}</FusenDiv2>
+//     </FusenDiv>
+//   );
+// };

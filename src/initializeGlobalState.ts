@@ -14,7 +14,8 @@ export type GroupItem = {
   position: number[];
   items: ItemId[];
   id: ItemId;
-  scale: number;
+  scale: number; // scale of Nameplate Fusen
+  isOpen: boolean;
 };
 
 type Item = FusenItem | GroupItem;
