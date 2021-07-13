@@ -100,12 +100,12 @@ describe("group", () => {
 
     cy.contains("title").should("have.css", "height", title_height + "px"); // no wrap
 
-    cy.movidea((movidea) => {
-      movidea.updateGlobal((g) => {
-        const x = g.itemStore["1"] as GroupItem;
-        x.isOpen = false;
-      });
-    });
+    // cy.movidea((movidea) => {
+    //   movidea.updateGlobal((g) => {
+    //     const x = g.itemStore["1"] as GroupItem;
+    //     x.isOpen = false;
+    //   });
+    // });
 
     // cy.movidea((movidea) => {
     //   movidea.updateGlobal((g) => {

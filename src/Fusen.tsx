@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
-import { FusenItem } from "./initializeGlobalState";
+import { FusenItem, ItemId } from "./initializeGlobalState";
 import { TOffset } from "./TOffset";
 
 const FUSEN_WIDTH = 130;
@@ -20,8 +20,9 @@ export const getBoundingBox = (item: FusenItem) => {
   return b;
 };
 type Props = {
-  value: FusenItem;
+  value: { position: number[]; scale: number; text: string; id: ItemId };
   offset: TOffset;
+  custom_style?: CSSProperties;
 };
 
 export const FusenDiv = styled.div`
@@ -45,7 +46,12 @@ export const FusenDiv = styled.div`
 export const FusenDiv2 = styled.div`
   width: 100%;
 `;
-export const Fusen: React.FC<Props> = ({ value, offset }) => {
+
+export const Fusen: React.FC<Props> = ({
+  value,
+  offset,
+  custom_style = {},
+}) => {
   let [fontSize, setFontSize] = useState(1);
   const self = createRef<HTMLDivElement>();
   const x = value.position[0] ?? 0;
@@ -62,6 +68,7 @@ export const Fusen: React.FC<Props> = ({ value, offset }) => {
     top: offset.y + y - (scale * FUSEN_HEIGHT) / 2 + "px",
     width: FUSEN_WIDTH * scale + "px",
     height: FUSEN_HEIGHT * scale + "px",
+    ...custom_style,
   };
   const tooLong = fontSize === 0;
   if (tooLong) {
