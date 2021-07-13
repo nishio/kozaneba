@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { GroupItem } from "../../../src/initializeGlobalState";
+
 describe("group", () => {
   beforeEach(() => {
     cy.visit("/");
@@ -13,6 +15,7 @@ describe("group", () => {
           nameplate: null,
           isOpen: true,
           items: [2, 3],
+          title: "",
         },
         2: {
           type: "piece",
@@ -43,28 +46,63 @@ describe("group", () => {
 
   it("main", () => {
     cy.viewport(500, 500);
+    const x1 = 55;
+    const y1 = 170;
     cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(55);
-      expect(x[0].getBoundingClientRect().y).equal(170);
+      expect(x[0].getBoundingClientRect().x).equal(x1);
+      expect(x[0].getBoundingClientRect().y).equal(y1);
     });
+    const x2 = x1 + 5 + 25;
+    const y2 = y1 + 5 + 25;
     cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(85);
-      expect(x[0].getBoundingClientRect().y).equal(200);
+      expect(x[0].getBoundingClientRect().x).equal(x2);
+      expect(x[0].getBoundingClientRect().y).equal(y2);
     });
 
+    const dx = 100;
     cy.movidea((movidea) => {
       movidea.updateGlobal((g) => {
-        g.itemStore["1"].position = [100, 0];
+        g.itemStore["1"].position = [dx, 0];
       });
     });
 
     cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(155);
-      expect(x[0].getBoundingClientRect().y).equal(170);
+      expect(x[0].getBoundingClientRect().x).equal(x1 + dx);
+      expect(x[0].getBoundingClientRect().y).equal(y1);
     });
     cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(185);
-      expect(x[0].getBoundingClientRect().y).equal(200);
+      expect(x[0].getBoundingClientRect().x).equal(x2 + dx);
+      expect(x[0].getBoundingClientRect().y).equal(y2);
     });
+
+    cy.movidea((movidea) => {
+      movidea.updateGlobal((g) => {
+        const x = g.itemStore["1"] as GroupItem;
+        x.position = [0, 0];
+        x.title = "title";
+      });
+    });
+    const title_height = 24;
+    cy.contains("title").should("have.css", "height", title_height + "px");
+
+    cy.movidea((movidea) => {
+      movidea.updateGlobal((g) => {
+        const x = g.itemStore["1"] as GroupItem;
+        x.position = [0, 0];
+        x.title = "long title ".repeat(10);
+      });
+    });
+    cy.get("div[data-testid='2']").should((x) => {
+      expect(x[0].getBoundingClientRect().x).equal(x2);
+      expect(x[0].getBoundingClientRect().y).equal(y2 + title_height);
+    });
+
+    cy.contains("title").should("have.css", "height", title_height + "px"); // no wrap
+
+    // cy.movidea((movidea) => {
+    //   movidea.updateGlobal((g) => {
+    //     g.itemStore["3"].position = [-100, 100];
+    //   });
+    // });
   });
 });

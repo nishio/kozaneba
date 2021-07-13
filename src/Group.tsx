@@ -63,8 +63,10 @@ const getItemsBoundingBox = (items: ItemId[]) => {
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const b = getGroupBoundingBox(value);
   console.log("Group", b);
+  const title = value.title;
+  const title_height = title.length !== 0 ? 24 : 0;
   const width = b.right - b.left;
-  const height = b.bottom - b.top;
+  const height = b.bottom - b.top + title_height;
   const relative_x = value.position[0];
   const relative_y = value.position[1];
   const top = offset.y + b.top + relative_y - BORDER;
@@ -72,10 +74,11 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const style = { top, left, height, width };
   const new_offset = {
     x: width / 2,
-    y: height / 2,
+    y: (height + title_height) / 2,
   };
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
+      <GroupTitle>{title}</GroupTitle>
       {idsToDom(value.items, new_offset)}
     </GroupDiv>
   );
@@ -97,4 +100,14 @@ const GroupDiv = styled.div`
   background: #eee;
   border: ${BORDER}px solid #ccc;
   position: absolute;
+`;
+
+const GroupTitle = styled.span`
+  background: #ccc;
+  position: absolute;
+  font-size: 21px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
