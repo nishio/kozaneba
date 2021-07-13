@@ -67,7 +67,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   }
   const b = getGroupBoundingBox(value);
   console.log("Group", b);
-  const title = value.title;
+  const title = value.title ?? "";
   const title_height = title.length !== 0 ? 24 : 0;
   const width = b.right - b.left;
   const height = b.bottom - b.top + title_height;
