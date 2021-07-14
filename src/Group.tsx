@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { GroupItem, ItemId } from "./initializeGlobalState";
 import {
   Fusen,
-  FUSEN_BORDER,
   FUSEN_HEIGHT,
   FUSEN_WIDTH,
   getBoundingBox as getFusenBoundingBox,
