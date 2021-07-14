@@ -19,11 +19,12 @@ type BoundingBox = { left: number; top: number; right: number; bottom: number };
 
 export const getGroupBoundingBox = (g: GroupItem): BoundingBox => {
   const { left, top, right, bottom } = getItemsBoundingBox(g.items);
+  const [x, y] = g.position;
   return {
-    left: left - PADDING,
-    top: top - PADDING,
-    right: right + PADDING,
-    bottom: bottom + PADDING,
+    left: x + left - PADDING,
+    top: y + top - PADDING,
+    right: x + right + PADDING,
+    bottom: y + bottom + PADDING,
   };
 };
 
@@ -112,12 +113,12 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const height = b.bottom - b.top + title_height;
   const relative_x = value.position[0];
   const relative_y = value.position[1];
-  const top = offset.y + b.top + relative_y - BORDER;
-  const left = offset.x + b.left + relative_x - BORDER;
+  const top = offset.y + b.top - BORDER;
+  const left = offset.x + b.left - BORDER;
   const style = { top, left, height, width };
   const new_offset = {
-    x: width / 2 - center_shift_x / 2,
-    y: (height + title_height) / 2 - center_shift_y / 2,
+    x: width / 2 - center_shift_x / 2 + relative_x,
+    y: (height + title_height) / 2 - center_shift_y / 2 + relative_y,
   };
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
