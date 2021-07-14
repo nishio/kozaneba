@@ -23,6 +23,7 @@
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
+import { State } from "reactn/default";
 import { TMovidea } from "../../src/exposeGlobal";
 
 declare global {
@@ -30,6 +31,7 @@ declare global {
     interface Chainable {
       movidea(callback: (movidea: TMovidea) => void): Chainable<Element>;
       testid(testid: string): Chainable<Element>;
+      updateGlobal(callback: (g: State) => void): Chainable<Element>;
     }
   }
 }
@@ -47,6 +49,12 @@ Cypress.Commands.add("movidea", (callback: (movidea: TMovidea) => void) => {
 
 Cypress.Commands.add("testid", (testid: string) => {
   return cy.get(`*[data-testid='${testid}']`);
+});
+
+Cypress.Commands.add("updateGlobal", (callback: (g: State) => void) => {
+  return cy.movidea((movidea) => {
+    movidea.updateGlobal(callback);
+  });
 });
 
 chai.use((_chai, utils) => {

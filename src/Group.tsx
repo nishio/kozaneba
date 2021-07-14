@@ -65,7 +65,7 @@ const getItemsBoundingBox = (items: ItemId[]) => {
     }
   });
   const r = { left, right, top, bottom };
-  console.log(r);
+  console.log("group bounding box", r);
   return r;
 };
 
@@ -77,22 +77,6 @@ const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
   const top = y - (height / 2) * scale;
   const left = x - (width / 2) * scale;
 
-  // const b = {
-  //   top: ,
-  //   bottom: y + (FUSEN_HEIGHT / 2) * scale,
-  //   right: x + (FUSEN_WIDTH / 2) * scale,
-  // };
-  // console.log(item.text, item.scale, b);
-  // return b;
-
-  // const width;
-
-  // const width = ;
-  // const height = b.bottom - b.top + title_height;
-  // const relative_x = value.position[0];
-  // const relative_y = value.position[1];
-  // const top = offset.y + b.top + relative_y - BORDER;
-  // const left = offset.x + b.left + relative_x - BORDER;
   const style = { top, left, height, width };
   const new_offset = {
     x: width / 2,
@@ -114,6 +98,9 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     return <ClosedGroup offset={offset} value={value} />;
   }
   const b = getGroupBoundingBox(value);
+  const center_shift_x = b.left + b.right;
+  const center_shift_y = b.top + b.bottom;
+
   const title = value.title ?? "";
   const title_height = title.length !== 0 ? TITLE_HEIGHT : 0;
   const width = b.right - b.left;
@@ -124,8 +111,8 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const left = offset.x + b.left + relative_x - BORDER;
   const style = { top, left, height, width };
   const new_offset = {
-    x: width / 2,
-    y: (height + title_height) / 2,
+    x: width / 2 - center_shift_x / 2,
+    y: (height + title_height) / 2 - center_shift_y / 2,
   };
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
@@ -144,14 +131,6 @@ type Props = {
   offset: { x: number; y: number };
 };
 
-/**
-export const OPEN_GROUP_STROKE_COLOR = "#fff";
-export const OPEN_GROUP_FILL_COLOR = "#eee";
-export const CLOSE_GROUP_STROKE_WIDTH = PIECE_STROKE_WIDTH;
-export const CLOSE_GROUP_STROKE_COLOR = "#fff";
-export const GROUP_EXPANSION = 50;
-
- */
 const GroupDiv = styled.div`
   background: #eee;
   border: ${BORDER}px solid #ddd;

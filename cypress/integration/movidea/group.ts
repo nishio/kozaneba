@@ -49,22 +49,15 @@ describe("group", () => {
   it("main", () => {
     const x1 = 55;
     const y1 = 170;
-    cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(x1);
-      expect(x[0].getBoundingClientRect().y).equal(y1);
-    });
+    cy.testid("1").should("hasPosition", [x1, y1]);
+
     const x2 = x1 + 5 + 25;
     const y2 = y1 + 5 + 25;
-    cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(x2);
-      expect(x[0].getBoundingClientRect().y).equal(y2);
-    });
+    cy.testid("2").should("hasPosition", [x2, y2]);
 
     const dx = 100;
-    cy.movidea((movidea) => {
-      movidea.updateGlobal((g) => {
-        g.itemStore["1"].position = [dx, 0];
-      });
+    cy.updateGlobal((g) => {
+      g.itemStore["1"].position = [dx, 0];
     });
 
     cy.testid("1").should("hasPosition", [x1 + dx, y1]);
@@ -102,10 +95,12 @@ describe("group", () => {
     cy.testid("1").should("hasPosition", [159, 174]);
   });
   it("move child", () => {
-    cy.movidea((movidea) => {
-      movidea.updateGlobal((g) => {
-        g.itemStore["3"].position = [-100, 0];
-      });
+    cy.updateGlobal((g) => {
+      g.itemStore["3"].position = [-100, 0];
+    });
+    cy.testid("1").should("hasPosition", [55, 170]);
+    cy.updateGlobal((g) => {
+      (g.itemStore["1"] as GroupItem).isOpen = false;
     });
   });
 });
