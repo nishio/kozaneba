@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { GroupItem } from "../../../src/initializeGlobalState";
+import { GroupItem, ItemId } from "../../../src/initializeGlobalState";
 
 describe("group", () => {
   beforeEach(() => {
@@ -92,15 +92,27 @@ describe("group", () => {
       });
     });
 
-    cy.testid("1").should("hasPosition", [159, 174]);
+    cy.testid("1").should("hasPosition", [155, 170]);
   });
   it("move child", () => {
     cy.updateGlobal((g) => {
       g.itemStore["3"].position = [-100, 0];
     });
     cy.testid("1").should("hasPosition", [55, 170]);
-    cy.updateGlobal((g) => {
-      (g.itemStore["1"] as GroupItem).isOpen = false;
+    cy.testid("3").should("hasPosition", [85, 200]);
+    // cy.updateGlobal((g) => {
+    //   (g.itemStore["1"] as GroupItem).isOpen = false;
+    // });
+    cy.movidea((m) => {
+      m.closeGroup("1" as ItemId);
     });
+    cy.movidea((m) => {
+      return expect(m.getGlobal().itemStore[1].position).to.deep.equal([
+        -100, 0,
+      ]);
+    });
+    cy.contains("A B");
+    cy.testid("1").should("hasPosition", [55, 170]);
+    cy.testid("nameplate-1").should("hasPosition", [85, 200]);
   });
 });
