@@ -17,9 +17,8 @@ export const TITLE_HEIGHT = 25;
 
 type BoundingBox = { left: number; top: number; right: number; bottom: number };
 
-const getGroupBoundingBox = (x: GroupItem): BoundingBox => {
-  const { left, top, right, bottom } = getItemsBoundingBox(x.items);
-
+export const getGroupBoundingBox = (g: GroupItem): BoundingBox => {
+  const { left, top, right, bottom } = getItemsBoundingBox(g.items);
   return {
     left: left - PADDING,
     top: top - PADDING,
@@ -70,24 +69,30 @@ const getItemsBoundingBox = (items: ItemId[]) => {
 };
 
 const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
+  console.log("closedGroup", offset, value.position);
   const [x, y] = value.position;
   const scale = value.scale;
-  const width = FUSEN_WIDTH + FUSEN_BORDER * 2 + PADDING * 2;
-  const height = FUSEN_HEIGHT + FUSEN_BORDER * 2 + PADDING * 2;
-  const top = y - (height / 2) * scale;
-  const left = x - (width / 2) * scale;
+  const width = FUSEN_WIDTH + PADDING * 2;
+  const height = FUSEN_HEIGHT + PADDING * 2;
+  const top = y - (height / 2) * scale - BORDER;
+  const left = x - (width / 2) * scale - BORDER;
 
   const style = { top, left, height, width };
   const new_offset = {
     x: width / 2,
     y: height / 2,
   };
-
+  console.log(style, new_offset);
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
       <Fusen
         offset={new_offset}
-        value={{ ...value, text: "A B", id: "nameplate-" + value.id }}
+        value={{
+          ...value,
+          text: "A B",
+          id: "nameplate-" + value.id,
+          position: [0, 0],
+        }}
       />
     </GroupDiv>
   );
