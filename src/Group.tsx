@@ -13,7 +13,10 @@ import { idsToDom } from "./idsToDom";
 
 const PADDING = 25;
 const BORDER = 5;
+export const TITLE_HEIGHT = 25;
+
 type BoundingBox = { left: number; top: number; right: number; bottom: number };
+
 const getGroupBoundingBox = (x: GroupItem): BoundingBox => {
   const { left, top, right, bottom } = getItemsBoundingBox(x.items);
 
@@ -98,7 +101,10 @@ const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
 
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
-      <Fusen offset={new_offset} value={{ ...value, text: "A B" }} />
+      <Fusen
+        offset={new_offset}
+        value={{ ...value, text: "A B", id: "nameplate-" + value.id }}
+      />
     </GroupDiv>
   );
 };
@@ -109,7 +115,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   }
   const b = getGroupBoundingBox(value);
   const title = value.title ?? "";
-  const title_height = title.length !== 0 ? 24 : 0;
+  const title_height = title.length !== 0 ? TITLE_HEIGHT : 0;
   const width = b.right - b.left;
   const height = b.bottom - b.top + title_height;
   const relative_x = value.position[0];
@@ -123,7 +129,12 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   };
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
-      <GroupTitle>{title}</GroupTitle>
+      <GroupTitle
+        data-testid={"grouptitle-" + value.id}
+        style={{ height: title_height }}
+      >
+        {title}
+      </GroupTitle>
       {idsToDom(value.items, new_offset)}
     </GroupDiv>
   );
@@ -155,4 +166,6 @@ const GroupTitle = styled.span`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  height: ${TITLE_HEIGHT}px;
+  padding-bottom: 1px;
 `;

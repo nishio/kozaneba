@@ -20,7 +20,7 @@ export const getBoundingBox = (item: FusenItem) => {
   return b;
 };
 type Props = {
-  value: { position: number[]; scale: number; text: string; id: ItemId };
+  value: { position: number[]; scale: number; text: string; id: string };
   offset: TOffset;
   custom_style?: CSSProperties;
 };
