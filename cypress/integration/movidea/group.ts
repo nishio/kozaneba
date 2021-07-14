@@ -67,19 +67,9 @@ describe("group", () => {
       });
     });
 
-    cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(x1 + dx);
-      expect(x[0].getBoundingClientRect().y).equal(y1);
-    });
-    cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(x2 + dx);
-      expect(x[0].getBoundingClientRect().y).equal(y2);
-    });
-    cy.get("span[data-testid='grouptitle-1']").should(
-      "have.css",
-      "height",
-      "0px"
-    );
+    cy.testid("1").should("hasPosition", [x1 + dx, y1]);
+    cy.testid("2").should("hasPosition", [x2 + dx, y2]);
+    cy.testid("grouptitle-1").should("have.css", "height", "0px");
 
     cy.movidea((movidea) => {
       movidea.updateGlobal((g) => {
@@ -98,10 +88,7 @@ describe("group", () => {
         x.title = "long title ".repeat(10);
       });
     });
-    cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(x2);
-      expect(x[0].getBoundingClientRect().y).equal(y2 + title_height);
-    });
+    cy.testid("2").should("hasPosition", [x2, y2 + title_height]);
 
     cy.contains("title").should("have.css", "height", title_height + "px"); // no wrap
 
@@ -112,14 +99,7 @@ describe("group", () => {
       });
     });
 
-    // cy.testid("1").hasPosition(159, 174);
     cy.testid("1").should("hasPosition", [159, 174]);
-
-    // cy.get("div[data-testid='1']").should((x) => {
-    //   expect(x[0].getBoundingClientRect().x).equal(159);
-    //   expect(x[0].getBoundingClientRect().y).equal(174);
-    // });
-    // cy.testid("1").hasPosition(159, 174);
   });
   it("move child", () => {
     cy.movidea((movidea) => {

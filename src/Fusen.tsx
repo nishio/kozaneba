@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
-import { FusenItem, ItemId } from "./initializeGlobalState";
+import { FusenItem } from "./initializeGlobalState";
 import { TOffset } from "./TOffset";
 
 export const FUSEN_WIDTH = 130;
