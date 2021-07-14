@@ -29,6 +29,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       movidea(callback: (movidea: TMovidea) => void): Chainable<Element>;
+      testid(testid: string): Chainable<Element>;
     }
   }
 }
@@ -42,4 +43,30 @@ Cypress.Commands.add("movidea", (callback: (movidea: TMovidea) => void) => {
         callback(m);
       });
     });
+});
+
+Cypress.Commands.add("testid", (testid: string) => {
+  return cy.get(`*[data-testid='${testid}']`);
+});
+
+chai.use((_chai, utils) => {
+  function hasPosition(options) {
+    const [x, y] = options;
+    const cr = this._obj[0].getBoundingClientRect();
+
+    this.assert(
+      cr.x === x,
+      `expected x:${cr.x} is ${x}`,
+      `expected x:${cr.x} is not ${x}`,
+      cr.x
+    );
+    this.assert(
+      cr.y === y,
+      `expected y:${cr.y} is ${y}`,
+      `expected y:${cr.y} is not ${y}`,
+      cr.y
+    );
+  }
+
+  _chai.Assertion.addMethod("hasPosition", hasPosition);
 });

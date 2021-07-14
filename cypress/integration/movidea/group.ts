@@ -112,10 +112,14 @@ describe("group", () => {
       });
     });
 
-    cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(159);
-      expect(x[0].getBoundingClientRect().y).equal(174);
-    });
+    // cy.testid("1").hasPosition(159, 174);
+    cy.testid("1").should("hasPosition", [159, 174]);
+
+    // cy.get("div[data-testid='1']").should((x) => {
+    //   expect(x[0].getBoundingClientRect().x).equal(159);
+    //   expect(x[0].getBoundingClientRect().y).equal(174);
+    // });
+    // cy.testid("1").hasPosition(159, 174);
   });
   it("move child", () => {
     cy.movidea((movidea) => {
