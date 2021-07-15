@@ -25,7 +25,7 @@ enum ItemIdBrand {
 export type ItemId = ItemIdBrand & string;
 
 type TDialog = "" | "AddFusen";
-type TMenu = "" | "Main" | "Dev" | "Fusen";
+export type TMenu = "" | "Main" | "Dev" | "Fusen";
 type TMenuAnchor = null | Element;
 export const INITIAL_GLOBAL_STATE = {
   fusens: [] as VFusen[],

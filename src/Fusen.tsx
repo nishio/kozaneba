@@ -2,8 +2,8 @@ import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { FusenItem } from "./initializeGlobalState";
+import { show_menu } from "./show_menu";
 import { TOffset } from "./TOffset";
-import { updateGlobal } from "./updateGlobal";
 
 export const FUSEN_WIDTH = 130;
 export const FUSEN_HEIGHT = 100;
@@ -87,15 +87,7 @@ export const Fusen: React.FC<Props> = ({
   //   }
   // };
   const onClick = (event: React.MouseEvent) => {
-    console.log("click");
-    updateGlobal((g) => {
-      if (g.menu === "Fusen") {
-        g.menu = "";
-      } else {
-        g.menu = "Fusen";
-        g.menu_anchor = event.currentTarget;
-      }
-    });
+    show_menu("Fusen", event);
   };
   return (
     <FusenDiv

@@ -18,6 +18,7 @@ import { fusenToFusenItem } from "./fusenToFusenItem";
 import { idsToDom } from "./idsToDom";
 import { onWheel } from "./onWheel";
 import MenuIcon from "@material-ui/icons/Menu";
+import { MenuAnchor, show_menu } from "./show_menu";
 
 function App() {
   const [fusens] = useGlobal("fusens");
@@ -56,6 +57,7 @@ function App() {
       <AdjustFontSize />
       <AddFusenDialog />
       <FusenMenu />
+      <MenuAnchor />
     </div>
   );
 }
@@ -77,19 +79,13 @@ const FusenMenu = () => {
 };
 const DevMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
-  const [anchor, setAnchor] = useGlobal("menu_anchor");
+  const [anchor] = useGlobal("menu_anchor");
   const open = menu === "Dev";
   const onClose = () => {
     setMenu("");
   };
   const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (menu === "Dev") {
-      setMenu("");
-    } else {
-      setMenu("Dev");
-    }
-    setAnchor(event.currentTarget);
-    alert("open");
+    show_menu("Dev", event);
   };
   const onHello = () => {
     alert("Hello!");
@@ -110,19 +106,13 @@ const DevMenu = () => {
 
 const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
-  const [anchor, setAnchor] = useGlobal("menu_anchor");
+  const [anchor] = useGlobal("menu_anchor");
   const open = menu === "Main";
   const onClose = () => {
     setMenu("");
   };
   const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (menu === "Main") {
-      setMenu("");
-    } else {
-      setMenu("Main");
-    }
-    setAnchor(event.currentTarget);
-    alert("open");
+    show_menu("Main", event);
   };
   const onHello = () => {
     alert("Hello!");
