@@ -79,27 +79,28 @@ describe("group", () => {
     cy.testid("1").should("hasPosition", [x1, y1]);
   });
 
-  it("out of screen", () => {
-    cy.testid("1").trigger("dragstart", "topLeft");
-    cy.get("#canvas").trigger("drop", 250, 250);
-    cy.testid("1").should("hasPosition", [250, 250]); // out of screen
+  // it("out of screen", () => {
+  //   cy.testid("1").trigger("dragstart", "topLeft");
+  //   cy.get("#canvas").trigger("drop", 250, 250);
+  //   cy.testid("1").should("hasPosition", [250, 250]); // out of screen
 
-    cy.testid("1").trigger("dragstart", "topLeft");
-    cy.get("#canvas").trigger("drop", 100, 100);
-    cy.testid("1").should("hasPosition", [110, 100]); // effect
+  //   cy.testid("1").trigger("dragstart", "topLeft");
+  //   cy.get("#canvas").trigger("drop", 100, 100);
+  //   cy.testid("1").should("hasPosition", [110, 100]); // effect
 
-    cy.testid("1").trigger("dragstart", "topLeft");
-    cy.get("#canvas").trigger("drop", 300, 300);
-    cy.testid("1").should("hasPosition", [300, 300]); // out of screen
+  //   cy.testid("1").trigger("dragstart", "topLeft");
+  //   cy.get("#canvas").trigger("drop", 300, 300);
+  //   cy.testid("1").should("hasPosition", [300, 300]); // out of screen
 
-    cy.testid("1").trigger("dragstart", "center");
-    cy.get("#canvas").trigger("drop", 250, 250);
-    cy.testid("1").should("hasPosition", [110, 170]); // effect
+  //   cy.testid("1").trigger("dragstart", "center");
+  //   cy.get("#canvas").trigger("drop", 250, 250);
+  //   cy.testid("1").should("hasPosition", [110, 170]); // effect
 
-    cy.testid("1").trigger("dragstart", "center");
-    cy.get("#canvas").trigger("drop", 250, 250);
-    cy.testid("1").should("hasPosition", [110, 170]); // effect
-  });
+  //   cy.testid("1").trigger("dragstart", "center");
+  //   cy.get("#canvas").trigger("drop", 250, 250);
+  //   cy.testid("1").should("hasPosition", [110, 170]); // effect
+  // });
+
   // it("move child", () => {
   //   cy.updateGlobal((g) => {
   //     g.itemStore["3"].position = [-100, 0];
