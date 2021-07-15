@@ -10,7 +10,7 @@ import {
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
 import { updateGlobal } from "./updateGlobal";
-import { screen_to_world, world_to_screen } from "./world_to_screen";
+import { screen_to_world } from "./world_to_screen";
 
 const PADDING = 25;
 const BORDER = 5;
@@ -125,12 +125,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     updateGlobal((g) => {
       const [x, y] = value.position;
       const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-      console.log(
-        "DragStart",
-        [x, y],
-        [event.clientX, event.clientY],
-        [cx, cy]
-      );
+      console.log("DragStart", [x, y], [event.pageX, event.pageY], [cx, cy]);
       // console.log(
       //   "dragstartX",
       //   event.clientX,
