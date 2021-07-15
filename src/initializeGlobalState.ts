@@ -24,6 +24,8 @@ enum ItemIdBrand {
 }
 export type ItemId = ItemIdBrand & string;
 
+type TDialog = "" | "AddFusen";
+
 export const INITIAL_GLOBAL_STATE = {
   fusens: [] as VFusen[],
   drawOrder: [] as ItemId[],
@@ -31,6 +33,7 @@ export const INITIAL_GLOBAL_STATE = {
   scale: 1,
   trans_x: 0,
   trans_y: 0,
+  dialog: "" as TDialog,
 };
 
 type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;
