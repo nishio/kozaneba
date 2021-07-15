@@ -9,6 +9,7 @@ import {
 } from "./Fusen";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
+import { updateGlobal } from "./updateGlobal";
 
 const PADDING = 25;
 const BORDER = 5;
@@ -37,7 +38,7 @@ const getItemBoundingBox = (id: ItemId) => {
   }
   throw Error("not here");
 };
-const getItemsBoundingBox = (items: ItemId[]) => {
+const getItemsBoundingBox = (items: ItemId[]): BoundingBox => {
   if (items.length === 0) {
     return {
       left: 0,
@@ -119,8 +120,43 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     x: width / 2 - center_shift_x / 2 + relative_x,
     y: (height + title_height) / 2 - center_shift_y / 2 + relative_y,
   };
+  const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+    // event.dataTransfer.setData("text", value.id);
+    updateGlobal((g) => {
+      const [x, y] = value.position;
+      console.log(
+        "dragstartX",
+        event.clientX,
+        event.currentTarget.offsetLeft,
+        event.currentTarget.clientWidth / 2,
+        x
+      );
+      console.log(
+        "dragstartY",
+        event.clientY,
+        event.currentTarget.offsetTop,
+        event.currentTarget.clientHeight / 2,
+        y
+      );
+      g.dragstart_position = [
+        event.clientX -
+          event.currentTarget.offsetLeft -
+          event.currentTarget.clientWidth / 2,
+        event.clientY -
+          event.currentTarget.offsetTop -
+          event.currentTarget.clientHeight / 2,
+      ];
+      g.drag_target = value.id;
+    });
+  };
   return (
-    <GroupDiv style={style} key={value.id} data-testid={value.id}>
+    <GroupDiv
+      style={style}
+      key={value.id}
+      data-testid={value.id}
+      onDragStart={onDragStart}
+      draggable={true}
+    >
       <GroupTitle
         data-testid={"grouptitle-" + value.id}
         style={{ height: title_height }}

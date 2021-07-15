@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useGlobal } from "reactn";
 import { AddFusenDialog } from "./AddFusenDialog";
 import { AdjustFontSize } from "./AdjustFontSize";
@@ -13,6 +13,7 @@ import { MenuAnchor } from "./show_menu";
 import { MainMenu } from "./MainMenu";
 import { DevMenu } from "./DevMenu";
 import { FusenMenu } from "./FusenMenu";
+import { onDrop, allowDrop } from "./dragdrop";
 
 function App() {
   const [fusens] = useGlobal("fusens");
@@ -22,6 +23,7 @@ function App() {
     console.log("useEffect");
     window.addEventListener("wheel", onWheel, { passive: false });
   }, []);
+
   const offset = { x: 0, y: 0 };
   const APP_BAR_BGCOLOR = "#000080"; // original "3f51b5";
   return (
@@ -40,7 +42,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <div id="canvas">
+      <div id="canvas" onDrop={onDrop} onDragOver={allowDrop}>
         <Center>
           {fusens.map((fusen) => (
             <Fusen value={fusenToFusenItem(fusen)} offset={offset} />

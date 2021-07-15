@@ -10,6 +10,8 @@ export const INITIAL_GLOBAL_STATE = {
   dialog: "" as TDialog,
   menu: "" as TMenu,
   menu_anchor: null as TMenuAnchor,
+  dragstart_position: [0, 0],
+  drag_target: "" as ItemId,
 };
 
 export type FusenItem = {
