@@ -1,25 +1,10 @@
 import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
-import { FusenItem } from "./initializeGlobalState";
+import { FUSEN_WIDTH, FUSEN_HEIGHT, FUSEN_BORDER } from "./fusen_dimension";
 import { show_menu } from "./show_menu";
 import { TOffset } from "./TOffset";
 
-export const FUSEN_WIDTH = 130;
-export const FUSEN_HEIGHT = 100;
-export const FUSEN_BORDER = 1;
-export const getBoundingBox = (item: FusenItem) => {
-  const [x, y] = item.position;
-  const scale = item.scale;
-  const b = {
-    top: y - (FUSEN_HEIGHT / 2) * scale,
-    left: x - (FUSEN_WIDTH / 2) * scale,
-    bottom: y + (FUSEN_HEIGHT / 2) * scale,
-    right: x + (FUSEN_WIDTH / 2) * scale,
-  };
-  console.log(item.text, item.scale, b);
-  return b;
-};
 type Props = {
   value: { position: number[]; scale: number; text: string; id: string };
   offset: TOffset;

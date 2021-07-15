@@ -37,13 +37,18 @@ declare global {
 }
 
 Cypress.Commands.add("movidea", (callback: (movidea: TMovidea) => void) => {
+  const to_async = false;
   return cy
     .window()
     .its("movidea")
     .then((m) => {
-      setTimeout(() => {
+      if (to_async) {
+        setTimeout(() => {
+          callback(m);
+        });
+      } else {
         callback(m);
-      });
+      }
     });
 });
 

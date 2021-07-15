@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { GroupItem, ItemId } from "./initializeGlobalState";
+import { Fusen } from "./Fusen";
 import {
-  Fusen,
   FUSEN_HEIGHT,
   FUSEN_WIDTH,
   getBoundingBox as getFusenBoundingBox,
-} from "./Fusen";
+} from "./fusen_dimension";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
 import { updateGlobal } from "./updateGlobal";
