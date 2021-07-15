@@ -3,6 +3,7 @@ import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { FusenItem } from "./initializeGlobalState";
 import { TOffset } from "./TOffset";
+import { updateGlobal } from "./updateGlobal";
 
 export const FUSEN_WIDTH = 130;
 export const FUSEN_HEIGHT = 100;
@@ -85,7 +86,17 @@ export const Fusen: React.FC<Props> = ({
   //     e.preventDefault();
   //   }
   // };
-
+  const onClick = (event: React.MouseEvent) => {
+    console.log("click");
+    updateGlobal((g) => {
+      if (g.menu === "Fusen") {
+        g.menu = "";
+      } else {
+        g.menu = "Fusen";
+        g.menu_anchor = event.currentTarget;
+      }
+    });
+  };
   return (
     <FusenDiv
       className="fusen"
@@ -93,6 +104,7 @@ export const Fusen: React.FC<Props> = ({
       data-testid={value.id}
       key={value.id}
       style={style}
+      onClick={onClick}
     >
       <FusenDiv2>{value.text}</FusenDiv2>
     </FusenDiv>

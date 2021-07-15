@@ -27,7 +27,7 @@ export const AddFusenDialog = () => {
               autoFocus
               id="multiline"
               style={{ width: "calc(100% - 10px)" }}
-              rowsMin={40}
+              minRows={40}
             ></TextareaAutosize>
           </div>
           <div style={{ maxWidth: "20%" }}>

@@ -11,9 +11,9 @@ setGlobal(INITIAL_GLOBAL_STATE);
 exposeGlobal();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  //  <React.StrictMode>  // Material-UI is not support it
+  <App />,
+  //  </React.StrictMode>
   document.getElementById("root")
 );
 

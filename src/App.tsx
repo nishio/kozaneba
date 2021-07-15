@@ -2,6 +2,8 @@ import {
   AppBar,
   Button,
   IconButton,
+  Menu,
+  MenuItem,
   Toolbar,
   Typography,
 } from "@material-ui/core";
@@ -34,19 +36,12 @@ function App() {
         style={{ opacity: "50%", backgroundColor: APP_BAR_BGCOLOR }}
       >
         <Toolbar>
-          <IconButton
-            edge="start"
-            // className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
+          <MainMenu />
           <Typography variant="h6">
             {/* className={classes.title} */}
             Movable Ideas
           </Typography>
-          <Button color="inherit">DEV</Button>
+          <DevMenu />
         </Toolbar>
       </AppBar>
 
@@ -60,8 +55,96 @@ function App() {
       </div>
       <AdjustFontSize />
       <AddFusenDialog />
+      <FusenMenu />
     </div>
   );
 }
+
+const FusenMenu = () => {
+  const [menu, setMenu] = useGlobal("menu");
+  const [anchor] = useGlobal("menu_anchor");
+  const open = menu === "Fusen";
+  const onClose = () => {
+    setMenu("");
+  };
+  return (
+    <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
+      <MenuItem>Fusen Menu 1</MenuItem>
+      <MenuItem>Fusen Menu 2</MenuItem>
+      <MenuItem>Fusen Menu 3</MenuItem>
+    </Menu>
+  );
+};
+const DevMenu = () => {
+  const [menu, setMenu] = useGlobal("menu");
+  const [anchor, setAnchor] = useGlobal("menu_anchor");
+  const open = menu === "Dev";
+  const onClose = () => {
+    setMenu("");
+  };
+  const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (menu === "Dev") {
+      setMenu("");
+    } else {
+      setMenu("Dev");
+    }
+    setAnchor(event.currentTarget);
+    alert("open");
+  };
+  const onHello = () => {
+    alert("Hello!");
+  };
+  return (
+    <>
+      <Button color="inherit" onClick={onButtonClick}>
+        DEV
+      </Button>
+      <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
+        <MenuItem onClick={onHello}>Hello 1</MenuItem>
+        <MenuItem onClick={onHello}>Hello 2</MenuItem>
+        <MenuItem onClick={onHello}>Hello 3</MenuItem>
+      </Menu>
+    </>
+  );
+};
+
+const MainMenu = () => {
+  const [menu, setMenu] = useGlobal("menu");
+  const [anchor, setAnchor] = useGlobal("menu_anchor");
+  const open = menu === "Main";
+  const onClose = () => {
+    setMenu("");
+  };
+  const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (menu === "Main") {
+      setMenu("");
+    } else {
+      setMenu("Main");
+    }
+    setAnchor(event.currentTarget);
+    alert("open");
+  };
+  const onHello = () => {
+    alert("Hello!");
+  };
+  return (
+    <>
+      <IconButton
+        edge="start"
+        // className={classes.menuButton}
+        color="inherit"
+        aria-label="menu"
+        onClick={onButtonClick}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
+        <MenuItem onClick={onHello}>Main</MenuItem>
+        <MenuItem onClick={onHello}>Hello 2</MenuItem>
+        <MenuItem onClick={onHello}>Hello 3</MenuItem>
+      </Menu>
+    </>
+  );
+};
 
 export default App;
