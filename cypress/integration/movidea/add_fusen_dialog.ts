@@ -11,7 +11,7 @@ describe("dialog", () => {
       g.dialog = "AddFusen";
     });
     cy.contains("Add Fusens").should("exist");
-    // cy.contains("Close").click();
-    // cy.contains("Add Fusens").should("not.exist");
+    cy.contains("Close").click();
+    cy.contains("Add Fusens").should("not.exist");
   });
 });
