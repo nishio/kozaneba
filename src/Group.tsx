@@ -10,6 +10,7 @@ import {
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
 import { updateGlobal } from "./updateGlobal";
+import { screen_to_world, world_to_screen } from "./world_to_screen";
 
 const PADDING = 25;
 const BORDER = 5;
@@ -65,12 +66,12 @@ const getItemsBoundingBox = (items: ItemId[]): BoundingBox => {
     }
   });
   const r = { left, right, top, bottom };
-  console.log("group bounding box", r);
+  // console.log("group bounding box", r);
   return r;
 };
 
 const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
-  console.log("closedGroup", offset, value.position);
+  // console.log("closedGroup", offset, value.position);
   const [x, y] = value.position;
   const scale = value.scale;
   const width = FUSEN_WIDTH + PADDING * 2;
@@ -83,7 +84,6 @@ const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
     x: width / 2,
     y: height / 2,
   };
-  console.log(style, new_offset);
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
       <Fusen
@@ -124,28 +124,29 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     // event.dataTransfer.setData("text", value.id);
     updateGlobal((g) => {
       const [x, y] = value.position;
+      const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
       console.log(
-        "dragstartX",
-        event.clientX,
-        event.currentTarget.offsetLeft,
-        event.currentTarget.clientWidth / 2,
-        x
+        "DragStart",
+        [x, y],
+        [event.clientX, event.clientY],
+        [cx, cy]
       );
-      console.log(
-        "dragstartY",
-        event.clientY,
-        event.currentTarget.offsetTop,
-        event.currentTarget.clientHeight / 2,
-        y
-      );
-      g.dragstart_position = [
-        event.clientX -
-          event.currentTarget.offsetLeft -
-          event.currentTarget.clientWidth / 2,
-        event.clientY -
-          event.currentTarget.offsetTop -
-          event.currentTarget.clientHeight / 2,
-      ];
+      // console.log(
+      //   "dragstartX",
+      //   event.clientX,
+      //   event.currentTarget.offsetLeft,
+      //   event.currentTarget.clientWidth / 2,
+      //   x
+      // );
+      // console.log(
+      //   "dragstartY",
+      //   event.clientY,
+      //   event.currentTarget.offsetTop,
+      //   event.currentTarget.clientHeight / 2,
+      //   y
+      // );
+
+      g.dragstart_position = [cx - x, cy - y];
       g.drag_target = value.id;
     });
   };

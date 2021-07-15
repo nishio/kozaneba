@@ -13,6 +13,5 @@ export const getBoundingBox = (item: FusenItem) => {
     bottom: y + (FUSEN_HEIGHT / 2) * scale,
     right: x + (FUSEN_WIDTH / 2) * scale,
   };
-  console.log(item.text, item.scale, b);
   return b;
 };

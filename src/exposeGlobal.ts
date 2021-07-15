@@ -3,6 +3,7 @@ import { getGroupBoundingBox } from "./Group";
 import { importRegroupJSON } from "./importRegroupJSON";
 import { GroupItem, ItemId } from "./initializeGlobalState";
 import { updateGlobal } from "./updateGlobal";
+import { world_to_screen, screen_to_world } from "./world_to_screen";
 
 const closeGroup = (id: ItemId) => {
   const g = getGlobal();
@@ -33,22 +34,6 @@ const closeGroup = (id: ItemId) => {
       target.position = [x - center_shift_x, y - center_shift_y];
     });
   });
-};
-
-const world_to_screen = ([x, y]: number[]) => {
-  const g = getGlobal();
-  console.log(g.trans_x);
-  return [
-    document.body.clientWidth / 2 + (x + g.trans_x) * g.scale,
-    document.body.clientHeight / 2 + (y + g.trans_y) * g.scale,
-  ];
-};
-const screen_to_world = ([x, y]: number[]) => {
-  const g = getGlobal();
-  return [
-    (x - document.body.clientWidth / 2) / g.scale - g.trans_x,
-    (y - document.body.clientHeight / 2) / g.scale - g.trans_y,
-  ];
 };
 
 const movidea = {

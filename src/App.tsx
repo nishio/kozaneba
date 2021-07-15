@@ -18,9 +18,9 @@ import { onDrop, allowDrop } from "./dragdrop";
 function App() {
   const [fusens] = useGlobal("fusens");
   const [drawOrder] = useGlobal("drawOrder");
-  console.log("render");
+  // console.log("render");
   useEffect(() => {
-    console.log("useEffect");
+    // console.log("useEffect");
     window.addEventListener("wheel", onWheel, { passive: false });
   }, []);
 

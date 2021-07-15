@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-import { GroupItem, ItemId } from "../../../src/initializeGlobalState";
-
 describe("group", () => {
   beforeEach(() => {
     cy.visit("/");
@@ -51,10 +49,6 @@ describe("group", () => {
     const y1 = 170;
     cy.testid("1").should("hasPosition", [x1, y1]);
 
-    // const x2 = x1 + 5 + 25;
-    // const y2 = y1 + 5 + 25;
-    // cy.testid("2").should("hasPosition", [x2, y2]);
-
     cy.testid("1").trigger("dragstart", "center");
     cy.get("#canvas").trigger("drop", 250, 250);
 
@@ -68,57 +62,34 @@ describe("group", () => {
     cy.testid("1").should("hasPosition", [x1, y1]);
 
     cy.testid("1").trigger("dragstart", "center");
-    // dragstartX 250 -195 190
-    // dragstartY 250 -80 75
-    // 380 x 150
     cy.get("#canvas").trigger("drop", 250, 250);
     cy.testid("1").should("hasPosition", [x1, y1]);
 
     cy.testid("1").trigger("dragstart", "topLeft");
-    // dragstartX 55 -195 190
-    // dragstartY 170 -80 75
-    // 380 x 150
     cy.get("#canvas").trigger("drop", 250, 250);
-    cy.testid("1").should("hasPosition", [x1, y1]);
+    cy.testid("1").should("hasPosition", [250, 250]);
 
-    // const dx = 100;
-    // cy.updateGlobal((g) => {
-    //   g.itemStore["1"].position = [dx, 0];
-    // });
+    cy.testid("1").trigger("dragstart", "topLeft");
+    cy.get("#canvas").trigger("drop", 100, 100);
+    cy.testid("1").should("hasPosition", [110, 100]); // ?
 
-    // cy.testid("1").should("hasPosition", [x1 + dx, y1]);
-    // cy.testid("2").should("hasPosition", [x2 + dx, y2]);
-    // cy.testid("grouptitle-1").should("have.css", "height", "0px");
+    cy.testid("1").trigger("dragstart", "topLeft");
+    cy.get("#canvas").trigger("drop", 200, 200);
+    cy.testid("1").should("hasPosition", [200, 200]); // ?
 
-    // cy.movidea((movidea) => {
-    //   movidea.updateGlobal((g) => {
-    //     const x = g.itemStore["1"] as GroupItem;
-    //     x.position = [0, 0];
-    //     x.title = "title";
-    //   });
-    // });
-    // const title_height = 25;
-    // cy.contains("title").should("have.css", "height", title_height + "px");
+    cy.testid("1").trigger("dragstart", "topLeft");
+    cy.get("#canvas").trigger("drop", 300, 300);
+    cy.testid("1").should("hasPosition", [300, 300]); // ?
 
-    // cy.movidea((movidea) => {
-    //   movidea.updateGlobal((g) => {
-    //     const x = g.itemStore["1"] as GroupItem;
-    //     x.position = [0, 0];
-    //     x.title = "long title ".repeat(10);
-    //   });
-    // });
-    // cy.testid("2").should("hasPosition", [x2, y2 + title_height]);
+    cy.testid("1").trigger("dragstart", "center");
+    cy.get("#canvas").trigger("drop", 250, 250);
+    // cy.testid("1").should("hasPosition", [x1, y1]); // ?
+    cy.testid("1").should("hasPosition", [110, y1]); // ?
 
-    // cy.contains("title").should("have.css", "height", title_height + "px"); // no wrap
-
-    // cy.movidea((movidea) => {
-    //   movidea.updateGlobal((g) => {
-    //     const x = g.itemStore["1"] as GroupItem;
-    //     x.isOpen = false;
-    //   });
-    // });
-
-    // cy.testid("1").should("hasPosition", [155, 170]);
+    cy.testid("1").trigger("dragstart", "center");
+    cy.get("#canvas").trigger("drop", 250, 250);
+    // cy.testid("1").should("hasPosition", [x1, y1]); // ?
+    cy.testid("1").should("hasPosition", [110, y1]); // ?
   });
   // it("move child", () => {
   //   cy.updateGlobal((g) => {
