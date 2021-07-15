@@ -1,6 +1,6 @@
 import React from "react";
 import { updateGlobal } from "./updateGlobal";
-import { screen_to_world, world_to_screen } from "./world_to_screen";
+import { screen_to_world } from "./world_to_screen";
 
 export const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
