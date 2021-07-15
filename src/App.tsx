@@ -1,12 +1,4 @@
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useGlobal } from "reactn";
 import { AddFusenDialog } from "./AddFusenDialog";
@@ -17,8 +9,10 @@ import { Fusen } from "./Fusen";
 import { fusenToFusenItem } from "./fusenToFusenItem";
 import { idsToDom } from "./idsToDom";
 import { onWheel } from "./onWheel";
-import MenuIcon from "@material-ui/icons/Menu";
-import { MenuAnchor, show_menu } from "./show_menu";
+import { MenuAnchor } from "./show_menu";
+import { MainMenu } from "./MainMenu";
+import { DevMenu } from "./DevMenu";
+import { FusenMenu } from "./FusenMenu";
 
 function App() {
   const [fusens] = useGlobal("fusens");
@@ -61,80 +55,5 @@ function App() {
     </div>
   );
 }
-
-const FusenMenu = () => {
-  const [menu, setMenu] = useGlobal("menu");
-  const [anchor] = useGlobal("menu_anchor");
-  const open = menu === "Fusen";
-  const onClose = () => {
-    setMenu("");
-  };
-  return (
-    <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-      <MenuItem>Fusen Menu 1</MenuItem>
-      <MenuItem>Fusen Menu 2</MenuItem>
-      <MenuItem>Fusen Menu 3</MenuItem>
-    </Menu>
-  );
-};
-const DevMenu = () => {
-  const [menu, setMenu] = useGlobal("menu");
-  const [anchor] = useGlobal("menu_anchor");
-  const open = menu === "Dev";
-  const onClose = () => {
-    setMenu("");
-  };
-  const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    show_menu("Dev", event);
-  };
-  const onHello = () => {
-    alert("Hello!");
-  };
-  return (
-    <>
-      <Button color="inherit" onClick={onButtonClick}>
-        DEV
-      </Button>
-      <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-        <MenuItem onClick={onHello}>Hello 1</MenuItem>
-        <MenuItem onClick={onHello}>Hello 2</MenuItem>
-        <MenuItem onClick={onHello}>Hello 3</MenuItem>
-      </Menu>
-    </>
-  );
-};
-
-const MainMenu = () => {
-  const [menu, setMenu] = useGlobal("menu");
-  const [anchor] = useGlobal("menu_anchor");
-  const open = menu === "Main";
-  const onClose = () => {
-    setMenu("");
-  };
-  const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    show_menu("Main", event);
-  };
-  const onHello = () => {
-    alert("Hello!");
-  };
-  return (
-    <>
-      <IconButton
-        edge="start"
-        // className={classes.menuButton}
-        color="inherit"
-        aria-label="menu"
-        onClick={onButtonClick}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-        <MenuItem onClick={onHello}>Main</MenuItem>
-        <MenuItem onClick={onHello}>Hello 2</MenuItem>
-        <MenuItem onClick={onHello}>Hello 3</MenuItem>
-      </Menu>
-    </>
-  );
-};
 
 export default App;

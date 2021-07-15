@@ -1,5 +1,17 @@
 import { VFusen } from "./VFusen";
 
+export const INITIAL_GLOBAL_STATE = {
+  fusens: [] as VFusen[],
+  drawOrder: [] as ItemId[],
+  itemStore: {} as { [id: string]: Item },
+  scale: 1,
+  trans_x: 0,
+  trans_y: 0,
+  dialog: "" as TDialog,
+  menu: "" as TMenu,
+  menu_anchor: null as TMenuAnchor,
+};
+
 export type FusenItem = {
   type: "piece";
   text: string;
@@ -27,17 +39,6 @@ export type ItemId = ItemIdBrand & string;
 type TDialog = "" | "AddFusen";
 export type TMenu = "" | "Main" | "Dev" | "Fusen";
 type TMenuAnchor = null | Element;
-export const INITIAL_GLOBAL_STATE = {
-  fusens: [] as VFusen[],
-  drawOrder: [] as ItemId[],
-  itemStore: {} as { [id: string]: Item },
-  scale: 1,
-  trans_x: 0,
-  trans_y: 0,
-  dialog: "" as TDialog,
-  menu: "" as TMenu,
-  menu_anchor: null as TMenuAnchor,
-};
 
 type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;
 
