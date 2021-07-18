@@ -96,11 +96,6 @@ describe("dimension", () => {
         g.itemStore["2"].position = [x, y];
       });
       const [top, left] = topLeft([x, y]);
-      // cy.testid("2").should("hasPosition", [
-      //   cw / 2 + (top + 67) * 1,
-      //   ch / 2 + (left + 89) * 1,
-      // ]);
-
       cy.testid("2").then((el) => {
         return cy
           .wrap(el)
@@ -117,10 +112,6 @@ describe("dimension", () => {
         g.itemStore["2"].position = [x, y];
       });
       const [top, left] = topLeft([x, y]);
-      // cy.testid("2").should("hasPosition", [
-      //   cw / 2 + (top + 67) * 2,
-      //   ch / 2 + (left + 89) * 2,
-      // ]);
       cy.testid("2").then((el) => {
         return cy
           .wrap(el)

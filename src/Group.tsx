@@ -121,30 +121,19 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     y: (height + title_height) / 2 - center_shift_y / 2 + relative_y,
   };
   const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    // event.dataTransfer.setData("text", value.id);
+    console.log(event.target);
+    console.log(event.currentTarget.clientHeight);
+    if (event.dataTransfer !== undefined) {
+      event.dataTransfer.effectAllowed = "move";
+    }
     updateGlobal((g) => {
       const [x, y] = value.position;
       const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-      console.log("DragStart", [x, y], [event.pageX, event.pageY], [cx, cy]);
-      // console.log(
-      //   "dragstartX",
-      //   event.clientX,
-      //   event.currentTarget.offsetLeft,
-      //   event.currentTarget.clientWidth / 2,
-      //   x
-      // );
-      // console.log(
-      //   "dragstartY",
-      //   event.clientY,
-      //   event.currentTarget.offsetTop,
-      //   event.currentTarget.clientHeight / 2,
-      //   y
-      // );
-
       g.dragstart_position = [cx - x, cy - y];
       g.drag_target = value.id;
     });
   };
+
   return (
     <GroupDiv
       style={style}
