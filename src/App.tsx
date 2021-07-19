@@ -13,7 +13,7 @@ import { MenuAnchor } from "./show_menu";
 import { MainMenu } from "./MainMenu";
 import { DevMenu } from "./DevMenu";
 import { FusenMenu } from "./FusenMenu";
-import { onDrop, allowDrop } from "./dragdrop";
+import { onDrop, allowDrop } from "./mouseEventMamager";
 
 function App() {
   const [fusens] = useGlobal("fusens");

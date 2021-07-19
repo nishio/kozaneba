@@ -9,8 +9,7 @@ import {
 } from "./fusen_dimension";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
-import { updateGlobal } from "./updateGlobal";
-import { screen_to_world } from "./world_to_screen";
+import { onDragStartGroup } from "./mouseEventMamager";
 
 const PADDING = 25;
 const BORDER = 5;
@@ -120,19 +119,8 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     x: width / 2 - center_shift_x / 2 + relative_x,
     y: (height + title_height) / 2 - center_shift_y / 2 + relative_y,
   };
-  const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
-    console.log(event.target);
-    console.log(event.currentTarget.clientHeight);
-    if (event.dataTransfer !== undefined) {
-      event.dataTransfer.effectAllowed = "move";
-    }
-    updateGlobal((g) => {
-      const [x, y] = value.position;
-      const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-      g.dragstart_position = [cx - x, cy - y];
-      g.drag_target = value.id;
-    });
-  };
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
+    onDragStartGroup(e, value);
 
   return (
     <GroupDiv
