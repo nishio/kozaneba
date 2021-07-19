@@ -5,7 +5,7 @@ import { Fusen } from "./Fusen";
 import {
   FUSEN_HEIGHT,
   FUSEN_WIDTH,
-  getBoundingBox as getFusenBoundingBox,
+  getFusenBoundingBox,
 } from "./fusen_dimension";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
@@ -28,7 +28,7 @@ export const getGroupBoundingBox = (g: GroupItem): BoundingBox => {
   };
 };
 
-const getItemBoundingBox = (id: ItemId) => {
+export const getItemBoundingBox = (id: ItemId) => {
   const g = getGlobal();
   const x = g.itemStore[id];
   if (x.type === "piece") {
@@ -38,6 +38,7 @@ const getItemBoundingBox = (id: ItemId) => {
   }
   throw Error("not here");
 };
+
 const getItemsBoundingBox = (items: ItemId[]): BoundingBox => {
   if (items.length === 0) {
     return {

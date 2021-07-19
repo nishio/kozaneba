@@ -12,6 +12,8 @@ export const INITIAL_GLOBAL_STATE = {
   menu_anchor: null as TMenuAnchor,
   dragstart_position: [0, 0],
   drag_target: "" as ItemId,
+  selectionRange: { top: 0, left: 0, width: 0, height: 0 },
+  selected_items: [] as ItemId[],
 };
 
 export type FusenItem = {

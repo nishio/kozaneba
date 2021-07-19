@@ -13,7 +13,14 @@ import { MenuAnchor } from "./show_menu";
 import { MainMenu } from "./MainMenu";
 import { DevMenu } from "./DevMenu";
 import { FusenMenu } from "./FusenMenu";
-import { onDrop, allowDrop } from "./mouseEventMamager";
+import {
+  onDrop,
+  allowDrop,
+  onMouseUp,
+  onMouseDown,
+  onMouseMove,
+} from "./mouseEventMamager";
+import { Selection } from "./Selection";
 
 function App() {
   const [fusens] = useGlobal("fusens");
@@ -42,13 +49,21 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <div id="canvas" onDrop={onDrop} onDragOver={allowDrop}>
+      <div
+        id="canvas"
+        onDrop={onDrop}
+        onDragOver={allowDrop}
+        onMouseUp={onMouseUp}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+      >
         <Center>
           {fusens.map((fusen) => (
             <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
           ))}
           {idsToDom(drawOrder, offset)}
         </Center>
+        <Selection />
       </div>
       <AdjustFontSize />
       <AddFusenDialog />
