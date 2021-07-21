@@ -17,7 +17,7 @@ import {
   onMouseDown,
   onMouseMove,
 } from "./mouseEventMamager";
-import { SelectedItemsHolder, SelectionView } from "./Selection";
+import { SelectionView } from "./Selection";
 import { ItemId } from "./initializeGlobalState";
 import { MyAppBar } from "./MyAppBar";
 
