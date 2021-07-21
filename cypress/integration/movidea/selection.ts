@@ -1,8 +1,6 @@
 /// <reference types="cypress" />
 
-import { getSystemErrorMap } from "util";
-
-describe("group", () => {
+describe("selection", () => {
   beforeEach(() => {
     cy.visit("/");
     const json = {
@@ -75,40 +73,27 @@ describe("group", () => {
 
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 250, 250);
-    cy.movidea((m) => {
-      cy.wrap(m.getGlobal().selected_items).should("to.deep.equal", ["0,0"]);
-    });
+    cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
 
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 450, 250);
-    cy.movidea((m) => {
-      cy.wrap(m.getGlobal().selected_items).should("to.deep.equal", [
-        "0,0",
-        "1,0",
-      ]);
-    });
+    cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0", "1,0"]);
 
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 450, 450);
-    cy.movidea((m) => {
-      cy.wrap(m.getGlobal().selected_items).should("to.deep.equal", [
-        "0,0",
-        "0,1",
-        "1,0",
-        "1,1",
-      ]);
-    });
+    const ret = ["0,0", "0,1", "1,0", "1,1"];
+    cy.getGlobal((g) => g.selected_items).should("to.eql", ret);
 
     cy.get("#canvas").trigger("mousedown", 250, 250);
     cy.get("#canvas").trigger("mouseup", 150, 150);
-    cy.movidea((m) => {
-      cy.wrap(m.getGlobal().selected_items).should("to.deep.equal", ["0,0"]);
-    });
+    cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
+
+    cy.get("#canvas").trigger("mousedown", 250, 250);
+    cy.get("#canvas").trigger("mouseup", 150, 150);
+    cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
 
     cy.get("#canvas").trigger("mousedown", 350, 350);
     cy.get("#canvas").trigger("mouseup", 250, 250);
-    cy.movidea((m) => {
-      cy.wrap(m.getGlobal().selected_items).should("to.deep.equal", ["0,0"]);
-    });
+    cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
   });
 });

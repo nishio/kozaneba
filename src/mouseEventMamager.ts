@@ -5,6 +5,7 @@ import {
 } from "./BoundingBox";
 import { getItemBoundingBox } from "./Group";
 import { GroupItem, ItemId } from "./initializeGlobalState";
+import { selectionRange_to_boundingBox } from "./TRect";
 import { updateGlobal } from "./updateGlobal";
 import { screen_to_world } from "./world_to_screen";
 
@@ -12,6 +13,7 @@ export const onDragStartGroup = (
   event: React.DragEvent<HTMLDivElement>,
   value: GroupItem
 ) => {
+  console.log("onDragStartGroup");
   if (event.dataTransfer !== undefined) {
     event.dataTransfer.effectAllowed = "move";
   }
@@ -27,6 +29,7 @@ export const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.dataTransfer.dropEffect = "move";
   event.preventDefault();
 };
+
 export const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
   console.log("onDrop");
   updateGlobal((g) => {
@@ -64,29 +67,6 @@ export const onMouseMove = (
     });
   }
 };
-type TRect = { left: number; top: number; width: number; height: number };
-
-export const selectionRange_to_boundingBox = (sr: TRect) => {
-  const bottom = sr.top + sr.height;
-  const right = sr.left + sr.width;
-  return {
-    top: Math.min(sr.top, bottom),
-    left: Math.min(sr.left, right),
-    bottom: Math.max(sr.top, bottom),
-    right: Math.max(sr.left, right),
-  };
-};
-
-export const normalize_rect = (sr: TRect) => {
-  const { top, left, width, height } = sr;
-  return {
-    top: Math.min(top, top + height),
-    left: Math.min(left, left + width),
-    width: Math.abs(width),
-    height: Math.abs(height),
-  };
-};
-
 export const onMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
