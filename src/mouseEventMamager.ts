@@ -8,7 +8,7 @@ import { getItemBoundingBox } from "./Group";
 import { GroupItem, ItemId } from "./initializeGlobalState";
 import { selectionRange_to_boundingBox } from "./TRect";
 import { updateGlobal } from "./updateGlobal";
-import { screen_to_world } from "./world_to_screen";
+import { screen_to_world, world_to_screen } from "./world_to_screen";
 
 export const onDragStartGroup = (
   event: React.DragEvent<HTMLDivElement>,
@@ -56,12 +56,17 @@ export const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
         const [px, py] = g.itemStore[id].position;
         g.itemStore[id].position = [px + dx, py + dy];
       });
-      g.drag_target = "" as ItemId;
+      const sr = g.selectionRange;
+      const [sx, sy] = screen_to_world([sr.left, sr.top]);
+      const [qx, qy] = world_to_screen([sx + dx, sy + dy]);
+      g.selectionRange.left = qx;
+      g.selectionRange.top = qy;
+      g.drag_target = "";
     } else if (g.drag_target !== "") {
       const [dsx, dsy] = g.dragstart_position;
       const [x, y] = screen_to_world([event.clientX, event.clientY]);
       g.itemStore[g.drag_target].position = [x - dsx, y - dsy];
-      g.drag_target = "" as ItemId;
+      g.drag_target = "";
     } else {
       throw new Error();
     }
@@ -91,7 +96,6 @@ export const onMouseMove = (
 ) => {
   const g = getGlobal();
   if (g.mouseState === "selecting") {
-    console.log("onMouseMove");
     updateGlobal((g) => {
       g.selectionRange.width = event.pageX - g.selectionRange.left;
       g.selectionRange.height = event.pageY - g.selectionRange.top;
