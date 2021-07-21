@@ -1,7 +1,7 @@
 import { useGlobal } from "reactn";
 import styled from "styled-components";
 
-const CenterDiv = styled.div`
+export const CenterDiv = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;

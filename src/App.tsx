@@ -17,7 +17,7 @@ import {
   onMouseDown,
   onMouseMove,
 } from "./mouseEventMamager";
-import { Selection } from "./Selection";
+import { SelectedItemsHolder, SelectionView } from "./Selection";
 import { ItemId } from "./initializeGlobalState";
 import { MyAppBar } from "./MyAppBar";
 
@@ -59,21 +59,22 @@ function App() {
       >
         {is_selected ? (
           <>
-            <Center opacity={1}>{idsToDom(selected_items, offset)}</Center>
+            <SelectionView></SelectionView>
             <Center opacity={0.5}>
               {idsToDom(not_selected_items, offset)}
             </Center>
           </>
         ) : (
-          <Center opacity={1}>
-            {fusens.map((fusen) => (
-              <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
-            ))}
-            {idsToDom(drawOrder, offset)}
-          </Center>
+          <>
+            <Center opacity={1}>
+              {fusens.map((fusen) => (
+                <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
+              ))}
+              {idsToDom(drawOrder, offset)}
+            </Center>
+            <SelectionView />
+          </>
         )}
-
-        <Selection />
       </div>
       <AdjustFontSize />
       <AddFusenDialog />
