@@ -71,20 +71,22 @@ export const onMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   console.log("onMouseUp");
-  updateGlobal((g) => {
-    g.selectionRange.width = event.pageX - g.selectionRange.left;
-    g.selectionRange.height = event.pageY - g.selectionRange.top;
+  if (isDragging) {
+    updateGlobal((g) => {
+      g.selectionRange.width = event.pageX - g.selectionRange.left;
+      g.selectionRange.height = event.pageY - g.selectionRange.top;
 
-    const sr = convert_bounding_box_screen_to_world(
-      selectionRange_to_boundingBox(g.selectionRange)
-    );
-    const selected_items = [] as ItemId[];
-    g.drawOrder.forEach((id) => {
-      if (isOverlapBox(sr, getItemBoundingBox(id))) {
-        selected_items.push(id);
-      }
+      const sr = convert_bounding_box_screen_to_world(
+        selectionRange_to_boundingBox(g.selectionRange)
+      );
+      const selected_items = [] as ItemId[];
+      g.drawOrder.forEach((id) => {
+        if (isOverlapBox(sr, getItemBoundingBox(id))) {
+          selected_items.push(id);
+        }
+      });
+      g.selected_items = selected_items;
     });
-    g.selected_items = selected_items;
-  });
-  isDragging = false;
+    isDragging = false;
+  }
 };
