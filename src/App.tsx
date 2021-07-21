@@ -1,4 +1,3 @@
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import { useEffect } from "react";
 import { useGlobal } from "reactn";
 import { AddFusenDialog } from "./AddFusenDialog";
@@ -10,8 +9,6 @@ import { fusenToFusenItem } from "./fusenToFusenItem";
 import { idsToDom } from "./idsToDom";
 import { onWheel } from "./onWheel";
 import { MenuAnchor } from "./show_menu";
-import { MainMenu } from "./MainMenu";
-import { DevMenu } from "./DevMenu";
 import { FusenMenu } from "./FusenMenu";
 import {
   onDrop,
@@ -21,10 +18,13 @@ import {
   onMouseMove,
 } from "./mouseEventMamager";
 import { Selection } from "./Selection";
+import { ItemId } from "./initializeGlobalState";
+import { MyAppBar } from "./MyAppBar";
 
 function App() {
   const [fusens] = useGlobal("fusens");
   const [drawOrder] = useGlobal("drawOrder");
+  const [selected_items] = useGlobal("selected_items");
   // console.log("render");
   useEffect(() => {
     // console.log("useEffect");
@@ -32,23 +32,23 @@ function App() {
   }, []);
 
   const offset = { x: 0, y: 0 };
-  const APP_BAR_BGCOLOR = "#000080"; // original "3f51b5";
+
+  const not_selected_items = [] as ItemId[];
+  const is_selected = selected_items.length > 0;
+  if (is_selected) {
+    const m = {} as { [key: string]: boolean };
+    selected_items.forEach((id) => {
+      m[id] = true;
+    });
+    drawOrder.forEach((id) => {
+      if (m[id] !== true) {
+        not_selected_items.push(id);
+      }
+    });
+  }
   return (
     <div className="App">
-      <AppBar
-        position="absolute"
-        style={{ opacity: "50%", backgroundColor: APP_BAR_BGCOLOR }}
-      >
-        <Toolbar>
-          <MainMenu />
-          <Typography variant="h6">
-            {/* className={classes.title} */}
-            Movable Ideas
-          </Typography>
-          <DevMenu />
-        </Toolbar>
-      </AppBar>
-
+      <MyAppBar />
       <div
         id="canvas"
         onDrop={onDrop}
@@ -57,12 +57,22 @@ function App() {
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
       >
-        <Center>
-          {fusens.map((fusen) => (
-            <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
-          ))}
-          {idsToDom(drawOrder, offset)}
-        </Center>
+        {is_selected ? (
+          <>
+            <Center opacity={1}>{idsToDom(selected_items, offset)}</Center>
+            <Center opacity={0.5}>
+              {idsToDom(not_selected_items, offset)}
+            </Center>
+          </>
+        ) : (
+          <Center opacity={1}>
+            {fusens.map((fusen) => (
+              <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
+            ))}
+            {idsToDom(drawOrder, offset)}
+          </Center>
+        )}
+
         <Selection />
       </div>
       <AdjustFontSize />

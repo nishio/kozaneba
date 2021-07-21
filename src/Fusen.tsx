@@ -27,6 +27,7 @@ export const FusenDiv = styled.div`
   border: #aaa ${FUSEN_BORDER}px solid;
   position: absolute;
   line-height: 0.9;
+  user-select: none;
 `;
 
 export const FusenDiv2 = styled.div`

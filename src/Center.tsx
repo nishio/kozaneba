@@ -10,9 +10,13 @@ const CenterDiv = styled.div`
   overflow: visible;
 `;
 
-export const Center: React.FC<{}> = ({ children }) => {
+export const Center: React.FC<{ opacity: number }> = ({
+  children,
+  opacity,
+}) => {
   const [g] = useGlobal();
   const style = {
+    opacity,
     transform: `scale(${g.scale}) translate(${g.trans_x}px, ${g.trans_y}px)`,
   };
   return (

@@ -53,6 +53,7 @@ export const onMouseDown = (
 ) => {
   console.log("onMouseDown");
   updateGlobal((g) => {
+    g.selected_items = [];
     g.selectionRange.left = event.pageX;
     g.selectionRange.top = event.pageY;
     g.selectionRange.width = 0;
