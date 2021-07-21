@@ -11,12 +11,13 @@ export const INITIAL_GLOBAL_STATE = {
   menu: "" as TMenu,
   menu_anchor: null as TMenuAnchor,
   dragstart_position: [0, 0],
-  drag_target: "" as ItemId,
+  drag_target: "" as TDragTarget,
   selectionRange: { top: 0, left: 0, width: 0, height: 0 },
   selected_items: [] as ItemId[],
   mouseState: "" as TMouseState,
 };
 
+type TDragTarget = "" | "selection" | ItemId;
 export type FusenItem = {
   type: "piece";
   text: string;

@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobal } from "reactn";
 import styled from "styled-components";
 import { idsToDom } from "./idsToDom";
-import { ignoreEvent } from "./mouseEventMamager";
+import { ignoreEvent, onDragStartSelection } from "./mouseEventMamager";
 import { normalize_rect } from "./TRect";
 
 const SelectionDiv = styled.div`
@@ -33,7 +33,12 @@ export const SelectionView: React.FC<{}> = ({ children }) => {
   const offset = { x: 0, y: 0 };
 
   return (
-    <SelectionDiv style={rect} draggable onMouseDown={ignoreEvent}>
+    <SelectionDiv
+      style={rect}
+      draggable
+      onDragStart={onDragStartSelection}
+      onMouseDown={ignoreEvent}
+    >
       <SelectedItemsHolder top={top} left={left}>
         {idsToDom(selected_items, offset)}
       </SelectedItemsHolder>

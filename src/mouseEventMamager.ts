@@ -31,14 +31,39 @@ export const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
 };
 
+export const onDragStartSelection = (
+  event: React.DragEvent<HTMLDivElement>
+) => {
+  console.log("onDragStartSelection");
+  if (event.dataTransfer !== undefined) {
+    event.dataTransfer.effectAllowed = "move";
+  }
+  updateGlobal((g) => {
+    g.dragstart_position = screen_to_world([event.clientX, event.clientY]);
+    g.drag_target = "selection";
+  });
+};
+
 export const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
   console.log("onDrop");
   updateGlobal((g) => {
-    if (g.drag_target !== "") {
+    console.log(g.drag_target);
+    if (g.drag_target === "selection") {
+      const [x, y] = screen_to_world([event.clientX, event.clientY]);
+      const [dsx, dsy] = g.dragstart_position;
+      const [dx, dy] = [x - dsx, y - dsy];
+      g.selected_items.forEach((id) => {
+        const [px, py] = g.itemStore[id].position;
+        g.itemStore[id].position = [px + dx, py + dy];
+      });
+      g.drag_target = "" as ItemId;
+    } else if (g.drag_target !== "") {
       const [dsx, dsy] = g.dragstart_position;
       const [x, y] = screen_to_world([event.clientX, event.clientY]);
       g.itemStore[g.drag_target].position = [x - dsx, y - dsy];
       g.drag_target = "" as ItemId;
+    } else {
+      throw new Error();
     }
   });
   event.preventDefault();
