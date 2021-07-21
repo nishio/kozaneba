@@ -46,7 +46,9 @@ describe("selection", () => {
 
   it("main", () => {
     cy.get("#canvas").trigger("mousedown", 50, 100);
+    cy.getGlobal((g) => g.mouseState).should("to.eql", "selecting");
     cy.get("#canvas").trigger("mouseup", 300, 400);
+    cy.getGlobal((g) => g.mouseState).should("to.eql", "");
 
     cy.visit("/");
     const itemStore = {};

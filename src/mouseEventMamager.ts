@@ -1,4 +1,5 @@
 import React from "react";
+import { getGlobal } from "reactn";
 import {
   convert_bounding_box_screen_to_world,
   isOverlapBox,
@@ -43,23 +44,23 @@ export const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
 };
 
-let isDragging = false;
 export const onMouseDown = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   console.log("onMouseDown");
-  isDragging = true;
   updateGlobal((g) => {
     g.selectionRange.left = event.pageX;
     g.selectionRange.top = event.pageY;
     g.selectionRange.width = 0;
     g.selectionRange.height = 0;
+    g.mouseState = "selecting";
   });
 };
 export const onMouseMove = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
-  if (isDragging) {
+  const g = getGlobal();
+  if (g.mouseState === "selecting") {
     console.log("onMouseMove");
     updateGlobal((g) => {
       g.selectionRange.width = event.pageX - g.selectionRange.left;
@@ -71,7 +72,8 @@ export const onMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   console.log("onMouseUp");
-  if (isDragging) {
+  const g = getGlobal();
+  if (g.mouseState === "selecting") {
     updateGlobal((g) => {
       g.selectionRange.width = event.pageX - g.selectionRange.left;
       g.selectionRange.height = event.pageY - g.selectionRange.top;
@@ -86,7 +88,7 @@ export const onMouseUp = (
         }
       });
       g.selected_items = selected_items;
+      g.mouseState = "";
     });
-    isDragging = false;
   }
 };

@@ -14,6 +14,7 @@ export const INITIAL_GLOBAL_STATE = {
   drag_target: "" as ItemId,
   selectionRange: { top: 0, left: 0, width: 0, height: 0 },
   selected_items: [] as ItemId[],
+  mouseState: "" as TMouseState,
 };
 
 export type FusenItem = {
@@ -43,6 +44,8 @@ export type ItemId = ItemIdBrand & string;
 type TDialog = "" | "AddFusen";
 export type TMenu = "" | "Main" | "Dev" | "Fusen";
 type TMenuAnchor = null | Element;
+
+type TMouseState = "" | "selecting";
 
 type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;
 
