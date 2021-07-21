@@ -1,6 +1,6 @@
 import { useGlobal } from "reactn";
 import styled from "styled-components";
-import { normalize_rect } from "./mouseEventMamager";
+import { normalize_rect } from "./TRect";
 
 const SelectionDiv = styled.div`
   position: absolute;
