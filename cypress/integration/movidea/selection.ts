@@ -77,14 +77,26 @@ describe("selection", () => {
     cy.get("#canvas").trigger("mouseup", 250, 250);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
 
+    // reset selection
+    cy.get("#canvas").trigger("mousedown", 100, 100);
+    cy.get("#canvas").trigger("mouseup", 100, 100);
+
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 450, 250);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0", "1,0"]);
+
+    // reset selection
+    cy.get("#canvas").trigger("mousedown", 100, 100);
+    cy.get("#canvas").trigger("mouseup", 100, 100);
 
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 450, 450);
     const ret = ["0,0", "0,1", "1,0", "1,1"];
     cy.getGlobal((g) => g.selected_items).should("to.eql", ret);
+
+    // reset selection
+    cy.get("#canvas").trigger("mousedown", 100, 100);
+    cy.get("#canvas").trigger("mouseup", 100, 100);
 
     cy.get("#canvas").trigger("mousedown", 250, 250);
     cy.get("#canvas").trigger("mouseup", 150, 150);
