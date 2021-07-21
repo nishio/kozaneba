@@ -44,6 +44,10 @@ export const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
 };
 
+export const ignoreEvent = (event: React.MouseEvent<HTMLDivElement>) => {
+  event.stopPropagation();
+};
+
 export const onMouseDown = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {

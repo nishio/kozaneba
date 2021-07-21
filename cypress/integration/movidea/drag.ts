@@ -51,6 +51,7 @@ describe("group", () => {
     cy.testid("1").should("hasPosition", [x1, y1]);
 
     cy.testid("1").trigger("dragstart", "center");
+    cy.getGlobal((g) => g.mouseState).should("to.eql", "");
     cy.get("#canvas").trigger("drop", 250, 250);
     cy.testid("1").should("hasPosition", [x1, y1]);
 
@@ -79,6 +80,13 @@ describe("group", () => {
     cy.testid("1").should("hasPosition", [x1, y1]);
   });
 
+  it("is not selecting", () => {
+    cy.testid("1").trigger("mousedown", "center");
+    cy.testid("1").trigger("mousemove", "center");
+    cy.testid("1").trigger("dragstart", "center");
+    cy.getGlobal((g) => g.mouseState).should("to.eql", "");
+    cy.get("#canvas").trigger("drop", 250, 250);
+  });
   // it("out of screen", () => {
   //   cy.testid("1").trigger("dragstart", "topLeft");
   //   cy.get("#canvas").trigger("drop", 250, 250);

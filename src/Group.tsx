@@ -9,7 +9,7 @@ import {
 } from "./fusen_dimension";
 import { getGlobal } from "reactn";
 import { idsToDom } from "./idsToDom";
-import { onDragStartGroup } from "./mouseEventMamager";
+import { ignoreEvent, onDragStartGroup } from "./mouseEventMamager";
 
 const PADDING = 25;
 const BORDER = 5;
@@ -128,6 +128,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       style={style}
       key={value.id}
       data-testid={value.id}
+      onMouseDown={ignoreEvent}
       onDragStart={onDragStart}
       draggable={true}
     >
