@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobal } from "reactn";
 import styled from "styled-components";
 import { idsToDom } from "./idsToDom";
-import { ignoreEvent, onDragStartSelection } from "./mouseEventMamager";
+import {  onSelectionDragStart, onFusenMouseDown } from "./mouseEventMamager";
 import { normalize_rect } from "./TRect";
 
 const SelectionDiv = styled.div`
@@ -36,8 +36,8 @@ export const SelectionView: React.FC<{}> = ({ children }) => {
     <SelectionDiv
       style={rect}
       draggable
-      onDragStart={onDragStartSelection}
-      onMouseDown={ignoreEvent}
+      onDragStart={onSelectionDragStart}
+      onMouseDown={onFusenMouseDown}
       id="selection-view"
     >
       <SelectedItemsHolder top={top} left={left}>

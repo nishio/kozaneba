@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("group", () => {
+describe("drag", () => {
   beforeEach(() => {
     cy.visit("/#blank");
     const json = {

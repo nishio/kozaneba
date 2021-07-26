@@ -1,18 +1,16 @@
 import React from "react";
-import styled from "styled-components";
-import { GroupItem, ItemId } from "./initializeGlobalState";
-import { Fusen } from "./Fusen";
-import {
-  FUSEN_HEIGHT,
-  FUSEN_WIDTH,
-  getFusenBoundingBox,
-} from "./fusen_dimension";
 import { getGlobal } from "reactn";
+import styled from "styled-components";
+import { ClosedGroup } from "./ClosedGroup";
+import {
+  getFusenBoundingBox
+} from "./fusen_dimension";
 import { idsToDom } from "./idsToDom";
-import { ignoreEvent, onDragStartGroup } from "./mouseEventMamager";
+import { GroupItem, ItemId } from "./initializeGlobalState";
+import { onGroupDragStart, onGroupMouseDown } from "./mouseEventMamager";
 
-const PADDING = 25;
-const BORDER = 5;
+export const PADDING = 25;
+export const BORDER = 5;
 export const TITLE_HEIGHT = 25;
 
 type BoundingBox = { left: number; top: number; right: number; bottom: number };
@@ -70,35 +68,6 @@ const getItemsBoundingBox = (items: ItemId[]): BoundingBox => {
   return r;
 };
 
-const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
-  // console.log("closedGroup", offset, value.position);
-  const [x, y] = value.position;
-  const scale = value.scale;
-  const width = FUSEN_WIDTH + PADDING * 2;
-  const height = FUSEN_HEIGHT + PADDING * 2;
-  const top = y - (height / 2) * scale - BORDER;
-  const left = x - (width / 2) * scale - BORDER;
-
-  const style = { top, left, height, width };
-  const new_offset = {
-    x: width / 2,
-    y: height / 2,
-  };
-  return (
-    <GroupDiv style={style} key={value.id} data-testid={value.id}>
-      <Fusen
-        offset={new_offset}
-        value={{
-          ...value,
-          text: "A B",
-          id: "nameplate-" + value.id,
-          position: [0, 0],
-        }}
-      />
-    </GroupDiv>
-  );
-};
-
 export const Group: React.FC<Props> = ({ value, offset }) => {
   if (value.isOpen === false) {
     return <ClosedGroup offset={offset} value={value} />;
@@ -121,14 +90,14 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     y: (height + title_height) / 2 - center_shift_y / 2 + relative_y,
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
-    onDragStartGroup(e, value);
+    onGroupDragStart(e, value);
 
   return (
     <GroupDiv
       style={style}
       key={value.id}
       data-testid={value.id}
-      onMouseDown={ignoreEvent}
+      onMouseDown={onGroupMouseDown}
       onDragStart={onDragStart}
       draggable={true}
     >
@@ -142,12 +111,12 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     </GroupDiv>
   );
 };
-type Props = {
+export type Props = {
   value: GroupItem;
   offset: { x: number; y: number };
 };
 
-const GroupDiv = styled.div`
+export const GroupDiv = styled.div`
   background: #eee;
   border: ${BORDER}px solid #ddd;
   position: absolute;

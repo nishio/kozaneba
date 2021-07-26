@@ -1,15 +1,9 @@
 import { getGlobal, setGlobal } from "reactn";
-import { importRegroupJSON } from "./importRegroupJSON";
-import { updateGlobal } from "./updateGlobal";
-import { world_to_screen, screen_to_world } from "./world_to_screen";
 import { closeGroup } from "./closeGroup";
-
-const reset_selection = () => {
-  updateGlobal((g) => {
-    g.selected_items = [];
-    g.selectionRange = { top: 0, left: 0, width: 0, height: 0 }
-  })
-}
+import { importRegroupJSON } from "./importRegroupJSON";
+import { screen_to_world, world_to_screen } from "./world_to_screen";
+import { updateGlobal } from "./updateGlobal";
+import { reset_selection } from "./reset_selection";
 
 const movidea = {
   getGlobal,
@@ -21,6 +15,7 @@ const movidea = {
   screen_to_world,
   reset_selection
 };
+
 export type TMovidea = typeof movidea;
 const debug = {};
 

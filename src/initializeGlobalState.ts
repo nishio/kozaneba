@@ -14,6 +14,7 @@ export const INITIAL_GLOBAL_STATE = {
   drag_target: "" as TDragTarget,
   selectionRange: { top: 0, left: 0, width: 0, height: 0 },
   selected_items: [] as ItemId[],
+  is_selected: false,
   mouseState: "" as TMouseState,
 };
 

@@ -2,11 +2,13 @@ import React, { createRef, useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { FUSEN_WIDTH, FUSEN_HEIGHT, FUSEN_BORDER } from "./fusen_dimension";
+import {  FusenItem } from "./initializeGlobalState";
+import { onFusenDragStart, onFusenMouseDown } from "./mouseEventMamager";
 import { show_menu } from "./show_menu";
 import { TOffset } from "./TOffset";
 
 type Props = {
-  value: { position: number[]; scale: number; text: string; id: string };
+  value: FusenItem;
   offset: TOffset;
   custom_style?: CSSProperties;
 };
@@ -63,18 +65,12 @@ export const Fusen: React.FC<Props> = ({
     style.alignItems = "flex-start";
   }
 
-  // const onDragEnd: DragEventHandler<HTMLDivElement> = (e) => {
-  //   console.log(e);
-  //   if (self.current !== null) {
-  //     self.current.style.position = "absolute";
-  //     self.current.style.left = e.clientX + "px";
-  //     self.current.style.top = e.clientY + "px";
-  //     e.preventDefault();
-  //   }
-  // };
   const onClick = (event: React.MouseEvent) => {
     show_menu("Fusen", event);
   };
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
+    onFusenDragStart(e, value);
+
   return (
     <FusenDiv
       className="fusen"
@@ -83,8 +79,13 @@ export const Fusen: React.FC<Props> = ({
       key={value.id}
       style={style}
       onClick={onClick}
+      onMouseDown={onFusenMouseDown}
+      onDragStart={onDragStart}
+      draggable={true}
     >
       <FusenDiv2>{value.text}</FusenDiv2>
     </FusenDiv>
   );
 };
+
+

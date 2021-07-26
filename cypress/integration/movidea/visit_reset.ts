@@ -8,11 +8,13 @@ describe("visit_reset", () => {
   it("main", () => {
     cy.visit("/");
     cy.window().its("x").should("eql", undefined);
+    // @ts-ignore
     cy.window().then(window => {window.x = 1})
     cy.window().its("x").should("eql", 1);
 
     cy.visit("/");
     cy.window().its("x").should("eql", undefined); // (A)
+    // @ts-ignore
     cy.window().then(window => {window.x = 2})
     cy.window().its("x").should("eql", 2);
 

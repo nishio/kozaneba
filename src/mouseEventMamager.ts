@@ -6,11 +6,12 @@ import {
 } from "./BoundingBox";
 import { getItemBoundingBox } from "./Group";
 import { GroupItem, ItemId } from "./initializeGlobalState";
+import { reset_selection } from "./reset_selection";
 import { selectionRange_to_boundingBox } from "./TRect";
 import { updateGlobal } from "./updateGlobal";
 import { screen_to_world, world_to_screen } from "./world_to_screen";
 
-export const onDragStartGroup = (
+export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
   value: GroupItem
 ) => {
@@ -26,12 +27,29 @@ export const onDragStartGroup = (
   });
 };
 
+export const onFusenDragStart = (
+  event: React.DragEvent<HTMLDivElement>,
+  value: {id: ItemId, position: number[]}
+) => {
+  console.log("onDragStartGroup");
+  if (event.dataTransfer !== undefined) {
+    event.dataTransfer.effectAllowed = "move";
+  }
+  updateGlobal((g) => {
+    const [x, y] = value.position;
+    const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
+    g.dragstart_position = [cx - x, cy - y];
+    g.drag_target = value.id;
+  });
+};
+
+
 export const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.dataTransfer.dropEffect = "move";
   event.preventDefault();
 };
 
-export const onDragStartSelection = (
+export const onSelectionDragStart = (
   event: React.DragEvent<HTMLDivElement>
 ) => {
   console.log("onDragStartSelection");
@@ -44,7 +62,7 @@ export const onDragStartSelection = (
   });
 };
 
-export const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
+export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
   console.log("onDrop");
   updateGlobal((g) => {
     console.log(g.drag_target);
@@ -74,11 +92,22 @@ export const onDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
 };
 
-export const ignoreEvent = (event: React.MouseEvent<HTMLDivElement>) => {
+
+export const onGroupMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  reset_selection()
   event.stopPropagation();
 };
 
-export const onMouseDown = (
+export const onSelectionMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  event.stopPropagation();
+};
+
+export const onFusenMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  reset_selection()
+  event.stopPropagation();
+};
+
+export const onCanvasMouseDown = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   console.log("onMouseDown");
@@ -91,7 +120,7 @@ export const onMouseDown = (
     g.mouseState = "selecting";
   });
 };
-export const onMouseMove = (
+export const onCanvasMouseMove = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   const g = getGlobal();
@@ -102,7 +131,7 @@ export const onMouseMove = (
     });
   }
 };
-export const onMouseUp = (
+export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   console.log("onMouseUp");

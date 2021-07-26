@@ -11,11 +11,11 @@ import { onWheel } from "./onWheel";
 import { MenuAnchor } from "./show_menu";
 import { FusenMenu } from "./FusenMenu";
 import {
-  onDrop,
+  onCanvasDrop,
   allowDrop,
-  onMouseUp,
-  onMouseDown,
-  onMouseMove,
+  onCanvasMouseUp,
+  onCanvasMouseDown,
+  onCanvasMouseMove,
 } from "./mouseEventMamager";
 import { SelectionView } from "./Selection";
 import { ItemId } from "./initializeGlobalState";
@@ -26,9 +26,9 @@ const ItemCanvas = () => {
   const [fusens] = useGlobal("fusens");
   const [drawOrder] = useGlobal("drawOrder");
   const [selected_items] = useGlobal("selected_items");
+  const [is_selected] = useGlobal("is_selected");
   const offset = { x: 0, y: 0 };
   const not_selected_items = [] as ItemId[];
-  const is_selected = selected_items.length > 0;
   if (is_selected) {
     const m = {} as { [key: string]: boolean };
     selected_items.forEach((id) => {
@@ -43,11 +43,11 @@ const ItemCanvas = () => {
   return (
       <div
         id="canvas"
-        onDrop={onDrop}
+        onDrop={onCanvasDrop}
         onDragOver={allowDrop}
-        onMouseUp={onMouseUp}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
+        onMouseUp={onCanvasMouseUp}
+        onMouseDown={onCanvasMouseDown}
+        onMouseMove={onCanvasMouseMove}
       >
         {is_selected ? (
           <>
