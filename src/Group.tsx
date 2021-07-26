@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useRef } from "react";
+import { getGlobal } from "reactn";
 import styled from "styled-components";
 import { ClosedGroup } from "./ClosedGroup";
 import { getGroupBoundingBox, TITLE_HEIGHT, BORDER } from "./get_bounding_box";
 import { idsToDom } from "./idsToDom";
 import { GroupItem } from "./initializeGlobalState";
-import { onGroupDragStart, onGroupMouseDown } from "./mouseEventMamager";
+import { allowDrop, onGroupDragStart, onGroupDrop, onGroupMouseDown } from "./mouseEventMamager";
+
+export const GROUP_BORDER_COLOR = "#ddd"
+export const GROUP_HIGHLIGHTED_BORDER_COLOR = "#888"
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
+  const self = useRef<HTMLDivElement>(null);
   if (value.isOpen === false) {
     return <ClosedGroup offset={offset} value={value} />;
   }
@@ -30,14 +35,42 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
     onGroupDragStart(e, value);
 
+  let enter_count = 0;
+  const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    enter_count++;
+    if (self.current !== null) {
+      self.current.style.borderColor = GROUP_HIGHLIGHTED_BORDER_COLOR;
+    }
+    e.stopPropagation();
+  }
+  const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    enter_count--;
+    console.log(getGlobal().drag_target)
+    if (self.current !== null && enter_count === 0) {
+      self.current.style.borderColor = GROUP_BORDER_COLOR;
+    }
+    e.stopPropagation();
+  }
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    if (self.current !== null) {
+      self.current.style.borderColor = GROUP_BORDER_COLOR;
+    }
+    onGroupDrop(e, value);
+  }
   return (
     <GroupDiv
+      ref={self}
       style={style}
       key={value.id}
       data-testid={value.id}
       onMouseDown={onGroupMouseDown}
       onDragStart={onDragStart}
       draggable={true}
+      onDragOver={allowDrop}
+      onDragEnter={onDragEnter}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
+
     >
       <GroupTitle
         data-testid={"grouptitle-" + value.id}
@@ -56,12 +89,12 @@ export type Props = {
 
 export const GroupDiv = styled.div`
   background: #eee;
-  border: ${BORDER}px solid #ddd;
+  border: ${BORDER}px solid ${GROUP_BORDER_COLOR};
   position: absolute;
 `;
 
 const GroupTitle = styled.span`
-  background: #ddd;
+  background: ${GROUP_BORDER_COLOR};
   position: absolute;
   font-size: 21px;
   width: 100%;
