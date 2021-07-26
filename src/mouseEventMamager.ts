@@ -29,7 +29,7 @@ export const onGroupDragStart = (
 
 export const onFusenDragStart = (
   event: React.DragEvent<HTMLDivElement>,
-  value: {id: ItemId, position: number[]}
+  value: { id: ItemId; position: number[] }
 ) => {
   console.log("onFusenDragStart");
   if (event.dataTransfer !== undefined) {
@@ -43,7 +43,6 @@ export const onFusenDragStart = (
   });
   event.stopPropagation(); // stop dragstart of parent group
 };
-
 
 export const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.dataTransfer.dropEffect = "move";
@@ -62,7 +61,6 @@ export const onSelectionDragStart = (
     g.drag_target = "selection";
   });
 };
-
 
 export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
   console.log("onCanvasDrop");
@@ -94,7 +92,10 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
   event.preventDefault();
 };
 
-export const onGroupDrop = (event: React.DragEvent<HTMLDivElement>, value:GroupItem) => {
+export const onGroupDrop = (
+  event: React.DragEvent<HTMLDivElement>,
+  value: GroupItem
+) => {
   console.log("onGroupDrop");
   updateGlobal((g) => {
     console.log(g.drag_target);
@@ -125,18 +126,19 @@ export const onGroupDrop = (event: React.DragEvent<HTMLDivElement>, value:GroupI
   event.stopPropagation();
 };
 
-
 export const onGroupMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-  reset_selection()
+  reset_selection();
   event.stopPropagation();
 };
 
-export const onSelectionMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+export const onSelectionMouseDown = (
+  event: React.MouseEvent<HTMLDivElement>
+) => {
   event.stopPropagation();
 };
 
 export const onFusenMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-  reset_selection()
+  reset_selection();
   event.stopPropagation();
 };
 
@@ -169,7 +171,7 @@ export const onCanvasMouseUp = (
 ) => {
   console.log("onCanvasMouseUp");
   const g = getGlobal();
-  if (g.mouseState === "selecting") {    
+  if (g.mouseState === "selecting") {
     updateGlobal((g) => {
       g.selectionRange.width = event.pageX - g.selectionRange.left;
       g.selectionRange.height = event.pageY - g.selectionRange.top;

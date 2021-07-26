@@ -8,7 +8,7 @@ import {
   allowDrop,
   onCanvasMouseUp,
   onCanvasMouseDown,
-  onCanvasMouseMove
+  onCanvasMouseMove,
 } from "./mouseEventMamager";
 import { SelectionView } from "./Selection";
 import { ItemId } from "./initializeGlobalState";
@@ -20,9 +20,9 @@ export const ItemCanvas = () => {
   const [is_selected] = useGlobal("is_selected");
   const offset = { x: 0, y: 0 };
   const not_selected_items = [] as ItemId[];
-  let contents:JSX.Element;
+  let contents: JSX.Element;
   if (is_selected) {
-    const m = {} as { [key: string]: boolean; };
+    const m = {} as { [key: string]: boolean };
     selected_items.forEach((id) => {
       m[id] = true;
     });
@@ -31,23 +31,24 @@ export const ItemCanvas = () => {
         not_selected_items.push(id);
       }
     });
-    contents = <>
-      <SelectionView></SelectionView>
-      <Center opacity={0.5}>
-        {idsToDom(not_selected_items, offset)}
-      </Center>
-    </>;
-
+    contents = (
+      <>
+        <SelectionView></SelectionView>
+        <Center opacity={0.5}>{idsToDom(not_selected_items, offset)}</Center>
+      </>
+    );
   } else {
-    contents = <>
-      <Center opacity={1}>
-        {fusens.map((fusen) => (
-          <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
-        ))}
-        {idsToDom(drawOrder, offset)}
-      </Center>
-      <SelectionView />
-    </>;
+    contents = (
+      <>
+        <Center opacity={1}>
+          {fusens.map((fusen) => (
+            <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
+          ))}
+          {idsToDom(drawOrder, offset)}
+        </Center>
+        <SelectionView />
+      </>
+    );
   }
   return (
     <div

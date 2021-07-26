@@ -51,12 +51,12 @@ describe("selection", () => {
     cy.getGlobal((g) => g.mouseState).should("eql", "");
     cy.getGlobal((g) => g.is_selected).should("eql", true);
 
-    cy.movidea(m => m.reset_selection())
+    cy.movidea((m) => m.reset_selection());
     cy.get("#canvas").trigger("mousedown", 50, 100);
     cy.get("#canvas").trigger("mouseup", 50, 100);
     cy.getGlobal((g) => g.is_selected).should("eql", false);
 
-    cy.movidea(m => m.reset_selection())
+    cy.movidea((m) => m.reset_selection());
     cy.visit("/#blank");
     const itemStore = {};
     const drawOrder = [];
@@ -85,13 +85,13 @@ describe("selection", () => {
     cy.get("#canvas").trigger("mouseup", 250, 250);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
 
-    cy.movidea(m => m.reset_selection())
+    cy.movidea((m) => m.reset_selection());
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 450, 250);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0", "1,0"]);
 
     {
-      cy.movidea(m => m.reset_selection())
+      cy.movidea((m) => m.reset_selection());
       cy.get("#canvas").trigger("mousedown", 150, 150);
       cy.get("#canvas").trigger("mouseup", 450, 450);
       const ret = ["0,0", "0,1", "1,0", "1,1"];
@@ -105,13 +105,13 @@ describe("selection", () => {
     // cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
 
     // inverted selection
-    cy.movidea(m => m.reset_selection())
+    cy.movidea((m) => m.reset_selection());
     cy.get("#canvas").trigger("mousedown", 350, 350);
     cy.get("#canvas").trigger("mouseup", 250, 250);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
 
     // move items
-    cy.movidea(m => m.reset_selection())
+    cy.movidea((m) => m.reset_selection());
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 450, 450);
     const items = ["0,0", "0,1", "1,0", "1,1"];

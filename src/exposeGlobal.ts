@@ -13,7 +13,7 @@ const movidea = {
   closeGroup,
   world_to_screen,
   screen_to_world,
-  reset_selection
+  reset_selection,
 };
 
 export type TMovidea = typeof movidea;

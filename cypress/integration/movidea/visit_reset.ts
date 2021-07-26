@@ -9,19 +9,23 @@ describe("visit_reset", () => {
     cy.visit("/");
     cy.window().its("x").should("eql", undefined);
     // @ts-ignore
-    cy.window().then(window => {window.x = 1})
+    cy.window().then((window) => {
+      window.x = 1;
+    });
     cy.window().its("x").should("eql", 1);
 
     cy.visit("/");
     cy.window().its("x").should("eql", undefined); // (A)
     // @ts-ignore
-    cy.window().then(window => {window.x = 2})
+    cy.window().then((window) => {
+      window.x = 2;
+    });
     cy.window().its("x").should("eql", 2);
 
     cy.visit("/#blank");
-    cy.window().its("x").should("eql", 2);  // (B)
+    cy.window().its("x").should("eql", 2); // (B)
 
     cy.visit("/");
-    cy.window().its("x").should("eql", undefined);  // (C)
+    cy.window().its("x").should("eql", undefined); // (C)
   });
 });

@@ -1,8 +1,8 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { FUSEN_WIDTH, FUSEN_HEIGHT, FUSEN_BORDER } from "./fusen_dimension";
-import {  FusenItem } from "./initializeGlobalState";
+import { FusenItem } from "./initializeGlobalState";
 import { onFusenDragStart, onFusenMouseDown } from "./mouseEventMamager";
 import { show_menu } from "./show_menu";
 import { TOffset } from "./TOffset";
@@ -36,8 +36,16 @@ export const FusenDiv2 = styled.div`
   width: 100%;
 `;
 
-export type TMinimumFusenItem = {text:string, scale:number, position:number[], id:string}
-export const useAjustFontsizeStyle = (value: TMinimumFusenItem, offset: TOffset) => {
+export type TMinimumFusenItem = {
+  text: string;
+  scale: number;
+  position: number[];
+  id: string;
+};
+export const useAjustFontsizeStyle = (
+  value: TMinimumFusenItem,
+  offset: TOffset
+) => {
   let [fontSize, setFontSize] = useState(1);
   const { text, scale } = value;
   const [x, y] = value.position;
@@ -59,15 +67,15 @@ export const useAjustFontsizeStyle = (value: TMinimumFusenItem, offset: TOffset)
     style.alignItems = "flex-start";
   }
 
-  return style
-}
+  return style;
+};
 
 export const Fusen: React.FC<Props> = ({
   value,
   offset,
   custom_style = {},
 }) => {
-  const style = { ...useAjustFontsizeStyle(value, offset), ...custom_style }
+  const style = { ...useAjustFontsizeStyle(value, offset), ...custom_style };
 
   const onClick = (event: React.MouseEvent) => {
     show_menu("Fusen", event);
@@ -90,5 +98,3 @@ export const Fusen: React.FC<Props> = ({
     </FusenDiv>
   );
 };
-
-

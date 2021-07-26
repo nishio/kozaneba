@@ -1,9 +1,6 @@
 import React from "react";
 import { NameplateFusen } from "./NameplateFusen";
-import {
-  FUSEN_HEIGHT,
-  FUSEN_WIDTH
-} from "./fusen_dimension";
+import { FUSEN_HEIGHT, FUSEN_WIDTH } from "./fusen_dimension";
 import { Props, GroupDiv } from "./Group";
 import { PADDING, BORDER } from "./get_bounding_box";
 
@@ -28,7 +25,8 @@ export const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
           ...value,
           text: "A B",
           id: "nameplate-" + value.id,
-        }} />
+        }}
+      />
     </GroupDiv>
   );
 };

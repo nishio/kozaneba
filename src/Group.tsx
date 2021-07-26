@@ -5,10 +5,15 @@ import { ClosedGroup } from "./ClosedGroup";
 import { getGroupBoundingBox, TITLE_HEIGHT, BORDER } from "./get_bounding_box";
 import { idsToDom } from "./idsToDom";
 import { GroupItem } from "./initializeGlobalState";
-import { allowDrop, onGroupDragStart, onGroupDrop, onGroupMouseDown } from "./mouseEventMamager";
+import {
+  allowDrop,
+  onGroupDragStart,
+  onGroupDrop,
+  onGroupMouseDown,
+} from "./mouseEventMamager";
 
-export const GROUP_BORDER_COLOR = "#ddd"
-export const GROUP_HIGHLIGHTED_BORDER_COLOR = "#888"
+export const GROUP_BORDER_COLOR = "#ddd";
+export const GROUP_HIGHLIGHTED_BORDER_COLOR = "#888";
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const self = useRef<HTMLDivElement>(null);
@@ -42,21 +47,21 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       self.current.style.borderColor = GROUP_HIGHLIGHTED_BORDER_COLOR;
     }
     e.stopPropagation();
-  }
+  };
   const onDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     enter_count--;
-    console.log(getGlobal().drag_target)
+    console.log(getGlobal().drag_target);
     if (self.current !== null && enter_count === 0) {
       self.current.style.borderColor = GROUP_BORDER_COLOR;
     }
     e.stopPropagation();
-  }
+  };
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
     if (self.current !== null) {
       self.current.style.borderColor = GROUP_BORDER_COLOR;
     }
     onGroupDrop(e, value);
-  }
+  };
   return (
     <GroupDiv
       ref={self}
@@ -70,7 +75,6 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
-
     >
       <GroupTitle
         data-testid={"grouptitle-" + value.id}

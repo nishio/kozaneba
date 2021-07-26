@@ -2,7 +2,12 @@ import { getGlobal } from "reactn";
 import { getFusenBoundingBox } from "./fusen_dimension";
 import { GroupItem, ItemId } from "./initializeGlobalState";
 
-type TBoundingBox = { left: number; top: number; right: number; bottom: number; };
+type TBoundingBox = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+};
 
 export const PADDING = 25;
 export const BORDER = 5;

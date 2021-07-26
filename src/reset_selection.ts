@@ -1,6 +1,5 @@
 import { updateGlobal } from "./updateGlobal";
 
-
 export const reset_selection = () => {
   updateGlobal((g) => {
     g.selected_items = [];

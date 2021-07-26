@@ -6,6 +6,6 @@ describe("tutorial", () => {
   });
 
   it("main", () => {
-    cy.getGlobal(g => g.dialog).should("eql", "AddFusen");
+    cy.getGlobal((g) => g.dialog).should("eql", "AddFusen");
   });
 });

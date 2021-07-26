@@ -20,32 +20,31 @@ const Blank = () => {
       <MenuAnchor />
     </div>
   );
-}
+};
 
 const Tutorial = () => {
   useEffect(() => {
-    updateGlobal(g => {
-      g.dialog = "AddFusen"
-    })
-  })
-  return <Blank/>
-}
+    updateGlobal((g) => {
+      g.dialog = "AddFusen";
+    });
+  });
+  return <Blank />;
+};
 
 function App() {
   useEffect(() => {
     window.addEventListener("wheel", onWheel, { passive: false });
   }, []);
 
-
   const hash = window.location.hash;
   if (hash === "#blank") {
-    return <Blank/>
+    return <Blank />;
   }
   if (hash === "") {
-    return <Tutorial />  // tutorial for first visiter
+    return <Tutorial />; // tutorial for first visiter
   }
   // TODO: parse hash
-  return <></>
+  return <></>;
 }
 
 export default App;
