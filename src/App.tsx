@@ -20,13 +20,13 @@ import {
 import { SelectionView } from "./Selection";
 import { ItemId } from "./initializeGlobalState";
 import { MyAppBar } from "./MyAppBar";
+import { updateGlobal } from "./updateGlobal";
 
-const Blank = () => {
+const ItemCanvas = () => {
   const [fusens] = useGlobal("fusens");
   const [drawOrder] = useGlobal("drawOrder");
   const [selected_items] = useGlobal("selected_items");
   const offset = { x: 0, y: 0 };
-
   const not_selected_items = [] as ItemId[];
   const is_selected = selected_items.length > 0;
   if (is_selected) {
@@ -41,8 +41,6 @@ const Blank = () => {
     });
   }
   return (
-    <div className="App">
-      <MyAppBar />
       <div
         id="canvas"
         onDrop={onDrop}
@@ -70,12 +68,29 @@ const Blank = () => {
           </>
         )}
       </div>
+  );
+}
+const Blank = () => {
+
+  return (
+    <div className="App">
+      <MyAppBar />
+      <ItemCanvas />
       <AdjustFontSize />
       <AddFusenDialog />
       <FusenMenu />
       <MenuAnchor />
     </div>
   );
+}
+
+const Tutorial = () => {
+  useEffect(() => {
+    updateGlobal(g => {
+      g.dialog = "AddFusen"
+    })
+  })
+  return <Blank/>
 }
 
 function App() {
@@ -89,7 +104,7 @@ function App() {
     return <Blank/>
   }
   if (hash === "") {
-    return <></>  // tutorial for first visiter
+    return <Tutorial />  // tutorial for first visiter
   }
   // TODO: parse hash
   return <></>
