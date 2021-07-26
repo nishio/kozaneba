@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobal } from "reactn";
 import styled from "styled-components";
 import { idsToDom } from "./idsToDom";
-import {  onSelectionDragStart, onFusenMouseDown, onSelectionMouseDown } from "./mouseEventMamager";
+import {  onSelectionDragStart, onSelectionMouseDown } from "./mouseEventMamager";
 import { normalize_rect } from "./TRect";
 
 const SelectionDiv = styled.div`

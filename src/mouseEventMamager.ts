@@ -4,7 +4,7 @@ import {
   convert_bounding_box_screen_to_world,
   isOverlapBox,
 } from "./BoundingBox";
-import { getItemBoundingBox } from "./Group";
+import { getItemBoundingBox } from "./get_bounding_box";
 import { GroupItem, ItemId } from "./initializeGlobalState";
 import { reset_selection } from "./reset_selection";
 import { selectionRange_to_boundingBox } from "./TRect";

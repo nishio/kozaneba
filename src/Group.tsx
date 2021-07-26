@@ -1,72 +1,10 @@
 import React from "react";
-import { getGlobal } from "reactn";
 import styled from "styled-components";
 import { ClosedGroup } from "./ClosedGroup";
-import {
-  getFusenBoundingBox
-} from "./fusen_dimension";
+import { getGroupBoundingBox, TITLE_HEIGHT, BORDER } from "./get_bounding_box";
 import { idsToDom } from "./idsToDom";
-import { GroupItem, ItemId } from "./initializeGlobalState";
+import { GroupItem } from "./initializeGlobalState";
 import { onGroupDragStart, onGroupMouseDown } from "./mouseEventMamager";
-
-export const PADDING = 25;
-export const BORDER = 5;
-export const TITLE_HEIGHT = 25;
-
-type BoundingBox = { left: number; top: number; right: number; bottom: number };
-
-export const getGroupBoundingBox = (g: GroupItem): BoundingBox => {
-  const { left, top, right, bottom } = getItemsBoundingBox(g.items);
-  const [x, y] = g.position;
-  return {
-    left: x + left - PADDING,
-    top: y + top - PADDING,
-    right: x + right + PADDING,
-    bottom: y + bottom + PADDING,
-  };
-};
-
-export const getItemBoundingBox = (id: ItemId) => {
-  const g = getGlobal();
-  const x = g.itemStore[id];
-  if (x.type === "piece") {
-    return getFusenBoundingBox(x);
-  } else if (x.type === "group") {
-    return getGroupBoundingBox(x);
-  }
-  throw Error("not here");
-};
-
-const getItemsBoundingBox = (items: ItemId[]): BoundingBox => {
-  if (items.length === 0) {
-    return {
-      left: 0,
-      top: 0,
-      right: 0,
-      bottom: 0,
-    };
-  }
-  const [car, ...cdr] = items;
-  let { left, right, top, bottom } = getItemBoundingBox(car);
-  cdr.forEach((id) => {
-    const b = getItemBoundingBox(id);
-    if (b.left < left) {
-      left = b.left;
-    }
-    if (b.top < top) {
-      top = b.top;
-    }
-    if (b.right > right) {
-      right = b.right;
-    }
-    if (b.bottom > bottom) {
-      bottom = b.bottom;
-    }
-  });
-  const r = { left, right, top, bottom };
-  // console.log("group bounding box", r);
-  return r;
-};
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
   if (value.isOpen === false) {

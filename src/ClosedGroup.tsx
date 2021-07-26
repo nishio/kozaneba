@@ -4,7 +4,8 @@ import {
   FUSEN_HEIGHT,
   FUSEN_WIDTH
 } from "./fusen_dimension";
-import { Props, PADDING, BORDER, GroupDiv } from "./Group";
+import { Props, GroupDiv } from "./Group";
+import { PADDING, BORDER } from "./get_bounding_box";
 
 export const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
   const [x, y] = value.position;

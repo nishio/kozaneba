@@ -1,5 +1,5 @@
 import { getGlobal } from "reactn";
-import { getGroupBoundingBox } from "./Group";
+import { getGroupBoundingBox } from "./get_bounding_box";
 import { GroupItem, ItemId } from "./initializeGlobalState";
 import { updateGlobal } from "./updateGlobal";
 
