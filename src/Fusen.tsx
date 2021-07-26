@@ -36,7 +36,8 @@ export const FusenDiv2 = styled.div`
   width: 100%;
 `;
 
-export const useAjustFontsizeStyle = (value: {text:string, scale:number, position:number[]}, offset: TOffset) => {
+export type TMinimumFusenItem = {text:string, scale:number, position:number[], id:string}
+export const useAjustFontsizeStyle = (value: TMinimumFusenItem, offset: TOffset) => {
   let [fontSize, setFontSize] = useState(1);
   const { text, scale } = value;
   const [x, y] = value.position;
