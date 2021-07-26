@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { getGlobal } from "reactn";
 import { ClosedGroup } from "./ClosedGroup";
 import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
-import { get_group_bounding_box } from "../get_group_bounding_box";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { TGroupItem } from "./GroupItem";
 import {
@@ -12,9 +11,8 @@ import {
   onGroupMouseDown,
 } from "../Event/mouseEventMamager";
 import { GroupDiv, GroupTitle } from "./GroupDiv";
-
-export const GROUP_BORDER_COLOR = "#ddd";
-export const GROUP_HIGHLIGHTED_BORDER_COLOR = "#888";
+import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
+import { GROUP_HIGHLIGHTED_BORDER_COLOR, GROUP_BORDER_COLOR } from "./group_constants";
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const self = useRef<HTMLDivElement>(null);

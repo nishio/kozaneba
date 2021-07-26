@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
-import { GROUP_BORDER_COLOR } from "./Group";
+import { GROUP_BORDER_COLOR } from "./group_constants";
 
 export const GroupDiv = styled.div`
   background: #eee;

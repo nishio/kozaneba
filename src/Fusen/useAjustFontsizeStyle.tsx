@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CSSProperties } from "styled-components";
 import { adjustFontSize } from "../AdjustFontSize";
 import { FUSEN_WIDTH, FUSEN_HEIGHT } from "./fusen_constants";
-import { TOffset } from "../TOffset";
+import { TOffset } from "../dimension/TOffset";
 import { TMinimumFusenItem } from "./TMinimumFusenItem";
 
 export const useAjustFontsizeStyle = (

@@ -4,7 +4,7 @@ import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
 import { TMinimumFusenItem } from "./TMinimumFusenItem";
 import { FusenDiv, FusenDiv2 } from "./FusenDiv";
 import { onFusenMouseDown } from "../Event/mouseEventMamager";
-import { TOffset } from "../TOffset";
+import { TOffset } from "../dimension/TOffset";
 
 export const NameplateFusen: React.FC<Props> = ({
   value,

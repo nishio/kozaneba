@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
-import { TMovidea } from "../../../src/exposeGlobal";
-import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../../../src/fusen_dimension";
+import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../../../src/Fusen/fusen_constants";
+import { TMovidea } from "../../../src/Global/exposeGlobal";
 
 let movidea: TMovidea;
 describe("dimension", () => {

@@ -3,9 +3,9 @@ import { CSSProperties } from "styled-components";
 import { TFusenItem } from "./FusenItem";
 import { onFusenDragStart, onFusenMouseDown } from "../Event/mouseEventMamager";
 import { show_menu } from "../Menu/show_menu";
-import { TOffset } from "../TOffset";
 import { FusenDiv, FusenDiv2 } from "./FusenDiv";
 import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
+import { TOffset } from "../dimension/TOffset";
 
 type Props = {
   value: TFusenItem;

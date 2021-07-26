@@ -1,8 +1,8 @@
 import { getGlobal } from "reactn";
-import { get_group_bounding_box } from "../get_group_bounding_box";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TGroupItem } from "./GroupItem";
 import { updateGlobal } from "../Global/updateGlobal";
+import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 
 export const closeGroup = (id: ItemId) => {
   const g = getGlobal();
