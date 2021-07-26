@@ -46,11 +46,17 @@ describe("selection", () => {
 
   it("main", () => {
     cy.get("#canvas").trigger("mousedown", 50, 100);
-    cy.getGlobal((g) => g.mouseState).should("to.eql", "selecting");
+    cy.getGlobal((g) => g.mouseState).should("eql", "selecting");
     cy.get("#canvas").trigger("mouseup", 300, 400);
-    cy.getGlobal((g) => g.mouseState).should("to.eql", "");
-    cy.movidea(m => m.reset_selection())
+    cy.getGlobal((g) => g.mouseState).should("eql", "");
+    cy.getGlobal((g) => g.is_selected).should("eql", true);
 
+    cy.movidea(m => m.reset_selection())
+    cy.get("#canvas").trigger("mousedown", 50, 100);
+    cy.get("#canvas").trigger("mouseup", 50, 100);
+    cy.getGlobal((g) => g.is_selected).should("eql", false);
+
+    cy.movidea(m => m.reset_selection())
     cy.visit("/#blank");
     const itemStore = {};
     const drawOrder = [];

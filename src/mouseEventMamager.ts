@@ -41,6 +41,7 @@ export const onFusenDragStart = (
     g.dragstart_position = [cx - x, cy - y];
     g.drag_target = value.id;
   });
+  event.stopPropagation(); // stop dragstart of parent group
 };
 
 
@@ -136,10 +137,17 @@ export const onCanvasMouseUp = (
 ) => {
   console.log("onMouseUp");
   const g = getGlobal();
-  if (g.mouseState === "selecting") {
+  if (g.mouseState === "selecting") {    
     updateGlobal((g) => {
       g.selectionRange.width = event.pageX - g.selectionRange.left;
       g.selectionRange.height = event.pageY - g.selectionRange.top;
+
+      if (g.selectionRange.width === 0 && g.selectionRange.height === 0) {
+        // not selected
+        g.is_selected = false;
+        g.mouseState = "";
+        return;
+      }
 
       const sr = convert_bounding_box_screen_to_world(
         selectionRange_to_boundingBox(g.selectionRange)
@@ -152,6 +160,7 @@ export const onCanvasMouseUp = (
       });
       g.selected_items = selected_items;
       g.mouseState = "";
+      g.is_selected = true;
     });
   }
 };
