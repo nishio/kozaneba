@@ -9,6 +9,9 @@ import { reset_selection } from "../Selection/reset_selection";
 import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
 import { updateGlobal } from "../Global/updateGlobal";
 import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
+import { VisibilityRounded } from "@material-ui/icons";
+import { add_v2, sub_v2 } from "../dimension/V2";
+import { find_parent } from "../Group/find_parent";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -80,9 +83,23 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
       g.selectionRange.top = qy;
       g.drag_target = "";
     } else if (g.drag_target !== "") {
-      const [dsx, dsy] = g.dragstart_position;
-      const [x, y] = screen_to_world([event.clientX, event.clientY]);
-      g.itemStore[g.drag_target].position = [x - dsx, y - dsy];
+      let position = sub_v2(
+        screen_to_world([event.clientX, event.clientY]),
+        g.dragstart_position
+      );
+
+      // find parent
+      const parent = find_parent(g.drag_target);
+      if (parent !== null) {
+        const p = g.itemStore[parent] as TGroupItem;
+        p.items = remove_item(p.items, g.drag_target);
+        g.drawOrder.push(g.drag_target);
+        position = add_v2(position, p.position);
+      } else {
+        g.drawOrder = remove_item(g.drawOrder, g.drag_target);
+        g.drawOrder.push(g.drag_target);
+      }
+      g.itemStore[g.drag_target].position = position;
       g.drag_target = "";
     } else {
       throw new Error();
@@ -93,7 +110,7 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
 
 export const onGroupDrop = (
   event: React.DragEvent<HTMLDivElement>,
-  value: TGroupItem
+  group: TGroupItem
 ) => {
   console.log("onGroupDrop");
   updateGlobal((g) => {
@@ -113,9 +130,24 @@ export const onGroupDrop = (
       // g.selectionRange.top = qy;
       // g.drag_target = "";
     } else if (g.drag_target !== "") {
-      const [dsx, dsy] = g.dragstart_position;
-      const [x, y] = screen_to_world([event.clientX, event.clientY]);
-      g.itemStore[g.drag_target].position = [x - dsx, y - dsy];
+      let position = sub_v2(
+        screen_to_world([event.clientX, event.clientY]),
+        g.dragstart_position
+      );
+
+      const parent = find_parent(g.drag_target);
+      if (parent !== null) {
+        const p = g.itemStore[parent] as TGroupItem;
+        // `p` may equals to `group`, it's OK
+        p.items = remove_item(p.items, g.drag_target);
+        group.items.push(g.drag_target);
+        position = sub_v2(add_v2(position, p.position), group.position);
+      } else {
+        g.drawOrder = remove_item(g.drawOrder, g.drag_target);
+        group.items.push(g.drag_target);
+        position = sub_v2(position, group.position);
+      }
+      g.itemStore[g.drag_target].position = position;
       g.drag_target = "";
     } else {
       throw new Error();
@@ -123,6 +155,10 @@ export const onGroupDrop = (
   });
   event.preventDefault();
   event.stopPropagation();
+};
+
+const remove_item = (items: ItemId[], target: ItemId) => {
+  return items.filter((id) => id !== target);
 };
 
 export const onGroupMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
