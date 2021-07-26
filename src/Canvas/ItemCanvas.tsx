@@ -1,17 +1,17 @@
 import { useGlobal } from "reactn";
 import { Center } from "./Center";
-import { Fusen } from "./Fusen";
-import { fusenToFusenItem } from "./fusenToFusenItem";
-import { idsToDom } from "./idsToDom";
+import { Fusen } from "../Fusen/Fusen";
+import { fusenToFusenItem } from "../fusenToFusenItem";
+import { ids_to_dom } from "./ids_to_dom";
 import {
   onCanvasDrop,
   allowDrop,
   onCanvasMouseUp,
   onCanvasMouseDown,
   onCanvasMouseMove,
-} from "./mouseEventMamager";
-import { SelectionView } from "./Selection";
-import { ItemId } from "./initializeGlobalState";
+} from "../Event/mouseEventMamager";
+import { SelectionView } from "../Selection/Selection";
+import { ItemId } from "../Global/initializeGlobalState";
 
 export const ItemCanvas = () => {
   const [fusens] = useGlobal("fusens");
@@ -34,7 +34,7 @@ export const ItemCanvas = () => {
     contents = (
       <>
         <SelectionView></SelectionView>
-        <Center opacity={0.5}>{idsToDom(not_selected_items, offset)}</Center>
+        <Center opacity={0.5}>{ids_to_dom(not_selected_items, offset)}</Center>
       </>
     );
   } else {
@@ -44,7 +44,7 @@ export const ItemCanvas = () => {
           {fusens.map((fusen) => (
             <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
           ))}
-          {idsToDom(drawOrder, offset)}
+          {ids_to_dom(drawOrder, offset)}
         </Center>
         <SelectionView />
       </>

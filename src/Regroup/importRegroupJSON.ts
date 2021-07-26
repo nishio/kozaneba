@@ -1,4 +1,4 @@
-import { TOffset } from "./TOffset";
+import { TOffset } from "../dimension/TOffset";
 
 type TPiece = {
   type: "piece";

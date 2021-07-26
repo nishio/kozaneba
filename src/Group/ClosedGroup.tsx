@@ -1,8 +1,9 @@
 import React from "react";
-import { NameplateFusen } from "./NameplateFusen";
-import { FUSEN_HEIGHT, FUSEN_WIDTH } from "./fusen_dimension";
-import { Props, GroupDiv } from "./Group";
-import { PADDING, BORDER } from "./get_bounding_box";
+import { NameplateFusen } from "../Fusen/NameplateFusen";
+import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../Fusen/fusen_constants";
+import { Props } from "./Group";
+import { GroupDiv } from "./GroupDiv";
+import { PADDING, BORDER } from "../dimension/get_bounding_box";
 
 export const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
   const [x, y] = value.position;

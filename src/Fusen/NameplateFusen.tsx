@@ -1,13 +1,10 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
-import {
-  FusenDiv,
-  FusenDiv2,
-  TMinimumFusenItem,
-  useAjustFontsizeStyle,
-} from "./Fusen";
-import { onFusenMouseDown } from "./mouseEventMamager";
-import { TOffset } from "./TOffset";
+import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
+import { TMinimumFusenItem } from "./TMinimumFusenItem";
+import { FusenDiv, FusenDiv2 } from "./FusenDiv";
+import { onFusenMouseDown } from "../Event/mouseEventMamager";
+import { TOffset } from "../TOffset";
 
 export const NameplateFusen: React.FC<Props> = ({
   value,

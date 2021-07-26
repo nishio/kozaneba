@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { INITIAL_GLOBAL_STATE } from "./initializeGlobalState";
+import { INITIAL_GLOBAL_STATE } from "./Global/initializeGlobalState";
 import { setGlobal } from "reactn";
-import { exposeGlobal } from "./exposeGlobal";
+import { exposeGlobal } from "./Global/exposeGlobal";
 
 setGlobal(INITIAL_GLOBAL_STATE);
 exposeGlobal();

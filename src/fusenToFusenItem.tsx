@@ -1,7 +1,8 @@
-import { FusenItem, ItemId } from "./initializeGlobalState";
+import { ItemId } from "./Global/initializeGlobalState";
+import { TFusenItem } from "./Fusen/FusenItem";
 import { VFusen } from "./VFusen";
 
-export const fusenToFusenItem = (x: VFusen): FusenItem => {
+export const fusenToFusenItem = (x: VFusen): TFusenItem => {
   return {
     id: "0" as ItemId,
     type: "piece",

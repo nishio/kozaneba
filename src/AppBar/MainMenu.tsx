@@ -1,28 +1,35 @@
-import { Button, Menu, MenuItem } from "@material-ui/core";
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { useGlobal } from "reactn";
-import { show_menu } from "./show_menu";
+import MenuIcon from "@material-ui/icons/Menu";
+import { show_menu } from "../Menu/show_menu";
 
-export const DevMenu = () => {
+export const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
-  const open = menu === "Dev";
+  const open = menu === "Main";
   const onClose = () => {
     setMenu("");
   };
   const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    show_menu("Dev", event);
+    show_menu("Main", event);
   };
   const onHello = () => {
     alert("Hello!");
   };
   return (
     <>
-      <Button color="inherit" onClick={onButtonClick}>
-        DEV
-      </Button>
+      <IconButton
+        edge="start"
+        // className={classes.menuButton}
+        color="inherit"
+        aria-label="menu"
+        onClick={onButtonClick}
+      >
+        <MenuIcon />
+      </IconButton>
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-        <MenuItem onClick={onHello}>Hello 1</MenuItem>
+        <MenuItem onClick={onHello}>Main</MenuItem>
         <MenuItem onClick={onHello}>Hello 2</MenuItem>
         <MenuItem onClick={onHello}>Hello 3</MenuItem>
       </Menu>

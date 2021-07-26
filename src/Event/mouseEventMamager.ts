@@ -1,19 +1,18 @@
 import React from "react";
 import { getGlobal } from "reactn";
-import {
-  convert_bounding_box_screen_to_world,
-  isOverlapBox,
-} from "./BoundingBox";
-import { getItemBoundingBox } from "./get_bounding_box";
-import { GroupItem, ItemId } from "./initializeGlobalState";
-import { reset_selection } from "./reset_selection";
-import { selectionRange_to_boundingBox } from "./TRect";
-import { updateGlobal } from "./updateGlobal";
-import { screen_to_world, world_to_screen } from "./world_to_screen";
+import { convert_bounding_box_screen_to_world } from "../dimension/convert_bounding_box_screen_to_world";
+import { isOverlap } from "../dimension/isOverlap";
+import { get_item_bounding_box } from "../dimension/get_bounding_box";
+import { ItemId } from "../Global/initializeGlobalState";
+import { TGroupItem } from "../Group/GroupItem";
+import { reset_selection } from "../Selection/reset_selection";
+import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
+import { updateGlobal } from "../Global/updateGlobal";
+import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
-  value: GroupItem
+  value: TGroupItem
 ) => {
   console.log("onGroupDragStart");
   if (event.dataTransfer !== undefined) {
@@ -94,7 +93,7 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
 
 export const onGroupDrop = (
   event: React.DragEvent<HTMLDivElement>,
-  value: GroupItem
+  value: TGroupItem
 ) => {
   console.log("onGroupDrop");
   updateGlobal((g) => {
@@ -184,11 +183,11 @@ export const onCanvasMouseUp = (
       }
 
       const sr = convert_bounding_box_screen_to_world(
-        selectionRange_to_boundingBox(g.selectionRange)
+        selection_range_to_bounding_box(g.selectionRange)
       );
       const selected_items = [] as ItemId[];
       g.drawOrder.forEach((id) => {
-        if (isOverlapBox(sr, getItemBoundingBox(id))) {
+        if (isOverlap(sr, get_item_bounding_box(id))) {
           selected_items.push(id);
         }
       });

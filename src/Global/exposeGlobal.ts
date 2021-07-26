@@ -1,9 +1,9 @@
 import { getGlobal, setGlobal } from "reactn";
-import { closeGroup } from "./closeGroup";
-import { importRegroupJSON } from "./importRegroupJSON";
-import { screen_to_world, world_to_screen } from "./world_to_screen";
+import { closeGroup } from "../Group/closeGroup";
+import { importRegroupJSON } from "../Regroup/importRegroupJSON";
+import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { updateGlobal } from "./updateGlobal";
-import { reset_selection } from "./reset_selection";
+import { reset_selection } from "../Selection/reset_selection";
 
 const movidea = {
   getGlobal,

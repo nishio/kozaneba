@@ -1,16 +1,17 @@
 import React, { useRef } from "react";
 import { getGlobal } from "reactn";
-import styled from "styled-components";
 import { ClosedGroup } from "./ClosedGroup";
-import { getGroupBoundingBox, TITLE_HEIGHT, BORDER } from "./get_bounding_box";
-import { idsToDom } from "./idsToDom";
-import { GroupItem } from "./initializeGlobalState";
+import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
+import { get_group_bounding_box } from "../get_group_bounding_box";
+import { ids_to_dom } from "../Canvas/ids_to_dom";
+import { TGroupItem } from "./GroupItem";
 import {
   allowDrop,
   onGroupDragStart,
   onGroupDrop,
   onGroupMouseDown,
-} from "./mouseEventMamager";
+} from "../Event/mouseEventMamager";
+import { GroupDiv, GroupTitle } from "./GroupDiv";
 
 export const GROUP_BORDER_COLOR = "#ddd";
 export const GROUP_HIGHLIGHTED_BORDER_COLOR = "#888";
@@ -20,7 +21,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   if (value.isOpen === false) {
     return <ClosedGroup offset={offset} value={value} />;
   }
-  const b = getGroupBoundingBox(value);
+  const b = get_group_bounding_box(value);
   const center_shift_x = b.left + b.right;
   const center_shift_y = b.top + b.bottom;
 
@@ -82,29 +83,11 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       >
         {title}
       </GroupTitle>
-      {idsToDom(value.items, new_offset)}
+      {ids_to_dom(value.items, new_offset)}
     </GroupDiv>
   );
 };
 export type Props = {
-  value: GroupItem;
+  value: TGroupItem;
   offset: { x: number; y: number };
 };
-
-export const GroupDiv = styled.div`
-  background: #eee;
-  border: ${BORDER}px solid ${GROUP_BORDER_COLOR};
-  position: absolute;
-`;
-
-const GroupTitle = styled.span`
-  background: ${GROUP_BORDER_COLOR};
-  position: absolute;
-  font-size: 21px;
-  width: 100%;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  height: ${TITLE_HEIGHT}px;
-  padding-bottom: 1px;
-`;

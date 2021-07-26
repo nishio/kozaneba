@@ -1,10 +1,7 @@
-import { FusenItem } from "./initializeGlobalState";
+import { TFusenItem } from "../Fusen/FusenItem";
+import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../Fusen/fusen_constants";
 
-export const FUSEN_WIDTH = 130;
-export const FUSEN_HEIGHT = 100;
-export const FUSEN_BORDER = 1;
-
-export const getFusenBoundingBox = (item: FusenItem) => {
+export const get_fusen_bounding_box = (item: TFusenItem) => {
   const [x, y] = item.position;
   const scale = item.scale;
   const b = {

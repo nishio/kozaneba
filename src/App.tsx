@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { AddFusenDialog } from "./AddFusenDialog";
 import { AdjustFontSize } from "./AdjustFontSize";
 import "./App.css";
-import { onWheel } from "./onWheel";
-import { MenuAnchor } from "./show_menu";
-import { FusenMenu } from "./FusenMenu";
-import { MyAppBar } from "./MyAppBar";
-import { updateGlobal } from "./updateGlobal";
-import { ItemCanvas } from "./ItemCanvas";
+import { onWheel } from "./Event/onWheel";
+import { MenuAnchor } from "./Menu/show_menu";
+import { FusenMenu } from "./Menu/FusenMenu";
+import { MyAppBar } from "./AppBar/MyAppBar";
+import { updateGlobal } from "./Global/updateGlobal";
+import { ItemCanvas } from "./Canvas/ItemCanvas";
 
 const Blank = () => {
   return (

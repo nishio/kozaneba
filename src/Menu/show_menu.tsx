@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { TMenu } from "./initializeGlobalState";
-import { updateGlobal } from "./updateGlobal";
+import { TMenu } from "../Global/initializeGlobalState";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const show_menu = (menu: TMenu, event: React.MouseEvent) => {
   updateGlobal((g) => {

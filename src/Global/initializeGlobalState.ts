@@ -1,4 +1,6 @@
-import { VFusen } from "./VFusen";
+import { VFusen } from "../VFusen";
+import { TFusenItem } from "../Fusen/FusenItem";
+import { TGroupItem } from "../Group/GroupItem";
 
 export const INITIAL_GLOBAL_STATE = {
   fusens: [] as VFusen[],
@@ -19,25 +21,7 @@ export const INITIAL_GLOBAL_STATE = {
 };
 
 type TDragTarget = "" | "selection" | ItemId;
-export type FusenItem = {
-  type: "piece";
-  text: string;
-  position: number[];
-  id: ItemId;
-  scale: number;
-};
-
-export type GroupItem = {
-  type: "group";
-  title: string;
-  position: number[];
-  items: ItemId[];
-  id: ItemId;
-  scale: number; // scale of Nameplate Fusen
-  isOpen: boolean;
-};
-
-type Item = FusenItem | GroupItem;
+type Item = TFusenItem | TGroupItem;
 enum ItemIdBrand {
   _ = "",
 }

@@ -1,4 +1,4 @@
-import { updateGlobal } from "./updateGlobal";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const reset_selection = () => {
   updateGlobal((g) => {

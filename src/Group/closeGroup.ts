@@ -1,7 +1,8 @@
 import { getGlobal } from "reactn";
-import { getGroupBoundingBox } from "./get_bounding_box";
-import { GroupItem, ItemId } from "./initializeGlobalState";
-import { updateGlobal } from "./updateGlobal";
+import { get_group_bounding_box } from "../get_group_bounding_box";
+import { ItemId } from "../Global/initializeGlobalState";
+import { TGroupItem } from "./GroupItem";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const closeGroup = (id: ItemId) => {
   const g = getGlobal();
@@ -15,12 +16,12 @@ export const closeGroup = (id: ItemId) => {
   if (!target.isOpen) {
     throw new Error(`try closeGroup(id=${id}) but target is already closed`);
   }
-  const b = getGroupBoundingBox(target);
+  const b = get_group_bounding_box(target);
   const center_shift_x = (b.left + b.right) / 2;
   const center_shift_y = (b.top + b.bottom) / 2;
 
   updateGlobal((g) => {
-    const target = g.itemStore[id] as GroupItem;
+    const target = g.itemStore[id] as TGroupItem;
     const [x, y] = target.position;
     target.isOpen = false;
     target.position = [x + center_shift_x, y + center_shift_y];
