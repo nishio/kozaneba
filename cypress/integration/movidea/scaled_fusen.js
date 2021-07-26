@@ -2,7 +2,7 @@
 
 describe("scaled fusen", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
 
     const json = {
       drawOrder: [2, 3],

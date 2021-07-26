@@ -2,7 +2,7 @@
 
 describe("selection", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
     const json = {
       drawOrder: [1],
       itemStore: {
@@ -49,8 +49,9 @@ describe("selection", () => {
     cy.getGlobal((g) => g.mouseState).should("to.eql", "selecting");
     cy.get("#canvas").trigger("mouseup", 300, 400);
     cy.getGlobal((g) => g.mouseState).should("to.eql", "");
+    cy.movidea(m => m.reset_selection())
 
-    cy.visit("/");
+    cy.visit("/#blank");
     const itemStore = {};
     const drawOrder = [];
     for (let x = -1; x < 2; x++) {
@@ -72,34 +73,26 @@ describe("selection", () => {
       g.drawOrder = drawOrder;
       g.itemStore = itemStore;
     });
+    cy.contains("0,0");
 
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 250, 250);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);
 
-    // reset selection
-    cy.get("#canvas").trigger("mousedown", 100, 100);
-    cy.get("#canvas").trigger("mouseup", 100, 100);
-
+    cy.movidea(m => m.reset_selection())
     cy.get("#canvas").trigger("mousedown", 150, 150);
     cy.get("#canvas").trigger("mouseup", 450, 250);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0", "1,0"]);
 
-    // reset selection
-    cy.get("#canvas").trigger("mousedown", 100, 100);
-    cy.get("#canvas").trigger("mouseup", 100, 100);
-
     {
+      cy.movidea(m => m.reset_selection())
       cy.get("#canvas").trigger("mousedown", 150, 150);
       cy.get("#canvas").trigger("mouseup", 450, 450);
       const ret = ["0,0", "0,1", "1,0", "1,1"];
       cy.getGlobal((g) => g.selected_items).should("to.eql", ret);
     }
 
-    // reset selection
-    cy.get("#canvas").trigger("mousedown", 100, 100);
-    cy.get("#canvas").trigger("mouseup", 100, 100);
-
+    cy.movidea(m => m.reset_selection())
     cy.get("#canvas").trigger("mousedown", 250, 250);
     cy.get("#canvas").trigger("mouseup", 150, 150);
     cy.getGlobal((g) => g.selected_items).should("to.eql", ["0,0"]);

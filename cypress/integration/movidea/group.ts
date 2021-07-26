@@ -4,7 +4,7 @@ import { GroupItem, ItemId } from "../../../src/initializeGlobalState";
 
 describe("group", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
     const json = {
       drawOrder: [1],
       itemStore: {

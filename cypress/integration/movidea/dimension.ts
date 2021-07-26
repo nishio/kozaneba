@@ -6,7 +6,7 @@ import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../../../src/fusen_dimension";
 let movidea: TMovidea;
 describe("dimension", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
     const json = {
       drawOrder: [1],
       itemStore: {

@@ -21,16 +21,10 @@ import { SelectionView } from "./Selection";
 import { ItemId } from "./initializeGlobalState";
 import { MyAppBar } from "./MyAppBar";
 
-function App() {
+const Blank = () => {
   const [fusens] = useGlobal("fusens");
   const [drawOrder] = useGlobal("drawOrder");
   const [selected_items] = useGlobal("selected_items");
-  // console.log("render");
-  useEffect(() => {
-    // console.log("useEffect");
-    window.addEventListener("wheel", onWheel, { passive: false });
-  }, []);
-
   const offset = { x: 0, y: 0 };
 
   const not_selected_items = [] as ItemId[];
@@ -82,6 +76,23 @@ function App() {
       <MenuAnchor />
     </div>
   );
+}
+
+function App() {
+  useEffect(() => {
+    window.addEventListener("wheel", onWheel, { passive: false });
+  }, []);
+
+
+  const hash = window.location.hash;
+  if (hash === "#blank") {
+    return <Blank/>
+  }
+  if (hash === "") {
+    return <></>  // tutorial for first visiter
+  }
+  // TODO: parse hash
+  return <></>
 }
 
 export default App;

@@ -2,7 +2,7 @@
 
 describe("import json", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
     const json = {
       drawOrder: [2, 3],
       itemStore: {

@@ -2,7 +2,7 @@
 
 describe("group, read simple JSON", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
     cy.fixture("group_simple_json.json").then((json) => {
       cy.window()
         .its("movidea")

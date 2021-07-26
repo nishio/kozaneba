@@ -2,7 +2,7 @@
 
 describe("transform", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
     const fusens = [
       {
         text: "+",

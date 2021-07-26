@@ -1,6 +1,6 @@
 describe("group, simple, read from JSON", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
     cy.fixture("group_regroup_json.json").then((json) => {
       cy.window()
         .its("movidea")

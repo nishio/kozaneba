@@ -2,7 +2,7 @@
 
 describe("adjust font size", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
   });
 
   it("fusen sizes", () => {

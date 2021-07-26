@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
-describe("dialog", () => {
+describe("add_fusen_dialog", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.visit("/#blank");
   });
 
   it("main", () => {
