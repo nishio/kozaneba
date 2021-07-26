@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import styled, { CSSProperties } from "styled-components";
 import { adjustFontSize } from "./AdjustFontSize";
 import { FUSEN_WIDTH, FUSEN_HEIGHT, FUSEN_BORDER } from "./fusen_dimension";
@@ -36,20 +36,14 @@ export const FusenDiv2 = styled.div`
   width: 100%;
 `;
 
-export const Fusen: React.FC<Props> = ({
-  value,
-  offset,
-  custom_style = {},
-}) => {
+export const useAjustFontsizeStyle = (value: {text:string, scale:number, position:number[]}, offset: TOffset) => {
   let [fontSize, setFontSize] = useState(1);
-  const self = createRef<HTMLDivElement>();
-  const x = value.position[0] ?? 0;
-  const y = value.position[1] ?? 0;
-  const scale = value.scale;
+  const { text, scale } = value;
+  const [x, y] = value.position;
 
   useEffect(() => {
-    setFontSize(adjustFontSize(value.text) * scale);
-  }, [value.text, scale]);
+    setFontSize(adjustFontSize(text) * scale);
+  }, [text, scale]);
 
   const style: CSSProperties = {
     fontSize,
@@ -57,13 +51,22 @@ export const Fusen: React.FC<Props> = ({
     top: offset.y + y - (scale * FUSEN_HEIGHT) / 2 + "px",
     width: FUSEN_WIDTH * scale + "px",
     height: FUSEN_HEIGHT * scale + "px",
-    ...custom_style,
   };
   const tooLong = fontSize === 0;
   if (tooLong) {
     style.fontSize = 1;
     style.alignItems = "flex-start";
   }
+
+  return style
+}
+
+export const Fusen: React.FC<Props> = ({
+  value,
+  offset,
+  custom_style = {},
+}) => {
+  const style = { ...useAjustFontsizeStyle(value, offset), ...custom_style }
 
   const onClick = (event: React.MouseEvent) => {
     show_menu("Fusen", event);
@@ -74,7 +77,6 @@ export const Fusen: React.FC<Props> = ({
   return (
     <FusenDiv
       className="fusen"
-      ref={self}
       data-testid={value.id}
       key={value.id}
       style={style}
