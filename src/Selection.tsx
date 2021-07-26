@@ -38,6 +38,7 @@ export const SelectionView: React.FC<{}> = ({ children }) => {
       draggable
       onDragStart={onDragStartSelection}
       onMouseDown={ignoreEvent}
+      id="selection-view"
     >
       <SelectedItemsHolder top={top} left={left}>
         {idsToDom(selected_items, offset)}
@@ -59,9 +60,5 @@ export const SelectedItemsHolder: React.FC<{ top: number; left: number }> = ({
     left,
     transform: `scale(${g.scale}) translate(${g.trans_x}px, ${g.trans_y}px)`,
   };
-  return (
-    <HolderDiv style={style} id="selected_items_holder">
-      {children}
-    </HolderDiv>
-  );
+  return <HolderDiv style={style}>{children}</HolderDiv>;
 };
