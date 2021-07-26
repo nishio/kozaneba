@@ -113,6 +113,15 @@ export const onGroupDrop = (
   group: TGroupItem
 ) => {
   console.log("onGroupDrop");
+  event.preventDefault();
+  event.stopPropagation();
+
+  const target_id = getGlobal().drag_target;
+  if (group.id === target_id) {
+    // drop a group on itself
+    onCanvasDrop(event);
+    return;
+  }
   updateGlobal((g) => {
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
@@ -153,8 +162,6 @@ export const onGroupDrop = (
       throw new Error();
     }
   });
-  event.preventDefault();
-  event.stopPropagation();
 };
 
 export const onGroupMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {

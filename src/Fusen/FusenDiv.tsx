@@ -1,9 +1,14 @@
 import styled from "styled-components";
-import { FUSEN_WIDTH, FUSEN_HEIGHT, FUSEN_BORDER } from "./fusen_constants";
+import {
+  FUSEN_WIDTH,
+  FUSEN_HEIGHT,
+  FUSEN_BORDER,
+  OPACITY,
+} from "./fusen_constants";
 
 export const FusenDiv = styled.div`
   background: #ffc;
-  opacity: 0.8;
+  opacity: ${OPACITY};
   width: ${FUSEN_WIDTH}px;
   height: ${FUSEN_HEIGHT}px;
   color: #000;

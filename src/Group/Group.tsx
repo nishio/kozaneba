@@ -10,9 +10,12 @@ import {
   onGroupDrop,
   onGroupMouseDown,
 } from "../Event/mouseEventMamager";
-import { GroupDiv, GroupTitle } from "./GroupDiv";
+import { GroupBack, GroupDiv, GroupTitle } from "./GroupDiv";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
-import { GROUP_HIGHLIGHTED_BORDER_COLOR, GROUP_BORDER_COLOR } from "./group_constants";
+import {
+  GROUP_HIGHLIGHTED_BORDER_COLOR,
+  GROUP_BORDER_COLOR,
+} from "./group_constants";
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const self = useRef<HTMLDivElement>(null);
@@ -75,6 +78,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
+      <GroupBack />
       <GroupTitle
         data-testid={"grouptitle-" + value.id}
         style={{ height: title_height }}
