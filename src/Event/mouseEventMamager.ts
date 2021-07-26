@@ -9,9 +9,9 @@ import { reset_selection } from "../Selection/reset_selection";
 import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
 import { updateGlobal } from "../Global/updateGlobal";
 import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
-import { VisibilityRounded } from "@material-ui/icons";
 import { add_v2, sub_v2 } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
+import { remove_item } from "../utils/remove_item";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -155,10 +155,6 @@ export const onGroupDrop = (
   });
   event.preventDefault();
   event.stopPropagation();
-};
-
-const remove_item = (items: ItemId[], target: ItemId) => {
-  return items.filter((id) => id !== target);
 };
 
 export const onGroupMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
