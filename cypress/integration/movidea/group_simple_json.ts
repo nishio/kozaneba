@@ -24,7 +24,6 @@ describe("group, read simple JSON", () => {
       expect(x[0].getBoundingClientRect().y).equal(170);
     });
     cy.get("div[data-testid='2']").should((x) => {
-      window.a = x;
       expect(x[0].getBoundingClientRect().x).equal(85);
       expect(x[0].getBoundingClientRect().y).equal(200);
     });

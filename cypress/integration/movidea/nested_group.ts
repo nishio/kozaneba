@@ -52,12 +52,10 @@ describe("nested group", () => {
       expect(x[0].getBoundingClientRect().y).equal(145);
     });
     cy.get("div[data-testid='2']").should((x) => {
-      window.a = x;
       expect(x[0].getBoundingClientRect().x).equal(155);
       expect(x[0].getBoundingClientRect().y).equal(170);
     });
     cy.get("div[data-testid='3']").should((x) => {
-      window.a = x;
       expect(x[0].getBoundingClientRect().x).equal(185);
       expect(x[0].getBoundingClientRect().y).equal(200);
     });
