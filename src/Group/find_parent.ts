@@ -11,6 +11,7 @@ export const find_parent = (target: ItemId) => {
       if (x.items.includes(target)) {
         result = id;
       }
+      x.items.forEach((id) => visit(id));
     }
   };
   g.drawOrder.forEach((id) => visit(id));

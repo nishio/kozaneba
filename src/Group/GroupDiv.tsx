@@ -8,6 +8,7 @@ export const GroupDiv = styled.div`
   position: absolute;
 `;
 export const GroupBack = styled.div`
+  position: absolute;
   background: #eee;
   width: 100%;
   height: 100%;

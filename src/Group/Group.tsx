@@ -29,7 +29,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const title = value.title ?? "";
   const title_height = title.length !== 0 ? TITLE_HEIGHT : 0;
   const width = b.right - b.left;
-  const height = b.bottom - b.top + title_height;
+  const height = b.bottom - b.top;
   const relative_x = value.position[0];
   const relative_y = value.position[1];
   const top = offset.y + b.top - BORDER;
@@ -37,7 +37,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const style = { top, left, height, width };
   const new_offset = {
     x: width / 2 - center_shift_x / 2 + relative_x,
-    y: (height + title_height) / 2 - center_shift_y / 2 + relative_y,
+    y: height / 2 - center_shift_y / 2 + relative_y,
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     onGroupDragStart(e, value);
