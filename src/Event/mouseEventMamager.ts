@@ -69,16 +69,17 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
   updateGlobal((g) => {
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
-      const [x, y] = screen_to_world([event.clientX, event.clientY]);
-      const [dsx, dsy] = g.dragstart_position;
-      const [dx, dy] = [x - dsx, y - dsy];
+      const delta = sub_v2(
+        screen_to_world([event.clientX, event.clientY]),
+        g.dragstart_position
+      );
       g.selected_items.forEach((id) => {
-        const [px, py] = g.itemStore[id].position;
-        g.itemStore[id].position = [px + dx, py + dy];
+        g.itemStore[id].position = add_v2(g.itemStore[id].position, delta);
       });
       const sr = g.selectionRange;
-      const [sx, sy] = screen_to_world([sr.left, sr.top]);
-      const [qx, qy] = world_to_screen([sx + dx, sy + dy]);
+      const [qx, qy] = world_to_screen(
+        add_v2(screen_to_world([sr.left, sr.top]), delta)
+      );
       g.selectionRange.left = qx;
       g.selectionRange.top = qy;
       g.drag_target = "";
@@ -125,19 +126,30 @@ export const onGroupDrop = (
   updateGlobal((g) => {
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
-      // const [x, y] = screen_to_world([event.clientX, event.clientY]);
-      // const [dsx, dsy] = g.dragstart_position;
-      // const [dx, dy] = [x - dsx, y - dsy];
-      // g.selected_items.forEach((id) => {
-      //   const [px, py] = g.itemStore[id].position;
-      //   g.itemStore[id].position = [px + dx, py + dy];
-      // });
+      const delta = sub_v2(
+        screen_to_world([event.clientX, event.clientY]),
+        g.dragstart_position
+      );
+      g.selected_items.forEach((id) => {
+        g.itemStore[id].position = sub_v2(
+          add_v2(g.itemStore[id].position, delta),
+          group.position
+        );
+        g.drawOrder = remove_item(g.drawOrder, id);
+        group.items.push(id);
+      });
       // const sr = g.selectionRange;
-      // const [sx, sy] = screen_to_world([sr.left, sr.top]);
-      // const [qx, qy] = world_to_screen([sx + dx, sy + dy]);
+      // const [qx, qy] = world_to_screen(
+      //   add_v2(screen_to_world([sr.left, sr.top]), delta)
+      // );
       // g.selectionRange.left = qx;
       // g.selectionRange.top = qy;
-      // g.drag_target = "";
+      g.drag_target = "";
+
+      // reset selection
+      g.selected_items = [];
+      g.selectionRange = { top: 0, left: 0, width: 0, height: 0 };
+      g.is_selected = false;
     } else if (g.drag_target !== "") {
       let position = sub_v2(
         screen_to_world([event.clientX, event.clientY]),
