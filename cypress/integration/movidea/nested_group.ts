@@ -13,6 +13,7 @@ describe("nested group", () => {
           nameplate: null,
           isOpen: true,
           items: [2],
+          title: "",
         },
         2: {
           type: "group",
@@ -21,6 +22,7 @@ describe("nested group", () => {
           nameplate: null,
           isOpen: true,
           items: [3],
+          title: "",
         },
         3: {
           type: "piece",
@@ -45,19 +47,19 @@ describe("nested group", () => {
       });
   });
 
-  it("position", () => {
+  it("main", () => {
     cy.viewport(500, 500);
     cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(130);
-      expect(x[0].getBoundingClientRect().y).equal(145);
+      expect(x[0].getBoundingClientRect().x).equal(129);
+      expect(x[0].getBoundingClientRect().y).equal(144);
     });
     cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(155);
-      expect(x[0].getBoundingClientRect().y).equal(170);
+      expect(x[0].getBoundingClientRect().x).equal(154);
+      expect(x[0].getBoundingClientRect().y).equal(169);
     });
     cy.get("div[data-testid='3']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(185);
-      expect(x[0].getBoundingClientRect().y).equal(200);
+      expect(x[0].getBoundingClientRect().x).equal(184);
+      expect(x[0].getBoundingClientRect().y).equal(199);
     });
   });
 });

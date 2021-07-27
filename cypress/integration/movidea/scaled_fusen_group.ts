@@ -14,6 +14,7 @@ describe("scaled fusen group", () => {
           nameplate: null,
           isOpen: true,
           items: [2],
+          title: "",
         },
         2: {
           type: "piece",

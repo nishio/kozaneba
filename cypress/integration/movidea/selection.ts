@@ -126,7 +126,7 @@ describe("selection", () => {
         [200, 200],
       ]
     );
-    cy.get("#selection-view").trigger("dragstart", 0, 2); // misterious 2px
+    cy.get("#selection-view").trigger("dragstart", 0, 1); // misterious 1px
     cy.get("#canvas").trigger("drop", 100, 100);
     cy.getGlobal((g) => items.map((id) => g.itemStore[id].position)).should(
       "to.eql",

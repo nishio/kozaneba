@@ -13,6 +13,7 @@ describe("group, tralslated", () => {
           nameplate: null,
           isOpen: true,
           items: [2, 3],
+          title: "",
         },
         2: {
           type: "piece",
@@ -48,12 +49,12 @@ describe("group, tralslated", () => {
   it("main", () => {
     cy.viewport(500, 500);
     cy.get("div[data-testid='1']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(105);
-      expect(x[0].getBoundingClientRect().y).equal(190);
+      expect(x[0].getBoundingClientRect().x).equal(104);
+      expect(x[0].getBoundingClientRect().y).equal(189);
     });
     cy.get("div[data-testid='2']").should((x) => {
-      expect(x[0].getBoundingClientRect().x).equal(135);
-      expect(x[0].getBoundingClientRect().y).equal(220);
+      expect(x[0].getBoundingClientRect().x).equal(134);
+      expect(x[0].getBoundingClientRect().y).equal(219);
     });
   });
 });

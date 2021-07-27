@@ -1,0 +1,30 @@
+{
+  "drawOrder": ["A"],
+  "itemStore": {
+    "A": {
+      "type": "group",
+      "id": "A",
+      "position": [0, 0],
+      "nameplate": null,
+      "isOpen": true,
+      "title": "A",
+      "items": ["B"]
+    },
+    "B": {
+      "type": "group",
+      "id": "B",
+      "position": [0, 0],
+      "title": "B",
+      "scale": 1,
+      "items": ["C"]
+    },
+    "C": {
+      "type": "piece",
+      "id": "C",
+      "position": [0, 0],
+      "text": "C",
+      "compact": true,
+      "scale": 1
+    }
+  }
+}

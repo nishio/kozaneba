@@ -41,8 +41,8 @@ describe("import json", () => {
     cy.viewport(500, 500);
     cy.contains("ABC")
       .parent()
-      .should("have.css", "top", "-50px")
-      .should("have.css", "left", "-165px");
+      .should("have.css", "top", "-51px")
+      .should("have.css", "left", "-166px");
     cy.contains("DEF");
   });
 });

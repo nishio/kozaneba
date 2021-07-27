@@ -27,13 +27,13 @@ describe("transform", () => {
 
   it("position", () => {
     cy.viewport(500, 500);
-    cy.contains("+").should("hasPosition", [186, 213]);
-    cy.contains("*").should("hasPosition", [436, 463]);
+    cy.contains("+").should("hasPosition", [185, 212]);
+    cy.contains("*").should("hasPosition", [435, 462]);
 
     cy.updateGlobal((g) => {
       g.scale = 0.5;
     });
-    cy.contains("+").should("hasPosition", [218, 231.5]);
-    cy.contains("*").should("hasPosition", [343, 356.5]);
+    cy.contains("+").should("hasPosition", [217.5, 231]);
+    cy.contains("*").should("hasPosition", [342.5, 356]);
   });
 });

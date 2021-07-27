@@ -45,9 +45,8 @@ describe("drag", () => {
   });
 
   it("main", () => {
-    // 390 x 160
-    const x1 = 55;
-    const y1 = 170;
+    const x1 = 54;
+    const y1 = 169;
     cy.testid("1").should("hasPosition", [x1, y1]);
 
     cy.testid("1").trigger("dragstart", "center");

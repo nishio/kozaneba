@@ -120,6 +120,7 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
     }
   });
   event.preventDefault();
+  console.log(getGlobal().selectionRange);
 };
 
 export const onGroupDrop = (
@@ -245,7 +246,6 @@ export const onCanvasMouseUp = (
         g.mouseState = "";
         return;
       }
-
       const sr = convert_bounding_box_screen_to_world(
         selection_range_to_bounding_box(g.selectionRange)
       );
@@ -260,4 +260,5 @@ export const onCanvasMouseUp = (
       g.is_selected = true;
     });
   }
+  console.log(getGlobal().selectionRange);
 };

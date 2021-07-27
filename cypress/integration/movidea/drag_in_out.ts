@@ -1,5 +1,9 @@
 /// <reference types="cypress" />
 
+import {
+  FUSEN_OFFSET_X,
+  FUSEN_OFFSET_Y,
+} from "../../../src/Fusen/fusen_constants";
 import { TGroupItem } from "../../../src/Group/GroupItem";
 
 describe("drag in/out", () => {
@@ -19,10 +23,12 @@ describe("drag in/out", () => {
     });
   });
 
-  it("position", () => {
+  it("main", () => {
     cy.viewport(500, 500);
-    cy.testid("1").should("hasPosition", [55, 170]);
-    cy.testid("2").should("hasPosition", [85, 200]);
+    cy.testid("2").should("hasPosition", [
+      250 - 100 - FUSEN_OFFSET_X,
+      250 - FUSEN_OFFSET_Y,
+    ]);
     cy.testid("2").trigger("dragstart", "topLeft");
     cy.get("#canvas").trigger("drop", 85, 350);
     cy.testid("2").should("hasPosition", [85, 350]);

@@ -1,6 +1,10 @@
 /// <reference types="cypress" />
 
-import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../../../src/Fusen/fusen_constants";
+import {
+  FUSEN_BORDER,
+  FUSEN_HEIGHT,
+  FUSEN_WIDTH,
+} from "../../../src/Fusen/fusen_constants";
 import { TMovidea } from "../../../src/Global/exposeGlobal";
 
 let movidea: TMovidea;
@@ -59,8 +63,8 @@ describe("dimension", () => {
     });
 
     const topLeft = ([x, y]: number[]) => [
-      x - FUSEN_WIDTH / 2,
-      y - FUSEN_HEIGHT / 2,
+      x - FUSEN_WIDTH / 2 - FUSEN_BORDER,
+      y - FUSEN_HEIGHT / 2 - FUSEN_BORDER,
     ];
 
     {

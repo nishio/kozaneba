@@ -48,8 +48,8 @@ describe("group", () => {
   });
 
   it("main", () => {
-    const x1 = 55;
-    const y1 = 170;
+    const x1 = 54;
+    const y1 = 169;
     cy.testid("1").should("hasPosition", [x1, y1]);
 
     const x2 = x1 + 5 + 25;
@@ -74,6 +74,7 @@ describe("group", () => {
     });
     const title_height = 25;
     cy.contains("title").should("have.css", "height", title_height + "px");
+    cy.testid("2").should("hasPosition", [x2, y2]); // should not change even if title exists
 
     cy.movidea((movidea) => {
       movidea.updateGlobal((g) => {
@@ -82,7 +83,6 @@ describe("group", () => {
         x.title = "long title ".repeat(10);
       });
     });
-    cy.testid("2").should("hasPosition", [x2, y2 + title_height]);
 
     cy.contains("title").should("have.css", "height", title_height + "px"); // no wrap
 
@@ -95,12 +95,13 @@ describe("group", () => {
 
     cy.testid("1").should("hasPosition", [155, 170]);
   });
+
   it("move child", () => {
     cy.updateGlobal((g) => {
       g.itemStore["3"].position = [-100, 0];
     });
-    cy.testid("1").should("hasPosition", [55, 170]);
-    cy.testid("3").should("hasPosition", [85, 200]);
+    cy.testid("1").should("hasPosition", [54, 169]);
+    cy.testid("3").should("hasPosition", [84, 199]);
 
     cy.movidea((m) => {
       m.closeGroup("1" as ItemId);
@@ -112,12 +113,12 @@ describe("group", () => {
     });
     cy.contains("A B");
     cy.testid("1").should("hasPosition", [55, 170]);
-    cy.testid("nameplate-1").should("hasPosition", [85, 200]);
+    cy.testid("nameplate-1").should("hasPosition", [84, 199]);
 
     cy.updateGlobal((g) => {
       (g.itemStore["1"] as TGroupItem).isOpen = true;
     });
-    cy.testid("1").should("hasPosition", [55, 170]);
-    cy.testid("3").should("hasPosition", [85, 200]);
+    cy.testid("1").should("hasPosition", [54, 169]);
+    cy.testid("3").should("hasPosition", [84, 199]);
   });
 });

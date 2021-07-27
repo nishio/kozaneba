@@ -58,6 +58,7 @@ export const ItemCanvas = () => {
       onMouseUp={onCanvasMouseUp}
       onMouseDown={onCanvasMouseDown}
       onMouseMove={onCanvasMouseMove}
+      data-testid="canvas"
     >
       {contents}
     </div>
