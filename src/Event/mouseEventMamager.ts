@@ -17,6 +17,7 @@ export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
   value: TGroupItem
 ) => {
+  event.stopPropagation();
   console.log("onGroupDragStart");
   if (event.dataTransfer !== undefined) {
     event.dataTransfer.effectAllowed = "move";
