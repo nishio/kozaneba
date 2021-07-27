@@ -17,8 +17,20 @@ export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
   value: TGroupItem
 ) => {
-  event.stopPropagation();
   console.log("onGroupDragStart");
+  event.stopPropagation();
+
+  // const e: HTMLDivElement = event.currentTarget.cloneNode(
+  //   true
+  // ) as HTMLDivElement;
+  // document.body.appendChild(e);
+  // e.style.transform = `scale(${getGlobal().scale})`;
+  // event.dataTransfer.setDragImage(
+  //   e,
+  //   event.nativeEvent.offsetX,
+  //   event.nativeEvent.offsetY
+  // );
+
   if (event.dataTransfer !== undefined) {
     event.dataTransfer.effectAllowed = "move";
   }

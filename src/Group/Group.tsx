@@ -39,8 +39,9 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     x: width / 2 - center_shift_x / 2 + relative_x,
     y: (height + title_height) / 2 - center_shift_y / 2 + relative_y,
   };
-  const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     onGroupDragStart(e, value);
+  };
 
   let enter_count = 0;
   const onDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
