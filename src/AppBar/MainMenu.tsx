@@ -3,6 +3,7 @@ import React from "react";
 import { useGlobal } from "reactn";
 import MenuIcon from "@material-ui/icons/Menu";
 import { show_menu } from "../Menu/show_menu";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -14,8 +15,11 @@ export const MainMenu = () => {
   const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     show_menu("Main", event);
   };
-  const onHello = () => {
-    alert("Hello!");
+  const onAddFusen = () => {
+    updateGlobal((g) => {
+      g.dialog = "AddFusen";
+      g.menu = "";
+    });
   };
   return (
     <>
@@ -25,13 +29,12 @@ export const MainMenu = () => {
         color="inherit"
         aria-label="menu"
         onClick={onButtonClick}
+        data-testid="main-menu"
       >
         <MenuIcon />
       </IconButton>
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-        <MenuItem onClick={onHello}>Main</MenuItem>
-        <MenuItem onClick={onHello}>Hello 2</MenuItem>
-        <MenuItem onClick={onHello}>Hello 3</MenuItem>
+        <MenuItem onClick={onAddFusen}>Add Fusens</MenuItem>
       </Menu>
     </>
   );

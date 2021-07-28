@@ -22,9 +22,7 @@ export const DevMenu = () => {
         DEV
       </Button>
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-        <MenuItem onClick={onHello}>Hello 1</MenuItem>
-        <MenuItem onClick={onHello}>Hello 2</MenuItem>
-        <MenuItem onClick={onHello}>Hello 3</MenuItem>
+        <MenuItem onClick={onHello}>Developer Menu</MenuItem>
       </Menu>
     </>
   );
