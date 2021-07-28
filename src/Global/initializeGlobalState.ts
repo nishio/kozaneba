@@ -5,7 +5,7 @@ import { TGroupItem } from "../Group/GroupItem";
 export const INITIAL_GLOBAL_STATE = {
   fusens: [] as VFusen[],
   drawOrder: [] as ItemId[],
-  itemStore: {} as { [id: string]: Item },
+  itemStore: {} as { [id: string]: TItem },
   scale: 1,
   trans_x: 0,
   trans_y: 0,
@@ -21,7 +21,7 @@ export const INITIAL_GLOBAL_STATE = {
 };
 
 type TDragTarget = "" | "selection" | ItemId;
-type Item = TFusenItem | TGroupItem;
+export type TItem = TFusenItem | TGroupItem;
 enum ItemIdBrand {
   _ = "",
 }

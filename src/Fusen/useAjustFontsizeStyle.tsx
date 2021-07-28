@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CSSProperties } from "styled-components";
-import { adjustFontSize } from "../AdjustFontSize";
+import { adjustFontSize } from "../Canvas/AdjustFontSize";
 import { FUSEN_WIDTH, FUSEN_HEIGHT, FUSEN_BORDER } from "./fusen_constants";
 import { TOffset } from "../dimension/TOffset";
 import { TMinimumFusenItem } from "./TMinimumFusenItem";

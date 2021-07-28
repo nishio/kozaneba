@@ -3,6 +3,7 @@
 describe("add_fusen_dialog", () => {
   beforeEach(() => {
     cy.visit("/#blank");
+    cy.viewport(500, 500);
   });
 
   it("main", () => {
@@ -19,5 +20,6 @@ describe("add_fusen_dialog", () => {
     cy.contains("Add Fusens").click();
     cy.testid("textarea").type("a\nb\nc");
     cy.testid("add-fusen-button").click();
+    cy.contains("a");
   });
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { FusenDiv, FusenDiv2 } from "./Fusen/FusenDiv";
+import { FusenDiv, FusenDiv2 } from "../Fusen/FusenDiv";
 
 export const INITIAL = 128;
 export const cache = { "": INITIAL } as { [key: string]: number };

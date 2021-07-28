@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { AddFusenDialog } from "./AddFusenDialog";
-import { AdjustFontSize } from "./AdjustFontSize";
+import { AddFusenDialog } from "./AddFusenDialog/AddFusenDialog";
+import { AdjustFontSize } from "./Canvas/AdjustFontSize";
 import "./App.css";
 import { onWheel } from "./Event/onWheel";
 import { MenuAnchor } from "./Menu/show_menu";
