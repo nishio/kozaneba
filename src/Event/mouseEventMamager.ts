@@ -12,6 +12,7 @@ import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { add_v2, sub_v2 } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
 import { remove_item } from "../utils/remove_item";
+import { show_menu } from "../Menu/show_menu";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -259,6 +260,7 @@ export const onCanvasMouseUp = (
       g.mouseState = "";
       g.is_selected = true;
     });
+    show_menu("Selection", event);
   }
   console.log(getGlobal().selectionRange);
 };

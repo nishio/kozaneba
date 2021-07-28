@@ -28,7 +28,7 @@ enum ItemIdBrand {
 export type ItemId = ItemIdBrand & string;
 
 type TDialog = "" | "AddFusen";
-export type TMenu = "" | "Main" | "Dev" | "Fusen";
+export type TMenu = "" | "Main" | "Dev" | "Fusen" | "Selection" | "Group";
 type TMenuAnchor = null | Element;
 
 type TMouseState = "" | "selecting";

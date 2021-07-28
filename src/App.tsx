@@ -8,6 +8,7 @@ import { FusenMenu } from "./Menu/FusenMenu";
 import { MyAppBar } from "./AppBar/MyAppBar";
 import { updateGlobal } from "./Global/updateGlobal";
 import { ItemCanvas } from "./Canvas/ItemCanvas";
+import { SelectionMenu } from "./Menu/SelectionMenu";
 
 const Blank = () => {
   return (
@@ -17,6 +18,7 @@ const Blank = () => {
       <AdjustFontSize />
       <AddFusenDialog />
       <FusenMenu />
+      <SelectionMenu />
       <MenuAnchor />
     </div>
   );
