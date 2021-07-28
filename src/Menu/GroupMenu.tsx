@@ -1,10 +1,9 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
-import { add_v2, sub_v2 } from "../dimension/V2";
+import { add_v2 } from "../dimension/V2";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
-import { reset_selection } from "../Selection/reset_selection";
 import { remove_item } from "../utils/remove_item";
 
 export const GroupMenu = () => {

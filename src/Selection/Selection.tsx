@@ -30,6 +30,7 @@ export const SelectionView: React.FC<{}> = ({ children }) => {
       onMouseDown={onSelectionMouseDown}
       onClick={onClick}
       id="selection-view"
+      data-testid="selection-view"
     >
       <SelectedItemsHolder top={top} left={left}>
         {ids_to_dom(selected_items, offset)}
