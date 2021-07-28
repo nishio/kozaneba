@@ -1,8 +1,7 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
-import { useGlobal } from "reactn";
-import { updateGlobal } from "../Global/updateGlobal";
-import { remove_item } from "../utils/remove_item";
+import { getGlobal, useGlobal } from "reactn";
+import { delete_item_from_world } from "./delete_item_from_world";
 
 export const FusenMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -12,12 +11,9 @@ export const FusenMenu = () => {
     setMenu("");
   };
   const onDelete = () => {
-    updateGlobal((g) => {
-      if (g.clicked_fusen !== "") {
-        delete g.itemStore[g.clicked_fusen];
-        g.drawOrder = remove_item(g.drawOrder, g.clicked_fusen);
-      }
-    });
+    const id = getGlobal().clicked_fusen;
+    if (id === "") return;
+    delete_item_from_world(id);
     setMenu("");
   };
   return (

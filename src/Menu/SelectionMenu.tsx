@@ -5,6 +5,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { reset_selection } from "../Selection/reset_selection";
 import { remove_item } from "../utils/remove_item";
+import { delete_item_from_world } from "./delete_item_from_world";
 
 export const SelectionMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -30,9 +31,19 @@ export const SelectionMenu = () => {
     reset_selection();
     setMenu("");
   };
+
+  const onDelete = () => {
+    getGlobal().selected_items.forEach((id) => {
+      delete_item_from_world(id);
+    });
+    reset_selection();
+    setMenu("");
+  };
+
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onMakeGroup}>make group</MenuItem>
+      <MenuItem onClick={onDelete}>delete items</MenuItem>
     </Menu>
   );
 };

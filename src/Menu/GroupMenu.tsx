@@ -5,6 +5,7 @@ import { add_v2 } from "../dimension/V2";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { remove_item } from "../utils/remove_item";
+import { delete_item_from_world } from "./delete_item_from_world";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -38,10 +39,7 @@ export const GroupMenu = () => {
     const g = getGlobal();
     const gid = g.clicked_group;
     if (gid === "") return;
-    updateGlobal((g) => {
-      delete g.itemStore[gid];
-      g.drawOrder = remove_item(g.drawOrder, gid);
-    });
+    delete_item_from_world(gid);
     setMenu("");
   };
 
