@@ -18,6 +18,7 @@ export const INITIAL_GLOBAL_STATE = {
   selected_items: [] as ItemId[],
   is_selected: false,
   mouseState: "" as TMouseState,
+  clicked_group: "" as "" | ItemId,
 };
 
 type TDragTarget = "" | "selection" | ItemId;

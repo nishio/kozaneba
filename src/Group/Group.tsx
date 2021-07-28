@@ -16,6 +16,8 @@ import {
   GROUP_HIGHLIGHTED_BORDER_COLOR,
   GROUP_BORDER_COLOR,
 } from "./group_constants";
+import { show_menu } from "../Menu/show_menu";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const self = useRef<HTMLDivElement>(null);
@@ -65,12 +67,19 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     }
     onGroupDrop(e, value);
   };
+  const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    updateGlobal((g) => {
+      g.clicked_group = value.id;
+    });
+    show_menu("Group", e);
+  };
   return (
     <GroupDiv
       ref={self}
       style={style}
       key={value.id}
       data-testid={value.id}
+      onClick={onClick}
       onMouseDown={onGroupMouseDown}
       onDragStart={onDragStart}
       draggable={true}

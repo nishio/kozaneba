@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { ItemId } from "../../../src/Global/initializeGlobalState";
+
 describe("import json", () => {
   beforeEach(() => {
     cy.visit("/#blank");
@@ -12,5 +14,14 @@ describe("import json", () => {
     });
   });
 
-  it("main", () => {});
+  it("main", () => {
+    cy.testid("canvas").trigger("mousedown", 100, 100);
+    cy.testid("canvas").trigger("mouseup", 400, 400);
+    cy.contains("make group").click();
+
+    cy.getGlobal((g) => g.drawOrder.slice(-1)[0]).then((id: ItemId) =>
+      cy.testid(id).click()
+    );
+    cy.contains("ungroup").click();
+  });
 });

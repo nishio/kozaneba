@@ -9,6 +9,7 @@ import { MyAppBar } from "./AppBar/MyAppBar";
 import { updateGlobal } from "./Global/updateGlobal";
 import { ItemCanvas } from "./Canvas/ItemCanvas";
 import { SelectionMenu } from "./Menu/SelectionMenu";
+import { GroupMenu } from "./Menu/GroupMenu";
 
 const Blank = () => {
   return (
@@ -19,6 +20,7 @@ const Blank = () => {
       <AddFusenDialog />
       <FusenMenu />
       <SelectionMenu />
+      <GroupMenu />
       <MenuAnchor />
     </div>
   );

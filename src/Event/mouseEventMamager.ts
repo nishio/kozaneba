@@ -236,7 +236,9 @@ export const onCanvasMouseUp = (
 ) => {
   console.log("onCanvasMouseUp");
   const g = getGlobal();
+
   if (g.mouseState === "selecting") {
+    let is_items_selected = false;
     updateGlobal((g) => {
       g.selectionRange.width = event.pageX - g.selectionRange.left;
       g.selectionRange.height = event.pageY - g.selectionRange.top;
@@ -257,10 +259,13 @@ export const onCanvasMouseUp = (
         }
       });
       g.selected_items = selected_items;
+      is_items_selected = selected_items.length > 0;
       g.mouseState = "";
       g.is_selected = true;
     });
-    show_menu("Selection", event);
+    if (is_items_selected) {
+      show_menu("Selection", event);
+    }
   }
   console.log(getGlobal().selectionRange);
 };
