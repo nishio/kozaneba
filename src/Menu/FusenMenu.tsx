@@ -1,6 +1,8 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { useGlobal } from "reactn";
+import { updateGlobal } from "../Global/updateGlobal";
+import { remove_item } from "../utils/remove_item";
 
 export const FusenMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -9,11 +11,18 @@ export const FusenMenu = () => {
   const onClose = () => {
     setMenu("");
   };
+  const onDelete = () => {
+    updateGlobal((g) => {
+      if (g.clicked_fusen !== "") {
+        delete g.itemStore[g.clicked_fusen];
+        g.drawOrder = remove_item(g.drawOrder, g.clicked_fusen);
+      }
+    });
+    setMenu("");
+  };
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-      <MenuItem>Fusen Menu 1</MenuItem>
-      <MenuItem>Fusen Menu 2</MenuItem>
-      <MenuItem>Fusen Menu 3</MenuItem>
+      <MenuItem onClick={onDelete}>Delete</MenuItem>
     </Menu>
   );
 };

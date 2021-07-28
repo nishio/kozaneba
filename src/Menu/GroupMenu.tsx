@@ -31,12 +31,24 @@ export const GroupMenu = () => {
       g.drawOrder = remove_item(g.drawOrder, gid);
       delete g.itemStore[gid];
     });
-
     setMenu("");
   };
+
+  const onDelete = () => {
+    const g = getGlobal();
+    const gid = g.clicked_group;
+    if (gid === "") return;
+    updateGlobal((g) => {
+      delete g.itemStore[gid];
+      g.drawOrder = remove_item(g.drawOrder, gid);
+    });
+    setMenu("");
+  };
+
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onUngroup}>ungroup</MenuItem>
+      <MenuItem onClick={onDelete}>delete</MenuItem>
     </Menu>
   );
 };

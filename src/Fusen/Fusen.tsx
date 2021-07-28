@@ -6,6 +6,7 @@ import { show_menu } from "../Menu/show_menu";
 import { FusenDiv, FusenDiv2 } from "./FusenDiv";
 import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
 import { TOffset } from "../dimension/TOffset";
+import { updateGlobal } from "../Global/updateGlobal";
 
 type Props = {
   value: TFusenItem;
@@ -21,6 +22,9 @@ export const Fusen: React.FC<Props> = ({
   const style = { ...useAjustFontsizeStyle(value, offset), ...custom_style };
 
   const onClick = (event: React.MouseEvent) => {
+    updateGlobal((g) => {
+      g.clicked_fusen = value.id;
+    });
     show_menu("Fusen", event);
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
