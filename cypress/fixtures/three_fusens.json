@@ -1,0 +1,29 @@
+{
+  "drawOrder": [1, 2, 3],
+  "itemStore": {
+    "1": {
+      "type": "piece",
+      "id": 1,
+      "position": [0, 0],
+      "text": "1",
+      "compact": true,
+      "scale": 1
+    },
+    "2": {
+      "type": "piece",
+      "id": 2,
+      "position": [-150, 0],
+      "text": "2",
+      "compact": true,
+      "scale": 1
+    },
+    "3": {
+      "type": "piece",
+      "id": 3,
+      "position": [150, 0],
+      "text": "3",
+      "compact": true,
+      "scale": 1
+    }
+  }
+}
