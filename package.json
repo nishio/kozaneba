@@ -13,6 +13,7 @@
     "@types/styled-components": "^5.1.10",
     "css-what": "^5.0.1",
     "eslint-plugin-cypress": "^2.11.3",
+    "firebase": "^8.8.0",
     "immer": "^8.0.1",
     "install": "^0.13.0",
     "normalize-url": "^4.5.1",
