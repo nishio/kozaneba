@@ -10,6 +10,7 @@ import { updateGlobal } from "./Global/updateGlobal";
 import { ItemCanvas } from "./Canvas/ItemCanvas";
 import { SelectionMenu } from "./Menu/SelectionMenu";
 import { GroupMenu } from "./Menu/GroupMenu";
+import { useGlobal } from "reactn";
 
 const Blank = () => {
   return (
@@ -22,6 +23,45 @@ const Blank = () => {
       <SelectionMenu />
       <GroupMenu />
       <MenuAnchor />
+      <StatusBar />
+    </div>
+  );
+};
+
+const StatusBar = () => {
+  const [statusBar] = useGlobal("statusBar");
+  return (
+    <div
+      style={{
+        position: "fixed",
+        right: 0,
+        bottom: 0,
+        height: "28px",
+        display: "flex",
+      }}
+    >
+      <div
+        style={{
+          paddingLeft: "10px",
+          paddingRight: "10px",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            borderTopLeftRadius: "5px",
+            border: "black solid 1px",
+            borderBottom: 0,
+            borderRight: 0,
+            opacity: 0.5,
+            backgroundColor: "#eee",
+            width: "100%",
+            height: "100%",
+          }}
+        ></div>
+        <span>{statusBar}</span>
+      </div>
     </div>
   );
 };
