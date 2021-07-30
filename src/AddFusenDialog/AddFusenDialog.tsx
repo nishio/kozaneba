@@ -10,7 +10,6 @@ import React, { createRef } from "react";
 import { useGlobal } from "reactn";
 import { FusenItem } from "../Fusen/FusenItem";
 import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../Fusen/fusen_constants";
-import { ItemId, TItem } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 
