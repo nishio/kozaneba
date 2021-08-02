@@ -30,7 +30,7 @@ enum ItemIdBrand {
 }
 export type ItemId = ItemIdBrand & string;
 
-type TDialog = "" | "AddFusen";
+type TDialog = "" | "AddFusen" | "Tutorial" | "Sign";
 export type TMenu = "" | "Main" | "Dev" | "Fusen" | "Selection" | "Group";
 type TMenuAnchor = null | Element;
 

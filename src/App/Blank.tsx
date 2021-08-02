@@ -7,6 +7,8 @@ import { ItemCanvas } from "../Canvas/ItemCanvas";
 import { SelectionMenu } from "../Menu/SelectionMenu";
 import { GroupMenu } from "../Menu/GroupMenu";
 import { StatusBar } from "./StatusBar";
+import { TutorialDialog } from "./TutorialDialog";
+import { SignDialog } from "./SignDialog";
 
 export const Blank = () => {
   return (
@@ -15,6 +17,8 @@ export const Blank = () => {
       <ItemCanvas />
       <AdjustFontSize />
       <AddFusenDialog />
+      <TutorialDialog />
+      <SignDialog />
       <FusenMenu />
       <SelectionMenu />
       <GroupMenu />

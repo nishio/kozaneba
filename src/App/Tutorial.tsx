@@ -5,7 +5,7 @@ import { Blank } from "./Blank";
 export const Tutorial = () => {
   useEffect(() => {
     updateGlobal((g) => {
-      g.dialog = "AddFusen";
+      g.dialog = "Tutorial";
     });
   });
   return <Blank />;
