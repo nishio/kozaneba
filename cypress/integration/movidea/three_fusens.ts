@@ -2,7 +2,7 @@
 
 import { ItemId } from "../../../src/Global/initializeGlobalState";
 
-describe("import json", () => {
+describe("three fusens", () => {
   beforeEach(() => {
     cy.visit("/#blank");
     cy.viewport(500, 500);
@@ -17,7 +17,7 @@ describe("import json", () => {
   it("main", () => {
     cy.testid("canvas").trigger("mousedown", 100, 100);
     cy.testid("canvas").trigger("mouseup", 400, 400);
-    cy.testid("selection-view").click();
+    cy.testid("selection-view").click("topRight");
     cy.contains("make group").click();
 
     cy.getGlobal((g) => g.drawOrder.slice(-1)[0]).then((id: ItemId) =>
