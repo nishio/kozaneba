@@ -1,6 +1,6 @@
 import { useGlobal } from "reactn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 export const StatusBar = () => {
   const [statusBar] = useGlobal("statusBar");
@@ -10,9 +10,7 @@ export const StatusBar = () => {
   } else if (statusBar.type === "loading") {
     contents = <FontAwesomeIcon icon={faSpinner} spin={true} />;
   }
-  contents = (
-    <FontAwesomeIcon icon={faSpinner} spin={true} style={{ margin: "5px" }} />
-  );
+  contents = <FontAwesomeIcon icon={faCheckCircle} style={{ margin: "5px" }} />;
 
   return (
     <div
