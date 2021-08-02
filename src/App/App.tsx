@@ -11,6 +11,7 @@ import { ItemCanvas } from "../Canvas/ItemCanvas";
 import { SelectionMenu } from "../Menu/SelectionMenu";
 import { GroupMenu } from "../Menu/GroupMenu";
 import { StatusBar } from "./StatusBar";
+import { FusenItem } from "../Fusen/FusenItem";
 
 const Blank = () => {
   return (
@@ -26,6 +27,18 @@ const Blank = () => {
       <StatusBar />
     </div>
   );
+};
+
+const TinySample = () => {
+  useEffect(() => {
+    updateGlobal((g) => {
+      const obj = new FusenItem();
+      obj.text = "Tiny Sample";
+      g.itemStore[obj.id] = obj;
+      g.drawOrder.push(obj.id);
+    });
+  });
+  return <Blank />;
 };
 
 const Tutorial = () => {
@@ -44,7 +57,12 @@ function App() {
 
   const hash = window.location.hash;
   if (hash === "#blank") {
+    // for test
     return <Blank />;
+  }
+  if (hash === "#tinysample") {
+    // for test
+    return <TinySample />;
   }
   if (hash === "") {
     return <Tutorial />; // tutorial for first visiter
