@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import App from "./App/App";
 import reportWebVitals from "./reportWebVitals";
 import { INITIAL_GLOBAL_STATE } from "./Global/initializeGlobalState";
 import { setGlobal } from "reactn";

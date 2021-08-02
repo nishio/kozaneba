@@ -20,7 +20,7 @@ export const INITIAL_GLOBAL_STATE = {
   mouseState: "" as TMouseState,
   clicked_group: "" as "" | ItemId,
   clicked_fusen: "" as "" | ItemId,
-  statusBar: "",
+  statusBar: { text: "", type: "text" },
 };
 
 type TDragTarget = "" | "selection" | ItemId;
