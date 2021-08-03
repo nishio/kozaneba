@@ -1,16 +1,47 @@
 import { useGlobal } from "reactn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSpinner,
+  faCheckCircle,
+  faCloud,
+  faTimes,
+  faCloudUploadAlt,
+  faCloudDownloadAlt,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const StatusBar = () => {
   const [statusBar] = useGlobal("statusBar");
   let contents = null;
-  if (statusBar.type === "text") {
-    contents = <span>{statusBar.text} </span>;
-  } else if (statusBar.type === "loading") {
+  if (statusBar.type === "loading") {
     contents = <FontAwesomeIcon icon={faSpinner} spin={true} />;
+  } else if (statusBar.type === "done") {
+    contents = (
+      <FontAwesomeIcon icon={faCheckCircle} style={{ margin: "5px" }} />
+    );
+  } else if (statusBar.type === "no-connection") {
+    contents = (
+      <span style={{ margin: "5px" }}>
+        <FontAwesomeIcon icon={faCloud} />
+        <FontAwesomeIcon icon={faTimes} />
+      </span>
+    );
+  } else if (statusBar.type === "uploading") {
+    contents = (
+      <span style={{ margin: "5px" }}>
+        <FontAwesomeIcon icon={faCloudUploadAlt} />
+        <FontAwesomeIcon icon={faSpinner} spin={true} />
+      </span>
+    );
+  } else if (statusBar.type === "downloading") {
+    contents = (
+      <span style={{ margin: "5px" }}>
+        <FontAwesomeIcon icon={faCloudDownloadAlt} />
+        <FontAwesomeIcon icon={faSpinner} spin={true} />
+      </span>
+    );
+  } else if (statusBar.type === "text") {
+    contents = <span>{statusBar.text} </span>;
   }
-  contents = <FontAwesomeIcon icon={faCheckCircle} style={{ margin: "5px" }} />;
 
   return (
     <div
