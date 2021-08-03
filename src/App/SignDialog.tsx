@@ -19,6 +19,15 @@ export const SignDialog = () => {
   if (open) {
     authui.start("#firebaseui-auth-container", {
       signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+      tosUrl: undefined,
+      privacyPolicyUrl: undefined,
+      signInFlow: "popup",
+      callbacks: {
+        signInSuccessWithAuthResult: () => {
+          setDialog("");
+          return false; // mean: no redirect
+        },
+      },
     });
   }
   return (
@@ -30,6 +39,7 @@ export const SignDialog = () => {
     >
       <DialogTitle id="form-dialog-title">Sign in</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
+        You need to sign in before you create a Ba on cloud.
         <div id="firebaseui-auth-container"></div>
       </DialogContent>
       <DialogActions>
