@@ -1,6 +1,7 @@
 import { VFusen } from "../VFusen";
 import { TFusenItem } from "../Fusen/FusenItem";
 import { TGroupItem } from "../Group/GroupItem";
+import { TUser } from "../Cloud/FirestoreIO";
 
 export const INITIAL_GLOBAL_STATE = {
   fusens: [] as VFusen[],
@@ -20,7 +21,8 @@ export const INITIAL_GLOBAL_STATE = {
   mouseState: "" as TMouseState,
   clicked_group: "" as "" | ItemId,
   clicked_fusen: "" as "" | ItemId,
-  statusBar: { text: "", type: "text" },
+  statusBar: { text: "", type: "no-connection" as TStatusType },
+  user: null as TUser,
 };
 
 type TDragTarget = "" | "selection" | ItemId;
@@ -32,8 +34,15 @@ export type ItemId = ItemIdBrand & string;
 
 type TDialog = "" | "AddFusen" | "Tutorial" | "Sign";
 export type TMenu = "" | "Main" | "Dev" | "Fusen" | "Selection" | "Group";
+type TStatusType =
+  | "text"
+  | "no-connection"
+  | "loading"
+  | "done"
+  | "uploading"
+  | "downloading"
+  | "text";
 type TMenuAnchor = null | Element;
-
 type TMouseState = "" | "selecting";
 
 type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;

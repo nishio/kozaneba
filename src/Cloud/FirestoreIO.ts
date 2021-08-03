@@ -1,7 +1,10 @@
 // Initialize Firebase
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/auth";
+import * as firebaseui from "firebaseui";
 import { State } from "reactn/default";
+import { setGlobal } from "reactn";
 
 const config = {
   apiKey: "AIzaSyB0wAxxeLeHr4udunpln5jCYpGpFGn7D00",
@@ -11,9 +14,18 @@ const config = {
 
 firebase.initializeApp(config);
 
-const db = firebase.firestore();
+export const db = firebase.firestore();
+export const auth = firebase.auth();
+export type TUser = firebase.User | null;
+auth.onAuthStateChanged((user) => {
+  setGlobal({ user });
+});
 
-export default db;
+export const authui = new firebaseui.auth.AuthUI(auth);
+
+export const showCurrentUser = () => {
+  console.log(auth.currentUser);
+};
 
 // types
 export type DocSnap =
