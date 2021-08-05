@@ -25,6 +25,7 @@ export const INITIAL_GLOBAL_STATE = {
   user: null as TUser,
   cloud_ba: "",
   usingFirestoreEmulator: false,
+  last_updated: 0,
 };
 
 type TDragTarget = "" | "selection" | ItemId;

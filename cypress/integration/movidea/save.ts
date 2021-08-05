@@ -11,6 +11,11 @@ describe("save", () => {
       m.toUseEmulator();
     });
 
+    cy.testid("main-menu").click();
+    cy.contains("Add Fusens").click();
+    cy.testid("textarea").type("a\nb\nc");
+    cy.testid("add-fusen-button").click();
+
     cy.testid("dev-menu").click();
     cy.contains("Trigger Cloud Save").click();
     cy.testid("continue-as-anonymous-user").click();
