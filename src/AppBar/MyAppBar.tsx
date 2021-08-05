@@ -11,10 +11,7 @@ export const MyAppBar = () => {
     >
       <Toolbar>
         <MainMenu />
-        <Typography variant="h6">
-          {/* className={classes.title} */}
-          Movable Ideas
-        </Typography>
+        <Typography variant="h6">Kozaneba</Typography>
         <DevMenu />
       </Toolbar>
     </AppBar>
