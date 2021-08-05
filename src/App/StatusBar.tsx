@@ -7,10 +7,25 @@ import {
   faTimes,
   faCloudUploadAlt,
   faCloudDownloadAlt,
+  faUserSlash,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
+const addTooltip = (children: JSX.Element, text: string, testid: string) => {
+  return (
+    <span className="tooltip">
+      {children}
+      <span className="tooltiptext" data-testid={testid}>
+        {text}
+      </span>
+    </span>
+  );
+};
 export const StatusBar = () => {
   const [statusBar] = useGlobal("statusBar");
+  const [user] = useGlobal("user");
+  const [cloud_ba] = useGlobal("cloud_ba");
+
   let contents = null;
   if (statusBar.type === "loading") {
     contents = <FontAwesomeIcon icon={faSpinner} spin={true} />;
@@ -19,12 +34,7 @@ export const StatusBar = () => {
       <FontAwesomeIcon icon={faCheckCircle} style={{ margin: "5px" }} />
     );
   } else if (statusBar.type === "no-connection") {
-    contents = (
-      <span style={{ margin: "5px" }}>
-        <FontAwesomeIcon icon={faCloud} />
-        <FontAwesomeIcon icon={faTimes} />
-      </span>
-    );
+    contents = <span style={{ margin: "5px" }}></span>;
   } else if (statusBar.type === "uploading") {
     contents = (
       <span style={{ margin: "5px" }}>
@@ -43,6 +53,57 @@ export const StatusBar = () => {
     contents = <span>{statusBar.text} </span>;
   }
 
+  let cloudStatus = null;
+  if (cloud_ba === "") {
+    cloudStatus = addTooltip(
+      <span style={{ margin: "5px" }}>
+        <FontAwesomeIcon icon={faCloud} />
+        <FontAwesomeIcon
+          icon={faTimes}
+          color="white"
+          style={{ marginLeft: "-14px", fontSize: "10px" }}
+        />
+      </span>,
+      "not save on cloud",
+      "cloud-status"
+    );
+  } else {
+    cloudStatus = addTooltip(
+      <span style={{ margin: "5px" }}>
+        <FontAwesomeIcon icon={faCloud} />
+      </span>,
+      "saved on cloud",
+      "cloud-status"
+    );
+  }
+
+  let userStatus = null;
+  if (user === null) {
+    userStatus = addTooltip(
+      <FontAwesomeIcon icon={faUserSlash} />,
+      "not signed in",
+      "login-status"
+    );
+  } else if (user.isAnonymous) {
+    userStatus = addTooltip(
+      <FontAwesomeIcon icon={faUser} />,
+      "signed in as anonymous user",
+      "login-status"
+    );
+  } else if (user.photoURL !== null) {
+    userStatus = addTooltip(
+      <img src={user.photoURL} alt="" width="16px" />,
+      user.displayName ?? "user with no display name",
+      "login-status"
+    );
+  } else {
+    userStatus = addTooltip(
+      <FontAwesomeIcon icon={faUser} />,
+      user.displayName ?? "user with no display name",
+      "login-status"
+    );
+  }
+
   return (
     <div
       style={{
@@ -57,7 +118,7 @@ export const StatusBar = () => {
         style={{
           paddingLeft: "10px",
           paddingRight: "10px",
-          overflow: "hidden",
+          // overflow: "hidden",
         }}
       >
         <div
@@ -73,7 +134,11 @@ export const StatusBar = () => {
             height: "100%",
           }}
         ></div>
-        {contents}
+        <div style={{ position: "relative" }}>
+          {userStatus}
+          {cloudStatus}
+          {contents}
+        </div>
       </div>
     </div>
   );

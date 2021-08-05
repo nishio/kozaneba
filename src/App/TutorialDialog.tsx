@@ -26,7 +26,7 @@ export const TutorialDialog = () => {
       <DialogTitle id="form-dialog-title">Tutorial</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
         <DialogContentText>Tutorial</DialogContentText>
-        No contents yet.
+        No tutorial contents yet.
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={onClose}>

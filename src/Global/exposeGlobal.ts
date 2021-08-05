@@ -28,6 +28,7 @@ const movidea = {
   screen_to_world,
   reset_selection,
   auth,
+  db,
   tmpfunc,
 };
 
