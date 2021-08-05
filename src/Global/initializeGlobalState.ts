@@ -24,6 +24,7 @@ export const INITIAL_GLOBAL_STATE = {
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
   cloud_ba: "",
+  usingFirestoreEmulator: false,
 };
 
 type TDragTarget = "" | "selection" | ItemId;

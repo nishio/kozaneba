@@ -18,6 +18,13 @@ const tmpfunc = () => {
       console.log(err);
     });
 };
+export const toUseEmulator = () => {
+  db.settings({ experimentalForceLongPolling: true });
+  db.useEmulator("localhost", 8080);
+  updateGlobal((g) => {
+    g.usingFirestoreEmulator = true;
+  });
+};
 const movidea = {
   getGlobal,
   setGlobal,
@@ -30,6 +37,7 @@ const movidea = {
   auth,
   db,
   tmpfunc,
+  toUseEmulator,
 };
 
 export type TMovidea = typeof movidea;

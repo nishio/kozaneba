@@ -5,6 +5,14 @@ import { TinySample } from "./TinySample";
 import { Tutorial } from "./Tutorial";
 import { Blank } from "./Blank";
 
+const Edit = () => {
+  const hash = new URLSearchParams(window.location.hash.substring(1));
+  useEffect(() => {
+    console.log("load", hash.get("edit"));
+  });
+
+  return <Blank></Blank>;
+};
 function App() {
   useEffect(() => {
     window.addEventListener("wheel", onWheel, { passive: false });
@@ -20,8 +28,10 @@ function App() {
     return <Blank />;
   }
   if (hash.has("tinysample")) {
-    // for test
     return <TinySample />;
+  }
+  if (hash.has("edit")) {
+    return <Edit />;
   }
 
   return <></>;

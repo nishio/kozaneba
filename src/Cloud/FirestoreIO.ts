@@ -40,16 +40,20 @@ export const load_from_server = (data: DocData): void => {};
 export const save_to_server = (state: State): void => {};
 
 export const state_to_docdate = (state: State): DocData => {
-  return new DocDataV3();
+  return {
+    itemStore: state.itemStore,
+    drawOrder: state.drawOrder,
+  };
 };
 export const docdate_to_state = (data: DocData): Partial<State> => {
   return {};
 };
-
-class DocDataV3 implements DocData {}
+const new_docdata = () => {
+  return {};
+};
 
 export const create_new_map = () => {
-  const docdata = new DocDataV3();
+  const docdata = new_docdata();
   _save(docdata).then((docRef: DocRef) => {});
 };
 export const load_map = () => {};

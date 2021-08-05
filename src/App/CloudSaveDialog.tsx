@@ -1,4 +1,4 @@
-import { useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "reactn";
 import {
   Button,
   Dialog,
@@ -6,7 +6,13 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import { auth, authui, db, DocRef } from "../Cloud/FirestoreIO";
+import {
+  auth,
+  authui,
+  db,
+  DocRef,
+  state_to_docdate,
+} from "../Cloud/FirestoreIO";
 import firebase from "firebase";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { updateGlobal } from "../Global/updateGlobal";
@@ -24,12 +30,15 @@ export const save = () => {
   updateGlobal((g) => {
     g.statusBar.type = "uploading";
   });
+
+  const doc = state_to_docdate(getGlobal());
   db.collection("ba")
-    .add({})
-    .then((doc: DocRef) => {
+    .add(doc)
+    .then((docRef: DocRef) => {
       updateGlobal((g) => {
         g.statusBar.type = "done";
-        g.cloud_ba = doc.id;
+        g.cloud_ba = docRef.id;
+        window.location.hash = `edit=${docRef.id}`;
       });
     });
 };

@@ -8,8 +8,7 @@ describe("save", () => {
     cy.viewport(500, 500);
 
     cy.movidea((m) => {
-      m.db.settings({ experimentalForceLongPolling: true });
-      m.db.useEmulator("localhost", 8080);
+      m.toUseEmulator();
     });
 
     cy.testid("dev-menu").click();

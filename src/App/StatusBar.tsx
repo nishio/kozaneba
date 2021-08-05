@@ -25,6 +25,7 @@ export const StatusBar = () => {
   const [statusBar] = useGlobal("statusBar");
   const [user] = useGlobal("user");
   const [cloud_ba] = useGlobal("cloud_ba");
+  const [usingFirestoreEmulator] = useGlobal("usingFirestoreEmulator");
 
   let contents = null;
   if (statusBar.type === "loading") {
@@ -71,6 +72,7 @@ export const StatusBar = () => {
     cloudStatus = addTooltip(
       <span style={{ margin: "5px" }}>
         <FontAwesomeIcon icon={faCloud} />
+        {usingFirestoreEmulator ? "E" : ""}
       </span>,
       "saved on cloud",
       "cloud-status"

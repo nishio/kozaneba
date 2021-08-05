@@ -10,6 +10,7 @@ import { UserInfo } from "./UserInfo";
 import { onGoogleSignIn } from "./onGoogleSignIn";
 import { signOut } from "./signOut";
 import { save } from "../App/CloudSaveDialog";
+import { toUseEmulator } from "../Global/exposeGlobal";
 
 const useStyles = makeStyles({
   root: {
@@ -49,6 +50,10 @@ export const DevMenu = () => {
       g.dialog = "CloudSave";
     });
   };
+
+  const onUseFirestoreEmulator = () => {
+    toUseEmulator();
+  };
   return (
     <>
       <Button
@@ -76,6 +81,9 @@ export const DevMenu = () => {
         <MenuItem onClick={showSignInDialog}>Show Sign-in Dialog</MenuItem>
         <MenuItem onClick={onCloudSave}>Show Cloud Save Dialog</MenuItem>
         <MenuItem onClick={triggerCloudSave}>Trigger Cloud Save</MenuItem>
+        <MenuItem onClick={onUseFirestoreEmulator}>
+          Use Firestore Emulator
+        </MenuItem>
       </Menu>
     </>
   );
