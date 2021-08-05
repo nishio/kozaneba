@@ -9,11 +9,13 @@ import {
   faCloudDownloadAlt,
   faUserSlash,
   faUser,
+  faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { updateGlobal } from "../Global/updateGlobal";
 
 const addTooltip = (children: JSX.Element, text: string, testid: string) => {
   return (
-    <span className="tooltip">
+    <span className="tooltip" style={{ margin: "5px" }}>
       {children}
       <span className="tooltiptext" data-testid={testid}>
         {text}
@@ -26,6 +28,7 @@ export const StatusBar = () => {
   const [user] = useGlobal("user");
   const [cloud_ba] = useGlobal("cloud_ba");
   const [usingFirestoreEmulator] = useGlobal("usingFirestoreEmulator");
+  const [in_tutorial] = useGlobal("in_tutorial");
 
   let contents = null;
   if (statusBar.type === "loading") {
@@ -57,7 +60,7 @@ export const StatusBar = () => {
   let cloudStatus = null;
   if (cloud_ba === "") {
     cloudStatus = addTooltip(
-      <span style={{ margin: "5px" }}>
+      <span>
         <FontAwesomeIcon icon={faCloud} />
         <FontAwesomeIcon
           icon={faTimes}
@@ -70,7 +73,7 @@ export const StatusBar = () => {
     );
   } else {
     cloudStatus = addTooltip(
-      <span style={{ margin: "5px" }}>
+      <span>
         <FontAwesomeIcon icon={faCloud} />
         {usingFirestoreEmulator ? "E" : ""}
       </span>,
@@ -106,6 +109,21 @@ export const StatusBar = () => {
     );
   }
 
+  const tutorialStatus = in_tutorial
+    ? addTooltip(
+        <FontAwesomeIcon
+          icon={faQuestionCircle}
+          onClick={() => {
+            updateGlobal((g) => {
+              g.dialog = "Tutorial";
+            });
+          }}
+        />,
+        "open tutorial",
+        "tutorial-status"
+      )
+    : null;
+
   return (
     <div
       style={{
@@ -137,9 +155,12 @@ export const StatusBar = () => {
           }}
         ></div>
         <div style={{ position: "relative" }}>
-          {userStatus}
-          {cloudStatus}
-          {contents}
+          <span style={{ margin: "5px" }}>
+            {tutorialStatus}
+            {userStatus}
+            {cloudStatus}
+            {contents}
+          </span>
         </div>
       </div>
     </div>

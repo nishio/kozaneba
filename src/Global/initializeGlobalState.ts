@@ -27,6 +27,8 @@ export const INITIAL_GLOBAL_STATE = {
   usingFirestoreEmulator: false,
   last_updated: 0,
   is_local_change: false,
+  in_tutorial: false,
+  tutorial_page: 0,
 };
 
 type TDragTarget = "" | "selection" | ItemId;

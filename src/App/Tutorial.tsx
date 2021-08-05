@@ -6,6 +6,8 @@ export const Tutorial = () => {
   useEffect(() => {
     updateGlobal((g) => {
       g.dialog = "Tutorial";
+      g.in_tutorial = true;
+      g.tutorial_page = 0;
     });
   });
   return <Blank />;
