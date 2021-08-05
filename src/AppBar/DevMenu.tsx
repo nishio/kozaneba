@@ -1,13 +1,15 @@
-import { Button, Divider, makeStyles, Menu, MenuItem } from "@material-ui/core";
-import firebase from "firebase";
+import { Button, makeStyles, Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { useGlobal } from "reactn";
-import { auth, showCurrentUser } from "../Cloud/FirestoreIO";
 import { updateGlobal } from "../Global/updateGlobal";
 import { show_menu } from "../Menu/show_menu";
 import { GroupHeader } from "./GroupHeader";
 import { Info } from "./Info";
+import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { UserInfo } from "./UserInfo";
+import { onGoogleSignIn } from "./onGoogleSignIn";
+import { signOut } from "./signOut";
+import { save } from "../App/CloudSaveDialog";
 
 const useStyles = makeStyles({
   root: {
@@ -32,62 +34,21 @@ export const DevMenu = () => {
   const onHello = () => {
     alert("Hello!");
   };
-  const onA = () => {
-    showCurrentUser();
+  const triggerCloudSave = () => {
+    save();
   };
 
-  const onB = () => {
-    console.log("login annonymously");
-    firebase
-      .auth()
-      .signInAnonymously()
-      .then(() => {
-        console.log("done");
-        console.log(auth.currentUser);
-        // @ts-ignore
-        window.user = auth.currentUser;
-        // Signed in..
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
-  };
-  const onC = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        // Sign-out successful.
-        console.log("signed out");
-        // @ts-ignore
-        window.user = auth.currentUser;
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-  };
-
-  const onD = () => {
+  const showSignInDialog = () => {
     updateGlobal((g) => {
       g.dialog = "Sign";
     });
   };
 
-  const onGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then((result) => {
-        // const credential: firebase.auth.OAuthCredential = result.credential!;
-      })
-      .catch((error) => {
-        throw error;
-      });
+  const onCloudSave = () => {
+    updateGlobal((g) => {
+      g.dialog = "CloudSave";
+    });
   };
-
   return (
     <>
       <Button
@@ -95,6 +56,7 @@ export const DevMenu = () => {
         onClick={onButtonClick}
         style={{ marginLeft: "2em" }}
         className={classess.root}
+        data-testid="dev-menu"
       >
         DEV
       </Button>
@@ -108,11 +70,12 @@ export const DevMenu = () => {
         <Info>
           Current User: <UserInfo />
         </Info>
-        <MenuItem onClick={onA}>Show Current User</MenuItem>
-        <MenuItem onClick={onB}>Annonymous Sign In</MenuItem>
-        <MenuItem onClick={onGoogle}>Google Sign In</MenuItem>
-        <MenuItem onClick={onC}>Sign Out</MenuItem>
-        <MenuItem onClick={onD}>Show Sign-in Dialog</MenuItem>
+        <MenuItem onClick={signInAsAnonymousUser}>Annonymous Sign In</MenuItem>
+        <MenuItem onClick={onGoogleSignIn}>Google Sign In</MenuItem>
+        <MenuItem onClick={signOut}>Sign Out</MenuItem>
+        <MenuItem onClick={showSignInDialog}>Show Sign-in Dialog</MenuItem>
+        <MenuItem onClick={onCloudSave}>Show Cloud Save Dialog</MenuItem>
+        <MenuItem onClick={triggerCloudSave}>Trigger Cloud Save</MenuItem>
       </Menu>
     </>
   );
