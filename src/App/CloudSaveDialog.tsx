@@ -17,9 +17,10 @@ import firebase from "firebase";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { updateGlobal } from "../Global/updateGlobal";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
+import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";
 
-export const save = () => {
-  console.log("save");
+export const initial_save = () => {
+  console.log("initial save");
   if (auth.currentUser === null) {
     updateGlobal((g) => {
       g.dialog = "CloudSave";
@@ -39,6 +40,7 @@ export const save = () => {
         g.statusBar.type = "done";
         g.cloud_ba = docRef.id;
         window.location.hash = `edit=${docRef.id}`;
+        set_up_read_subscription(g.cloud_ba);
       });
     });
 };
@@ -51,7 +53,7 @@ export const CloudSaveDialog = () => {
   };
   const onContinue = () => {
     signInAsAnonymousUser().then(() => {
-      save();
+      initial_save();
       close_menu_and_dialog();
     });
   };
@@ -63,7 +65,7 @@ export const CloudSaveDialog = () => {
       signInFlow: "popup",
       callbacks: {
         signInSuccessWithAuthResult: () => {
-          save();
+          initial_save();
           close_menu_and_dialog();
           return false; // mean: no redirect
         },

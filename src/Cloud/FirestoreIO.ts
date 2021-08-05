@@ -6,6 +6,8 @@ import * as firebaseui from "firebaseui";
 import { State } from "reactn/default";
 import { setGlobal } from "reactn";
 import { TItem } from "../Global/initializeGlobalState";
+import { TFusenItem } from "../Fusen/FusenItem";
+import { TGroupItem } from "../Group/GroupItem";
 
 const config = {
   apiKey: "AIzaSyB0wAxxeLeHr4udunpln5jCYpGpFGn7D00",
@@ -43,6 +45,7 @@ export const save_to_server = (state: State): void => {};
 const item_to_object = (x: TItem) => {
   return Object.assign({}, x);
 };
+
 export const state_to_docdate = (state: State): DocData => {
   const itemStore = {} as { [key: string]: object };
   Object.entries(state.itemStore).forEach(([key, value]) => {
@@ -50,14 +53,53 @@ export const state_to_docdate = (state: State): DocData => {
   });
 
   return {
+    version: 3,
     itemStore,
     drawOrder: state.drawOrder,
-    lastUpdated: state.last_updated,
+    last_updated: state.last_updated,
   };
 };
-export const docdate_to_state = (data: DocData): Partial<State> => {
-  return data;
+
+interface IHasType {
+  type: string;
+}
+function hasType(x: object): x is IHasType {
+  return "type" in x;
+}
+
+interface IHasItems {
+  items: string[];
+}
+function hasItems(x: object): x is IHasItems {
+  return "items" in x;
+}
+
+const to_item = (x: unknown): TItem => {
+  const obj = Object.assign({}, x);
+  if (hasType(obj)) {
+    if (obj.type === "piece") {
+      return obj as TFusenItem;
+    } else if (obj.type === "group") {
+      if (hasItems(obj)) {
+        return obj as TGroupItem;
+      }
+      throw new Error(`a group has no items: ${obj}`);
+    } else {
+      throw new Error(`unknown type ${obj.type} on item ${obj}`);
+    }
+  } else {
+    throw new Error();
+  }
 };
+export const docdate_to_state = (data: DocData): Partial<State> => {
+  const ret = { ...data };
+  Object.entries(data.itemStore).forEach(([key, value]) => {
+    ret.itemStore[key] = to_item(value);
+  });
+
+  return ret;
+};
+
 const new_docdata = () => {
   return {};
 };

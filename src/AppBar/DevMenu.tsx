@@ -9,7 +9,7 @@ import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { UserInfo } from "./UserInfo";
 import { onGoogleSignIn } from "./onGoogleSignIn";
 import { signOut } from "./signOut";
-import { save } from "../App/CloudSaveDialog";
+import { initial_save } from "../App/CloudSaveDialog";
 import { toUseEmulator } from "../Global/exposeGlobal";
 
 const useStyles = makeStyles({
@@ -36,7 +36,7 @@ export const DevMenu = () => {
     alert("Hello!");
   };
   const triggerCloudSave = () => {
-    save();
+    initial_save();
   };
 
   const showSignInDialog = () => {

@@ -5,30 +5,13 @@ import { TinySample } from "./TinySample";
 import { Tutorial } from "./Tutorial";
 import { Blank } from "./Blank";
 import { updateGlobal } from "../Global/updateGlobal";
-import { db, docdate_to_state, DocSnap } from "../Cloud/FirestoreIO";
-import { setGlobal } from "reactn";
-
-const set_up_read_subscription = (ba: string) => {
-  let unsubscribe = db
-    .collection("ba")
-    .doc(ba)
-    .onSnapshot((doc: DocSnap) => {
-      const data = doc.data();
-      if (data === undefined) {
-        throw new TypeError("doc.data() is undefined");
-      }
-
-      const server = docdate_to_state(data);
-      // TODO: add check of last_updated
-      setGlobal(server);
-      updateGlobal((g) => {
-        g.statusBar.type = "done";
-      });
-    });
-  return unsubscribe;
-};
+import { useGlobal } from "reactn";
+import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";
+import { save } from "../Cloud/save";
 
 const Edit: React.FC<{ ba: string }> = ({ ba }) => {
+  const [is_loacl_change] = useGlobal("is_local_change");
+
   useEffect(() => {
     console.log("loading", ba);
     updateGlobal((g) => {
@@ -36,7 +19,16 @@ const Edit: React.FC<{ ba: string }> = ({ ba }) => {
       g.cloud_ba = ba;
     });
     return set_up_read_subscription(ba);
-  });
+  }, [ba]);
+
+  useEffect(() => {
+    if (is_loacl_change) {
+      updateGlobal((g) => {
+        g.is_local_change = false;
+      });
+      save();
+    }
+  }, [is_loacl_change]);
 
   return <Blank></Blank>;
 };

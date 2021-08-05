@@ -12,6 +12,7 @@ import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { add_v2, sub_v2 } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
 import { remove_item } from "../utils/remove_item";
+import { group } from "console";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -96,6 +97,8 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
       g.selectionRange.left = qx;
       g.selectionRange.top = qy;
       g.drag_target = "";
+      g.is_local_change = true;
+      g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
       let position = sub_v2(
         screen_to_world([event.clientX, event.clientY]),
@@ -115,6 +118,8 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
       }
       g.itemStore[g.drag_target].position = position;
       g.drag_target = "";
+      g.is_local_change = true;
+      g.last_updated = Date.now();
     } else {
       throw new Error();
     }
@@ -132,12 +137,14 @@ export const onGroupDrop = (
   event.stopPropagation();
 
   const target_id = getGlobal().drag_target;
-  if (group.id === target_id) {
+  const group_id = group.id;
+  if (group_id === target_id) {
     // drop a group on itself
     onCanvasDrop(event);
     return;
   }
   updateGlobal((g) => {
+    const group = g.itemStore[group_id] as TGroupItem;
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
       const delta = sub_v2(
@@ -164,6 +171,8 @@ export const onGroupDrop = (
       g.selected_items = [];
       g.selectionRange = { top: 0, left: 0, width: 0, height: 0 };
       g.is_selected = false;
+      g.is_local_change = true;
+      g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
       let position = sub_v2(
         screen_to_world([event.clientX, event.clientY]),
@@ -179,11 +188,20 @@ export const onGroupDrop = (
         position = sub_v2(add_v2(position, p.position), group.position);
       } else {
         g.drawOrder = remove_item(g.drawOrder, g.drag_target);
+        console.log(
+          group,
+          group.items,
+          g.drag_target,
+          Object.isExtensible(group),
+          Object.isExtensible(group.items)
+        );
         group.items.push(g.drag_target);
         position = sub_v2(position, group.position);
       }
       g.itemStore[g.drag_target].position = position;
       g.drag_target = "";
+      g.is_local_change = true;
+      g.last_updated = Date.now();
     } else {
       throw new Error();
     }
