@@ -59,7 +59,7 @@ export const DevMenu = () => {
       <Button
         color="inherit"
         onClick={onButtonClick}
-        style={{ marginLeft: "2em" }}
+        style={{ marginLeft: "auto" }}
         className={classess.root}
         data-testid="dev-menu"
       >
