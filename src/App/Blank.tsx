@@ -9,6 +9,7 @@ import { GroupMenu } from "../Menu/GroupMenu";
 import { StatusBar } from "./StatusBar";
 import { TutorialDialog } from "./TutorialDialog";
 import { SignDialog } from "./SignDialog";
+import { CloudSaveDialog } from "./CloudSaveDialog";
 
 export const Blank = () => {
   return (
@@ -19,6 +20,7 @@ export const Blank = () => {
       <AddFusenDialog />
       <TutorialDialog />
       <SignDialog />
+      <CloudSaveDialog />
       <FusenMenu />
       <SelectionMenu />
       <GroupMenu />

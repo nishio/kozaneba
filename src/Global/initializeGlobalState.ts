@@ -23,6 +23,7 @@ export const INITIAL_GLOBAL_STATE = {
   clicked_fusen: "" as "" | ItemId,
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
+  cloud_ba: "",
 };
 
 type TDragTarget = "" | "selection" | ItemId;
@@ -32,7 +33,7 @@ enum ItemIdBrand {
 }
 export type ItemId = ItemIdBrand & string;
 
-type TDialog = "" | "AddFusen" | "Tutorial" | "Sign";
+type TDialog = "" | "AddFusen" | "Tutorial" | "Sign" | "CloudSave";
 export type TMenu = "" | "Main" | "Dev" | "Fusen" | "Selection" | "Group";
 type TStatusType =
   | "text"
