@@ -16,3 +16,6 @@ html {
 .App {
   height: 100%;
 }
+.firebase-emulator-warning {
+  width: 50% !important;
+}

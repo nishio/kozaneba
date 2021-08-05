@@ -24,7 +24,7 @@
 // require('./commands')
 
 import { State } from "reactn/default";
-import { TMovidea } from "../../src/exposeGlobal";
+import { TMovidea } from "../../src/Global/exposeGlobal";
 
 declare global {
   namespace Cypress {
