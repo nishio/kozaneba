@@ -22,9 +22,18 @@ const tutorial_pages = [
   </div>,
   <div>
     <H>Kozaneba is a tool to organize your thought</H>
-    <p>To organize your thought, </p>
-    <p>Kozane(小札, small plate)</p>
-    <p>If you do not need tutorial, you can close this dialog now.</p>
+    <p>
+      To organize your thought, we use Kozane(小札, small plate) and Ba(場,
+      large space).
+    </p>
+    <p>
+      You may have seen similar methods using sticky notes and a whiteboard. The
+      origin of those methods is before the invention of sticky notes.
+    </p>
+    <p>
+      Kozaneba is a new member of the method family, which uses digital Kozane
+      and infinite Ba.
+    </p>
     <p>Please click `Next` button...</p>
   </div>,
   <div>
