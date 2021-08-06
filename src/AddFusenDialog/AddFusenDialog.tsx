@@ -77,11 +77,16 @@ export const AddFusenDialog = () => {
       g.dialog = "";
     });
   };
+
+  const fullScreen = false;
+  // It was true, good for edit large contents
+  // Now it is false, good for tutorial player understand it is a dialog
+  // It might better to be changeable in future.
   return (
     <Dialog
       open={open}
       fullWidth={true}
-      fullScreen={true}
+      fullScreen={fullScreen}
       onClose={onClose}
       data-testid="add-fusen-dialog"
     >
@@ -93,13 +98,18 @@ export const AddFusenDialog = () => {
             <TextareaAutosize
               autoFocus
               id="multiline"
-              style={{ width: "calc(100% - 10px)" }}
-              minRows={40}
+              style={{
+                width: "calc(100% - 10px)",
+                backgroundColor: "#eee",
+                border: "none",
+              }}
+              minRows={30}
               data-testid="textarea"
               ref={textarea}
             ></TextareaAutosize>
           </div>
-          <div style={{ maxWidth: "20%" }}>
+
+          {/* <div style={{ maxWidth: "20%" }}>
             <div
               style={{
                 position: "sticky",
@@ -114,7 +124,7 @@ export const AddFusenDialog = () => {
               <hr />
               <hr />
             </div>
-          </div>
+          </div> */}
         </div>
       </DialogContent>
       <DialogActions>
