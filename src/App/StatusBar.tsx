@@ -35,7 +35,9 @@ export const StatusBar = () => {
     contents = <FontAwesomeIcon icon={faSpinner} spin={true} />;
   } else if (statusBar.type === "done") {
     contents = (
-      <FontAwesomeIcon icon={faCheckCircle} style={{ margin: "5px" }} />
+      <span className="tooltip" style={{ margin: "5px" }}>
+        <FontAwesomeIcon icon={faCheckCircle} />
+      </span>
     );
   } else if (statusBar.type === "no-connection") {
     contents = <span style={{ margin: "5px" }}></span>;
@@ -68,7 +70,7 @@ export const StatusBar = () => {
           style={{ marginLeft: "-14px", fontSize: "10px" }}
         />
       </span>,
-      "not save on cloud",
+      "not saved yet",
       "cloud-status"
     );
   } else {
@@ -77,7 +79,7 @@ export const StatusBar = () => {
         <FontAwesomeIcon icon={faCloud} />
         {usingFirestoreEmulator ? "E" : ""}
       </span>,
-      "saved on cloud",
+      "saveing to the cloud",
       "cloud-status"
     );
   }
