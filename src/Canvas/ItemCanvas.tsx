@@ -12,15 +12,25 @@ import {
 } from "../Event/mouseEventMamager";
 import { SelectionView } from "../Selection/Selection";
 import { ItemId } from "../Global/initializeGlobalState";
+import { useEffect, useRef } from "react";
+import { onWheel } from "../Event/onWheel";
 
 export const ItemCanvas = () => {
   const [fusens] = useGlobal("fusens");
   const [drawOrder] = useGlobal("drawOrder");
   const [selected_items] = useGlobal("selected_items");
   const [is_selected] = useGlobal("is_selected");
+  const ref = useRef<HTMLDivElement>(null);
   const offset = { x: 0, y: 0 };
   const not_selected_items = [] as ItemId[];
   let contents: JSX.Element;
+
+  useEffect(() => {
+    if (ref.current !== null) {
+      ref.current.addEventListener("wheel", onWheel, { passive: false });
+    }
+  }, [ref]);
+
   if (is_selected) {
     const m = {} as { [key: string]: boolean };
     selected_items.forEach((id) => {
@@ -59,6 +69,7 @@ export const ItemCanvas = () => {
       onMouseDown={onCanvasMouseDown}
       onMouseMove={onCanvasMouseMove}
       data-testid="canvas"
+      ref={ref}
     >
       {contents}
     </div>
