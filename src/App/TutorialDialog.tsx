@@ -8,42 +8,8 @@ import {
   DialogTitle,
 } from "@material-ui/core";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
-import styled from "styled-components";
+import { tutorial_pages } from "./tutorial_pages";
 
-const H = styled.h2`
-  margin-top: 0;
-`;
-const tutorial_pages = [
-  <div>
-    <H>Welcome to Kozaneba!</H>
-    <p>You are currently in the tutorial mode.</p>
-    <p>If you do not need tutorial, you can close this dialog now.</p>
-    <p>Please click `Next` button...</p>
-  </div>,
-  <div>
-    <H>Kozaneba is a tool to organize your thought</H>
-    <p>
-      To organize your thought, we use Kozane(小札, small plate) and Ba(場,
-      large space).
-    </p>
-    <p>
-      You may have seen similar methods using sticky notes and a whiteboard. The
-      origin of those methods is before the invention of sticky notes.
-    </p>
-    <p>
-      Kozaneba is a new member of the method family, which uses digital Kozane
-      and infinite Ba.
-    </p>
-    <p>Please click `Next` button...</p>
-  </div>,
-  <div>
-    <p>
-      You can open this <b>tutorial dialog</b> by clicking the icon on
-      right-bottom <b>status bar</b>.
-    </p>
-    <img src="/open_tutorial.png" alt="" />
-  </div>,
-];
 export const TutorialDialog = () => {
   const [dialog] = useGlobal("dialog");
   const [p, setPage] = useGlobal("tutorial_page");
