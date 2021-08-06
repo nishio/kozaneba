@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
@@ -49,9 +48,15 @@ export const TutorialDialog = () => {
       <DialogTitle id="form-dialog-title">
         Tutorial ({p + 1} / {tutorial_pages.length})
       </DialogTitle>
-      <DialogContent style={{ padding: "0px 24px" }}>
+      <DialogContent
+        style={{
+          padding: "0px 24px",
+          overflow: "scroll",
+        }}
+      >
         {/* <DialogContentText>Tutorial</DialogContentText> */}
         {page}
+        <hr />
       </DialogContent>
       <DialogActions>
         {Prev}
