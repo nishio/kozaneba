@@ -12,7 +12,7 @@ describe("save", () => {
     });
 
     cy.testid("main-menu").click();
-    cy.contains("Add Fusens").click();
+    cy.contains("Add Kozane").click();
     cy.testid("textarea").type("a\nb\nc");
     cy.testid("add-fusen-button").click();
 

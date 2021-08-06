@@ -34,7 +34,7 @@ export const MainMenu = () => {
         <MenuIcon />
       </IconButton>
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-        <MenuItem onClick={onAddFusen}>Add Fusens</MenuItem>
+        <MenuItem onClick={onAddFusen}>Add Kozane</MenuItem>
       </Menu>
     </>
   );

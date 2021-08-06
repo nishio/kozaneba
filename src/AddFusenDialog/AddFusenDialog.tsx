@@ -85,7 +85,7 @@ export const AddFusenDialog = () => {
       onClose={onClose}
       data-testid="add-fusen-dialog"
     >
-      <DialogTitle id="form-dialog-title">Add Fusens</DialogTitle>
+      <DialogTitle id="form-dialog-title">Add Kozane</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
         {/* <DialogContentText>...</DialogContentText> */}
         <div style={{ display: "flex" }}>
@@ -126,7 +126,7 @@ export const AddFusenDialog = () => {
           onClick={onAddFusens}
           data-testid="add-fusen-button"
         >
-          Add Fusens
+          Add Kozane
         </Button>
       </DialogActions>
     </Dialog>
