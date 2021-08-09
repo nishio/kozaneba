@@ -10,8 +10,19 @@ import { StatusBar } from "./StatusBar";
 import { TutorialDialog } from "./TutorialDialog";
 import { SignDialog } from "./SignDialog";
 import { CloudSaveDialog } from "./CloudSaveDialog";
+import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";
+import { useEffect, useGlobal } from "reactn";
+import { LocalChangeWatcher } from "./LocalChangeWatcher";
 
 export const Blank = () => {
+  const [cloud_ba] = useGlobal("cloud_ba");
+
+  useEffect(() => {
+    if (cloud_ba !== "") {
+      return set_up_read_subscription(cloud_ba);
+    }
+  }, [cloud_ba]);
+
   return (
     <div className="App">
       <MyAppBar />
@@ -26,6 +37,7 @@ export const Blank = () => {
       <GroupMenu />
       <MenuAnchor />
       <StatusBar />
+      <LocalChangeWatcher />
     </div>
   );
 };
