@@ -26,12 +26,15 @@ const Gyazo: React.FC<{ url: string }> = ({ url }) => {
 export const tutorial_pages = [
   <div>
     <H>Welcome to Kozaneba!</H>
-    <p>You are currently in the tutorial mode.</p>
-    <p>If you do not need tutorial, you can close this dialog now.</p>
+    <p>Kozaneba is digital stationery to organize your thought.</p>
+    <p>
+      You are currently in the tutorial mode. If you do not need tutorial, you
+      can close this dialog now.
+    </p>
     <p>Please click `Next` button...</p>
   </div>,
   <div>
-    <H>Kozaneba is a tool to organize your thought</H>
+    <H>digital stationery to organize your thought</H>
     <p>
       To organize your thought, we use Kozane(小札, small plate) and Ba(場,
       large space).
@@ -126,6 +129,38 @@ export const tutorial_pages = [
       To enable auto-save, you need to create a user account. You can sign in
       using Google integration or create an anonymous account.
     </p>
-    <Gyazo url="https://gyazo.com/6f34fd9f2cda800a56ab77429323d39c" />
+    <Gyazo url="https://gyazo.com/57c3ed5edc084a00522b447352d98980" />
+  </div>,
+  <div>
+    <H>Saved?</H>
+    <p>
+      After enabling auto-save, you can see the cloud status icon and the user
+      status icon on the status bar changed. The `check mark` on the status bar
+      indicates that saved all local changes.
+    </p>
+    <Gyazo url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584" />
+  </div>,
+  <div>
+    <H>Don't classify, organize!</H>
+    <p>
+      Some people try to classify kozane. There is a misconception that kozane
+      is a tool to categorize and store information.
+    </p>
+    <p>
+      Kozane is a tool to sort and rearrange information. By doing this, we
+      often find connections between kozane that seem to have nothing related to
+      each other. After discovering unexpected relationships, kozane is
+      organized into a structure that you did not anticipate beforehand.
+    </p>
+    <p>
+      If you put the kozane into a rigid subjective classification, they will
+      suffocate and die. Don't classify kozane by its content, but organize them
+      by your personal interest.
+    </p>
+    <p>
+      (This page is a digest from a book by Tadao Umesao, who invented Kozane
+      Method. Reference: "Classification is not the goal" from Tadao Umesao
+      (1969) "The Art of Intellectual Production" p.57)
+    </p>
   </div>,
 ];
