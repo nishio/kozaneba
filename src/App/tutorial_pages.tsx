@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { updateGlobal } from "../Global/updateGlobal";
 
 const H = styled.h2`
   margin-top: 0;
@@ -23,6 +24,65 @@ const Gyazo: React.FC<{ url: string }> = ({ url }) => {
   return <img src={raw_url} alt="" style={{ maxWidth: "100%" }} />;
 };
 
+const SAMPLE_LINES = `words
+short phrases
+You can convert longer sentences into kozane.
+The font size is automatically adjusted depends on its length.
+font size
+auto adjust
+I recommend using a short, concise expression of your thought.
+use concise expression
+Kozaneba
+digital stationery
+organize your thought
+Kozane
+小札
+small plate
+Ba
+場
+large space
+sticky notes
+whiteboard
+digital Kozane
+infinite Ba
+move Kozane
+drag
+two-finger gestures
+scroll and zoom the Ba
+select multiple objects
+auto save
+to the cloud
+don't classify
+organize
+classify
+categorize
+store
+recombine
+組み替え
+rearrange
+並び替え
+組み=group
+並び=order
+替え=change
+discover unexpected relationships
+organized into a structure
+rigid subjective classification
+suffocate and die
+content
+your personal interest
+Tadao Umesao
+Kozane Method
+Classification is not the goal
+1969
+The Art of Intellectual Production
+
+`;
+const openPrefilledDialog = () => {
+  updateGlobal((g) => {
+    g.add_kozane_text = SAMPLE_LINES;
+    g.dialog = "AddKozane";
+  });
+};
 export const tutorial_pages = [
   <div>
     <H>Welcome to Kozaneba!</H>
@@ -88,18 +148,6 @@ export const tutorial_pages = [
     />
   </div>,
   <div>
-    <H>Automatic font size adjustment</H>
-    <p>
-      You can convert words, short phrases, or longer sentences into kozane. The
-      font size is automatically adjusted depends on its length.
-    </p>
-    <p>I recommend using a short, concise expression of your thought.</p>
-    <Gyazo
-      url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"
-      key="adjust_size"
-    />
-  </div>,
-  <div>
     <H>Let's scroll and zoom the Ba</H>
     <p>With two-finger gestures, you can scroll and zoom the Ba.</p>
     <iframe
@@ -124,6 +172,24 @@ export const tutorial_pages = [
       key="object menu"
     />
   </div>,
+  <div>
+    <H>Automatic font size adjustment</H>
+    <p>
+      You can convert words, short phrases, or longer sentences into kozane. The
+      font size is automatically adjusted depends on its length.
+    </p>
+    <p>I recommend using a short, concise expression of your thought.</p>
+    <p>
+      <button onClick={openPrefilledDialog}>Click me</button> to open the
+      pre-filled `Add Kozane` dialog. It makes a lot of kozane to further
+      explanation.
+    </p>
+    <Gyazo
+      url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"
+      key="adjust_size"
+    />
+  </div>,
+
   <div>
     <H>Let's select objects</H>
     <p>You can select multiple objects and make them into a new group.</p>
@@ -174,10 +240,10 @@ export const tutorial_pages = [
       is a tool to categorize and store information.
     </p>
     <p>
-      Kozane is a tool to sort and rearrange information. By doing this, we
+      Kozane is a tool to recombine and rearrange information. By doing this, we
       often find connections between kozane that seem to have nothing related to
       each other. After discovering unexpected relationships, kozane is
-      organized into a structure that you did not anticipate beforehand.
+      organized into a structure that you did not anticipate beforehand.{" "}
     </p>
     <p>
       If you put the kozane into a rigid subjective classification, they will
