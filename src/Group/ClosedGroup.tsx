@@ -1,11 +1,18 @@
 import React from "react";
 import { NameplateKozane } from "../Kozane/NameplateKozane";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
-import { Props } from "./Group";
+
 import { GroupDiv } from "./GroupDiv";
 import { PADDING, BORDER } from "../dimension/get_bounding_box";
+import { TGroupItem } from "./GroupItem";
 
-export const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
+export type Props = {
+  value: TGroupItem;
+  offset: { x: number; y: number };
+  onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+};
+
+export const ClosedGroup: React.FC<Props> = ({ offset, value, onClick }) => {
   const [x, y] = value.position;
   const scale = value.scale;
   const width = KOZANE_WIDTH + PADDING * 2;
@@ -19,7 +26,12 @@ export const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
     y: height / 2,
   };
   return (
-    <GroupDiv style={style} key={value.id} data-testid={value.id}>
+    <GroupDiv
+      style={style}
+      key={value.id}
+      data-testid={value.id}
+      onClick={onClick}
+    >
       <NameplateKozane
         offset={new_offset}
         value={{
