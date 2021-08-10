@@ -38,6 +38,8 @@ export const INITIAL_GLOBAL_STATE = {
   show_devmenu: true,
   fix_timestamp_for_test: null as null | number,
   fix_ba_for_test: "",
+
+  add_kozane_text: "",
 };
 
 type TDragTarget = "" | "selection" | ItemId;

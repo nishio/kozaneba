@@ -30,10 +30,12 @@ function get_one_line(multiline: string) {
 
 export const AddKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
+  const [text, setText] = useGlobal("add_kozane_text");
   const textarea = createRef<HTMLTextAreaElement>();
   const open = dialog === "AddKozane";
   const onClose = () => {
     setDialog("");
+    setText("");
   };
 
   const onAddKozane = () => {
@@ -75,6 +77,7 @@ export const AddKozaneDialog = () => {
       });
       g.drawOrder.push(group.id);
       g.dialog = "";
+      g.add_kozane_text = "";
     });
   };
 
@@ -106,7 +109,8 @@ export const AddKozaneDialog = () => {
               minRows={30}
               data-testid="textarea"
               ref={textarea}
-            ></TextareaAutosize>
+              defaultValue={text}
+            />
           </div>
 
           {/* <div style={{ maxWidth: "20%" }}>

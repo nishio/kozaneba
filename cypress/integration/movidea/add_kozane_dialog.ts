@@ -42,4 +42,9 @@ describe("add_kozane_dialog", () => {
         });
     });
   });
+  it("initial text", () => {
+    cy.setGlobal({ add_kozane_text: "hello" });
+    cy.testid("main-menu").click();
+    cy.contains("Add Kozane").click();
+  });
 });
