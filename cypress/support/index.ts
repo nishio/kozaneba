@@ -33,6 +33,7 @@ declare global {
       testid(testid: string): Chainable<Element>;
       updateGlobal(callback: (g: State) => void): Chainable<Element>;
       getGlobal(callback: (g: State) => unknown): Chainable<unknown>;
+      setGlobal(g: Partial<State>): Chainable<unknown>;
     }
   }
 }
@@ -66,6 +67,12 @@ Cypress.Commands.add("updateGlobal", (callback: (g: State) => void) => {
 Cypress.Commands.add("getGlobal", (callback: (g: State) => unknown) => {
   return cy.movidea((movidea) => {
     return cy.wrap(callback(movidea.getGlobal()));
+  });
+});
+
+Cypress.Commands.add("setGlobal", (g: Partial<State>) => {
+  return cy.movidea((movidea) => {
+    movidea.setGlobal(g);
   });
 });
 
