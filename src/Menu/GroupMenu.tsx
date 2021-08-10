@@ -40,13 +40,14 @@ export const GroupMenu = () => {
     setMenu("");
   };
 
-  const isOpenGroup = group.isOpen;
-  const labelOpenClose = isOpenGroup ? "close" : "open";
-  const onOpenClose = () => {
-    updateGlobal((g) => {
-      (g.itemStore[gid] as GroupItem).isOpen = !isOpenGroup;
-    });
-  };
+  // after deletion of group it causes error
+  // const isOpenGroup = group.isOpen;
+  // const labelOpenClose = isOpenGroup ? "close" : "open";
+  // const onOpenClose = () => {
+  //   updateGlobal((g) => {
+  //     (g.itemStore[gid] as GroupItem).isOpen = !isOpenGroup;
+  //   });
+  // };
 
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
