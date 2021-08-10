@@ -4,7 +4,7 @@ import { useGlobal } from "reactn";
 import MenuIcon from "@material-ui/icons/Menu";
 import { show_menu } from "../Menu/show_menu";
 import { updateGlobal } from "../Global/updateGlobal";
-import { initial_save } from "../App/CloudSaveDialog";
+import { initial_save } from "../App/initial_save";
 import { close_menu_and_dialog } from "./close_menu";
 
 export const MainMenu = () => {

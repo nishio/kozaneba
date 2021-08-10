@@ -36,6 +36,8 @@ export const INITIAL_GLOBAL_STATE = {
   tutorial_page: 0,
 
   show_devmenu: true,
+  fix_timestamp_for_test: null as null | number,
+  fix_ba_for_test: "",
 };
 
 type TDragTarget = "" | "selection" | ItemId;
