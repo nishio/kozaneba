@@ -55,7 +55,10 @@ export const tutorial_pages = [
       You can open this <b>tutorial dialog</b> by clicking the icon on
       right-bottom <b>status bar</b>.
     </p>
-    <Gyazo url="https://gyazo.com/afe024068b9f42f1aa04b1fe404daa5d"></Gyazo>
+    <Gyazo
+      url="https://gyazo.com/afe024068b9f42f1aa04b1fe404daa5d"
+      key="statusbar"
+    />
     <p>Let's close and open this dialog.</p>
   </div>,
   <div>
@@ -68,7 +71,10 @@ export const tutorial_pages = [
       By clicking ADD KOZANE button, Kozaneba makes each line into one kozane
       and puts all newly added kozane in a group.
     </p>
-    <Gyazo url="https://gyazo.com/cbf3d0f3c616fc2a5575d7d648db6883" />
+    <Gyazo
+      url="https://gyazo.com/cbf3d0f3c616fc2a5575d7d648db6883"
+      key="add_kozane"
+    />
   </div>,
   <div>
     <H>Let's move Kozane!</H>
@@ -76,7 +82,10 @@ export const tutorial_pages = [
       You can move a group by dragging it. You can move a kozane out from its
       belonging group and into another group.
     </p>
-    <Gyazo url="https://gyazo.com/030902caab04818679b6db3e510e570b" />
+    <Gyazo
+      url="https://gyazo.com/030902caab04818679b6db3e510e570b"
+      key="move_kozane"
+    />
   </div>,
   <div>
     <H>Automatic font size adjustment</H>
@@ -85,7 +94,10 @@ export const tutorial_pages = [
       font size is automatically adjusted depends on its length.
     </p>
     <p>I recommend using a short, concise expression of your thought.</p>
-    <Gyazo url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7" />
+    <Gyazo
+      url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"
+      key="adjust_size"
+    />
   </div>,
   <div>
     <H>Let's scroll and zoom the Ba</H>
@@ -107,12 +119,18 @@ export const tutorial_pages = [
   <div>
     <H>Let's click to show menu</H>
     <p>By clicking an object, the menu to handle the object appears.</p>
-    <Gyazo url="https://gyazo.com/7988397249341e8a42570e47a2f22b6b" />
+    <Gyazo
+      url="https://gyazo.com/7988397249341e8a42570e47a2f22b6b"
+      key="object menu"
+    />
   </div>,
   <div>
     <H>Let's select objects</H>
     <p>You can select multiple objects and make them into a new group.</p>
-    <Gyazo url="https://gyazo.com/43fe6d98037a2d91a94618ca3a736978" />
+    <Gyazo
+      url="https://gyazo.com/43fe6d98037a2d91a94618ca3a736978"
+      key="select objects"
+    />
   </div>,
   <div>
     <H>It's not saved yet!</H>
@@ -121,7 +139,10 @@ export const tutorial_pages = [
       automatically saves the Ba to the cloud. Let's see how to enable auto-save
       on the next page.
     </p>
-    <Gyazo url="https://gyazo.com/6f34fd9f2cda800a56ab77429323d39c" />
+    <Gyazo
+      url="https://gyazo.com/6f34fd9f2cda800a56ab77429323d39c"
+      key="not saved"
+    />
   </div>,
   <div>
     <H>Let's enable auto-save</H>
@@ -129,7 +150,10 @@ export const tutorial_pages = [
       To enable auto-save, you need to create a user account. You can sign in
       using Google integration or create an anonymous account.
     </p>
-    <Gyazo url="https://gyazo.com/57c3ed5edc084a00522b447352d98980" />
+    <Gyazo
+      url="https://gyazo.com/57c3ed5edc084a00522b447352d98980"
+      key="enable autosave"
+    />
   </div>,
   <div>
     <H>Saved?</H>
@@ -138,7 +162,10 @@ export const tutorial_pages = [
       status icon on the status bar changed. The `check mark` on the status bar
       indicates that saved all local changes.
     </p>
-    <Gyazo url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584" />
+    <Gyazo
+      url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584"
+      key="saved"
+    />
   </div>,
   <div>
     <H>Don't classify, organize!</H>

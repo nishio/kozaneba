@@ -9,7 +9,7 @@ import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { UserInfo } from "./UserInfo";
 import { onGoogleSignIn } from "./onGoogleSignIn";
 import { signOut } from "./signOut";
-import { initial_save } from "../App/CloudSaveDialog";
+import { initial_save } from "../App/initial_save";
 import { toUseEmulator } from "../Global/exposeGlobal";
 import { close_menu_and_dialog } from "./close_menu";
 import { initSentry } from "../initSentry";
