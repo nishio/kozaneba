@@ -180,9 +180,14 @@ export const tutorial_pages = [
     </p>
     <p>I recommend using a short, concise expression of your thought.</p>
     <p>
-      <button onClick={openPrefilledDialog}>Click me</button> to open the
-      pre-filled `Add Kozane` dialog. It makes a lot of kozane to further
-      explanation.
+      <button
+        onClick={openPrefilledDialog}
+        data-testid="tutorial-open-prefilled-dialog"
+      >
+        Click me
+      </button>{" "}
+      to open the pre-filled `Add Kozane` dialog. It makes a lot of kozane to
+      further explanation.
     </p>
     <Gyazo
       url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"
@@ -269,6 +274,45 @@ export const tutorial_pages = [
       (This page is a digest from a book by Tadao Umesao, who invented Kozane
       Method. Reference: "Classification is not the goal" from Tadao Umesao
       (1969) "The Art of Intellectual Production" p.57)
+    </p>
+  </div>,
+  <div>
+    <H>We need the practice to use stationery effectively</H>
+    <p>
+      You can use a pencil and a keyboard. You were not born with the ability to
+      use that stationery. The stationery enhances human intelligence more than
+      thinking without it. But to use it effectively, we need practice.
+    </p>
+    <p>
+      Skills are not acquired by reading a textbook. They are developed by
+      actually using the skill. Here I recommend some practices.
+    </p>
+    <p></p>
+    <p>
+      <b>Practice A:</b> In the previous tutorial, I made the contents of the
+      tutorial into kozane. Add your thought as some kozane. And then
+      re-organize them.
+    </p>
+    <p>
+      <b>Practice B: </b>
+      Read another article and create kozane from it. It should not be an
+      instruction manual for a machine but an article that contains the author's
+      opinion. Add your opinion as kozane. Then organize the whole kozane.
+    </p>
+    <p>
+      <b>Practice C:</b>Make 100 kozane about what you find fun and what you
+      find interesting. Then organize them.
+    </p>
+    <p>
+      Some people will feel the practice C is easier than practice B. They are
+      already familiar with expressing their thought. It is another important
+      skill. Some people almost hung up with practice C. They even feel
+      difficult to add their thought in A and B. In that case, try Practice D.
+    </p>
+    <p>
+      <b>Practice D: </b>Read 3 articles and create kozane from them. Then
+      organize the whole kozane. Choosing articles by the same author is easier
+      than articles by different authors.
     </p>
   </div>,
 ];
