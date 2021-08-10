@@ -18,5 +18,10 @@ describe("login", () => {
     });
 
     cy.contains("NISHIO_TEST");
+
+    cy.testid("dev-menu").click();
+    cy.contains("Sign Out").click();
+
+    cy.testid("login-status").contains("not signed in");
   });
 });
