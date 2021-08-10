@@ -1,4 +1,4 @@
-import { create_new_itemid } from "../Fusen/create_new_itemid";
+import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { ItemId } from "../Global/initializeGlobalState";
 
 export type TGroupItem = {
@@ -7,7 +7,7 @@ export type TGroupItem = {
   position: number[];
   items: ItemId[];
   id: ItemId;
-  scale: number; // scale of Nameplate Fusen
+  scale: number; // scale of Nameplate Kozane
   isOpen: boolean;
 };
 

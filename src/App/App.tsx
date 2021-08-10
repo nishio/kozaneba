@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import "./App.css";
-import { onWheel } from "../Event/onWheel";
 import { TinySample } from "./TinySample";
 import { Tutorial } from "./Tutorial";
 import { Blank } from "./Blank";

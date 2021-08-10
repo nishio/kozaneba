@@ -12,7 +12,6 @@ import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { add_v2, sub_v2 } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
 import { remove_item } from "../utils/remove_item";
-import { group } from "console";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -43,11 +42,11 @@ export const onGroupDragStart = (
   });
 };
 
-export const onFusenDragStart = (
+export const onKozaneDragStart = (
   event: React.DragEvent<HTMLDivElement>,
   value: { id: ItemId; position: number[] }
 ) => {
-  console.log("onFusenDragStart");
+  console.log("onKozaneDragStart");
   if (event.dataTransfer !== undefined) {
     event.dataTransfer.effectAllowed = "move";
   }
@@ -219,7 +218,7 @@ export const onSelectionMouseDown = (
   event.stopPropagation();
 };
 
-export const onFusenMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+export const onKozaneMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
   reset_selection();
   event.stopPropagation();
 };

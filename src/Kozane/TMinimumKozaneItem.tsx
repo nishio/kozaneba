@@ -1,4 +1,4 @@
-export type TMinimumFusenItem = {
+export type TMinimumKozaneItem = {
   text: string;
   scale: number;
   position: number[];

@@ -1,6 +1,6 @@
 import React from "react";
-import { NameplateFusen } from "../Fusen/NameplateFusen";
-import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../Fusen/fusen_constants";
+import { NameplateKozane } from "../Kozane/NameplateKozane";
+import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
 import { Props } from "./Group";
 import { GroupDiv } from "./GroupDiv";
 import { PADDING, BORDER } from "../dimension/get_bounding_box";
@@ -8,8 +8,8 @@ import { PADDING, BORDER } from "../dimension/get_bounding_box";
 export const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
   const [x, y] = value.position;
   const scale = value.scale;
-  const width = FUSEN_WIDTH + PADDING * 2;
-  const height = FUSEN_HEIGHT + PADDING * 2;
+  const width = KOZANE_WIDTH + PADDING * 2;
+  const height = KOZANE_HEIGHT + PADDING * 2;
   const top = y - (height / 2) * scale - BORDER;
   const left = x - (width / 2) * scale - BORDER;
 
@@ -20,7 +20,7 @@ export const ClosedGroup: React.FC<Props> = ({ offset, value }) => {
   };
   return (
     <GroupDiv style={style} key={value.id} data-testid={value.id}>
-      <NameplateFusen
+      <NameplateKozane
         offset={new_offset}
         value={{
           ...value,

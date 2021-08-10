@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { CSSProperties } from "styled-components";
 import { adjustFontSize } from "../Canvas/AdjustFontSize";
-import { FUSEN_WIDTH, FUSEN_HEIGHT, FUSEN_BORDER } from "./fusen_constants";
+import { KOZANE_WIDTH, KOZANE_HEIGHT, KOZANE_BORDER } from "./kozane_constants";
 import { TOffset } from "../dimension/TOffset";
-import { TMinimumFusenItem } from "./TMinimumFusenItem";
+import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
 
 export const useAjustFontsizeStyle = (
-  value: TMinimumFusenItem,
+  value: TMinimumKozaneItem,
   offset: TOffset
 ) => {
   let [fontSize, setFontSize] = useState(1);
@@ -19,10 +19,10 @@ export const useAjustFontsizeStyle = (
 
   const style: CSSProperties = {
     fontSize,
-    left: offset.x + x - (scale * FUSEN_WIDTH) / 2 - FUSEN_BORDER + "px",
-    top: offset.y + y - (scale * FUSEN_HEIGHT) / 2 - FUSEN_BORDER + "px",
-    width: FUSEN_WIDTH * scale + "px",
-    height: FUSEN_HEIGHT * scale + "px",
+    left: offset.x + x - (scale * KOZANE_WIDTH) / 2 - KOZANE_BORDER + "px",
+    top: offset.y + y - (scale * KOZANE_HEIGHT) / 2 - KOZANE_BORDER + "px",
+    width: KOZANE_WIDTH * scale + "px",
+    height: KOZANE_HEIGHT * scale + "px",
   };
   const tooLong = fontSize === 0;
   if (tooLong) {

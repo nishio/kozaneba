@@ -18,9 +18,9 @@ export const MainMenu = () => {
   const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     show_menu("Main", event);
   };
-  const onAddFusen = () => {
+  const onAddKozane = () => {
     updateGlobal((g) => {
-      g.dialog = "AddFusen";
+      g.dialog = "AddKozane";
       g.menu = "";
     });
   };
@@ -52,7 +52,7 @@ export const MainMenu = () => {
         <MenuIcon />
       </IconButton>
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-        <MenuItem onClick={onAddFusen}>Add Kozane</MenuItem>
+        <MenuItem onClick={onAddKozane}>Add Kozane</MenuItem>
         {EnableCloudAutoSave}
       </Menu>
     </>

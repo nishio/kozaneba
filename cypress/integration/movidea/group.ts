@@ -2,6 +2,7 @@
 
 import { ItemId } from "../../../src/Global/initializeGlobalState";
 import { TGroupItem } from "../../../src/Group/GroupItem";
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("group", () => {
   beforeEach(() => {
@@ -38,6 +39,7 @@ describe("group", () => {
       },
     };
     cy.viewport(500, 500);
+    piece_to_kozane(json.itemStore);
 
     cy.movidea((movidea) => {
       movidea.setGlobal({

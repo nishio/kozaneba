@@ -1,7 +1,7 @@
 import { useGlobal } from "reactn";
 import { Center } from "./Center";
-import { Fusen } from "../Fusen/Fusen";
-import { fusenToFusenItem } from "../fusenToFusenItem";
+import { Kozane } from "../Kozane/Kozane";
+import { kozaneToKozaneItem } from "../kozaneToKozaneItem";
 import { ids_to_dom } from "./ids_to_dom";
 import {
   onCanvasDrop,
@@ -16,7 +16,7 @@ import { useEffect, useRef } from "react";
 import { onWheel } from "../Event/onWheel";
 
 export const ItemCanvas = () => {
-  const [fusens] = useGlobal("fusens");
+  const [kozane] = useGlobal("kozane");
   const [drawOrder] = useGlobal("drawOrder");
   const [selected_items] = useGlobal("selected_items");
   const [is_selected] = useGlobal("is_selected");
@@ -51,8 +51,8 @@ export const ItemCanvas = () => {
     contents = (
       <>
         <Center opacity={1}>
-          {fusens.map((fusen) => (
-            <Fusen value={fusenToFusenItem(fusen)} offset={offset} />
+          {kozane.map((k) => (
+            <Kozane value={kozaneToKozaneItem(k)} offset={offset} />
           ))}
           {ids_to_dom(drawOrder, offset)}
         </Center>

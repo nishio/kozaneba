@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
+
 describe("drag", () => {
   beforeEach(() => {
     cy.visit("/#blank");
@@ -34,6 +36,8 @@ describe("drag", () => {
         },
       },
     };
+    piece_to_kozane(json.itemStore);
+
     cy.viewport(500, 500);
 
     cy.movidea((movidea) => {

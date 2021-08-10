@@ -7,7 +7,6 @@ import { INITIAL_GLOBAL_STATE } from "./Global/initializeGlobalState";
 import { setGlobal } from "reactn";
 import { exposeGlobal } from "./Global/exposeGlobal";
 
-import { auth } from "./Cloud/FirestoreIO";
 import { initSentry } from "./initSentry";
 
 const initProduction = () => {

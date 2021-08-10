@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
 import {
-  FUSEN_BORDER,
-  FUSEN_HEIGHT,
-  FUSEN_WIDTH,
-} from "../../../src/Fusen/fusen_constants";
+  KOZANE_BORDER,
+  KOZANE_HEIGHT,
+  KOZANE_WIDTH,
+} from "../../../src/Kozane/kozane_constants";
 import { TMovidea } from "../../../src/Global/exposeGlobal";
 
 let movidea: TMovidea;
@@ -25,7 +25,7 @@ describe("dimension", () => {
           scale: 1,
         },
         2: {
-          type: "piece",
+          type: "kozane",
           id: 2,
           position: [-100, 0],
           text: "A",
@@ -33,7 +33,7 @@ describe("dimension", () => {
           scale: 1,
         },
         3: {
-          type: "piece",
+          type: "kozane",
           id: 3,
           position: [100, 0],
           text: "B",
@@ -63,8 +63,8 @@ describe("dimension", () => {
     });
 
     const topLeft = ([x, y]: number[]) => [
-      x - FUSEN_WIDTH / 2 - FUSEN_BORDER,
-      y - FUSEN_HEIGHT / 2 - FUSEN_BORDER,
+      x - KOZANE_WIDTH / 2 - KOZANE_BORDER,
+      y - KOZANE_HEIGHT / 2 - KOZANE_BORDER,
     ];
 
     {

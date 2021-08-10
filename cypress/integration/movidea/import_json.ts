@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
+
 describe("import json", () => {
   beforeEach(() => {
     cy.visit("/#blank");
@@ -24,6 +26,7 @@ describe("import json", () => {
         },
       },
     };
+    piece_to_kozane(json.itemStore);
 
     cy.window()
       .its("movidea")

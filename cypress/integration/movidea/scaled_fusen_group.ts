@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
+
 describe("scaled fusen group", () => {
   beforeEach(() => {
     cy.visit("/#blank");
@@ -26,6 +28,7 @@ describe("scaled fusen group", () => {
         },
       },
     };
+    piece_to_kozane(json.itemStore);
 
     cy.window()
       .its("movidea")

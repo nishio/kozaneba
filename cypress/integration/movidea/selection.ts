@@ -1,47 +1,25 @@
 /// <reference types="cypress" />
 
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
+
 describe("selection", () => {
   beforeEach(() => {
     cy.visit("/#blank");
-    const json = {
-      drawOrder: [1],
-      itemStore: {
-        1: {
-          type: "group",
-          id: 1,
-          position: [0, 0],
-          nameplate: null,
-          isOpen: true,
-          items: [2, 3],
-          title: "",
-          scale: 1,
-        },
-        2: {
-          type: "piece",
-          id: 2,
-          position: [-100, 0],
-          text: "A",
-          compact: true,
-          scale: 1,
-        },
-        3: {
-          type: "piece",
-          id: 3,
-          position: [100, 0],
-          text: "B",
-          compact: true,
-          scale: 1,
-        },
-      },
-    };
-    cy.viewport(500, 500);
+    cy.fixture("group_simple_json.json").then((json) => {
+      piece_to_kozane(json.itemStore);
 
-    cy.movidea((movidea) => {
-      movidea.setGlobal({
-        drawOrder: json.drawOrder,
-        itemStore: json.itemStore,
-      });
+      cy.window()
+        .its("movidea")
+        .then((movidea) => {
+          setTimeout(() => {
+            movidea.setGlobal({
+              drawOrder: json.drawOrder,
+              itemStore: json.itemStore,
+            });
+          });
+        });
     });
+    cy.viewport(500, 500);
   });
 
   it("main", () => {
@@ -74,6 +52,7 @@ describe("selection", () => {
         drawOrder.push(id);
       }
     }
+    piece_to_kozane(itemStore);
 
     cy.updateGlobal((g) => {
       g.drawOrder = drawOrder;

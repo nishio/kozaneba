@@ -1,12 +1,12 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
 import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
-import { TMinimumFusenItem } from "./TMinimumFusenItem";
-import { FusenDiv, FusenDiv2 } from "./FusenDiv";
-import { onFusenMouseDown } from "../Event/mouseEventMamager";
+import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
+import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
+import { onKozaneMouseDown } from "../Event/mouseEventMamager";
 import { TOffset } from "../dimension/TOffset";
 
-export const NameplateFusen: React.FC<Props> = ({
+export const NameplateKozane: React.FC<Props> = ({
   value,
   offset,
   custom_style = {},
@@ -17,21 +17,21 @@ export const NameplateFusen: React.FC<Props> = ({
   };
 
   return (
-    <FusenDiv
-      className="fusen"
+    <KozaneDiv
+      className="kozane"
       data-testid={value.id}
       key={value.id}
       style={style}
-      onMouseDown={onFusenMouseDown}
+      onMouseDown={onKozaneMouseDown}
       draggable={true}
     >
-      <FusenDiv2>{value.text}</FusenDiv2>
-    </FusenDiv>
+      <KozaneDiv2>{value.text}</KozaneDiv2>
+    </KozaneDiv>
   );
 };
 
 type Props = {
-  value: TMinimumFusenItem;
+  value: TMinimumKozaneItem;
   offset: TOffset;
   custom_style?: CSSProperties;
 };

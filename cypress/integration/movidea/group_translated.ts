@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
+
 describe("group, tralslated", () => {
   beforeEach(() => {
     cy.visit("/#blank");
@@ -33,6 +35,7 @@ describe("group, tralslated", () => {
         },
       },
     };
+    piece_to_kozane(json.itemStore);
 
     cy.window()
       .its("movidea")

@@ -1,15 +1,18 @@
 /// <reference types="cypress" />
 
 import {
-  FUSEN_OFFSET_X,
-  FUSEN_OFFSET_Y,
-} from "../../../src/Fusen/fusen_constants";
+  KOZANE_OFFSET_X,
+  KOZANE_OFFSET_Y,
+} from "../../../src/Kozane/kozane_constants";
 import { TGroupItem } from "../../../src/Group/GroupItem";
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("drag in/out", () => {
   beforeEach(() => {
     cy.visit("/#blank");
     cy.fixture("group_simple_json.json").then((json) => {
+      piece_to_kozane(json.itemStore);
+
       cy.window()
         .its("movidea")
         .then((movidea) => {
@@ -26,8 +29,8 @@ describe("drag in/out", () => {
   it("main", () => {
     cy.viewport(500, 500);
     cy.testid("2").should("hasPosition", [
-      250 - 100 - FUSEN_OFFSET_X,
-      250 - FUSEN_OFFSET_Y,
+      250 - 100 - KOZANE_OFFSET_X,
+      250 - KOZANE_OFFSET_Y,
     ]);
     cy.testid("2").trigger("dragstart", "topLeft");
     cy.get("#canvas").trigger("drop", 85, 350);

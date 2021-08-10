@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { FusenDiv, FusenDiv2 } from "../Fusen/FusenDiv";
+import { KozaneDiv, KozaneDiv2 } from "../Kozane/KozaneDiv";
 
 export const INITIAL = 128;
 export const cache = { "": INITIAL } as { [key: string]: number };
 
-const HiddenFusenDiv = styled(FusenDiv)`
+const HiddenKozaneDiv = styled(KozaneDiv)`
   visibility: hidden;
   background-color: blue;
   position: absolute;
@@ -13,27 +13,27 @@ const HiddenFusenDiv = styled(FusenDiv)`
 `;
 export const AdjustFontSize = () => {
   return (
-    <HiddenFusenDiv id="hidden-fusen" data-testid="hidden-fusen">
-      <FusenDiv2 id="hidden-fusen-text"></FusenDiv2>
-    </HiddenFusenDiv>
+    <HiddenKozaneDiv id="hidden-kozane">
+      <KozaneDiv2></KozaneDiv2>
+    </HiddenKozaneDiv>
   );
 };
 
-const getHiddenFusen = (hiddenFusen?: HTMLDivElement) => {
-  if (hiddenFusen === undefined) {
-    return document.getElementById("hidden-fusen") as HTMLDivElement;
+const getHiddenKozane = (hiddenKozane?: HTMLDivElement) => {
+  if (hiddenKozane === undefined) {
+    return document.getElementById("hidden-kozane") as HTMLDivElement;
   }
-  return hiddenFusen;
+  return hiddenKozane;
 };
 
 export const adjustFontSize = (
   text: string,
-  testHiddenFusen?: HTMLDivElement
+  testHiddenKozane?: HTMLDivElement
 ): number => {
-  if (cache[text] !== undefined && testHiddenFusen !== undefined) {
+  if (cache[text] !== undefined && testHiddenKozane !== undefined) {
     return cache[text];
   }
-  const x = getHiddenFusen(testHiddenFusen);
+  const x = getHiddenKozane(testHiddenKozane);
   (x.children[0] as HTMLDivElement).innerText = text;
   cache[text] = INITIAL;
   x.style.fontSize = cache[text] + "px";

@@ -1,15 +1,17 @@
 /// <reference types="cypress" />
 
 import {
-  FUSEN_BORDER,
-  FUSEN_HEIGHT,
-  FUSEN_WIDTH,
-} from "../../../src/Fusen/fusen_constants";
+  KOZANE_BORDER,
+  KOZANE_HEIGHT,
+  KOZANE_WIDTH,
+} from "../../../src/Kozane/kozane_constants";
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("drag in/out of nested group", () => {
   beforeEach(() => {
     cy.visit("/#blank");
     cy.fixture("nested_group.json").then((json) => {
+      piece_to_kozane(json.itemStore);
       cy.updateGlobal((g) => {
         g.drawOrder = json.drawOrder;
         g.itemStore = json.itemStore;
@@ -19,8 +21,8 @@ describe("drag in/out of nested group", () => {
 
   it("main", () => {
     cy.viewport(500, 500);
-    const offsetX = FUSEN_WIDTH / 2 + FUSEN_BORDER;
-    const offsetY = FUSEN_HEIGHT / 2 + FUSEN_BORDER;
+    const offsetX = KOZANE_WIDTH / 2 + KOZANE_BORDER;
+    const offsetY = KOZANE_HEIGHT / 2 + KOZANE_BORDER;
     const x = 250 - offsetX;
     const y = 250 - offsetY;
     cy.testid("C").should("hasPosition", [x, y]); // 185, 200

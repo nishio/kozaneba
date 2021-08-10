@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
-import { OPACITY } from "../Fusen/fusen_constants";
+import { OPACITY } from "../Kozane/kozane_constants";
 import { GROUP_BORDER_COLOR } from "./group_constants";
 
 export const GroupDiv = styled.div`

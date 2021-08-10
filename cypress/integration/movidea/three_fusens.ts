@@ -1,12 +1,14 @@
 /// <reference types="cypress" />
 
 import { ItemId } from "../../../src/Global/initializeGlobalState";
+import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("three fusens", () => {
   beforeEach(() => {
     cy.visit("/#blank");
     cy.viewport(500, 500);
     cy.fixture("three_fusens.json").then((json) => {
+      piece_to_kozane(json.itemStore);
       cy.updateGlobal((g) => {
         g.itemStore = json.itemStore;
         g.drawOrder = json.drawOrder;

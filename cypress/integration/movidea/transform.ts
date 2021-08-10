@@ -3,7 +3,7 @@
 describe("transform", () => {
   beforeEach(() => {
     cy.visit("/#blank");
-    const fusens = [
+    const kozane = [
       {
         text: "+",
         x: 0,
@@ -20,20 +20,20 @@ describe("transform", () => {
       .its("movidea")
       .then((movidea) => {
         setTimeout(() => {
-          movidea.setGlobal({ fusens });
+          movidea.setGlobal({ kozane });
         });
       });
   });
 
   it("position", () => {
     cy.viewport(500, 500);
-    cy.contains("+").should("hasPosition", [185, 212]);
-    cy.contains("*").should("hasPosition", [435, 462]);
+    cy.contains("+").should("hasPosition", [185, 200]);
+    cy.contains("*").should("hasPosition", [435, 450]);
 
     cy.updateGlobal((g) => {
       g.scale = 0.5;
     });
-    cy.contains("+").should("hasPosition", [217.5, 231]);
-    cy.contains("*").should("hasPosition", [342.5, 356]);
+    cy.contains("+").should("hasPosition", [217.5, 225]);
+    cy.contains("*").should("hasPosition", [342.5, 350]);
   });
 });

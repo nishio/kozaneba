@@ -1,16 +1,16 @@
 import { ItemId } from "../Global/initializeGlobalState";
 import { create_new_itemid } from "./create_new_itemid";
 
-export type TFusenItem = {
-  type: "piece";
+export type TKozaneItem = {
+  type: "kozane";
   text: string;
   position: number[];
   id: ItemId;
   scale: number;
 };
 
-export class FusenItem {
-  type: "piece" = "piece";
+export class KozaneItem {
+  type: "kozane" = "kozane";
   text = "";
   position = [0, 0];
   id: ItemId;

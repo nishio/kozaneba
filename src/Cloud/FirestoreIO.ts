@@ -6,7 +6,7 @@ import * as firebaseui from "firebaseui";
 import { State } from "reactn/default";
 import { setGlobal } from "reactn";
 import { TItem } from "../Global/initializeGlobalState";
-import { TFusenItem } from "../Fusen/FusenItem";
+import { TKozaneItem } from "../Kozane/KozaneItem";
 import { TGroupItem } from "../Group/GroupItem";
 
 const config = {
@@ -82,7 +82,7 @@ const to_item = (x: unknown): TItem => {
   const obj = Object.assign({}, x);
   if (hasType(obj)) {
     if (obj.type === "piece") {
-      return obj as TFusenItem;
+      return obj as TKozaneItem;
     } else if (obj.type === "group") {
       if (hasItems(obj)) {
         return obj as TGroupItem;

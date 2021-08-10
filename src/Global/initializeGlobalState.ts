@@ -1,10 +1,10 @@
-import { VFusen } from "../VFusen";
-import { TFusenItem } from "../Fusen/FusenItem";
+import { VKozane } from "../VKozane";
+import { TKozaneItem } from "../Kozane/KozaneItem";
 import { TGroupItem } from "../Group/GroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
 
 export const INITIAL_GLOBAL_STATE = {
-  fusens: [] as VFusen[], // for small tests
+  kozane: [] as VKozane[], // for small tests
 
   drawOrder: [] as ItemId[],
   itemStore: {} as { [id: string]: TItem },
@@ -23,7 +23,7 @@ export const INITIAL_GLOBAL_STATE = {
   is_selected: false,
   mouseState: "" as TMouseState,
   clicked_group: "" as "" | ItemId,
-  clicked_fusen: "" as "" | ItemId,
+  clicked_kozane: "" as "" | ItemId,
 
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
@@ -39,14 +39,14 @@ export const INITIAL_GLOBAL_STATE = {
 };
 
 type TDragTarget = "" | "selection" | ItemId;
-export type TItem = TFusenItem | TGroupItem;
+export type TItem = TKozaneItem | TGroupItem;
 enum ItemIdBrand {
   _ = "",
 }
 export type ItemId = ItemIdBrand & string;
 
-type TDialog = "" | "AddFusen" | "Tutorial" | "Sign" | "CloudSave";
-export type TMenu = "" | "Main" | "Dev" | "Fusen" | "Selection" | "Group";
+type TDialog = "" | "AddKozane" | "Tutorial" | "Sign" | "CloudSave";
+export type TMenu = "" | "Main" | "Dev" | "Kozane" | "Selection" | "Group";
 type TStatusType =
   | "text"
   | "no-connection"

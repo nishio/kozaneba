@@ -8,10 +8,10 @@ describe("adjust font size", () => {
   it("fusen sizes", () => {
     let a = 1;
     let b = 1;
-    const fusens = [];
+    const kozane = [];
     for (let i = 0; i < 11; i++) {
       [a, b] = [b, a + b];
-      fusens.push({
+      kozane.push({
         text: ">" + "あ".repeat(a),
         x: 50 * i,
         y: 50 * i,
@@ -22,18 +22,18 @@ describe("adjust font size", () => {
       .its("movidea")
       .then((movidea) => {
         setTimeout(() => {
-          movidea.setGlobal({ fusens });
+          movidea.setGlobal({ kozane });
         });
       });
 
-    cy.get(".fusen")
+    cy.get(".kozane")
       .should("have.length", 11)
       .first()
       .should("have.css", "font-size", "81px")
       .should("not.have.css", "align-items", "flex-start");
-    cy.get(".fusen").eq(1).should("have.css", "font-size", "49px");
-    cy.get(".fusen").eq(2).should("have.css", "font-size", "49px");
-    cy.get(".fusen")
+    cy.get(".kozane").eq(1).should("have.css", "font-size", "52px");
+    cy.get(".kozane").eq(2).should("have.css", "font-size", "52px");
+    cy.get(".kozane")
       .eq(10)
       .should("have.css", "font-size", "10px")
       .should("have.css", "align-items", "flex-start");

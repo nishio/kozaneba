@@ -8,8 +8,8 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { useGlobal } from "reactn";
-import { FusenItem } from "../Fusen/FusenItem";
-import { FUSEN_HEIGHT, FUSEN_WIDTH } from "../Fusen/fusen_constants";
+import { KozaneItem } from "../Kozane/KozaneItem";
+import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 
@@ -28,15 +28,15 @@ function get_one_line(multiline: string) {
   return { multiline, line };
 }
 
-export const AddFusenDialog = () => {
+export const AddKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
   const textarea = createRef<HTMLTextAreaElement>();
-  const open = dialog === "AddFusen";
+  const open = dialog === "AddKozane";
   const onClose = () => {
     setDialog("");
   };
 
-  const onAddFusens = () => {
+  const onAddKozane = () => {
     if (textarea.current === null) return;
     let multiline = textarea.current.value;
     let line;
@@ -47,10 +47,10 @@ export const AddFusenDialog = () => {
       items.push(line);
     }
     const N = items.length;
-    const area = N * FUSEN_WIDTH * FUSEN_HEIGHT;
-    const numX = Math.ceil(Math.sqrt(area) / FUSEN_WIDTH);
-    const width = numX * FUSEN_WIDTH;
-    const height = Math.ceil(N / numX) * FUSEN_HEIGHT;
+    const area = N * KOZANE_WIDTH * KOZANE_HEIGHT;
+    const numX = Math.ceil(Math.sqrt(area) / KOZANE_WIDTH);
+    const width = numX * KOZANE_WIDTH;
+    const height = Math.ceil(N / numX) * KOZANE_HEIGHT;
     const center = [0, 0];
 
     updateGlobal((g) => {
@@ -61,17 +61,17 @@ export const AddFusenDialog = () => {
         if (line === "") return;
         let x = index % numX;
         let y = Math.floor(index / numX);
-        x *= FUSEN_WIDTH;
-        y *= FUSEN_HEIGHT;
+        x *= KOZANE_WIDTH;
+        y *= KOZANE_HEIGHT;
 
-        x += center[0] - width / 2 + FUSEN_WIDTH / 2;
-        y += center[1] - height / 2 + FUSEN_HEIGHT / 2;
+        x += center[0] - width / 2 + KOZANE_WIDTH / 2;
+        y += center[1] - height / 2 + KOZANE_HEIGHT / 2;
 
-        const fusen = new FusenItem();
-        fusen.text = line;
-        fusen.position = [x, y];
-        g.itemStore[fusen.id] = fusen;
-        group.items.push(fusen.id);
+        const kozane = new KozaneItem();
+        kozane.text = line;
+        kozane.position = [x, y];
+        g.itemStore[kozane.id] = kozane;
+        group.items.push(kozane.id);
       });
       g.drawOrder.push(group.id);
       g.dialog = "";
@@ -88,7 +88,7 @@ export const AddFusenDialog = () => {
       fullWidth={true}
       fullScreen={fullScreen}
       onClose={onClose}
-      data-testid="add-fusen-dialog"
+      data-testid="add-kozane-dialog"
     >
       <DialogTitle id="form-dialog-title">Add Kozane</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
@@ -133,8 +133,8 @@ export const AddFusenDialog = () => {
         </Button>
         <Button
           color="primary"
-          onClick={onAddFusens}
-          data-testid="add-fusen-button"
+          onClick={onAddKozane}
+          data-testid="add-kozane-button"
         >
           Add Kozane
         </Button>

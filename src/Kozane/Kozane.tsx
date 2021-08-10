@@ -1,20 +1,23 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
-import { TFusenItem } from "./FusenItem";
-import { onFusenDragStart, onFusenMouseDown } from "../Event/mouseEventMamager";
+import { TKozaneItem } from "./KozaneItem";
+import {
+  onKozaneDragStart,
+  onKozaneMouseDown,
+} from "../Event/mouseEventMamager";
 import { show_menu } from "../Menu/show_menu";
-import { FusenDiv, FusenDiv2 } from "./FusenDiv";
+import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
 import { TOffset } from "../dimension/TOffset";
 import { updateGlobal } from "../Global/updateGlobal";
 
 type Props = {
-  value: TFusenItem;
+  value: TKozaneItem;
   offset: TOffset;
   custom_style?: CSSProperties;
 };
 
-export const Fusen: React.FC<Props> = ({
+export const Kozane: React.FC<Props> = ({
   value,
   offset,
   custom_style = {},
@@ -23,25 +26,25 @@ export const Fusen: React.FC<Props> = ({
 
   const onClick = (event: React.MouseEvent) => {
     updateGlobal((g) => {
-      g.clicked_fusen = value.id;
+      g.clicked_kozane = value.id;
     });
-    show_menu("Fusen", event);
+    show_menu("Kozane", event);
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
-    onFusenDragStart(e, value);
+    onKozaneDragStart(e, value);
 
   return (
-    <FusenDiv
-      className="fusen"
+    <KozaneDiv
+      className="kozane"
       data-testid={value.id}
       key={value.id}
       style={style}
       onClick={onClick}
-      onMouseDown={onFusenMouseDown}
+      onMouseDown={onKozaneMouseDown}
       onDragStart={onDragStart}
       draggable={true}
     >
-      <FusenDiv2>{value.text}</FusenDiv2>
-    </FusenDiv>
+      <KozaneDiv2>{value.text}</KozaneDiv2>
+    </KozaneDiv>
   );
 };

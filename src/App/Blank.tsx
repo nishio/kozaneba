@@ -1,7 +1,7 @@
-import { AddFusenDialog } from "../AddFusenDialog/AddFusenDialog";
+import { AddKozaneDialog } from "../AddKozaneDialog/AddKozaneDialog";
 import { AdjustFontSize } from "../Canvas/AdjustFontSize";
 import { MenuAnchor } from "../Menu/show_menu";
-import { FusenMenu } from "../Menu/FusenMenu";
+import { KozaneMenu } from "../Menu/KozaneMenu";
 import { MyAppBar } from "../AppBar/MyAppBar";
 import { ItemCanvas } from "../Canvas/ItemCanvas";
 import { SelectionMenu } from "../Menu/SelectionMenu";
@@ -28,11 +28,11 @@ export const Blank = () => {
       <MyAppBar />
       <ItemCanvas />
       <AdjustFontSize />
-      <AddFusenDialog />
+      <AddKozaneDialog />
       <TutorialDialog />
       <SignDialog />
       <CloudSaveDialog />
-      <FusenMenu />
+      <KozaneMenu />
       <SelectionMenu />
       <GroupMenu />
       <MenuAnchor />
