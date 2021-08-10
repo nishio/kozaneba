@@ -189,7 +189,14 @@ export const tutorial_pages = [
       key="adjust_size"
     />
   </div>,
-
+  <div>
+    <H>You can ungroup</H>
+    <p>You can convert a group into individual kozane.</p>
+    <Gyazo
+      url="https://gyazo.com/17b9d7a64afb62d61cfcd0f355cda15a"
+      key="ungroup"
+    />
+  </div>,
   <div>
     <H>Let's select objects</H>
     <p>You can select multiple objects and make them into a new group.</p>
@@ -232,6 +239,14 @@ export const tutorial_pages = [
       url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584"
       key="saved"
     />
+  </div>,
+  <div>
+    <H>Tutorial Finished🎉</H>
+    <p>Now you finished all tutorials. Congratulation!! </p>
+    <p>
+      The following pages will explain the advanced features and the philosophy
+      behind Kozaneba.
+    </p>
   </div>,
   <div>
     <H>Don't classify, organize!</H>
