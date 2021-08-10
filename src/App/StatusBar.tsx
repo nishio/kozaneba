@@ -34,26 +34,30 @@ export const StatusBar = () => {
   if (statusBar.type === "loading") {
     contents = <FontAwesomeIcon icon={faSpinner} spin={true} />;
   } else if (statusBar.type === "done") {
-    contents = (
-      <span className="tooltip" style={{ margin: "5px" }}>
-        <FontAwesomeIcon icon={faCheckCircle} />
-      </span>
+    contents = addTooltip(
+      <FontAwesomeIcon icon={faCheckCircle} />,
+      "done",
+      "save-status"
     );
   } else if (statusBar.type === "no-connection") {
     contents = <span style={{ margin: "5px" }}></span>;
   } else if (statusBar.type === "uploading") {
-    contents = (
-      <span style={{ margin: "5px" }}>
+    contents = addTooltip(
+      <>
         <FontAwesomeIcon icon={faCloudUploadAlt} />
         <FontAwesomeIcon icon={faSpinner} spin={true} />
-      </span>
+      </>,
+      "uploading",
+      "save-status"
     );
   } else if (statusBar.type === "downloading") {
-    contents = (
-      <span style={{ margin: "5px" }}>
+    contents = addTooltip(
+      <>
         <FontAwesomeIcon icon={faCloudDownloadAlt} />
         <FontAwesomeIcon icon={faSpinner} spin={true} />
-      </span>
+      </>,
+      "downloading",
+      "save-status"
     );
   } else if (statusBar.type === "text") {
     contents = <span>{statusBar.text} </span>;
@@ -115,6 +119,7 @@ export const StatusBar = () => {
     ? addTooltip(
         <FontAwesomeIcon
           icon={faQuestionCircle}
+          data-testid="tutorial-status"
           onClick={() => {
             updateGlobal((g) => {
               g.dialog = "Tutorial";
@@ -122,7 +127,7 @@ export const StatusBar = () => {
           }}
         />,
         "open tutorial",
-        "tutorial-status"
+        "tutorial-status-tooltip"
       )
     : null;
 

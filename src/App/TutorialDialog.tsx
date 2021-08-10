@@ -26,6 +26,7 @@ export const TutorialDialog = () => {
         onClick={() => {
           setPage(p - 1);
         }}
+        data-testid="tutorial-previous"
       >
         Previous
       </Button>
@@ -38,6 +39,7 @@ export const TutorialDialog = () => {
         onClick={() => {
           setPage(p + 1);
         }}
+        data-testid="tutorial-next"
       >
         Next
       </Button>
@@ -61,7 +63,7 @@ export const TutorialDialog = () => {
       <DialogActions>
         {Prev}
         {Next}
-        <Button color="primary" onClick={onClose}>
+        <Button color="primary" onClick={onClose} data-testid="tutorial-close">
           Close
         </Button>
       </DialogActions>
