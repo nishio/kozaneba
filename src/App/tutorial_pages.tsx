@@ -272,3 +272,5 @@ export const tutorial_pages = [
     </p>
   </div>,
 ];
+// open/close group
+// add title on group
