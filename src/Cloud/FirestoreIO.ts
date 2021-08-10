@@ -22,6 +22,10 @@ export const auth = firebase.auth();
 export type TUser = firebase.User | null;
 auth.onAuthStateChanged((user) => {
   setGlobal({ user });
+  if (user?.uid === "X4csZggYy1dAhcilL1FyNfjBJj12") {
+    // user is NISHIO Hirokazu
+    setGlobal({ show_devmenu: true });
+  }
 });
 
 export const authui = new firebaseui.auth.AuthUI(auth);
