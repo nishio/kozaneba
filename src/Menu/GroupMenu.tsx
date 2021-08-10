@@ -46,7 +46,9 @@ export const GroupMenu = () => {
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onUngroup}>ungroup</MenuItem>
-      <MenuItem onClick={onDelete}>delete</MenuItem>
+      <MenuItem onClick={onDelete} data-testid="group-delete">
+        delete
+      </MenuItem>
     </Menu>
   );
 };

@@ -18,7 +18,9 @@ export const KozaneMenu = () => {
   };
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-      <MenuItem onClick={onDelete}>Delete</MenuItem>
+      <MenuItem onClick={onDelete} data-testid="kozane-delete">
+        Delete
+      </MenuItem>
     </Menu>
   );
 };
