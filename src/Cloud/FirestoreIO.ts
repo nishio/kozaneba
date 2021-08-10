@@ -81,7 +81,7 @@ function hasItems(x: object): x is IHasItems {
 const to_item = (x: unknown): TItem => {
   const obj = Object.assign({}, x);
   if (hasType(obj)) {
-    if (obj.type === "piece") {
+    if (obj.type === "kozane" || obj.type === "piece") {
       return obj as TKozaneItem;
     } else if (obj.type === "group") {
       if (hasItems(obj)) {
