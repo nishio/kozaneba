@@ -16,7 +16,7 @@ export const KozaneDiv = styled.div`
   overflow: hidden;
   font-size: 100px;
   text-align: center;
-  display: flex;ss
+  display: flex;
   align-items: center;
   align-content: center;
   border: #aaa ${KOZANE_BORDER}px solid;
