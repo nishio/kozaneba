@@ -11,6 +11,8 @@ import { onGoogleSignIn } from "./onGoogleSignIn";
 import { signOut } from "./signOut";
 import { initial_save } from "../App/CloudSaveDialog";
 import { toUseEmulator } from "../Global/exposeGlobal";
+import { close_menu_and_dialog } from "./close_menu";
+import { initSentry } from "../initSentry";
 
 const useStyles = makeStyles({
   root: {
@@ -87,6 +89,17 @@ export const DevMenu = () => {
         <MenuItem onClick={triggerCloudSave}>Trigger Cloud Save</MenuItem>
         <MenuItem onClick={onUseFirestoreEmulator}>
           Use Firestore Emulator
+        </MenuItem>
+
+        <MenuItem onClick={initSentry}>init Sentry</MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            close_menu_and_dialog();
+            throw new Error("forced error");
+          }}
+        >
+          Force error
         </MenuItem>
       </Menu>
     </>
