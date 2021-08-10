@@ -24,6 +24,10 @@ export const DevMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
   const classess = useStyles();
+  const [show_devmenu] = useGlobal("show_devmenu");
+  if (!show_devmenu) {
+    return null;
+  }
   const open = menu === "Dev";
   const onClose = () => {
     setMenu("");
