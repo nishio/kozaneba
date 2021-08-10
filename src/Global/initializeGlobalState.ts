@@ -4,15 +4,18 @@ import { TGroupItem } from "../Group/GroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
 
 export const INITIAL_GLOBAL_STATE = {
-  fusens: [] as VFusen[],
+  fusens: [] as VFusen[], // for small tests
+
   drawOrder: [] as ItemId[],
   itemStore: {} as { [id: string]: TItem },
   scale: 1,
   trans_x: 0,
   trans_y: 0,
+
   dialog: "" as TDialog,
   menu: "" as TMenu,
   menu_anchor: null as TMenuAnchor,
+
   dragstart_position: [0, 0],
   drag_target: "" as TDragTarget,
   selectionRange: { top: 0, left: 0, width: 0, height: 0 },
@@ -21,14 +24,18 @@ export const INITIAL_GLOBAL_STATE = {
   mouseState: "" as TMouseState,
   clicked_group: "" as "" | ItemId,
   clicked_fusen: "" as "" | ItemId,
+
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
   cloud_ba: "",
   usingFirestoreEmulator: false,
   last_updated: 0,
   is_local_change: false,
+
   in_tutorial: false,
   tutorial_page: 0,
+
+  show_devmenu: true,
 };
 
 type TDragTarget = "" | "selection" | ItemId;
