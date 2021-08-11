@@ -5,6 +5,7 @@ import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { updateGlobal } from "./updateGlobal";
 import { reset_selection } from "../Selection/reset_selection";
 import { db, auth } from "../Cloud/FirestoreIO";
+import { make_items_into_new_group } from "../Menu/SelectionMenu";
 
 const tmpfunc = () => {
   console.log("write");
@@ -38,6 +39,7 @@ const movidea = {
   db,
   tmpfunc,
   toUseEmulator,
+  make_items_into_new_group,
 };
 
 export type TMovidea = typeof movidea;

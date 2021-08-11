@@ -65,5 +65,14 @@ describe("drag in/out", () => {
     cy.testid("1").trigger("drop");
 
     cy.getGlobal(getItems).should("eql", [2, 3]);
+
+    cy.testid("2").trigger("dragstart", "topLeft", { force: true });
+    cy.testid("ba").trigger("drop", 100, 100);
+    cy.setGlobal({ fix_timestamp_for_test: 10 });
+    cy.movidea((m) => {
+      m.make_items_into_new_group([2]);
+    });
+    cy.setGlobal({ fix_timestamp_for_test: null });
+    cy.getGlobal((g) => g.drawOrder).should("eql", [1, "10"]);
   });
 });

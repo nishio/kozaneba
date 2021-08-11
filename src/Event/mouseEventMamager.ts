@@ -187,13 +187,6 @@ export const onGroupDrop = (
         position = sub_v2(add_v2(position, p.position), group.position);
       } else {
         g.drawOrder = remove_item(g.drawOrder, g.drag_target);
-        console.log(
-          group,
-          group.items,
-          g.drag_target,
-          Object.isExtensible(group),
-          Object.isExtensible(group.items)
-        );
         group.items.push(g.drag_target);
         position = sub_v2(position, group.position);
       }
