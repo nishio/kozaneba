@@ -11,10 +11,15 @@ import firebase from "firebase";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { initial_save } from "./initial_save";
+import { useEffect } from "react";
 
 export const CloudSaveDialog = () => {
   const [dialog] = useGlobal("dialog");
   const open = dialog === "CloudSave";
+  useEffect(() => {
+    console.log("CloudSaveDialog open:", open);
+  }, [open]);
+
   const onClose = () => {
     close_menu_and_dialog();
   };
@@ -44,7 +49,7 @@ export const CloudSaveDialog = () => {
     <Dialog
       open={open}
       onClose={onClose}
-      data-testid="sign-dialog"
+      data-testid="cloud-save-dialog"
       keepMounted={true}
     >
       <DialogTitle id="form-dialog-title">Cloud Save</DialogTitle>
@@ -61,7 +66,11 @@ export const CloudSaveDialog = () => {
         >
           Continue as an anonymous user
         </Button>
-        <Button color="primary" onClick={onClose}>
+        <Button
+          color="primary"
+          onClick={onClose}
+          data-testid="cloud-save-dialog-not-save"
+        >
           Do not save
         </Button>
       </DialogActions>

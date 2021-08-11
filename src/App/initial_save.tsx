@@ -5,12 +5,16 @@ import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";
 
 export const initial_save = () => {
   console.log("initial save");
+  console.log("auth.currentUser", auth.currentUser);
   if (auth.currentUser === null) {
     updateGlobal((g) => {
       g.dialog = "CloudSave";
     });
     return;
   }
+  updateGlobal((g) => {
+    g.menu = "";
+  });
   console.log(`save as ${auth.currentUser.displayName ?? "Anonymous"}`);
   updateGlobal((g) => {
     g.statusBar.type = "uploading";

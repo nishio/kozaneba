@@ -104,6 +104,11 @@ describe("tutorial", () => {
     cy.testid("tutorial-close").click();
 
     cy.testid("login-status").contains("not signed in");
+    cy.testid("main-menu").click();
+    cy.contains("Enable Cloud Auto-Save").click();
+    cy.getGlobal((g) => g.dialog).should("eql", "CloudSave");
+    cy.testid("cloud-save-dialog-not-save").click(); // close this time. We can not use Google SignIn
+
     cy.movidea((m) => {
       m.toUseEmulator();
       m.auth.useEmulator("http://localhost:9099");
@@ -114,7 +119,6 @@ describe("tutorial", () => {
         )
       );
     });
-
     cy.testid("login-status").contains("NISHIO_TEST");
 
     cy.setGlobal({ fix_ba_for_test: "test" });

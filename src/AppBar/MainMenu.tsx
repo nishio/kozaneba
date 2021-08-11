@@ -30,7 +30,6 @@ export const MainMenu = () => {
   if (cloud_ba === "") {
     const onEnableCloudAutoSave = () => {
       initial_save();
-      close_menu_and_dialog();
     };
     EnableCloudAutoSave = (
       <MenuItem onClick={onEnableCloudAutoSave}>
