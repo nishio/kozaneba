@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { tutorial_pages } from "./tutorial_pages";
+import { useEffect } from "react";
 
 export const TutorialDialog = () => {
   const [dialog] = useGlobal("dialog");
@@ -16,7 +17,10 @@ export const TutorialDialog = () => {
   const onClose = () => {
     close_menu_and_dialog();
   };
-  console.log(`Tutorial Page: ${p} open: ${open}`);
+  useEffect(() => {
+    console.log(`Tutorial Page: ${p} open: ${open}`);
+  }, [p, open]);
+
   const page = tutorial_pages[p];
 
   const Prev =
