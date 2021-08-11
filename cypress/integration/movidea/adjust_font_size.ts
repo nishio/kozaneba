@@ -30,9 +30,13 @@ describe("adjust font size", () => {
       .should("have.length", 11)
       .first()
       .should("have.css", "font-size", "81px")
-      .should("not.have.css", "align-items", "flex-start");
-    cy.get(".kozane").eq(1).should("have.css", "font-size", "52px");
-    cy.get(".kozane").eq(2).should("have.css", "font-size", "52px");
+      .should("not.have.css", "align-items", "flex-start")
+      .should("not.have.css", "align-items", "normal");
+    cy.get(".kozane")
+      .eq(1)
+      .should("have.css", "font-size", "49px")
+      .should("have.css", "align-items", "center");
+    cy.get(".kozane").eq(2).should("have.css", "font-size", "49px");
     cy.get(".kozane")
       .eq(10)
       .should("have.css", "font-size", "10px")
