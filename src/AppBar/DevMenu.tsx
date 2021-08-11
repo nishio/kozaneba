@@ -83,7 +83,9 @@ export const DevMenu = () => {
         </Info>
         <MenuItem onClick={signInAsAnonymousUser}>Annonymous Sign In</MenuItem>
         <MenuItem onClick={onGoogleSignIn}>Google Sign In</MenuItem>
-        <MenuItem onClick={signOut}>Sign Out</MenuItem>
+        <MenuItem onClick={signOut} data-testid="sign-out">
+          Sign Out
+        </MenuItem>
         <MenuItem onClick={showSignInDialog}>Show Sign-in Dialog</MenuItem>
         <MenuItem onClick={onCloudSave}>Show Cloud Save Dialog</MenuItem>
         <MenuItem onClick={triggerCloudSave}>Trigger Cloud Save</MenuItem>
