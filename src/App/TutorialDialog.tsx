@@ -16,7 +16,7 @@ export const TutorialDialog = () => {
   const onClose = () => {
     close_menu_and_dialog();
   };
-
+  console.log(`Tutorial Page: ${p} open: ${open}`);
   const page = tutorial_pages[p];
 
   const Prev =
