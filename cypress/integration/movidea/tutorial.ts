@@ -39,9 +39,9 @@ describe("tutorial", () => {
     });
     // drag out
     cy.testid("3").trigger("dragstart");
-    cy.get("#canvas").trigger("drop", 135, 350);
+    cy.testid("ba").trigger("drop", 135, 350);
     cy.testid("4").trigger("dragstart");
-    cy.get("#canvas").trigger("drop", 135, 550);
+    cy.testid("ba").trigger("drop", 135, 550);
     // drag in
     cy.testid("4").trigger("dragstart");
     cy.testid("1").trigger("drop", 0, 0);
@@ -88,8 +88,8 @@ describe("tutorial", () => {
     cy.testid("tutorial-close").click();
 
     cy.viewport(600, 400);
-    cy.get("#canvas").trigger("mousedown", 100, 150);
-    cy.get("#canvas").trigger("mouseup", 250, 250);
+    cy.testid("ba").trigger("mousedown", 100, 150);
+    cy.testid("ba").trigger("mouseup", 250, 250);
     const num_selected = 12;
     cy.getGlobal((g) => g.selected_items.length).should("eql", num_selected);
     cy.testid("selection-view").click();

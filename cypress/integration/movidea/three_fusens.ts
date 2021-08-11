@@ -17,8 +17,8 @@ describe("three fusens", () => {
   });
 
   it("main", () => {
-    cy.testid("canvas").trigger("mousedown", 100, 100);
-    cy.testid("canvas").trigger("mouseup", 400, 400);
+    cy.testid("ba").trigger("mousedown", 100, 100);
+    cy.testid("ba").trigger("mouseup", 400, 400);
     cy.testid("selection-view").click("topRight");
     cy.contains("make group").click();
 

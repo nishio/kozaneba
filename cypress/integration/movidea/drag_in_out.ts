@@ -33,14 +33,14 @@ describe("drag in/out", () => {
       250 - KOZANE_OFFSET_Y,
     ]);
     cy.testid("2").trigger("dragstart", "topLeft");
-    cy.get("#canvas").trigger("drop", 85, 350);
+    cy.testid("ba").trigger("drop", 85, 350);
     cy.testid("2").should("hasPosition", [85, 350]);
 
     const getItems = (g) => (g.itemStore["1"] as TGroupItem).items;
     cy.getGlobal(getItems).should("eql", [3]);
 
     cy.testid("2").trigger("dragstart", "topLeft");
-    cy.get("#canvas").trigger("drop", 135, 350);
+    cy.testid("ba").trigger("drop", 135, 350);
     cy.getGlobal(getItems).should("eql", [3]);
     cy.testid("2").should("hasPosition", [135, 350]);
 
@@ -49,16 +49,16 @@ describe("drag in/out", () => {
     cy.getGlobal(getItems).should("eql", [3, 2]);
 
     cy.testid("2").trigger("dragstart", "topLeft");
-    cy.get("#canvas").trigger("drop", 100, 100);
+    cy.testid("ba").trigger("drop", 100, 100);
     cy.testid("3").trigger("dragstart", "topLeft");
-    cy.get("#canvas").trigger("drop", 100, 100);
+    cy.testid("ba").trigger("drop", 100, 100);
 
     cy.getGlobal((g) => g.drawOrder).should("eql", [1, 2, 3]);
     cy.getGlobal(getItems).should("eql", []);
 
     // select items
-    cy.get("#canvas").trigger("mousedown", 90, 90);
-    cy.get("#canvas").trigger("mouseup", 110, 110);
+    cy.testid("ba").trigger("mousedown", 90, 90);
+    cy.testid("ba").trigger("mouseup", 110, 110);
 
     // drag items into the group
     cy.get("#selection-view").trigger("dragstart");
