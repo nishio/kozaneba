@@ -9,6 +9,8 @@ describe("tutorial", () => {
   });
 
   it("main", () => {
+    cy.testid("sign-out").click({ force: true });
+
     cy.getGlobal((g) => g.dialog).should("eql", "Tutorial");
     cy.testid("tutorial-next").click();
     cy.getGlobal((g) => g.tutorial_page).should("eql", 1);
