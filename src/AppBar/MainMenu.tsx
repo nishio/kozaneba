@@ -6,6 +6,7 @@ import { show_menu } from "../Menu/show_menu";
 import { updateGlobal } from "../Global/updateGlobal";
 import { initial_save } from "../App/initial_save";
 import { close_menu_and_dialog } from "./close_menu";
+import { Sentry } from "../initSentry";
 
 export const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -54,6 +55,15 @@ export const MainMenu = () => {
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
         <MenuItem onClick={onAddKozane}>Add Kozane</MenuItem>
         {EnableCloudAutoSave}
+
+        <MenuItem
+          onClick={() => {
+            Sentry.captureMessage("Manual Feedback " + Date.now());
+            close_menu_and_dialog();
+          }}
+        >
+          Send Feedback
+        </MenuItem>
       </Menu>
     </>
   );
