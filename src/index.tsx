@@ -8,10 +8,12 @@ import { setGlobal } from "reactn";
 import { exposeGlobal } from "./Global/exposeGlobal";
 
 import { initSentry } from "./initSentry";
+import { initGoogleAnalytics } from "./initGoogleAnalytics";
 
 const initProduction = () => {
   initSentry();
   setGlobal({ show_devmenu: false });
+  initGoogleAnalytics();
 };
 
 const initDevelopment = () => {
