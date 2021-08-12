@@ -1,19 +1,20 @@
-import { setGlobal } from "reactn";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const onWheel = (e: WheelEvent) => {
   e.preventDefault();
   if (e.ctrlKey) {
-    setGlobal((g) => {
-      return {
-        scale: g.scale * Math.exp(-e.deltaY / 100),
-      };
+    updateGlobal((g) => {
+      g.scale *= Math.exp(-e.deltaY / 100);
+    });
+  } else if (e.shiftKey) {
+    updateGlobal((g) => {
+      g.trans_x -= e.deltaY / g.scale;
+      g.trans_y -= e.deltaX / g.scale;
     });
   } else {
-    setGlobal((g) => {
-      return {
-        trans_x: g.trans_x - e.deltaX / g.scale,
-        trans_y: g.trans_y - e.deltaY / g.scale,
-      };
+    updateGlobal((g) => {
+      g.trans_x -= e.deltaX / g.scale;
+      g.trans_y -= e.deltaY / g.scale;
     });
   }
 };
