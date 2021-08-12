@@ -9,6 +9,7 @@ import { exposeGlobal } from "./Global/exposeGlobal";
 
 import { initSentry } from "./initSentry";
 import { initGoogleAnalytics } from "./initGoogleAnalytics";
+import addReactNDevTools from "reactn-devtools";
 
 const initProduction = () => {
   initSentry();
@@ -18,7 +19,7 @@ const initProduction = () => {
 
 const initDevelopment = () => {
   exposeGlobal();
-  // addReactNDevTools({ trace: true, traceLimit: 25 });
+  addReactNDevTools({ trace: true, traceLimit: 25 });
 };
 
 setGlobal(INITIAL_GLOBAL_STATE);
