@@ -135,6 +135,7 @@ export const tutorial_pages = [
       url="https://gyazo.com/cbf3d0f3c616fc2a5575d7d648db6883"
       key="add_kozane"
     />
+    <p>Now let's close the tutorial and try to add some kozane!</p>
   </div>,
   <div>
     <H>Let's move Kozane!</H>
@@ -160,9 +161,13 @@ export const tutorial_pages = [
       allowFullScreen
     ></iframe>
     <p>
+      If you don't have a touchpad, you can use a wheel to move vertically,
+      shift+wheel to horizontal, and ctrl+wheel to zoom.
+    </p>
+    {/* <p>
       (For Windows users: On Windows, the scroll of the Ba is sometimes locked
       horizontally/vertically. It is a known issue. )
-    </p>
+    </p> */}
   </div>,
   <div>
     <H>Let's click to show menu</H>
@@ -263,12 +268,12 @@ export const tutorial_pages = [
       Kozane is a tool to recombine and rearrange information. By doing this, we
       often find connections between kozane that seem to have nothing related to
       each other. After discovering unexpected relationships, kozane is
-      organized into a structure that you did not anticipate beforehand.{" "}
+      organized into a structure that you did not anticipate beforehand.
     </p>
     <p>
-      If you put the kozane into a rigid subjective classification, they will
-      suffocate and die. Don't classify kozane by its content, but organize them
-      by your personal interest.
+      Kozane is like fish. If you put them into where they can not swim, they
+      will die. Don't classify kozane by its content, but organize them by your
+      personal interest.
     </p>
     <p>
       (This page is a digest from a book by Tadao Umesao, who invented Kozane
