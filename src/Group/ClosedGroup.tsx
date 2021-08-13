@@ -5,6 +5,7 @@ import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
 import { GroupDiv } from "./GroupDiv";
 import { PADDING, BORDER } from "../dimension/get_bounding_box";
 import { TGroupItem } from "./GroupItem";
+import { getGlobal } from "reactn";
 
 export type Props = {
   value: TGroupItem;
@@ -25,6 +26,11 @@ export const ClosedGroup: React.FC<Props> = ({ offset, value, onClick }) => {
     x: width / 2,
     y: height / 2,
   };
+  let text = value.text;
+  if (text === "") {
+    const itemStore = getGlobal().itemStore;
+    text = value.items.map((x) => itemStore[x].text).join(" ");
+  }
   return (
     <GroupDiv
       style={style}
@@ -36,7 +42,7 @@ export const ClosedGroup: React.FC<Props> = ({ offset, value, onClick }) => {
         offset={new_offset}
         value={{
           ...value,
-          text: "A B",
+          text,
           id: "nameplate-" + value.id,
         }}
       />

@@ -76,7 +76,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   const center_shift_x = b.left + b.right;
   const center_shift_y = b.top + b.bottom;
 
-  const title = value.title ?? "";
+  const title = value.text ?? "";
   const title_height = title.length !== 0 ? TITLE_HEIGHT : 0;
   const width = b.right - b.left;
   const height = b.bottom - b.top;

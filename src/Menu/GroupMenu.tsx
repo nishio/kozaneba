@@ -32,26 +32,33 @@ export const GroupMenu = () => {
       g.drawOrder = remove_item(g.drawOrder, gid);
       delete g.itemStore[gid];
     });
+    updateGlobal((g) => {
+      g.clicked_group = "";
+    });
     setMenu("");
   };
 
   const onDelete = () => {
     delete_item_from_world(gid);
+    updateGlobal((g) => {
+      g.clicked_group = "";
+    });
     setMenu("");
   };
 
-  // after deletion of group it causes error
-  // const isOpenGroup = group.isOpen;
-  // const labelOpenClose = isOpenGroup ? "close" : "open";
-  // const onOpenClose = () => {
-  //   updateGlobal((g) => {
-  //     (g.itemStore[gid] as GroupItem).isOpen = !isOpenGroup;
-  //   });
-  // };
+  // after deletion of group it causes error?
+
+  const isOpenGroup = group !== null && group.isOpen;
+  const labelOpenClose = isOpenGroup ? "close" : "open";
+  const onOpenClose = () => {
+    updateGlobal((g) => {
+      (g.itemStore[gid] as GroupItem).isOpen = !isOpenGroup;
+    });
+  };
 
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-      {/* <MenuItem onClick={onOpenClose}>{labelOpenClose}</MenuItem> */}
+      <MenuItem onClick={onOpenClose}>{labelOpenClose}</MenuItem>
 
       <MenuItem onClick={onUngroup}>ungroup</MenuItem>
       <MenuItem onClick={onDelete} data-testid="group-delete">

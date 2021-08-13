@@ -3,7 +3,7 @@ import { ItemId } from "../Global/initializeGlobalState";
 
 export type TGroupItem = {
   type: "group";
-  title: string;
+  text: string;
   position: number[];
   items: ItemId[];
   id: ItemId;
@@ -13,7 +13,7 @@ export type TGroupItem = {
 
 export class GroupItem {
   type: "group" = "group";
-  title = "";
+  text = "";
   position = [0, 0];
   items: ItemId[] = [];
   id: ItemId;

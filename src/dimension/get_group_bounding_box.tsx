@@ -10,7 +10,7 @@ import { TBoundingBox } from "./TBoundingBox";
 export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
   const { left, top, right, bottom } = get_items_bounding_box(g.items);
   const [x, y] = g.position;
-  const title_height = g.title.length !== 0 ? TITLE_HEIGHT : 0;
+  const title_height = g.text.length !== 0 ? TITLE_HEIGHT : 0;
 
   return {
     left: x + left - PADDING,
