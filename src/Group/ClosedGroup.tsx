@@ -41,10 +41,10 @@ export const ClosedGroup: React.FC<Props> = ({
 }) => {
   const [x, y] = value.position;
   const scale = value.scale;
-  const width = KOZANE_WIDTH + PADDING * 2;
-  const height = KOZANE_HEIGHT + PADDING * 2;
-  const top = y - (height / 2) * scale - BORDER;
-  const left = x - (width / 2) * scale - BORDER;
+  const width = KOZANE_WIDTH * scale + PADDING * 2;
+  const height = KOZANE_HEIGHT * scale + PADDING * 2;
+  const top = y - height / 2 - BORDER;
+  const left = x - width / 2 - BORDER;
 
   const style = { top, left, height, width };
   const new_offset = {
