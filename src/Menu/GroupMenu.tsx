@@ -4,6 +4,7 @@ import { getGlobal, useGlobal } from "reactn";
 import { add_v2 } from "../dimension/V2";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
+import { KozaneItem } from "../Kozane/KozaneItem";
 import { remove_item } from "../utils/remove_item";
 import { delete_item_from_world } from "./delete_item_from_world";
 
@@ -29,10 +30,16 @@ export const GroupMenu = () => {
           group.position
         );
       });
+      if (group.text !== "") {
+        // add kozane of group title
+        const kozane = new KozaneItem();
+        kozane.text = group.text;
+        kozane.position = [...group.position];
+        g.itemStore[kozane.id] = kozane;
+        g.drawOrder.push(kozane.id);
+      }
       g.drawOrder = remove_item(g.drawOrder, gid);
       delete g.itemStore[gid];
-    });
-    updateGlobal((g) => {
       g.clicked_group = "";
     });
     setMenu("");

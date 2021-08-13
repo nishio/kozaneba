@@ -8,13 +8,9 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
-import { KozaneItem } from "../Kozane/KozaneItem";
-import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { get_group_title } from "../Group/ClosedGroup";
-import { get_one_line } from "./get_one_line";
-import { multiline_to_lines } from "./multiline_to_lines";
 
 export const EditGroupTitleDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -24,6 +20,9 @@ export const EditGroupTitleDialog = () => {
   const onClose = () => {
     setDialog("");
   };
+  if (!open) {
+    return null;
+  }
   const g = getGlobal();
   const id = g.clicked_group;
   const group = g.itemStore[id] as GroupItem;
