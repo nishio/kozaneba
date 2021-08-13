@@ -1,6 +1,7 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { updateGlobal } from "../Global/updateGlobal";
 import { delete_item_from_world } from "./delete_item_from_world";
 
 export const KozaneMenu = () => {
@@ -16,10 +17,21 @@ export const KozaneMenu = () => {
     delete_item_from_world(id);
     setMenu("");
   };
+  const onBig = () => {
+    const id = getGlobal().clicked_kozane;
+    if (id === "") return;
+    updateGlobal((g) => {
+      g.itemStore[id].scale++;
+    });
+    setMenu("");
+  };
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onDelete} data-testid="kozane-delete">
         Delete
+      </MenuItem>
+      <MenuItem onClick={onBig} data-testid="kozane-delete">
+        Big
       </MenuItem>
     </Menu>
   );
