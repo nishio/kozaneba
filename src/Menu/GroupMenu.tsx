@@ -5,7 +5,7 @@ import { add_v2 } from "../dimension/V2";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { KozaneItem } from "../Kozane/KozaneItem";
-import { remove_item } from "../utils/remove_item";
+import { remove_item_from } from "../utils/remove_item";
 import { delete_item_from_world } from "./delete_item_from_world";
 
 export const GroupMenu = () => {
@@ -38,7 +38,7 @@ export const GroupMenu = () => {
         g.itemStore[kozane.id] = kozane;
         g.drawOrder.push(kozane.id);
       }
-      g.drawOrder = remove_item(g.drawOrder, gid);
+      g.drawOrder = remove_item_from(g.drawOrder, gid);
       delete g.itemStore[gid];
       g.clicked_group = "";
     });
@@ -70,10 +70,20 @@ export const GroupMenu = () => {
   };
 
   return (
-    <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-      <MenuItem onClick={onOpenClose}>{labelOpenClose}</MenuItem>
+    <Menu
+      anchorEl={anchor}
+      keepMounted
+      open={open}
+      onClose={onClose}
+      data-testid="group-menu"
+    >
+      <MenuItem onClick={onOpenClose} data-testid="group-open-close">
+        {labelOpenClose}
+      </MenuItem>
 
-      <MenuItem onClick={onUngroup}>ungroup</MenuItem>
+      <MenuItem onClick={onUngroup} data-testid="group-ungroup">
+        ungroup
+      </MenuItem>
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
 
       <MenuItem onClick={onDelete} data-testid="group-delete">

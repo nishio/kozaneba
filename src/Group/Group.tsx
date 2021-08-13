@@ -62,13 +62,12 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
         key={value.id}
         data-testid={value.id}
         onClick={onClick}
-        // onMouseDown={onGroupMouseDown}
-        // onDragStart={onDragStart}
-        // draggable={true}
-        // onDragOver={allowDrop}
-        // onDragEnter={onDragEnter}
-        // onDragLeave={onDragLeave}
-        // onDrop={onDrop}
+        onMouseDown={onGroupMouseDown}
+        onDragStart={onDragStart}
+        onDragOver={allowDrop}
+        onDragEnter={onDragEnter}
+        onDragLeave={onDragLeave}
+        onDrop={onDrop}
       />
     );
   }

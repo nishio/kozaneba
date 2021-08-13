@@ -11,7 +11,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { add_v2, sub_v2 } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
-import { remove_item } from "../utils/remove_item";
+import { remove_item_from } from "../utils/remove_item";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -108,11 +108,11 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
       const parent = find_parent(g.drag_target);
       if (parent !== null) {
         const p = g.itemStore[parent] as TGroupItem;
-        p.items = remove_item(p.items, g.drag_target);
+        p.items = remove_item_from(p.items, g.drag_target);
         g.drawOrder.push(g.drag_target);
         position = add_v2(position, p.position);
       } else {
-        g.drawOrder = remove_item(g.drawOrder, g.drag_target);
+        g.drawOrder = remove_item_from(g.drawOrder, g.drag_target);
         g.drawOrder.push(g.drag_target);
       }
       g.itemStore[g.drag_target].position = position;
@@ -155,7 +155,7 @@ export const onGroupDrop = (
           add_v2(g.itemStore[id].position, delta),
           group.position
         );
-        g.drawOrder = remove_item(g.drawOrder, id);
+        g.drawOrder = remove_item_from(g.drawOrder, id);
         group.items.push(id);
       });
       // const sr = g.selectionRange;
@@ -182,11 +182,11 @@ export const onGroupDrop = (
       if (parent !== null) {
         const p = g.itemStore[parent] as TGroupItem;
         // `p` may equals to `group`, it's OK
-        p.items = remove_item(p.items, g.drag_target);
+        p.items = remove_item_from(p.items, g.drag_target);
         group.items.push(g.drag_target);
         position = sub_v2(add_v2(position, p.position), group.position);
       } else {
-        g.drawOrder = remove_item(g.drawOrder, g.drag_target);
+        g.drawOrder = remove_item_from(g.drawOrder, g.drag_target);
         group.items.push(g.drag_target);
         position = sub_v2(position, group.position);
       }

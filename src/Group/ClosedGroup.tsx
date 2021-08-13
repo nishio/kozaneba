@@ -11,6 +11,12 @@ export type Props = {
   value: TGroupItem;
   offset: { x: number; y: number };
   onClick: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onMouseDown: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  onDragStart: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragEnter: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragLeave: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
 };
 
 export const get_group_title = (group: GroupItem): string => {
@@ -22,7 +28,17 @@ export const get_group_title = (group: GroupItem): string => {
   return text;
 };
 
-export const ClosedGroup: React.FC<Props> = ({ offset, value, onClick }) => {
+export const ClosedGroup: React.FC<Props> = ({
+  offset,
+  value,
+  onClick,
+  onMouseDown,
+  onDragStart,
+  onDragOver,
+  onDragEnter,
+  onDragLeave,
+  onDrop,
+}) => {
   const [x, y] = value.position;
   const scale = value.scale;
   const width = KOZANE_WIDTH + PADDING * 2;
@@ -43,6 +59,13 @@ export const ClosedGroup: React.FC<Props> = ({ offset, value, onClick }) => {
       key={value.id}
       data-testid={value.id}
       onClick={onClick}
+      onMouseDown={onMouseDown}
+      onDragStart={onDragStart}
+      draggable={true}
+      onDragOver={onDragOver}
+      onDragEnter={onDragEnter}
+      onDragLeave={onDragLeave}
+      onDrop={onDrop}
     >
       <GroupBack />
       <NameplateKozane

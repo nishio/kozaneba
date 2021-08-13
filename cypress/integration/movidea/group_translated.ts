@@ -47,10 +47,10 @@ describe("group, tralslated", () => {
           });
         });
       });
+    cy.viewport(500, 500);
   });
 
   it("main", () => {
-    cy.viewport(500, 500);
     cy.get("div[data-testid='1']").should((x) => {
       expect(x[0].getBoundingClientRect().x).equal(104);
       expect(x[0].getBoundingClientRect().y).equal(189);
