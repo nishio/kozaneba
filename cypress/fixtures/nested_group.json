@@ -7,14 +7,14 @@
       "position": [0, 0],
       "nameplate": null,
       "isOpen": true,
-      "title": "A",
+      "text": "A",
       "items": ["B"]
     },
     "B": {
       "type": "group",
       "id": "B",
       "position": [0, 0],
-      "title": "B",
+      "text": "B",
       "scale": 1,
       "items": ["C"]
     },

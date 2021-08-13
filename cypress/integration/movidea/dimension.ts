@@ -21,7 +21,7 @@ describe("dimension", () => {
           nameplate: null,
           isOpen: true,
           items: [2, 3],
-          title: "",
+          text: "",
           scale: 1,
         },
         2: {

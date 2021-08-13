@@ -88,7 +88,7 @@ export const SplitKozaneDialog = () => {
                 backgroundColor: "#eee",
                 border: "none",
               }}
-              minRows={30}
+              minRows={1}
               data-testid="textarea"
               ref={textarea}
               defaultValue={text}

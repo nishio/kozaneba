@@ -8,6 +8,7 @@ import { setGlobal } from "reactn";
 import { TItem } from "../Global/initializeGlobalState";
 import { TKozaneItem } from "../Kozane/KozaneItem";
 import { TGroupItem } from "../Group/GroupItem";
+import { upgrade } from "../utils/piece_to_kozane";
 
 const config = {
   apiKey: "AIzaSyB0wAxxeLeHr4udunpln5jCYpGpFGn7D00",
@@ -100,7 +101,7 @@ export const docdate_to_state = (data: DocData): Partial<State> => {
   Object.entries(data.itemStore).forEach(([key, value]) => {
     ret.itemStore[key] = to_item(value);
   });
-
+  ret.itemStore = upgrade(ret.itemStore);
   return ret;
 };
 

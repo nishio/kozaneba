@@ -15,7 +15,7 @@ describe("nested group", () => {
           nameplate: null,
           isOpen: true,
           items: [2],
-          title: "",
+          text: "",
         },
         2: {
           type: "group",
@@ -24,7 +24,7 @@ describe("nested group", () => {
           nameplate: null,
           isOpen: true,
           items: [3],
-          title: "",
+          text: "",
         },
         3: {
           type: "piece",
