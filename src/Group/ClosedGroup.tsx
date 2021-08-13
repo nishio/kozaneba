@@ -2,7 +2,7 @@ import React from "react";
 import { NameplateKozane } from "../Kozane/NameplateKozane";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
 
-import { GroupDiv } from "./GroupDiv";
+import { GroupBack, GroupDiv } from "./GroupDiv";
 import { PADDING, BORDER } from "../dimension/get_bounding_box";
 import { TGroupItem } from "./GroupItem";
 import { getGlobal } from "reactn";
@@ -38,6 +38,7 @@ export const ClosedGroup: React.FC<Props> = ({ offset, value, onClick }) => {
       data-testid={value.id}
       onClick={onClick}
     >
+      <GroupBack />
       <NameplateKozane
         offset={new_offset}
         value={{
