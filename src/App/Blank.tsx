@@ -13,6 +13,7 @@ import { CloudSaveDialog } from "./CloudSaveDialog";
 import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";
 import { useEffect, useGlobal } from "reactn";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
+import { EditGroupTitleDialog } from "../AddKozaneDialog/EditGroupTitleDialog";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -38,6 +39,7 @@ export const Blank = () => {
       <MenuAnchor />
       <StatusBar />
       <LocalChangeWatcher />
+      <EditGroupTitleDialog />
     </div>
   );
 };

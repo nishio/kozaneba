@@ -7,6 +7,7 @@ export const GroupDiv = styled.div`
   border: ${BORDER}px solid ${GROUP_BORDER_COLOR};
   position: absolute;
 `;
+
 export const GroupBack = styled.div`
   position: absolute;
   background: #eee;
@@ -14,6 +15,7 @@ export const GroupBack = styled.div`
   height: 100%;
   opacity: ${OPACITY};
 `;
+
 export const GroupTitle = styled.span`
   background: ${GROUP_BORDER_COLOR};
   position: absolute;
@@ -23,5 +25,6 @@ export const GroupTitle = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
   height: ${TITLE_HEIGHT}px;
+  margin: -1px -1px -1px 0;
   padding-bottom: 1px;
 `;

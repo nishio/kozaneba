@@ -56,11 +56,19 @@ export const GroupMenu = () => {
     });
   };
 
+  const onEditGroupTitle = () => {
+    updateGlobal((g) => {
+      g.dialog = "EditGroupTitle";
+    });
+  };
+
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onOpenClose}>{labelOpenClose}</MenuItem>
 
       <MenuItem onClick={onUngroup}>ungroup</MenuItem>
+      <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
+
       <MenuItem onClick={onDelete} data-testid="group-delete">
         delete
       </MenuItem>

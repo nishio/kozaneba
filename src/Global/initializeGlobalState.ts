@@ -49,7 +49,13 @@ enum ItemIdBrand {
 }
 export type ItemId = ItemIdBrand & string;
 
-type TDialog = "" | "AddKozane" | "Tutorial" | "Sign" | "CloudSave";
+type TDialog =
+  | ""
+  | "AddKozane"
+  | "Tutorial"
+  | "Sign"
+  | "CloudSave"
+  | "EditGroupTitle";
 export type TMenu = "" | "Main" | "Dev" | "Kozane" | "Selection" | "Group";
 type TStatusType =
   | "text"
