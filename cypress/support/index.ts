@@ -25,6 +25,7 @@
 
 import { State } from "reactn/default";
 import { TMovidea } from "../../src/Global/exposeGlobal";
+import { TGroupItem } from "../../src/Group/GroupItem";
 
 declare global {
   namespace Cypress {
@@ -34,6 +35,10 @@ declare global {
       updateGlobal(callback: (g: State) => void): Chainable<Element>;
       getGlobal(callback: (g: State) => unknown): Chainable<unknown>;
       setGlobal(g: Partial<State>): Chainable<unknown>;
+      getGroup(
+        id: string,
+        callback: (g: TGroupItem) => unknown
+      ): Chainable<unknown>;
     }
   }
 }
@@ -75,6 +80,15 @@ Cypress.Commands.add("setGlobal", (g: Partial<State>) => {
     movidea.setGlobal(g);
   });
 });
+
+Cypress.Commands.add(
+  "getGroup",
+  (id: string, callback: (g: TGroupItem) => unknown) => {
+    return cy.movidea((movidea) => {
+      return cy.wrap(callback(movidea.getGlobal().itemStore[id] as TGroupItem));
+    });
+  }
+);
 
 chai.use((_chai, utils) => {
   function hasPosition(options) {

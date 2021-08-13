@@ -29,6 +29,7 @@ export const Kozane: React.FC<Props> = ({
       g.clicked_kozane = value.id;
     });
     show_menu("Kozane", event);
+    event.stopPropagation();
   };
   const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
     onKozaneDragStart(e, value);

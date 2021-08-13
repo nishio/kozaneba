@@ -4,6 +4,7 @@ import { xorBy } from "cypress/types/lodash";
 import { ItemId } from "../../../src/Global/initializeGlobalState";
 import { GroupItem, TGroupItem } from "../../../src/Group/GroupItem";
 import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
+import { get_group } from "../../utils";
 
 describe("group", () => {
   beforeEach(() => {
@@ -128,13 +129,16 @@ describe("group", () => {
   it("open/close", () => {
     cy.testid("1").click();
     cy.testid("group-open-close").click();
-    cy.getGlobal((g) => (g.itemStore["1"] as GroupItem).isOpen).should(
-      "be.false"
-    );
+    cy.getGroup("1", (g) => g.isOpen).should("be.false");
+
     cy.testid("1").click();
     cy.testid("group-open-close").click();
-    cy.getGlobal((g) => (g.itemStore["1"] as GroupItem).isOpen).should(
-      "be.true"
-    );
+    cy.getGroup("1", (g) => g.isOpen).should("be.true");
+  });
+
+  it("delete chiild", () => {
+    cy.testid("2").click();
+    cy.testid("kozane-delete").click();
+    cy.getGroup("1", (g) => g.items).should("eql", [3]);
   });
 });
