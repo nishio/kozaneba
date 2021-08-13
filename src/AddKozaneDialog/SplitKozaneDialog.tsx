@@ -94,23 +94,6 @@ export const SplitKozaneDialog = () => {
               defaultValue={text}
             />
           </div>
-
-          {/* <div style={{ maxWidth: "20%" }}>
-            <div
-              style={{
-                position: "sticky",
-                top: "0px",
-                background: "#eee",
-                padding: "2px",
-              }}
-            >
-              Menu
-              <hr />
-              New Pieces:
-              <hr />
-              <hr />
-            </div>
-          </div> */}
         </div>
       </DialogContent>
       <DialogActions>
