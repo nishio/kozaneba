@@ -60,6 +60,7 @@ export const GroupMenu = () => {
   const onOpenClose = () => {
     updateGlobal((g) => {
       (g.itemStore[gid] as GroupItem).isOpen = !isOpenGroup;
+      g.menu = "";
     });
   };
 

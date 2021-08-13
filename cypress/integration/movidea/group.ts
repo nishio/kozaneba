@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 
+import { xorBy } from "cypress/types/lodash";
 import { ItemId } from "../../../src/Global/initializeGlobalState";
-import { TGroupItem } from "../../../src/Group/GroupItem";
+import { GroupItem, TGroupItem } from "../../../src/Group/GroupItem";
 import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("group", () => {
@@ -17,7 +18,7 @@ describe("group", () => {
           nameplate: null,
           isOpen: true,
           items: [2, 3],
-          title: "",
+          text: "",
           scale: 1,
         },
         2: {
@@ -71,7 +72,7 @@ describe("group", () => {
       movidea.updateGlobal((g) => {
         const x = g.itemStore["1"] as TGroupItem;
         x.position = [0, 0];
-        x.title = "title";
+        x.text = "title";
       });
     });
     const title_height = 25;
@@ -82,7 +83,7 @@ describe("group", () => {
       movidea.updateGlobal((g) => {
         const x = g.itemStore["1"] as TGroupItem;
         x.position = [0, 0];
-        x.title = "long title ".repeat(10);
+        x.text = "long title ".repeat(10);
       });
     });
 
@@ -122,5 +123,18 @@ describe("group", () => {
     });
     cy.testid("1").should("hasPosition", [54, 169]);
     cy.testid("3").should("hasPosition", [84, 199]);
+  });
+
+  it("open/close", () => {
+    cy.testid("1").click();
+    cy.testid("group-open-close").click();
+    cy.getGlobal((g) => (g.itemStore["1"] as GroupItem).isOpen).should(
+      "be.false"
+    );
+    cy.testid("1").click();
+    cy.testid("group-open-close").click();
+    cy.getGlobal((g) => (g.itemStore["1"] as GroupItem).isOpen).should(
+      "be.true"
+    );
   });
 });
