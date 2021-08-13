@@ -25,13 +25,22 @@ export const KozaneMenu = () => {
     });
     setMenu("");
   };
+  const onSplit = () => {
+    updateGlobal((g) => {
+      g.dialog = "SplitKozane";
+    });
+    setMenu("");
+  };
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
+      <MenuItem onClick={onBig} data-testid="kozane-big">
+        Big
+      </MenuItem>
+      <MenuItem onClick={onSplit} data-testid="kozane-split">
+        Split
+      </MenuItem>
       <MenuItem onClick={onDelete} data-testid="kozane-delete">
         Delete
-      </MenuItem>
-      <MenuItem onClick={onBig} data-testid="kozane-delete">
-        Big
       </MenuItem>
     </Menu>
   );
