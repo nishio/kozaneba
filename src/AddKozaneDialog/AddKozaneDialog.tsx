@@ -27,38 +27,8 @@ export const AddKozaneDialog = () => {
   const onAddKozane = () => {
     if (textarea.current === null) return;
     let multiline = textarea.current.value;
-    const items = multiline_to_lines(multiline);
-    const N = items.length;
-    const area = N * KOZANE_WIDTH * KOZANE_HEIGHT;
-    const numX = Math.ceil(Math.sqrt(area) / KOZANE_WIDTH);
-    const width = numX * KOZANE_WIDTH;
-    const height = Math.ceil(N / numX) * KOZANE_HEIGHT;
-    const center = [0, 0];
 
-    updateGlobal((g) => {
-      const group = new GroupItem();
-      g.itemStore[group.id] = group;
-
-      items.forEach((line, index) => {
-        if (line === "") return;
-        let x = index % numX;
-        let y = Math.floor(index / numX);
-        x *= KOZANE_WIDTH;
-        y *= KOZANE_HEIGHT;
-
-        x += center[0] - width / 2 + KOZANE_WIDTH / 2;
-        y += center[1] - height / 2 + KOZANE_HEIGHT / 2;
-
-        const kozane = new KozaneItem();
-        kozane.text = line;
-        kozane.position = [x, y];
-        g.itemStore[kozane.id] = kozane;
-        group.items.push(kozane.id);
-      });
-      g.drawOrder.push(group.id);
-      g.dialog = "";
-      g.add_kozane_text = "";
-    });
+    add_multiple_kozane(multiline);
   };
 
   const fullScreen = false;
@@ -125,4 +95,39 @@ export const AddKozaneDialog = () => {
       </DialogActions>
     </Dialog>
   );
+};
+
+export const add_multiple_kozane = (multiline: string) => {
+  const items = multiline_to_lines(multiline);
+  const N = items.length;
+  const area = N * KOZANE_WIDTH * KOZANE_HEIGHT;
+  const numX = Math.ceil(Math.sqrt(area) / KOZANE_WIDTH);
+  const width = numX * KOZANE_WIDTH;
+  const height = Math.ceil(N / numX) * KOZANE_HEIGHT;
+  const center = [0, 0];
+
+  updateGlobal((g) => {
+    const group = new GroupItem();
+    g.itemStore[group.id] = group;
+
+    items.forEach((line, index) => {
+      if (line === "") return;
+      let x = index % numX;
+      let y = Math.floor(index / numX);
+      x *= KOZANE_WIDTH;
+      y *= KOZANE_HEIGHT;
+
+      x += center[0] - width / 2 + KOZANE_WIDTH / 2;
+      y += center[1] - height / 2 + KOZANE_HEIGHT / 2;
+
+      const kozane = new KozaneItem();
+      kozane.text = line;
+      kozane.position = [x, y];
+      g.itemStore[kozane.id] = kozane;
+      group.items.push(kozane.id);
+    });
+    g.drawOrder.push(group.id);
+    g.dialog = "";
+    g.add_kozane_text = "";
+  });
 };
