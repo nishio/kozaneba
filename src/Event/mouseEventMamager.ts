@@ -5,7 +5,6 @@ import { isOverlap } from "../dimension/isOverlap";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TGroupItem } from "../Group/GroupItem";
-import { reset_selection } from "../Selection/reset_selection";
 import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
 import { updateGlobal } from "../Global/updateGlobal";
 import {
@@ -26,17 +25,6 @@ export const onGroupDragStart = (
 ) => {
   console.log("onGroupDragStart");
   event.stopPropagation();
-
-  // const e: HTMLDivElement = event.currentTarget.cloneNode(
-  //   true
-  // ) as HTMLDivElement;
-  // document.body.appendChild(e);
-  // e.style.transform = `scale(${getGlobal().scale})`;
-  // event.dataTransfer.setDragImage(
-  //   e,
-  //   event.nativeEvent.offsetX,
-  //   event.nativeEvent.offsetY
-  // );
 
   if (event.dataTransfer !== undefined) {
     event.dataTransfer.effectAllowed = "move";
@@ -208,11 +196,6 @@ export const onGroupDrop = (
       throw new Error();
     }
   });
-};
-
-export const onGroupMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-  reset_selection();
-  event.stopPropagation();
 };
 
 export const onSelectionMouseDown = (

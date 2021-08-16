@@ -1,16 +1,16 @@
 import React from "react";
-import { ItemId } from "../Global/initializeGlobalState";
-import { reset_selection } from "../Selection/reset_selection";
-import { updateGlobal } from "../Global/updateGlobal";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
+import { ItemId } from "../Global/initializeGlobalState";
+import { updateGlobal } from "../Global/updateGlobal";
+import { reset_selection } from "../Selection/reset_selection";
 import { get_client_pos } from "./get_client_pos";
 
-// almost same with onGroupMouseDown
-export const onKozaneMouseDown = (
+// almost same with onKozaneMouseDown
+export const onGroupMouseDown = (
   event: React.MouseEvent<HTMLDivElement>,
   value: { id: ItemId; position: number[] }
 ) => {
-  console.log("onKozaneMouseDown");
+  console.log("onGroupMouseDown");
   reset_selection();
 
   updateGlobal((g) => {
