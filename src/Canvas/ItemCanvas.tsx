@@ -3,12 +3,7 @@ import { Center } from "./Center";
 import { Kozane } from "../Kozane/Kozane";
 import { kozaneToKozaneItem } from "../kozaneToKozaneItem";
 import { ids_to_dom } from "./ids_to_dom";
-import {
-  onCanvasDrop,
-  allowDrop,
-  onCanvasMouseUp,
-  onCanvasMouseDown,
-} from "../Event/mouseEventMamager";
+import { onCanvasMouseUp, onCanvasMouseDown } from "../Event/mouseEventMamager";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { SelectionView } from "../Selection/Selection";
 import { ItemId } from "../Global/initializeGlobalState";
@@ -63,8 +58,6 @@ export const ItemCanvas = () => {
   return (
     <div
       id="canvas"
-      onDrop={onCanvasDrop}
-      onDragOver={allowDrop}
       onMouseUp={onCanvasMouseUp}
       onMouseDown={onCanvasMouseDown}
       onMouseMove={onCanvasMouseMove}

@@ -1,17 +1,18 @@
+// for fast dragging, do not update the ReactN states
 import React from "react";
-import { add_v2, add_v2w, sub_v2w } from "../dimension/V2";
+import { add_v2, sub_v2w } from "../dimension/V2";
 import {
   screen_to_world,
   TScreenCoord,
   TWorldCoord,
 } from "../dimension/world_to_screen";
-import { updateGlobal } from "../Global/updateGlobal";
 import { get_client_pos } from "./get_client_pos";
 
 let _target: HTMLDivElement | null;
 let _mouse_down_point = [0, 0] as TScreenCoord;
 let _first_element_position = [0, 0] as TScreenCoord;
 let _is_mousemoved = false;
+let _is_dragging = false;
 
 export const set_target = (event: React.MouseEvent<HTMLDivElement>) => {
   _target = event.currentTarget;
@@ -20,21 +21,24 @@ export const set_target = (event: React.MouseEvent<HTMLDivElement>) => {
     Number.parseFloat(_target.style.left),
     Number.parseFloat(_target.style.top),
   ] as TScreenCoord;
+
+  _target.style.pointerEvents = "none";
+  _target.style.zIndex = "100";
+
   _is_mousemoved = false;
+  _is_dragging = true;
 };
 
-export const reset_target = (event: React.MouseEvent<HTMLDivElement>) => {
-  updateGlobal((g) => {
-    const target = g.itemStore[g.drag_target];
-    const delta = sub_v2w(
-      screen_to_world(get_client_pos(event)),
-      screen_to_world(_mouse_down_point)
-    );
-    target.position = add_v2w(target.position, delta);
-    g.drag_target = "";
-  });
+export const reset_target = () => {
+  if (_target === null) {
+    throw new Error("try to move element:null");
+  }
+
+  _target.style.pointerEvents = "auto";
+  _target.style.zIndex = "0";
 
   _target = null;
+  _is_dragging = false;
 };
 
 export const move_target = (event: React.MouseEvent) => {
@@ -56,4 +60,16 @@ export const move_target = (event: React.MouseEvent) => {
 
 export const is_dragged = () => {
   return _is_mousemoved;
+};
+
+export const is_draggeing = () => {
+  return _is_dragging;
+};
+
+export const get_delta = (event: React.MouseEvent<HTMLDivElement>) => {
+  const delta = sub_v2w(
+    screen_to_world(get_client_pos(event)),
+    screen_to_world(_mouse_down_point)
+  );
+  return delta;
 };

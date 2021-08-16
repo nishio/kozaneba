@@ -17,47 +17,7 @@ import { add_v2, add_v2w, sub_v2w } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
 import { remove_item_from } from "../utils/remove_item";
 import { get_client_pos } from "./get_client_pos";
-import { reset_target } from "./fast_drag_manager";
-
-export const onGroupDragStart = (
-  event: React.DragEvent<HTMLDivElement>,
-  value: TGroupItem
-) => {
-  console.log("onGroupDragStart");
-  event.stopPropagation();
-
-  if (event.dataTransfer !== undefined) {
-    event.dataTransfer.effectAllowed = "move";
-  }
-  updateGlobal((g) => {
-    const [x, y] = value.position;
-    const [cx, cy] = screen_to_world(get_client_pos(event));
-    g.dragstart_position = [cx - x, cy - y] as TWorldCoord;
-    g.drag_target = value.id;
-  });
-};
-
-export const onKozaneDragStart = (
-  event: React.DragEvent<HTMLDivElement>,
-  value: { id: ItemId; position: number[] }
-) => {
-  console.log("onKozaneDragStart");
-  if (event.dataTransfer !== undefined) {
-    event.dataTransfer.effectAllowed = "move";
-  }
-  // updateGlobal((g) => {
-  //   const [x, y] = value.position;
-  //   const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-  //   g.dragstart_position = [cx - x, cy - y];
-  //   g.drag_target = value.id;
-  // });
-  event.stopPropagation(); // stop dragstart of parent group
-};
-
-export const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
-  event.dataTransfer.dropEffect = "move";
-  event.preventDefault();
-};
+import { get_delta, reset_target } from "./fast_drag_manager";
 
 export const onSelectionDragStart = (
   event: React.DragEvent<HTMLDivElement>
@@ -248,8 +208,20 @@ export const onCanvasMouseUp = (
       g.mouseState = "";
       g.is_selected = true;
     });
-  } else if (g.drag_target !== "") {
-    reset_target(event);
+  } else if (g.drag_target !== "" && g.drag_target !== "selection") {
+    const target_id: ItemId = g.drag_target;
+    updateGlobal((g) => {
+      const target = g.itemStore[g.drag_target];
+      const delta = get_delta(event);
+      target.position = add_v2w(target.position, delta);
+
+      // put frontmost
+      g.drawOrder = remove_item_from(g.drawOrder, target_id);
+      g.drawOrder.push(target_id);
+
+      g.drag_target = "";
+    });
+
+    reset_target();
   }
-  console.log(getGlobal().selectionRange);
 };
