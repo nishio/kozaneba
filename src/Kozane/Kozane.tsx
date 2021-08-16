@@ -31,8 +31,6 @@ export const Kozane: React.FC<Props> = ({
     show_menu("Kozane", event);
     event.stopPropagation();
   };
-  // const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
-  //   onKozaneDragStart(e, value);
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     set_target(e);
