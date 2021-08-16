@@ -3,7 +3,7 @@ import { getGlobal } from "reactn";
 import { convert_bounding_box_screen_to_world } from "../dimension/convert_bounding_box_screen_to_world";
 import { isOverlap } from "../dimension/isOverlap";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId, KozaneViewId } from "../Global/initializeGlobalState";
 import { TGroupItem } from "../Group/GroupItem";
 import { reset_selection } from "../Selection/reset_selection";
 import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
@@ -217,6 +217,14 @@ export const onKozaneMouseDown = (
 ) => {
   console.log("onKozaneMouseDown");
   reset_selection();
+
+  updateGlobal((g) => {
+    const [x, y] = value.position;
+    const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
+    g.dragstart_position = [cx - x, cy - y];
+    g.drag_target = value.id;
+  });
+
   event.stopPropagation();
 };
 
@@ -233,6 +241,7 @@ export const onCanvasMouseDown = (
     g.mouseState = "selecting";
   });
 };
+
 export const onCanvasMouseMove = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {

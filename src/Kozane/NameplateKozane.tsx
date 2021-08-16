@@ -16,13 +16,16 @@ export const NameplateKozane: React.FC<Props> = ({
     ...custom_style,
   };
 
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>
+    onKozaneMouseDown(e, value);
+
   return (
     <KozaneDiv
       className="kozane"
       data-testid={value.id}
       key={value.id}
       style={style}
-      onMouseDown={onKozaneMouseDown}
+      onMouseDown={onMouseDown}
       draggable={true}
     >
       <KozaneDiv2>{value.text}</KozaneDiv2>
