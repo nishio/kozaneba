@@ -23,8 +23,28 @@ export const KozaneDiv = styled.div`
   position: absolute;
   line-height: 0.9;
   user-select: none;
+
+  // background: linear-gradient(
+  //   90deg,
+  //   #d55,
+  //   #dd5,
+  //   #5d5,
+  //   #5dd,
+  //   #55d,
+  //   #d5d,
+  //   #d55,
+  //   #dd5,
+  //   #5d5
+  // );
+  // /* padding: 0.1em 0.2em; */
+  // background-size: 400% 400%;
+  // background-repeat: repeat;
+  // animation: gaming 4s linear infinite;
 `;
 
 export const KozaneDiv2 = styled.div`
   width: 100%;
+
+  // mix-blend-mode: luminosity;
+  // color: #f0f0f0;
 `;
