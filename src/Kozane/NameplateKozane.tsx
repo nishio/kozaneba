@@ -1,6 +1,6 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
-import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
+import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { onKozaneMouseDown } from "../Event/mouseEventMamager";
@@ -12,7 +12,7 @@ export const NameplateKozane: React.FC<Props> = ({
   custom_style = {},
 }) => {
   const style = {
-    ...useAjustFontsizeStyle({ ...value, position: [0, 0] }, offset),
+    ...useAdjustFontsizeStyle({ ...value, position: [0, 0] }, offset),
     ...custom_style,
   };
 

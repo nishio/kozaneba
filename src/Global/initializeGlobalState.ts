@@ -48,6 +48,11 @@ enum ItemIdBrand {
   _ = "",
 }
 export type ItemId = ItemIdBrand & string;
+enum NameplateIdBrand {
+  _ = "",
+}
+export type NameplateId = NameplateIdBrand & string;
+export type KozaneViewId = ItemId | NameplateId;
 
 type TDialog =
   | ""

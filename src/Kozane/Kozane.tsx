@@ -7,7 +7,7 @@ import {
 } from "../Event/mouseEventMamager";
 import { show_menu } from "../Menu/show_menu";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
-import { useAjustFontsizeStyle } from "./useAjustFontsizeStyle";
+import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 import { TOffset } from "../dimension/TOffset";
 import { updateGlobal } from "../Global/updateGlobal";
 
@@ -22,7 +22,7 @@ export const Kozane: React.FC<Props> = ({
   offset,
   custom_style = {},
 }) => {
-  const style = { ...useAjustFontsizeStyle(value, offset), ...custom_style };
+  const style = { ...useAdjustFontsizeStyle(value, offset), ...custom_style };
 
   const onClick = (event: React.MouseEvent) => {
     updateGlobal((g) => {

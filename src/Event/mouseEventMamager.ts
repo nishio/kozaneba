@@ -211,7 +211,11 @@ export const onSelectionMouseDown = (
   event.stopPropagation();
 };
 
-export const onKozaneMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+export const onKozaneMouseDown = (
+  event: React.MouseEvent<HTMLDivElement>,
+  value: { id: KozaneViewId; position: number[] }
+) => {
+  console.log("onKozaneMouseDown");
   reset_selection();
   event.stopPropagation();
 };

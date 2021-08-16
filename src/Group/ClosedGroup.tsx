@@ -6,6 +6,7 @@ import { GroupBack, GroupDiv } from "./GroupDiv";
 import { PADDING, BORDER } from "../dimension/get_bounding_box";
 import { GroupItem, TGroupItem } from "./GroupItem";
 import { getGlobal } from "reactn";
+import { ItemId, NameplateId } from "../Global/initializeGlobalState";
 
 export type Props = {
   value: TGroupItem;
@@ -73,9 +74,13 @@ export const ClosedGroup: React.FC<Props> = ({
         value={{
           ...value,
           text,
-          id: "nameplate-" + value.id,
+          id: get_nameplate_id(value.id),
         }}
       />
     </GroupDiv>
   );
+};
+
+const get_nameplate_id = (kozaneId: ItemId): NameplateId => {
+  return ("nameplate-" + kozaneId) as NameplateId;
 };

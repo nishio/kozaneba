@@ -4,9 +4,10 @@ import { adjustFontSize } from "../Canvas/AdjustFontSize";
 import { KOZANE_WIDTH, KOZANE_HEIGHT, KOZANE_BORDER } from "./kozane_constants";
 import { TOffset } from "../dimension/TOffset";
 import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
+import { TKozaneItem } from "./KozaneItem";
 
-export const useAjustFontsizeStyle = (
-  value: TMinimumKozaneItem,
+export const useAdjustFontsizeStyle = (
+  value: TMinimumKozaneItem | TKozaneItem,
   offset: TOffset
 ) => {
   let [fontSize, setFontSize] = useState(1);
