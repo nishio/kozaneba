@@ -126,6 +126,7 @@ export const add_multiple_kozane = (multiline: string) => {
       g.itemStore[kozane.id] = kozane;
       group.items.push(kozane.id);
     });
+    group.position = [-g.trans_x, -g.trans_y];
     g.drawOrder.push(group.id);
     g.dialog = "";
     g.add_kozane_text = "";
