@@ -1,13 +1,13 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
 import { TKozaneItem } from "./KozaneItem";
-import { onKozaneDragStart } from "../Event/mouseEventMamager";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { show_menu } from "../Menu/show_menu";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 import { TOffset } from "../dimension/TOffset";
 import { updateGlobal } from "../Global/updateGlobal";
+import { is_dragged, set_target } from "../Event/fast_drag_manager";
 
 type Props = {
   value: TKozaneItem;
@@ -23,6 +23,7 @@ export const Kozane: React.FC<Props> = ({
   const style = { ...useAdjustFontsizeStyle(value, offset), ...custom_style };
 
   const onClick = (event: React.MouseEvent) => {
+    if (is_dragged()) return;
     console.log("onKozaneClick");
     updateGlobal((g) => {
       g.clicked_kozane = value.id;
@@ -30,11 +31,13 @@ export const Kozane: React.FC<Props> = ({
     show_menu("Kozane", event);
     event.stopPropagation();
   };
-  const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
-    onKozaneDragStart(e, value);
+  // const onDragStart = (e: React.DragEvent<HTMLDivElement>) =>
+  //   onKozaneDragStart(e, value);
 
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    set_target(e);
     onKozaneMouseDown(e, value);
+  };
 
   return (
     <KozaneDiv

@@ -9,6 +9,10 @@ export const add_v2w = (v1: TWorldCoord, v2: TWorldCoord): TWorldCoord => {
   return add_v2(v1, v2) as TWorldCoord;
 };
 
+export const add_v2s = (v1: TScreenCoord, v2: TScreenCoord): TScreenCoord => {
+  return add_v2(v1, v2) as TScreenCoord;
+};
+
 export const sub_v2 = (v1: V2, v2: V2): V2 => {
   return [v1[0] - v2[0], v1[1] - v2[1]];
 };

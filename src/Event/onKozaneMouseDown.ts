@@ -1,5 +1,5 @@
 import React from "react";
-import { ItemId, KozaneViewId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/initializeGlobalState";
 import { reset_selection } from "../Selection/reset_selection";
 import { updateGlobal } from "../Global/updateGlobal";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";

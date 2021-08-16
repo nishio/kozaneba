@@ -1,5 +1,5 @@
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal, setGlobal } from "reactn";
 import { convert_bounding_box_screen_to_world } from "../dimension/convert_bounding_box_screen_to_world";
 import { isOverlap } from "../dimension/isOverlap";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
@@ -266,8 +266,7 @@ export const onCanvasMouseUp = (
       g.is_selected = true;
     });
   } else if (g.drag_target !== "") {
-    g.drag_target = "";
-    reset_target();
+    reset_target(event);
   }
   console.log(getGlobal().selectionRange);
 };
