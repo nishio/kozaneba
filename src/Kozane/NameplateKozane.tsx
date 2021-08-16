@@ -3,8 +3,8 @@ import { CSSProperties } from "styled-components";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
-import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { TOffset } from "../dimension/TOffset";
+import { TWorldCoord } from "../dimension/world_to_screen";
 
 export const NameplateKozane: React.FC<Props> = ({
   value,
@@ -12,7 +12,10 @@ export const NameplateKozane: React.FC<Props> = ({
   custom_style = {},
 }) => {
   const style = {
-    ...useAdjustFontsizeStyle({ ...value, position: [0, 0] }, offset),
+    ...useAdjustFontsizeStyle(
+      { ...value, position: [0, 0] as TWorldCoord },
+      offset
+    ),
     ...custom_style,
   };
 

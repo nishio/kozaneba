@@ -14,10 +14,11 @@ import {
   TWorldCoord,
   world_to_screen,
 } from "../dimension/world_to_screen";
-import { add_v2, sub_v2 } from "../dimension/V2";
+import { add_v2, add_v2w, sub_v2w } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
 import { remove_item_from } from "../utils/remove_item";
 import { get_client_pos } from "./get_client_pos";
+import { reset_target } from "./fast_drag_manager";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -88,12 +89,12 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
   updateGlobal((g) => {
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
-      const delta = sub_v2(
+      const delta = sub_v2w(
         screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
       g.selected_items.forEach((id) => {
-        g.itemStore[id].position = add_v2(g.itemStore[id].position, delta);
+        g.itemStore[id].position = add_v2w(g.itemStore[id].position, delta);
       });
       const sr = g.selectionRange;
       const [qx, qy] = world_to_screen(
@@ -108,7 +109,7 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
       g.is_local_change = true;
       g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
-      let position = sub_v2(
+      let position = sub_v2w(
         screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
@@ -119,7 +120,7 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
         const p = g.itemStore[parent] as TGroupItem;
         p.items = remove_item_from(p.items, g.drag_target);
         g.drawOrder.push(g.drag_target);
-        position = add_v2(position, p.position);
+        position = add_v2w(position, p.position);
       } else {
         g.drawOrder = remove_item_from(g.drawOrder, g.drag_target);
         g.drawOrder.push(g.drag_target);
@@ -155,13 +156,13 @@ export const onGroupDrop = (
     const group = g.itemStore[group_id] as TGroupItem;
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
-      const delta = sub_v2(
+      const delta = sub_v2w(
         screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
       g.selected_items.forEach((id) => {
-        g.itemStore[id].position = sub_v2(
-          add_v2(g.itemStore[id].position, delta),
+        g.itemStore[id].position = sub_v2w(
+          add_v2w(g.itemStore[id].position, delta),
           group.position
         );
         g.drawOrder = remove_item_from(g.drawOrder, id);
@@ -182,7 +183,7 @@ export const onGroupDrop = (
       g.is_local_change = true;
       g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
-      let position = sub_v2(
+      let position = sub_v2w(
         screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
@@ -193,11 +194,11 @@ export const onGroupDrop = (
         // `p` may equals to `group`, it's OK
         p.items = remove_item_from(p.items, g.drag_target);
         group.items.push(g.drag_target);
-        position = sub_v2(add_v2(position, p.position), group.position);
+        position = sub_v2w(add_v2w(position, p.position), group.position);
       } else {
         g.drawOrder = remove_item_from(g.drawOrder, g.drag_target);
         group.items.push(g.drag_target);
-        position = sub_v2(position, group.position);
+        position = sub_v2w(position, group.position);
       }
       g.itemStore[g.drag_target].position = position;
       g.drag_target = "";
@@ -266,6 +267,7 @@ export const onCanvasMouseUp = (
     });
   } else if (g.drag_target !== "") {
     g.drag_target = "";
+    reset_target();
   }
   console.log(getGlobal().selectionRange);
 };
