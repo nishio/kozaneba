@@ -5,14 +5,17 @@ import { add_v2w, mul_v2w, sub_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
-import { GroupItem } from "../Group/GroupItem";
+import { GroupItem, TGroupItem } from "../Group/GroupItem";
 import { reset_selection } from "../Selection/reset_selection";
 import { remove_item_from } from "../utils/remove_item";
 import { delete_item_from_world } from "./delete_item_from_world";
 
-export const make_items_into_new_group = (items: ItemId[]): ItemId => {
+export const make_items_into_new_group = (
+  items: ItemId[],
+  value: Partial<TGroupItem>
+): ItemId => {
   const g = getGlobal();
-  const group = new GroupItem();
+  const group = new GroupItem(value.id);
   group.items = [...items];
   let new_drawOrder = g.drawOrder;
   const N = items.length;
@@ -34,6 +37,7 @@ export const make_items_into_new_group = (items: ItemId[]): ItemId => {
     });
 
     group.position = gravity_point;
+    Object.assign(group, value);
     g.drawOrder = new_drawOrder;
     g.itemStore[group.id] = group;
     g.drawOrder.push(group.id);
@@ -50,7 +54,7 @@ export const SelectionMenu = () => {
   };
   const onMakeGroup = () => {
     const g = getGlobal();
-    make_items_into_new_group(g.selected_items);
+    make_items_into_new_group(g.selected_items, {});
 
     reset_selection();
     setMenu("");
