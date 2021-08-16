@@ -7,6 +7,7 @@ import { PADDING, BORDER } from "../dimension/get_bounding_box";
 import { GroupItem, TGroupItem } from "./GroupItem";
 import { getGlobal } from "reactn";
 import { ItemId, NameplateId } from "../Global/initializeGlobalState";
+import { CLOSED_GROUP_BORDER_COLOR } from "./group_constants";
 
 export type Props = {
   value: TGroupItem;
@@ -47,7 +48,13 @@ export const ClosedGroup: React.FC<Props> = ({
   const top = y - height / 2 - BORDER;
   const left = x - width / 2 - BORDER;
 
-  const style = { top, left, height, width };
+  const style = {
+    top,
+    left,
+    height,
+    width,
+    borderColor: CLOSED_GROUP_BORDER_COLOR,
+  };
   const new_offset = {
     x: width / 2,
     y: height / 2,
