@@ -39,7 +39,7 @@ export const KozaneDiv = styled.div`
   // /* padding: 0.1em 0.2em; */
   // background-size: 400% 400%;
   // background-repeat: repeat;
-  // animation: gaming 4s linear infinite;
+  // animation: gaming 4s linear infinite, spin 2s infinite;
 `;
 
 export const KozaneDiv2 = styled.div`
