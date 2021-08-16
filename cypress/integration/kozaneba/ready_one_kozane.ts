@@ -10,8 +10,8 @@ describe("ready one kozane", () => {
   });
 
   it("main", () => {
-    cy.testid("1").trigger("mousedown");
-    cy.testid("ba").trigger("mousemove", 200, 200);
-    cy.testid("ba").trigger("mouseup", 100, 100);
+    // cy.testid("1").trigger("mousedown");
+    // cy.testid("ba").trigger("mousemove", 200, 200);
+    // cy.testid("ba").trigger("mouseup", 100, 100);
   });
 });

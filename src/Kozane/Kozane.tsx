@@ -1,10 +1,8 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
 import { TKozaneItem } from "./KozaneItem";
-import {
-  onKozaneDragStart,
-  onKozaneMouseDown,
-} from "../Event/mouseEventMamager";
+import { onKozaneDragStart } from "../Event/mouseEventMamager";
+import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { show_menu } from "../Menu/show_menu";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
@@ -46,8 +44,8 @@ export const Kozane: React.FC<Props> = ({
       style={style}
       onClick={onClick}
       onMouseDown={onMouseDown}
-      onDragStart={onDragStart}
-      draggable={true}
+      // onDragStart={onDragStart}
+      // draggable={true}
     >
       <KozaneDiv2>{value.text}</KozaneDiv2>
     </KozaneDiv>

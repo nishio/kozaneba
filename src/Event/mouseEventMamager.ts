@@ -3,15 +3,21 @@ import { getGlobal } from "reactn";
 import { convert_bounding_box_screen_to_world } from "../dimension/convert_bounding_box_screen_to_world";
 import { isOverlap } from "../dimension/isOverlap";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
-import { ItemId, KozaneViewId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/initializeGlobalState";
 import { TGroupItem } from "../Group/GroupItem";
 import { reset_selection } from "../Selection/reset_selection";
 import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
 import { updateGlobal } from "../Global/updateGlobal";
-import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
+import {
+  screen_to_world,
+  TScreenCoord,
+  TWorldCoord,
+  world_to_screen,
+} from "../dimension/world_to_screen";
 import { add_v2, sub_v2 } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
 import { remove_item_from } from "../utils/remove_item";
+import { get_client_pos } from "./get_client_pos";
 
 export const onGroupDragStart = (
   event: React.DragEvent<HTMLDivElement>,
@@ -36,8 +42,8 @@ export const onGroupDragStart = (
   }
   updateGlobal((g) => {
     const [x, y] = value.position;
-    const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-    g.dragstart_position = [cx - x, cy - y];
+    const [cx, cy] = screen_to_world(get_client_pos(event));
+    g.dragstart_position = [cx - x, cy - y] as TWorldCoord;
     g.drag_target = value.id;
   });
 };
@@ -50,12 +56,12 @@ export const onKozaneDragStart = (
   if (event.dataTransfer !== undefined) {
     event.dataTransfer.effectAllowed = "move";
   }
-  updateGlobal((g) => {
-    const [x, y] = value.position;
-    const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-    g.dragstart_position = [cx - x, cy - y];
-    g.drag_target = value.id;
-  });
+  // updateGlobal((g) => {
+  //   const [x, y] = value.position;
+  //   const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
+  //   g.dragstart_position = [cx - x, cy - y];
+  //   g.drag_target = value.id;
+  // });
   event.stopPropagation(); // stop dragstart of parent group
 };
 
@@ -72,7 +78,7 @@ export const onSelectionDragStart = (
     event.dataTransfer.effectAllowed = "move";
   }
   updateGlobal((g) => {
-    g.dragstart_position = screen_to_world([event.clientX, event.clientY]);
+    g.dragstart_position = screen_to_world(get_client_pos(event));
     g.drag_target = "selection";
   });
 };
@@ -83,7 +89,7 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
       const delta = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
+        screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
       g.selected_items.forEach((id) => {
@@ -91,7 +97,10 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
       });
       const sr = g.selectionRange;
       const [qx, qy] = world_to_screen(
-        add_v2(screen_to_world([sr.left, sr.top]), delta)
+        add_v2(
+          screen_to_world([sr.left, sr.top] as TScreenCoord),
+          delta
+        ) as TWorldCoord
       );
       g.selectionRange.left = qx;
       g.selectionRange.top = qy;
@@ -100,7 +109,7 @@ export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
       g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
       let position = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
+        screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
 
@@ -147,7 +156,7 @@ export const onGroupDrop = (
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
       const delta = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
+        screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
       g.selected_items.forEach((id) => {
@@ -174,7 +183,7 @@ export const onGroupDrop = (
       g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
       let position = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
+        screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
 
@@ -211,23 +220,6 @@ export const onSelectionMouseDown = (
   event.stopPropagation();
 };
 
-export const onKozaneMouseDown = (
-  event: React.MouseEvent<HTMLDivElement>,
-  value: { id: KozaneViewId; position: number[] }
-) => {
-  console.log("onKozaneMouseDown");
-  reset_selection();
-
-  updateGlobal((g) => {
-    const [x, y] = value.position;
-    const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-    g.dragstart_position = [cx - x, cy - y];
-    g.drag_target = value.id;
-  });
-
-  event.stopPropagation();
-};
-
 export const onCanvasMouseDown = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
@@ -242,17 +234,6 @@ export const onCanvasMouseDown = (
   });
 };
 
-export const onCanvasMouseMove = (
-  event: React.MouseEvent<HTMLDivElement, MouseEvent>
-) => {
-  const g = getGlobal();
-  if (g.mouseState === "selecting") {
-    updateGlobal((g) => {
-      g.selectionRange.width = event.pageX - g.selectionRange.left;
-      g.selectionRange.height = event.pageY - g.selectionRange.top;
-    });
-  }
-};
 export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
@@ -283,6 +264,8 @@ export const onCanvasMouseUp = (
       g.mouseState = "";
       g.is_selected = true;
     });
+  } else if (g.drag_target !== "") {
+    g.drag_target = "";
   }
   console.log(getGlobal().selectionRange);
 };

@@ -8,8 +8,8 @@ import {
   allowDrop,
   onCanvasMouseUp,
   onCanvasMouseDown,
-  onCanvasMouseMove,
 } from "../Event/mouseEventMamager";
+import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { SelectionView } from "../Selection/Selection";
 import { ItemId } from "../Global/initializeGlobalState";
 import { useEffect, useRef } from "react";

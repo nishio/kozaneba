@@ -3,7 +3,7 @@ import { CSSProperties } from "styled-components";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
-import { onKozaneMouseDown } from "../Event/mouseEventMamager";
+import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { TOffset } from "../dimension/TOffset";
 
 export const NameplateKozane: React.FC<Props> = ({
@@ -16,8 +16,8 @@ export const NameplateKozane: React.FC<Props> = ({
     ...custom_style,
   };
 
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>
-    onKozaneMouseDown(e, value);
+  // const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>
+  //   onKozaneMouseDown(e, value);
 
   return (
     <KozaneDiv
@@ -25,8 +25,8 @@ export const NameplateKozane: React.FC<Props> = ({
       data-testid={value.id}
       key={value.id}
       style={style}
-      onMouseDown={onMouseDown}
-      draggable={true}
+      // onMouseDown={onMouseDown}
+      // draggable={true}
     >
       <KozaneDiv2>{value.text}</KozaneDiv2>
     </KozaneDiv>
