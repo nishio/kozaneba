@@ -1,13 +1,20 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
+import { getGlobal } from "reactn";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
-import { BORDER, TITLE_HEIGHT } from "../dimension/get_bounding_box";
+import { BORDER, PADDING, TITLE_HEIGHT } from "../dimension/get_bounding_box";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 import { is_draggeing } from "../Event/fast_drag_manager";
 import { onGroupMouseUp } from "../Event/mouseEventMamager";
 import { onGroupMouseDown } from "../Event/onGroupMouseDown";
+import { ItemId, NameplateId } from "../Global/initializeGlobalState";
+import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
+import { NameplateKozane } from "../Kozane/NameplateKozane";
 import { GroupBack, GroupDiv, GroupTitle } from "./GroupDiv";
-import { TGroupItem } from "./GroupItem";
-import { GROUP_BORDER_COLOR } from "./group_constants";
+import { GroupItem, TGroupItem } from "./GroupItem";
+import {
+  CLOSED_GROUP_BORDER_COLOR,
+  GROUP_BORDER_COLOR,
+} from "./group_constants";
 import { highlight_group, highlight_parent } from "./highlight_group";
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
@@ -38,21 +45,31 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     // dragging_self = true;
     onGroupMouseDown(e, value);
   };
+
   if (value.isOpen === false) {
-    return null;
-    // <ClosedGroup
-    //   offset={offset}
-    //   value={value}
-    //   key={value.id}
-    //   data-testid={value.id}
-    //   onClick={onClick}
-    //   onMouseDown={onMouseDown}
-    //   onDragStart={onDragStart}
-    //   onDragOver={allowDrop}
-    //   onDragEnter={onDragEnter}
-    //   onDragLeave={onDragLeave}
-    //   onDrop={onDrop}
-    // />
+    const { style, new_offset, text } = calc_closed_style(value);
+    return (
+      <GroupDiv
+        style={style}
+        key={value.id}
+        data-testid={value.id}
+        id={"group-" + value.id}
+        onMouseDown={onMouseDown}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onMouseUp={onMouseUp}
+      >
+        <GroupBack />
+        <NameplateKozane
+          offset={new_offset}
+          value={{
+            ...value,
+            text,
+            id: get_nameplate_id(value.id),
+          }}
+        />
+      </GroupDiv>
+    );
   }
   const { style, title_height, title, new_offset } = calc_style(value, offset);
 
@@ -67,7 +84,6 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onMouseUp={onMouseUp}
-      // onMouseMove={onMouseMove}
     >
       <GroupBack />
       <GroupTitle
@@ -105,3 +121,40 @@ function calc_style(value: TGroupItem, offset: { x: number; y: number }) {
   };
   return { style, title_height, title, new_offset };
 }
+
+const get_nameplate_id = (kozaneId: ItemId): NameplateId => {
+  return ("nameplate-" + kozaneId) as NameplateId;
+};
+function calc_closed_style(value: TGroupItem) {
+  const [x, y] = value.position;
+  const scale = value.scale;
+  const width = KOZANE_WIDTH * scale + PADDING * 2;
+  const height = KOZANE_HEIGHT * scale + PADDING * 2;
+  const top = y - height / 2 - BORDER;
+  const left = x - width / 2 - BORDER;
+
+  const style = {
+    top,
+    left,
+    height,
+    width,
+    borderColor: CLOSED_GROUP_BORDER_COLOR,
+  };
+  const new_offset = {
+    x: width / 2,
+    y: height / 2,
+  };
+  const text = get_group_title(value).replace("\n", " ");
+  // need to keep "\n" for future edit, but need to be space for better rendering
+
+  return { style, new_offset, text };
+}
+
+export const get_group_title = (group: GroupItem): string => {
+  let text = group.text;
+  if (text === "") {
+    const itemStore = getGlobal().itemStore;
+    text = group.items.map((x) => itemStore[x].text).join("\n");
+  }
+  return text;
+};

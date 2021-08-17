@@ -9,8 +9,8 @@ import {
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { updateGlobal } from "../Global/updateGlobal";
+import { get_group_title } from "../Group/Group";
 import { GroupItem } from "../Group/GroupItem";
-import { get_group_title } from "../Group/ClosedGroup";
 
 export const EditGroupTitleDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
