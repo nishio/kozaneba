@@ -11,12 +11,14 @@ export const NameplateKozane: React.FC<Props> = ({
   offset,
   custom_style = {},
 }) => {
-  const style = {
+  const style: CSSProperties = {
     ...useAdjustFontsizeStyle(
       { ...value, position: [0, 0] as TWorldCoord },
       offset
     ),
     ...custom_style,
+    border: "none",
+    backgroundColor: "rgba(0, 0, 0, 0)",
   };
 
   // const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>
