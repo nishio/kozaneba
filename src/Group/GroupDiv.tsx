@@ -9,6 +9,7 @@ import {
 export const GroupDiv = styled.div`
   border: ${BORDER}px solid ${GROUP_BORDER_COLOR};
   position: absolute;
+  border-radius: 5px;
 `;
 
 export const GroupBack = styled.div`
