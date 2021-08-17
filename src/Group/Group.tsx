@@ -23,15 +23,6 @@ import {
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const self = useRef<HTMLDivElement>(null);
 
-  const onClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (is_dragged()) return;
-    console.log("onGroupClick");
-    updateGlobal((g) => {
-      g.clicked_group = value.id;
-    });
-    show_menu("Group", e);
-  };
-
   let enter_count = 0;
   const onMouseOver = (e: React.DragEvent<HTMLDivElement>) => {
     console.log("onMouseOver", value.id, is_draggeing(), dragging_self);
@@ -90,7 +81,6 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       style={style}
       key={value.id}
       data-testid={value.id}
-      onClick={onClick}
       onMouseDown={onMouseDown}
       onMouseEnter={onMouseOver}
       onMouseLeave={onMouseOut}

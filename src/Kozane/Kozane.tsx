@@ -22,16 +22,6 @@ export const Kozane: React.FC<Props> = ({
 }) => {
   const style = { ...useAdjustFontsizeStyle(value, offset), ...custom_style };
 
-  const onClick = (event: React.MouseEvent) => {
-    if (is_dragged()) return;
-    console.log("onKozaneClick");
-    updateGlobal((g) => {
-      g.clicked_kozane = value.id;
-    });
-    show_menu("Kozane", event);
-    event.stopPropagation();
-  };
-
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     onKozaneMouseDown(e, value);
   };
@@ -42,10 +32,7 @@ export const Kozane: React.FC<Props> = ({
       data-testid={value.id}
       key={value.id}
       style={style}
-      onClick={onClick}
       onMouseDown={onMouseDown}
-      // onDragStart={onDragStart}
-      // draggable={true}
     >
       <KozaneDiv2>{value.text}</KozaneDiv2>
     </KozaneDiv>

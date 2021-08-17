@@ -1,21 +1,57 @@
 import React from "react";
-import { getGlobal } from "reactn";
 import { add_v2w, sub_v2w } from "../dimension/V2";
 import { screen_to_world } from "../dimension/world_to_screen";
+import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
+import { show_menu } from "../Menu/show_menu";
 import { remove_item_from } from "../utils/remove_item";
-import { set_target } from "./fast_drag_manager";
+import {
+  get_target,
+  is_dragged,
+  reset_target,
+  set_target,
+} from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
+import { handle_if_is_click } from "./handle_if_is_click";
+
+export const onKozaneClick = (
+  kozane_id: ItemId,
+  event: React.MouseEvent<HTMLDivElement>
+) => {
+  if (is_dragged()) return;
+  console.log("onKozaneClick");
+  updateGlobal((g) => {
+    g.clicked_kozane = kozane_id;
+    g.drag_target = "";
+  });
+  show_menu("Kozane", event);
+  reset_target();
+};
+
+export const onGroupClick = (
+  group_id: ItemId,
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>
+) => {
+  if (is_dragged()) return;
+  console.log("onGroupClick");
+  updateGlobal((g) => {
+    g.clicked_group = group_id;
+    g.drag_target = "";
+  });
+  show_menu("Group", event);
+  reset_target();
+};
 
 export const onGroupMouseUp = (
-  event: React.DragEvent<HTMLDivElement>,
+  event: React.MouseEvent<HTMLDivElement>,
   group: TGroupItem
 ) => {
-  console.log("onGroupDrop");
+  console.log("onGroupMouseUp");
   event.preventDefault();
   event.stopPropagation();
+  if (handle_if_is_click(event)) return;
 
   const group_id = group.id;
   // if (group_id === target_id) {
@@ -75,6 +111,7 @@ export const onGroupMouseUp = (
       g.drag_target = "";
       g.is_local_change = true;
       g.last_updated = Date.now();
+      reset_target();
     } else {
       throw new Error();
     }

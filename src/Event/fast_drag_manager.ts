@@ -74,3 +74,11 @@ export const get_delta = (event: React.MouseEvent<HTMLDivElement>) => {
   );
   return delta;
 };
+
+// not used
+export const get_target = (): HTMLDivElement => {
+  if (_target === null) {
+    throw new Error("did get_target but target is null");
+  }
+  return _target;
+};

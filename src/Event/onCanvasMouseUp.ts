@@ -17,11 +17,14 @@ import {
 } from "../dimension/world_to_screen";
 import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
+import { handle_if_is_click } from "./handle_if_is_click";
 
 export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   console.log("onCanvasMouseUp");
+  if (handle_if_is_click(event)) return;
+
   const g = getGlobal();
 
   if (g.mouseState === "selecting") {
