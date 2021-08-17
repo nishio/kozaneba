@@ -21,13 +21,6 @@ export const onCanvasMouseMove = (
       g.selectionRange.height = last_mouse_position[1] - g.selectionRange.top;
     });
   } else if (g.drag_target !== "") {
-    // updateGlobal((g) => {
-    //   const target = g.itemStore[g.drag_target];
-    //   target.position = sub_v2(
-    //     screen_to_world(get_client_pos(event)),
-    //     g.dragstart_position
-    //   );
-    // });
     move_target(event);
   }
 };
