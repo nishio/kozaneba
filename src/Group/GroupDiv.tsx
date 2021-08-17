@@ -1,23 +1,26 @@
 import styled from "styled-components";
 import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
-import { OPACITY } from "../Kozane/kozane_constants";
-import { GROUP_BORDER_COLOR } from "./group_constants";
+import {
+  GROUP_BACKGROUND_COLOR,
+  GROUP_BORDER_COLOR,
+  GROUP_TITLE_COLOR,
+} from "./group_constants";
 
 export const GroupDiv = styled.div`
   border: ${BORDER}px solid ${GROUP_BORDER_COLOR};
   position: absolute;
+  border-radius: 5px;
 `;
 
 export const GroupBack = styled.div`
   position: absolute;
-  background: #eee;
+  background: ${GROUP_BACKGROUND_COLOR};
   width: 100%;
   height: 100%;
-  opacity: ${OPACITY};
 `;
 
 export const GroupTitle = styled.span`
-  background: ${GROUP_BORDER_COLOR};
+  background: ${GROUP_TITLE_COLOR};
   position: absolute;
   font-size: 21px;
   width: 100%;
@@ -25,6 +28,5 @@ export const GroupTitle = styled.span`
   white-space: nowrap;
   text-overflow: ellipsis;
   height: ${TITLE_HEIGHT}px;
-  margin: -1px -1px -1px 0;
-  padding-bottom: 1px;
+  user-select: none;
 `;

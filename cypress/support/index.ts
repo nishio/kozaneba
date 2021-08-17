@@ -24,7 +24,9 @@
 // require('./commands')
 
 import { State } from "reactn/default";
+import { TWorldCoord } from "../../src/dimension/world_to_screen";
 import { TMovidea } from "../../src/Global/exposeGlobal";
+import { ItemId } from "../../src/Global/initializeGlobalState";
 import { TGroupItem } from "../../src/Group/GroupItem";
 
 declare global {
@@ -111,3 +113,59 @@ chai.use((_chai, utils) => {
 
   _chai.Assertion.addMethod("hasPosition", hasPosition);
 });
+
+export const ready_one_group = () => {
+  cy.movidea((m) => {
+    m.make_one_kozane({ id: "1" as ItemId, text: "1" });
+    m.make_items_into_new_group(["1"]);
+  });
+};
+
+export const ready_one_kozane = () => {
+  cy.movidea((m) => m.make_one_kozane({ id: "1" as ItemId, text: "1" }));
+};
+
+export const ready_two_groups = () => {
+  cy.movidea((m) => {
+    m.make_one_kozane({
+      id: "1" as ItemId,
+      text: "1",
+      position: [-100, 0] as TWorldCoord,
+    });
+    m.make_items_into_new_group(["1"], { id: "G1", text: "G1" });
+    m.make_one_kozane({
+      id: "2" as ItemId,
+      text: "2",
+      position: [100, 0] as TWorldCoord,
+    });
+    m.make_items_into_new_group(["2"], { id: "G2", text: "G2" });
+  });
+};
+
+export const ready_nested_group = () => {
+  cy.movidea((m) => {
+    m.make_one_kozane({
+      id: "1" as ItemId,
+      text: "1",
+      position: [0, 0] as TWorldCoord,
+    });
+    m.make_items_into_new_group(["1"], { id: "G1", text: "G1" });
+    m.make_items_into_new_group(["G1"], { id: "G2", text: "G2" });
+  });
+};
+
+export const do_drag = (
+  target: string,
+  destination: string,
+  x: number,
+  y: number
+) => {
+  cy.testid(target).trigger("mousedown");
+  cy.testid("ba").trigger("mousemove", { force: true });
+  cy.testid(destination).trigger("mouseup", x, y, { force: true });
+};
+
+export const do_click = (target: string) => {
+  cy.testid(target).trigger("mousedown", 0, 0, { force: true });
+  cy.testid("ba").trigger("mouseup");
+};

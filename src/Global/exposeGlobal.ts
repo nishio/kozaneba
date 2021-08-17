@@ -6,6 +6,7 @@ import { updateGlobal } from "./updateGlobal";
 import { reset_selection } from "../Selection/reset_selection";
 import { db, auth } from "../Cloud/FirestoreIO";
 import { make_items_into_new_group } from "../Menu/SelectionMenu";
+import { KozaneItem, TKozaneItem } from "../Kozane/KozaneItem";
 
 const tmpfunc = () => {
   console.log("write");
@@ -26,6 +27,15 @@ export const toUseEmulator = () => {
     g.usingFirestoreEmulator = true;
   });
 };
+const make_one_kozane = (value: Partial<TKozaneItem>) => {
+  const kozane = new KozaneItem(value.id);
+  Object.assign(kozane, value);
+  updateGlobal((g) => {
+    g.itemStore[kozane.id] = kozane;
+    g.drawOrder.push(kozane.id);
+  });
+  return kozane.id;
+};
 const movidea = {
   getGlobal,
   setGlobal,
@@ -40,6 +50,7 @@ const movidea = {
   tmpfunc,
   toUseEmulator,
   make_items_into_new_group,
+  make_one_kozane,
 };
 
 export type TMovidea = typeof movidea;

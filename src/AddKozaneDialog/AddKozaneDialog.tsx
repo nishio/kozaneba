@@ -13,6 +13,7 @@ import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { multiline_to_lines } from "./multiline_to_lines";
+import { TWorldCoord } from "../dimension/world_to_screen";
 
 export const AddKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -122,11 +123,11 @@ export const add_multiple_kozane = (multiline: string) => {
 
       const kozane = new KozaneItem();
       kozane.text = line;
-      kozane.position = [x, y];
+      kozane.position = [x, y] as TWorldCoord;
       g.itemStore[kozane.id] = kozane;
       group.items.push(kozane.id);
     });
-    group.position = [-g.trans_x, -g.trans_y];
+    group.position = [-g.trans_x, -g.trans_y] as TWorldCoord;
     g.drawOrder.push(group.id);
     g.dialog = "";
     g.add_kozane_text = "";

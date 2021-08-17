@@ -1,158 +1,70 @@
 import React from "react";
-import { getGlobal } from "reactn";
-import { convert_bounding_box_screen_to_world } from "../dimension/convert_bounding_box_screen_to_world";
-import { isOverlap } from "../dimension/isOverlap";
-import { get_item_bounding_box } from "../dimension/get_bounding_box";
+import { add_v2w, sub_v2w } from "../dimension/V2";
+import { screen_to_world } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";
-import { TGroupItem } from "../Group/GroupItem";
-import { reset_selection } from "../Selection/reset_selection";
-import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
 import { updateGlobal } from "../Global/updateGlobal";
-import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
-import { add_v2, sub_v2 } from "../dimension/V2";
 import { find_parent } from "../Group/find_parent";
+import { TGroupItem } from "../Group/GroupItem";
+import { show_menu } from "../Menu/show_menu";
 import { remove_item_from } from "../utils/remove_item";
+import { is_dragged, reset_target, set_target } from "./fast_drag_manager";
+import { get_client_pos } from "./get_client_pos";
+import { handle_if_is_click } from "./handle_if_is_click";
 
-export const onGroupDragStart = (
-  event: React.DragEvent<HTMLDivElement>,
-  value: TGroupItem
+export const onKozaneClick = (
+  kozane_id: ItemId,
+  event: React.MouseEvent<HTMLDivElement>
 ) => {
-  console.log("onGroupDragStart");
-  event.stopPropagation();
-
-  // const e: HTMLDivElement = event.currentTarget.cloneNode(
-  //   true
-  // ) as HTMLDivElement;
-  // document.body.appendChild(e);
-  // e.style.transform = `scale(${getGlobal().scale})`;
-  // event.dataTransfer.setDragImage(
-  //   e,
-  //   event.nativeEvent.offsetX,
-  //   event.nativeEvent.offsetY
-  // );
-
-  if (event.dataTransfer !== undefined) {
-    event.dataTransfer.effectAllowed = "move";
-  }
+  if (is_dragged()) return;
+  console.log("onKozaneClick");
   updateGlobal((g) => {
-    const [x, y] = value.position;
-    const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-    g.dragstart_position = [cx - x, cy - y];
-    g.drag_target = value.id;
+    g.clicked_kozane = kozane_id;
+    g.drag_target = "";
   });
+  show_menu("Kozane", event);
+  reset_target();
 };
 
-export const onKozaneDragStart = (
-  event: React.DragEvent<HTMLDivElement>,
-  value: { id: ItemId; position: number[] }
+export const onGroupClick = (
+  group_id: ItemId,
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
-  console.log("onKozaneDragStart");
-  if (event.dataTransfer !== undefined) {
-    event.dataTransfer.effectAllowed = "move";
-  }
+  if (is_dragged()) return;
+  console.log("onGroupClick");
   updateGlobal((g) => {
-    const [x, y] = value.position;
-    const [cx, cy] = screen_to_world([event.clientX, event.clientY]);
-    g.dragstart_position = [cx - x, cy - y];
-    g.drag_target = value.id;
+    g.clicked_group = group_id;
+    g.drag_target = "";
   });
-  event.stopPropagation(); // stop dragstart of parent group
+  show_menu("Group", event);
+  reset_target();
 };
 
-export const allowDrop = (event: React.DragEvent<HTMLDivElement>) => {
-  event.dataTransfer.dropEffect = "move";
-  event.preventDefault();
-};
-
-export const onSelectionDragStart = (
-  event: React.DragEvent<HTMLDivElement>
-) => {
-  console.log("onDragStartSelection");
-  if (event.dataTransfer !== undefined) {
-    event.dataTransfer.effectAllowed = "move";
-  }
-  updateGlobal((g) => {
-    g.dragstart_position = screen_to_world([event.clientX, event.clientY]);
-    g.drag_target = "selection";
-  });
-};
-
-export const onCanvasDrop = (event: React.DragEvent<HTMLDivElement>) => {
-  console.log("onCanvasDrop");
-  updateGlobal((g) => {
-    console.log(g.drag_target);
-    if (g.drag_target === "selection") {
-      const delta = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
-        g.dragstart_position
-      );
-      g.selected_items.forEach((id) => {
-        g.itemStore[id].position = add_v2(g.itemStore[id].position, delta);
-      });
-      const sr = g.selectionRange;
-      const [qx, qy] = world_to_screen(
-        add_v2(screen_to_world([sr.left, sr.top]), delta)
-      );
-      g.selectionRange.left = qx;
-      g.selectionRange.top = qy;
-      g.drag_target = "";
-      g.is_local_change = true;
-      g.last_updated = Date.now();
-    } else if (g.drag_target !== "") {
-      let position = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
-        g.dragstart_position
-      );
-
-      // find parent
-      const parent = find_parent(g.drag_target);
-      if (parent !== null) {
-        const p = g.itemStore[parent] as TGroupItem;
-        p.items = remove_item_from(p.items, g.drag_target);
-        g.drawOrder.push(g.drag_target);
-        position = add_v2(position, p.position);
-      } else {
-        g.drawOrder = remove_item_from(g.drawOrder, g.drag_target);
-        g.drawOrder.push(g.drag_target);
-      }
-      g.itemStore[g.drag_target].position = position;
-      g.drag_target = "";
-      g.is_local_change = true;
-      g.last_updated = Date.now();
-    } else {
-      throw new Error();
-    }
-  });
-  event.preventDefault();
-  console.log(getGlobal().selectionRange);
-};
-
-export const onGroupDrop = (
-  event: React.DragEvent<HTMLDivElement>,
+export const onGroupMouseUp = (
+  event: React.MouseEvent<HTMLDivElement>,
   group: TGroupItem
 ) => {
-  console.log("onGroupDrop");
+  console.log("onGroupMouseUp");
   event.preventDefault();
   event.stopPropagation();
+  if (handle_if_is_click(event)) return;
 
-  const target_id = getGlobal().drag_target;
   const group_id = group.id;
-  if (group_id === target_id) {
-    // drop a group on itself
-    onCanvasDrop(event);
-    return;
-  }
+  // if (group_id === target_id) {
+  //   // drop a group on itself
+  //   onCanvasDrop(event);
+  //   return;
+  // }
   updateGlobal((g) => {
     const group = g.itemStore[group_id] as TGroupItem;
     console.log(g.drag_target);
     if (g.drag_target === "selection") {
-      const delta = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
+      const delta = sub_v2w(
+        screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
       g.selected_items.forEach((id) => {
-        g.itemStore[id].position = sub_v2(
-          add_v2(g.itemStore[id].position, delta),
+        g.itemStore[id].position = sub_v2w(
+          add_v2w(g.itemStore[id].position, delta),
           group.position
         );
         g.drawOrder = remove_item_from(g.drawOrder, id);
@@ -173,8 +85,9 @@ export const onGroupDrop = (
       g.is_local_change = true;
       g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
-      let position = sub_v2(
-        screen_to_world([event.clientX, event.clientY]),
+      console.log("drop on group", group.id);
+      let position = sub_v2w(
+        screen_to_world(get_client_pos(event)),
         g.dragstart_position
       );
 
@@ -184,35 +97,33 @@ export const onGroupDrop = (
         // `p` may equals to `group`, it's OK
         p.items = remove_item_from(p.items, g.drag_target);
         group.items.push(g.drag_target);
-        position = sub_v2(add_v2(position, p.position), group.position);
+        position = sub_v2w(add_v2w(position, p.position), group.position);
       } else {
         g.drawOrder = remove_item_from(g.drawOrder, g.drag_target);
         group.items.push(g.drag_target);
-        position = sub_v2(position, group.position);
+        position = sub_v2w(position, group.position);
       }
       g.itemStore[g.drag_target].position = position;
       g.drag_target = "";
       g.is_local_change = true;
       g.last_updated = Date.now();
+      reset_target();
     } else {
       throw new Error();
     }
   });
 };
 
-export const onGroupMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-  reset_selection();
-  event.stopPropagation();
-};
-
 export const onSelectionMouseDown = (
   event: React.MouseEvent<HTMLDivElement>
 ) => {
-  event.stopPropagation();
-};
+  console.log("onSelectionMouseDown");
+  set_target(event);
+  updateGlobal((g) => {
+    g.dragstart_position = screen_to_world(get_client_pos(event));
+    g.drag_target = "selection";
+  });
 
-export const onKozaneMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
-  reset_selection();
   event.stopPropagation();
 };
 
@@ -228,48 +139,4 @@ export const onCanvasMouseDown = (
     g.selectionRange.height = 0;
     g.mouseState = "selecting";
   });
-};
-export const onCanvasMouseMove = (
-  event: React.MouseEvent<HTMLDivElement, MouseEvent>
-) => {
-  const g = getGlobal();
-  if (g.mouseState === "selecting") {
-    updateGlobal((g) => {
-      g.selectionRange.width = event.pageX - g.selectionRange.left;
-      g.selectionRange.height = event.pageY - g.selectionRange.top;
-    });
-  }
-};
-export const onCanvasMouseUp = (
-  event: React.MouseEvent<HTMLDivElement, MouseEvent>
-) => {
-  console.log("onCanvasMouseUp");
-  const g = getGlobal();
-
-  if (g.mouseState === "selecting") {
-    updateGlobal((g) => {
-      g.selectionRange.width = event.pageX - g.selectionRange.left;
-      g.selectionRange.height = event.pageY - g.selectionRange.top;
-
-      if (g.selectionRange.width === 0 && g.selectionRange.height === 0) {
-        // not selected
-        g.is_selected = false;
-        g.mouseState = "";
-        return;
-      }
-      const sr = convert_bounding_box_screen_to_world(
-        selection_range_to_bounding_box(g.selectionRange)
-      );
-      const selected_items = [] as ItemId[];
-      g.drawOrder.forEach((id) => {
-        if (isOverlap(sr, get_item_bounding_box(id))) {
-          selected_items.push(id);
-        }
-      });
-      g.selected_items = selected_items;
-      g.mouseState = "";
-      g.is_selected = true;
-    });
-  }
-  console.log(getGlobal().selectionRange);
 };

@@ -1,10 +1,11 @@
 import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { ItemId } from "../Global/initializeGlobalState";
+import { TWorldCoord } from "../dimension/world_to_screen";
 
 export type TGroupItem = {
   type: "group";
   text: string;
-  position: number[];
+  position: TWorldCoord;
   items: ItemId[];
   id: ItemId;
   scale: number; // scale of Nameplate Kozane
@@ -14,7 +15,7 @@ export type TGroupItem = {
 export class GroupItem {
   type: "group" = "group";
   text = "";
-  position = [0, 0];
+  position = [0, 0] as TWorldCoord;
   items: ItemId[] = [];
   id: ItemId;
   scale = 1;

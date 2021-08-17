@@ -2,6 +2,7 @@ import { VKozane } from "../VKozane";
 import { TKozaneItem } from "../Kozane/KozaneItem";
 import { TGroupItem } from "../Group/GroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
+import { TWorldCoord } from "../dimension/world_to_screen";
 
 export const INITIAL_GLOBAL_STATE = {
   kozane: [] as VKozane[], // for small tests
@@ -16,7 +17,7 @@ export const INITIAL_GLOBAL_STATE = {
   menu: "" as TMenu,
   menu_anchor: null as TMenuAnchor,
 
-  dragstart_position: [0, 0],
+  dragstart_position: [0, 0] as TWorldCoord,
   drag_target: "" as TDragTarget,
   selectionRange: { top: 0, left: 0, width: 0, height: 0 },
   selected_items: [] as ItemId[],
@@ -48,6 +49,11 @@ enum ItemIdBrand {
   _ = "",
 }
 export type ItemId = ItemIdBrand & string;
+enum NameplateIdBrand {
+  _ = "",
+}
+export type NameplateId = NameplateIdBrand & string;
+export type KozaneViewId = ItemId | NameplateId;
 
 type TDialog =
   | ""
