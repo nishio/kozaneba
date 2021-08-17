@@ -1,13 +1,6 @@
 /// <reference types="cypress" />
 
-import { ItemId } from "../../../src/Global/initializeGlobalState";
-
-export const ready_one_group = () => {
-  cy.movidea((m) => {
-    m.make_one_kozane({ id: "1" as ItemId, text: "1" });
-    m.make_items_into_new_group(["1"]);
-  });
-};
+import { ready_one_group } from "../../support";
 
 describe("ready one group with one kozane", () => {
   beforeEach(() => {

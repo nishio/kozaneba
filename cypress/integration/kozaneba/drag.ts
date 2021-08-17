@@ -1,8 +1,10 @@
 /// <reference types="cypress" />
 
-import { ready_nested_group } from "./ready_nested_group";
-import { ready_one_kozane } from "./ready_one_kozane";
-import { ready_two_groups } from "./ready_two_groups";
+import {
+  ready_nested_group,
+  ready_one_kozane,
+  ready_two_groups,
+} from "../../support";
 
 describe("drag", () => {
   beforeEach(() => {
