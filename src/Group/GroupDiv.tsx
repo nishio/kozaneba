@@ -15,18 +15,22 @@ export const GroupDiv = styled.div`
 export const GroupBack = styled.div`
   position: absolute;
   background: ${GROUP_BACKGROUND_COLOR};
-  width: 100%;
-  height: 100%;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  top: -1px;
+  left: -1px;
 `;
 
 export const GroupTitle = styled.span`
   background: ${GROUP_TITLE_COLOR};
   position: absolute;
   font-size: 21px;
-  width: 100%;
+  width: calc(100% + 2px);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  height: ${TITLE_HEIGHT}px;
+  height: ${TITLE_HEIGHT + 1}px;
   user-select: none;
+  top: -1px;
+  left: -1px;
 `;
