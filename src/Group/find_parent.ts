@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { ItemId } from "../Global/initializeGlobalState";
 
-export const find_parent = (target: ItemId) => {
+export const find_parent = (target: ItemId): null | ItemId => {
   const g = getGlobal();
   let result: null | ItemId = null;
   const visit = (id: ItemId) => {

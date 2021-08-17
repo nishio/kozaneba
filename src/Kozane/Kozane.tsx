@@ -1,13 +1,10 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
-import { TKozaneItem } from "./KozaneItem";
-import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
-import { show_menu } from "../Menu/show_menu";
-import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
-import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 import { TOffset } from "../dimension/TOffset";
-import { updateGlobal } from "../Global/updateGlobal";
-import { is_dragged, set_target } from "../Event/fast_drag_manager";
+import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
+import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
+import { TKozaneItem } from "./KozaneItem";
+import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 
 type Props = {
   value: TKozaneItem;

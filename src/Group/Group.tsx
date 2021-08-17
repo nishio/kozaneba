@@ -1,47 +1,28 @@
 import React, { useRef } from "react";
-import { getGlobal } from "reactn";
-import { ClosedGroup } from "./ClosedGroup";
-import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
-import { TGroupItem } from "./GroupItem";
+import { BORDER, TITLE_HEIGHT } from "../dimension/get_bounding_box";
+import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
+import { is_draggeing } from "../Event/fast_drag_manager";
 import { onGroupMouseUp } from "../Event/mouseEventMamager";
 import { onGroupMouseDown } from "../Event/onGroupMouseDown";
 import { GroupBack, GroupDiv, GroupTitle } from "./GroupDiv";
-import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
-import {
-  GROUP_HIGHLIGHTED_BORDER_COLOR,
-  GROUP_BORDER_COLOR,
-} from "./group_constants";
-import { show_menu } from "../Menu/show_menu";
-import { updateGlobal } from "../Global/updateGlobal";
-import {
-  is_dragged,
-  is_draggeing,
-  set_target,
-} from "../Event/fast_drag_manager";
+import { TGroupItem } from "./GroupItem";
+import { GROUP_BORDER_COLOR } from "./group_constants";
+import { highlight_group, highlight_parent } from "./highlight_group";
 
 export const Group: React.FC<Props> = ({ value, offset }) => {
   const self = useRef<HTMLDivElement>(null);
 
-  let enter_count = 0;
-  const onMouseOver = (e: React.DragEvent<HTMLDivElement>) => {
-    console.log("onMouseOver", value.id, is_draggeing(), dragging_self);
+  const onMouseEnter = (e: React.DragEvent<HTMLDivElement>) => {
     if (!is_draggeing()) return;
-    if (dragging_self) return;
-    enter_count++;
-    if (self.current !== null) {
-      self.current.style.borderColor = GROUP_HIGHLIGHTED_BORDER_COLOR;
-    }
+    highlight_group(value.id, true);
+    highlight_parent(value.id, false);
     e.stopPropagation();
   };
-  const onMouseOut = (e: React.DragEvent<HTMLDivElement>) => {
-    console.log("onMouseOut", value.id, is_draggeing(), dragging_self);
+  const onMouseLeave = (e: React.DragEvent<HTMLDivElement>) => {
     if (!is_draggeing()) return;
-    if (dragging_self) return;
-    enter_count--;
-    if (self.current !== null && enter_count === 0) {
-      self.current.style.borderColor = GROUP_BORDER_COLOR;
-    }
+    highlight_group(value.id, false);
+    highlight_parent(value.id, true);
     e.stopPropagation();
   };
 
@@ -52,9 +33,9 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     onGroupMouseUp(e, value);
   };
 
-  let dragging_self = false;
+  // let dragging_self = false;
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    dragging_self = true;
+    // dragging_self = true;
     onGroupMouseDown(e, value);
   };
   if (value.isOpen === false) {
@@ -80,11 +61,13 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       ref={self}
       style={style}
       key={value.id}
+      id={"group-" + value.id}
       data-testid={value.id}
       onMouseDown={onMouseDown}
-      onMouseEnter={onMouseOver}
-      onMouseLeave={onMouseOut}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onMouseUp={onMouseUp}
+      // onMouseMove={onMouseMove}
     >
       <GroupBack />
       <GroupTitle

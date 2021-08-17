@@ -7,12 +7,7 @@ import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
 import { show_menu } from "../Menu/show_menu";
 import { remove_item_from } from "../utils/remove_item";
-import {
-  get_target,
-  is_dragged,
-  reset_target,
-  set_target,
-} from "./fast_drag_manager";
+import { is_dragged, reset_target, set_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
 import { handle_if_is_click } from "./handle_if_is_click";
 
