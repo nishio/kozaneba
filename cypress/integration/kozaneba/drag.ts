@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import { ready_nested_group } from "./ready_nested_group";
 import { ready_one_kozane } from "./ready_one_kozane";
 import { ready_two_groups } from "./ready_two_groups";
 
@@ -75,5 +76,17 @@ describe("drag", () => {
     cy.testid("ba").trigger("mousemove", 150, 400);
     cy.testid("G2").trigger("mouseup");
     cy.getGroup("G2", (g) => g.items).should("eql", ["1"]);
+  });
+  it("nested group", () => {
+    ready_nested_group();
+    cy.testid("1").trigger("mousedown", "center");
+    cy.testid("ba").trigger("mousemove", 400, 400);
+    cy.testid("G2").trigger("mouseup", 0, 0);
+    cy.getGroup("G2", (g) => g.items).should("eql", ["G1", "1"]);
+
+    cy.testid("1").trigger("mousedown", "center");
+    cy.testid("ba").trigger("mousemove", 400, 400);
+    cy.testid("G1").trigger("mouseup", 0, 0);
+    cy.getGroup("G2", (g) => g.items).should("eql", ["G1"]);
   });
 });

@@ -7,7 +7,6 @@ export const find_parent = (target: ItemId): null | ItemId => {
   const visit = (id: ItemId) => {
     const x = g.itemStore[id];
     if (x.type === "group") {
-      console.log(x.items, target, x.items.includes(target));
       if (x.items.includes(target)) {
         result = id;
       }

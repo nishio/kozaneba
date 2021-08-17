@@ -85,6 +85,7 @@ export const onGroupMouseUp = (
       g.is_local_change = true;
       g.last_updated = Date.now();
     } else if (g.drag_target !== "") {
+      console.log("drop on group", group.id);
       let position = sub_v2w(
         screen_to_world(get_client_pos(event)),
         g.dragstart_position
