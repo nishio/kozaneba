@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { get_item } from "../Event/get_item";
 import { add_multiple_kozane } from "./AddKozaneDialog";
 
 export const SplitKozaneDialog = () => {
@@ -21,7 +22,8 @@ export const SplitKozaneDialog = () => {
 
   const g = getGlobal();
   const id = g.clicked_kozane;
-  const text = g.itemStore[id].text;
+  const item = get_item(g, id);
+  const text = item.text;
 
   const onAddKozane = () => {
     if (textarea.current === null) return;

@@ -18,6 +18,7 @@ import {
 import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
 import { handle_if_is_click } from "./handle_if_is_click";
+import { get_item } from "./get_item";
 
 export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -36,7 +37,8 @@ export const onCanvasMouseUp = (
         g.dragstart_position
       );
       g.selected_items.forEach((id) => {
-        g.itemStore[id].position = add_v2w(g.itemStore[id].position, delta);
+        const x = get_item(g, id);
+        x.position = add_v2w(x.position, delta);
       });
       const sr = g.selectionRange;
       const [qx, qy] = world_to_screen(
@@ -68,7 +70,8 @@ export const onCanvasMouseUp = (
         g.drawOrder = remove_item_from(g.drawOrder, target_id);
         g.drawOrder.push(target_id);
       }
-      g.itemStore[target_id].position = position;
+      const x = get_item(g, target_id);
+      x.position = position;
       g.drag_target = "";
       g.is_local_change = true;
       g.last_updated = Date.now();

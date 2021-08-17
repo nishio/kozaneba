@@ -105,7 +105,7 @@ export const add_multiple_kozane = (multiline: string) => {
   const numX = Math.ceil(Math.sqrt(area) / KOZANE_WIDTH);
   const width = numX * KOZANE_WIDTH;
   const height = Math.ceil(N / numX) * KOZANE_HEIGHT;
-  const center = [0, 0];
+  const [cx, cy] = [0, 0];
 
   updateGlobal((g) => {
     const group = new GroupItem();
@@ -118,8 +118,8 @@ export const add_multiple_kozane = (multiline: string) => {
       x *= KOZANE_WIDTH;
       y *= KOZANE_HEIGHT;
 
-      x += center[0] - width / 2 + KOZANE_WIDTH / 2;
-      y += center[1] - height / 2 + KOZANE_HEIGHT / 2;
+      x += cx - width / 2 + KOZANE_WIDTH / 2;
+      y += cy - height / 2 + KOZANE_HEIGHT / 2;
 
       const kozane = new KozaneItem();
       kozane.text = line;

@@ -1,4 +1,5 @@
 import React from "react";
+import { V2 } from "../dimension/V2";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
@@ -10,7 +11,7 @@ import { get_client_pos } from "./get_client_pos";
 // almost same with onGroupMouseDown
 export const onKozaneMouseDown = (
   event: React.MouseEvent<HTMLDivElement>,
-  value: { id: ItemId; position: number[] }
+  value: { id: ItemId; position: V2 }
 ) => {
   console.log("onKozaneMouseDown");
   reset_selection();

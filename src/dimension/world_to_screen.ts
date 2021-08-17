@@ -1,4 +1,5 @@
 import { getGlobal } from "reactn";
+import { V2 } from "./V2";
 
 enum WorldBrand {
   _ = "",
@@ -6,8 +7,8 @@ enum WorldBrand {
 enum ScreenBrand {
   _ = "",
 }
-export type TScreenCoord = ScreenBrand & number[];
-export type TWorldCoord = WorldBrand & number[];
+export type TScreenCoord = ScreenBrand & V2;
+export type TWorldCoord = WorldBrand & V2;
 
 export const world_to_screen = ([x, y]: TWorldCoord): TScreenCoord => {
   const g = getGlobal();

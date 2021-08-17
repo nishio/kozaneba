@@ -9,6 +9,7 @@ import { show_menu } from "../Menu/show_menu";
 import { remove_item_from } from "../utils/remove_item";
 import { is_dragged, reset_target, set_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
+import { get_item } from "./get_item";
 import { handle_if_is_click } from "./handle_if_is_click";
 
 export const onKozaneClick = (
@@ -63,10 +64,8 @@ export const onGroupMouseUp = (
         g.dragstart_position
       );
       g.selected_items.forEach((id) => {
-        g.itemStore[id].position = sub_v2w(
-          add_v2w(g.itemStore[id].position, delta),
-          group.position
-        );
+        const x = get_item(g, id);
+        x.position = sub_v2w(add_v2w(x.position, delta), group.position);
         g.drawOrder = remove_item_from(g.drawOrder, id);
         group.items.push(id);
       });
@@ -103,7 +102,8 @@ export const onGroupMouseUp = (
         group.items.push(g.drag_target);
         position = sub_v2w(position, group.position);
       }
-      g.itemStore[g.drag_target].position = position;
+      const target = get_item(g, g.drag_target);
+      target.position = position;
       g.drag_target = "";
       g.is_local_change = true;
       g.last_updated = Date.now();

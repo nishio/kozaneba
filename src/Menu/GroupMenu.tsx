@@ -2,6 +2,7 @@ import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { add_v2w, clone_v2w } from "../dimension/V2";
+import { get_item } from "../Event/get_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { KozaneItem } from "../Kozane/KozaneItem";
@@ -25,10 +26,8 @@ export const GroupMenu = () => {
     updateGlobal((g) => {
       group.items.forEach((id) => {
         g.drawOrder.push(id);
-        g.itemStore[id].position = add_v2w(
-          g.itemStore[id].position,
-          group.position
-        );
+        const item = get_item(g, id);
+        item.position = add_v2w(item.position, group.position);
       });
       if (group.text !== "") {
         // add kozane of group title
@@ -72,7 +71,8 @@ export const GroupMenu = () => {
 
   const onBig = () => {
     updateGlobal((g) => {
-      g.itemStore[gid].scale++;
+      const item = get_item(g, gid);
+      item.scale++;
     });
   };
   const Big = isOpenGroup ? null : (

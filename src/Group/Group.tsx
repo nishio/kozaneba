@@ -4,6 +4,7 @@ import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { BORDER, PADDING, TITLE_HEIGHT } from "../dimension/get_bounding_box";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 import { is_draggeing } from "../Event/fast_drag_manager";
+import { get_item } from "../Event/get_item";
 import { onGroupMouseUp } from "../Event/mouseEventMamager";
 import { onGroupMouseDown } from "../Event/onGroupMouseDown";
 import { ItemId, NameplateId } from "../Global/initializeGlobalState";
@@ -153,8 +154,8 @@ function calc_closed_style(value: TGroupItem) {
 export const get_group_title = (group: GroupItem): string => {
   let text = group.text;
   if (text === "") {
-    const itemStore = getGlobal().itemStore;
-    text = group.items.map((x) => itemStore[x].text).join("\n");
+    const g = getGlobal();
+    text = group.items.map((x) => get_item(g, x).text).join("\n");
   }
   return text;
 };

@@ -30,7 +30,7 @@ const get_items_bounding_box = (items: ItemId[]): TBoundingBox => {
     };
   }
   const [car, ...cdr] = items;
-  let { left, right, top, bottom } = get_item_bounding_box(car);
+  let { left, right, top, bottom } = get_item_bounding_box(car!);
   cdr.forEach((id) => {
     const b = get_item_bounding_box(id);
     if (b.left < left) {

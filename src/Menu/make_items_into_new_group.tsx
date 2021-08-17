@@ -1,6 +1,7 @@
 import { getGlobal } from "reactn";
 import { add_v2w, mul_v2w, sub_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
+import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem, TGroupItem } from "../Group/GroupItem";
@@ -17,7 +18,8 @@ export const make_items_into_new_group = (
   const N = items.length;
   let v = [0, 0] as TWorldCoord;
   items.forEach((id) => {
-    v = add_v2w(v, g.itemStore[id].position);
+    const item = get_item(g, id);
+    v = add_v2w(v, item.position);
   });
   const gravity_point = mul_v2w(1 / N, v);
 
@@ -26,10 +28,8 @@ export const make_items_into_new_group = (
   });
   updateGlobal((g) => {
     items.forEach((id) => {
-      g.itemStore[id].position = sub_v2w(
-        g.itemStore[id].position,
-        gravity_point
-      );
+      const item = get_item(g, id);
+      item.position = sub_v2w(item.position, gravity_point);
     });
 
     group.position = gravity_point;

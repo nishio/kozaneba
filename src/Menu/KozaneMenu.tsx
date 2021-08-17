@@ -1,6 +1,7 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { get_item } from "../Event/get_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { delete_item_from_world } from "./delete_item_from_world";
 
@@ -21,7 +22,8 @@ export const KozaneMenu = () => {
     const id = getGlobal().clicked_kozane;
     if (id === "") return;
     updateGlobal((g) => {
-      g.itemStore[id].scale++;
+      const item = get_item(g, id);
+      item.scale++;
     });
     setMenu("");
   };

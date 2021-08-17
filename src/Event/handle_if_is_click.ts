@@ -2,6 +2,7 @@ import React from "react";
 import { getGlobal } from "reactn";
 import { show_menu } from "../Menu/show_menu";
 import { is_dragged } from "./fast_drag_manager";
+import { get_item } from "./get_item";
 import { onKozaneClick, onGroupClick } from "./mouseEventMamager";
 
 export const handle_if_is_click = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -18,7 +19,7 @@ export const handle_if_is_click = (event: React.MouseEvent<HTMLDivElement>) => {
     if (g.drag_target === "") {
       throw new Error("Click on nothing");
     }
-    const target = g.itemStore[g.drag_target];
+    const target = get_item(g, g.drag_target);
     if (target.type === "kozane") {
       onKozaneClick(g.drag_target, event);
       return true;

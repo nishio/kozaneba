@@ -30,8 +30,9 @@ export const adjustFontSize = (
   text: string,
   testHiddenKozane?: HTMLDivElement
 ): number => {
-  if (cache[text] !== undefined && testHiddenKozane !== undefined) {
-    return cache[text];
+  const in_cache = cache[text];
+  if (in_cache !== undefined && testHiddenKozane !== undefined) {
+    return in_cache;
   }
   const x = getHiddenKozane(testHiddenKozane);
   (x.children[0] as HTMLDivElement).innerText = text;
@@ -52,7 +53,7 @@ export const adjustFontSize = (
   }
   cache[text] = left;
   // console.log(text, cache[text]);
-  return cache[text];
+  return left;
 };
 /*
 あ 67

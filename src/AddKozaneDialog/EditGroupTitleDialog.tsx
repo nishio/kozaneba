@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { get_item } from "../Event/get_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { get_group_title } from "../Group/Group";
 import { GroupItem } from "../Group/GroupItem";
@@ -33,7 +34,8 @@ export const EditGroupTitleDialog = () => {
     const multiline = textarea.current.value;
 
     updateGlobal((g) => {
-      g.itemStore[id].text = multiline;
+      const x = get_item(g, id);
+      x.text = multiline;
       g.dialog = "";
       g.menu = "";
     });

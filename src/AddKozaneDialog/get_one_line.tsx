@@ -1,11 +1,11 @@
 export const get_one_line = (
   multiline: string
 ): { multiline: string; line: string } => {
-  let line;
+  let line: string;
   let m = multiline.match(/^((?:[^\r\n]|\r(?!\n))*)\n(.*)$/s);
   if (m != null) {
-    line = m[1];
-    multiline = m[2];
+    line = m[1]!;
+    multiline = m[2]!;
   } else {
     line = multiline;
     multiline = "";
