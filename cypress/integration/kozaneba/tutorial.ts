@@ -92,7 +92,8 @@ describe("tutorial", () => {
     cy.testid("ba").trigger("mouseup", 250, 250);
     const num_selected = 12;
     cy.getGlobal((g) => g.selected_items.length).should("eql", num_selected);
-    cy.testid("selection-view").click();
+
+    do_click("selection-view");
     cy.contains("make group").click();
     cy.getGlobal((g) => g.drawOrder.length).should(
       "eql",
