@@ -33,7 +33,6 @@ export const Kozane: React.FC<Props> = ({
   };
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    set_target(e);
     onKozaneMouseDown(e, value);
   };
 

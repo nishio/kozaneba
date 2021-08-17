@@ -1,10 +1,7 @@
 import React from "react";
 import { useGlobal } from "reactn";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
-import {
-  onSelectionDragStart,
-  onSelectionMouseDown,
-} from "../Event/mouseEventMamager";
+import { onSelectionMouseDown } from "../Event/mouseEventMamager";
 import { normalize_rect } from "../dimension/normalize_rect";
 import { SelectedItemsHolder } from "./SelectedItemsHolder";
 import { SelectionDiv } from "./SelectionDiv";
@@ -25,8 +22,7 @@ export const SelectionView: React.FC<{}> = ({ children }) => {
   return (
     <SelectionDiv
       style={rect}
-      draggable
-      onDragStart={onSelectionDragStart}
+      // draggable
       onMouseDown={onSelectionMouseDown}
       onClick={onClick}
       id="selection-view"

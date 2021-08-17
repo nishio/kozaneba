@@ -4,7 +4,7 @@ import { ClosedGroup } from "./ClosedGroup";
 import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { TGroupItem } from "./GroupItem";
-import { onGroupDrop } from "../Event/mouseEventMamager";
+import { onGroupMouseUp } from "../Event/mouseEventMamager";
 import { onGroupMouseDown } from "../Event/onGroupMouseDown";
 import { GroupBack, GroupDiv, GroupTitle } from "./GroupDiv";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
@@ -58,12 +58,11 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     if (self.current !== null) {
       self.current.style.borderColor = GROUP_BORDER_COLOR;
     }
-    onGroupDrop(e, value);
+    onGroupMouseUp(e, value);
   };
 
   let dragging_self = false;
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    set_target(e);
     dragging_self = true;
     onGroupMouseDown(e, value);
   };

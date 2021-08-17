@@ -66,6 +66,7 @@ export const is_draggeing = () => {
   return _is_dragging;
 };
 
+// currently not used but may useful for refactoring
 export const get_delta = (event: React.MouseEvent<HTMLDivElement>) => {
   const delta = sub_v2w(
     screen_to_world(get_client_pos(event)),
