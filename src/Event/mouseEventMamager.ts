@@ -1,44 +1,14 @@
 import React from "react";
 import { add_v2w, sub_v2w } from "../dimension/V2";
 import { screen_to_world } from "../dimension/world_to_screen";
-import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
-import { show_menu } from "../Menu/show_menu";
 import { remove_item_from } from "../utils/remove_item";
-import { is_dragged, reset_target, set_target } from "./fast_drag_manager";
+import { reset_target, set_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
 import { get_item } from "./get_item";
 import { handle_if_is_click } from "./handle_if_is_click";
-
-export const onKozaneClick = (
-  kozane_id: ItemId,
-  event: React.MouseEvent<HTMLDivElement>
-) => {
-  if (is_dragged()) return;
-  console.log("onKozaneClick");
-  updateGlobal((g) => {
-    g.clicked_kozane = kozane_id;
-    g.drag_target = "";
-  });
-  show_menu("Kozane", event);
-  reset_target();
-};
-
-export const onGroupClick = (
-  group_id: ItemId,
-  event: React.MouseEvent<HTMLDivElement, MouseEvent>
-) => {
-  if (is_dragged()) return;
-  console.log("onGroupClick");
-  updateGlobal((g) => {
-    g.clicked_group = group_id;
-    g.drag_target = "";
-  });
-  show_menu("Group", event);
-  reset_target();
-};
 
 export const onGroupMouseUp = (
   event: React.MouseEvent<HTMLDivElement>,

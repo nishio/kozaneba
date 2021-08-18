@@ -1,9 +1,19 @@
 import React from "react";
 import { getGlobal } from "reactn";
+import { updateGlobal } from "../Global/updateGlobal";
 import { show_menu } from "../Menu/show_menu";
-import { is_dragged } from "./fast_drag_manager";
+import { is_dragged, reset_target } from "./fast_drag_manager";
 import { get_item } from "./get_item";
-import { onKozaneClick, onGroupClick } from "./mouseEventMamager";
+import { onGroupClick } from "./onGroupClick";
+import { onKozaneClick } from "./onKozaneClick";
+
+const onSelectionClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  show_menu("Selection", event);
+  updateGlobal((g) => {
+    g.drag_target = "";
+  });
+  reset_target();
+};
 
 export const handle_if_is_click = (event: React.MouseEvent<HTMLDivElement>) => {
   const g = getGlobal();
@@ -13,7 +23,7 @@ export const handle_if_is_click = (event: React.MouseEvent<HTMLDivElement>) => {
       return false;
     }
     if (g.drag_target === "selection") {
-      show_menu("Selection", event);
+      onSelectionClick(event);
       return true;
     }
     if (g.drag_target === "") {
