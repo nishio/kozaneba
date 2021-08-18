@@ -57,11 +57,21 @@ export const state_to_docdate = (state: State): DocData => {
     itemStore[key] = item_to_object(value);
   });
 
+  const {
+    drawOrder,
+    last_updated,
+    anyone_writable = true,
+    title = "",
+    writers = [],
+  } = state;
   return {
     version: 3,
     itemStore,
-    drawOrder: state.drawOrder,
-    last_updated: state.last_updated,
+    drawOrder,
+    last_updated,
+    anyone_writable,
+    title,
+    writers,
   };
 };
 

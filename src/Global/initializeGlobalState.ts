@@ -41,6 +41,10 @@ export const INITIAL_GLOBAL_STATE = {
   fix_ba_for_test: "",
 
   add_kozane_text: "",
+
+  title: "",
+  writers: [] as string[],
+  anyone_writable: true,
 };
 
 type TDragTarget = "" | "selection" | ItemId;
@@ -64,7 +68,7 @@ type TDialog =
   | "EditGroupTitle"
   | "SplitKozane";
 export type TMenu = "" | "Main" | "Dev" | "Kozane" | "Selection" | "Group";
-type TStatusType =
+export type TStatusType =
   | "text"
   | "no-connection"
   | "loading"

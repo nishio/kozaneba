@@ -10,7 +10,7 @@ import { authui } from "../Cloud/FirestoreIO";
 import firebase from "firebase";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
-import { initial_save } from "./initial_save";
+import { initial_save } from "../Cloud/initial_save";
 import { useEffect } from "react";
 
 export const CloudSaveDialog = () => {
