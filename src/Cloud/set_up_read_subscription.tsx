@@ -1,6 +1,7 @@
-import { updateGlobal } from "../Global/updateGlobal";
+import { getGlobal, setGlobal } from "reactn";
+import { fit_to_contents } from "../App/toggle_fit_to_contents";
 import { db, docdate_to_state, DocSnap } from "./FirestoreIO";
-import { setGlobal } from "reactn";
+import { set_status } from "./initial_save";
 
 export const set_up_read_subscription = (ba: string) => {
   console.log("set_up_read_subscription", ba);
@@ -13,14 +14,15 @@ export const set_up_read_subscription = (ba: string) => {
         throw new TypeError("doc.data() is undefined");
       }
 
-      console.log(data);
       const server = docdate_to_state(data);
-      console.log(server);
-      // TODO: add check of last_updated
-      setGlobal(server);
-      updateGlobal((g) => {
-        g.statusBar.type = "done";
-      });
+      const local_latest = getGlobal().last_updated;
+      if (data.last_updated > local_latest) {
+        setGlobal(server);
+        setGlobal(fit_to_contents());
+      } else if (data.last_updated < local_latest) {
+        throw new Error("received old data from server (warning)"); // it happens?
+      }
+      set_status("done");
     });
   return unsubscribe;
 };
