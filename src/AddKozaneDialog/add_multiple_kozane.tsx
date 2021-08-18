@@ -1,5 +1,9 @@
 import { KozaneItem } from "../Kozane/KozaneItem";
-import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
+import {
+  KOZANE_BORDER,
+  KOZANE_HEIGHT,
+  KOZANE_WIDTH,
+} from "../Kozane/kozane_constants";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem, TGroupItem } from "../Group/GroupItem";
 import { multiline_to_lines } from "./multiline_to_lines";
@@ -24,8 +28,8 @@ export const create_squared_group = (items: string[]) => {
     if (line === "") return;
     let x = index % numX;
     let y = Math.floor(index / numX);
-    x *= KOZANE_WIDTH;
-    y *= KOZANE_HEIGHT;
+    x *= KOZANE_WIDTH + KOZANE_BORDER;
+    y *= KOZANE_HEIGHT + KOZANE_BORDER;
 
     x += cx - width / 2 + KOZANE_WIDTH / 2;
     y += cy - height / 2 + KOZANE_HEIGHT / 2;
