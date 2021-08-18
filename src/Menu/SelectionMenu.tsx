@@ -2,6 +2,7 @@ import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { reset_selection } from "../Selection/reset_selection";
+import { copy_text } from "./copy_text";
 import { delete_item_from_world } from "./delete_item_from_world";
 import { make_items_into_new_group } from "./make_items_into_new_group";
 
@@ -28,10 +29,17 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
+  const onCopyText = () => {
+    copy_text();
+    setMenu("");
+  };
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onMakeGroup} data-testid="make-group">
         make group
+      </MenuItem>
+      <MenuItem onClick={onCopyText} data-testid="copy-text">
+        copy text
       </MenuItem>
       <MenuItem onClick={onDelete}>delete items</MenuItem>
     </Menu>

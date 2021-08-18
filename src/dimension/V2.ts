@@ -40,3 +40,10 @@ export const clone_v2 = (v: V2): V2 => {
 export const clone_v2w = (v: TWorldCoord): TWorldCoord => {
   return clone_v2(v) as TWorldCoord;
 };
+
+export const L1norm = (v: V2): number => {
+  return v[0] + v[1];
+};
+export const L2norm = (v: V2): number => {
+  return Math.sqrt(v[0] * v[0] + v[1] * v[1]);
+};
