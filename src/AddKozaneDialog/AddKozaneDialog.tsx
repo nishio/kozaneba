@@ -104,6 +104,13 @@ export const AddKozaneDialog = () => {
 
 export const add_multiple_kozane = (multiline: string) => {
   const items = multiline_to_lines(multiline);
+  if (items.length === 0) return;
+  updateGlobal((g) => {
+    if (g.title === "") {
+      g.title = items[0]!;
+    }
+  });
+
   const N = items.length;
   const area = N * KOZANE_WIDTH * KOZANE_HEIGHT;
   const numX = Math.ceil(Math.sqrt(area) / KOZANE_WIDTH);
@@ -135,5 +142,8 @@ export const add_multiple_kozane = (multiline: string) => {
     g.drawOrder.push(group.id);
     g.dialog = "";
     g.add_kozane_text = "";
+
+    g.is_local_change = true;
+    g.last_updated = Date.now();
   });
 };

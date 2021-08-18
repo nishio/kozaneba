@@ -30,7 +30,11 @@ export const EditGroupTitleDialog = () => {
 
     updateGlobal((g) => {
       const x = get_item(g, id);
-      x.text = multiline;
+      if (x.text !== multiline) {
+        x.text = multiline;
+        g.is_local_change = true;
+        g.last_updated = Date.now();
+      }
       g.dialog = "";
       g.menu = "";
     });
