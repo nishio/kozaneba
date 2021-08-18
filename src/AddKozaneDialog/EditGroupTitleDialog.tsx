@@ -6,7 +6,7 @@ import {
   DialogTitle,
   TextareaAutosize,
 } from "@material-ui/core";
-import React, { createRef, useEffect } from "react";
+import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { finishButtons } from "../App/hotKey";
 import { get_item } from "../Event/get_item";
