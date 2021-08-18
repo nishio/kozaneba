@@ -50,7 +50,12 @@ export const TutorialDialog = () => {
     ) : null;
 
   return (
-    <Dialog open={open} onClose={onClose} data-testid="tutorial-dialog">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      scroll="body"
+      data-testid="tutorial-dialog"
+    >
       <DialogTitle id="form-dialog-title">
         Tutorial ({p + 1} / {tutorial_pages.length})
       </DialogTitle>
