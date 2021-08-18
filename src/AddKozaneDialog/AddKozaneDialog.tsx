@@ -14,6 +14,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { multiline_to_lines } from "./multiline_to_lines";
 import { TWorldCoord } from "../dimension/world_to_screen";
+import { finishButtons } from "../App/hotKey";
 
 export const AddKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -26,11 +27,14 @@ export const AddKozaneDialog = () => {
   };
 
   const onAddKozane = () => {
+    console.log("onAddKozane", open, textarea.current);
     if (textarea.current === null) return;
+    if (!open) return;
     let multiline = textarea.current.value;
 
     add_multiple_kozane(multiline);
   };
+  finishButtons["AddKozaneDialog"] = onAddKozane;
 
   const fullScreen = false;
   // It was true, good for edit large contents

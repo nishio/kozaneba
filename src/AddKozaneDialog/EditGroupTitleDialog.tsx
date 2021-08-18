@@ -6,8 +6,9 @@ import {
   DialogTitle,
   TextareaAutosize,
 } from "@material-ui/core";
-import React, { createRef } from "react";
+import React, { createRef, useEffect } from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { finishButtons } from "../App/hotKey";
 import { get_item } from "../Event/get_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { get_group_title } from "../Group/Group";
@@ -21,16 +22,10 @@ export const EditGroupTitleDialog = () => {
   const onClose = () => {
     setDialog("");
   };
-  if (!open) {
-    return null;
-  }
-  const g = getGlobal();
-  const id = g.clicked_group;
-  const group = g.itemStore[id] as GroupItem;
-  const text = get_group_title(group);
 
   const onEditGroupTitle = () => {
     if (textarea.current === null) return;
+    if (!open) return;
     const multiline = textarea.current.value;
 
     updateGlobal((g) => {
@@ -40,6 +35,15 @@ export const EditGroupTitleDialog = () => {
       g.menu = "";
     });
   };
+  finishButtons["EditGroupTitleDialog"] = onEditGroupTitle;
+
+  if (!open) {
+    return null;
+  }
+  const g = getGlobal();
+  const id = g.clicked_group;
+  const group = g.itemStore[id] as GroupItem;
+  const text = get_group_title(group);
 
   const fullScreen = false;
   // It was true, good for edit large contents

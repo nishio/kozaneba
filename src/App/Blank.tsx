@@ -15,6 +15,7 @@ import { useEffect, useGlobal } from "reactn";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
 import { EditGroupTitleDialog } from "../AddKozaneDialog/EditGroupTitleDialog";
 import { SplitKozaneDialog } from "../AddKozaneDialog/SplitKozaneDialog";
+import { KeyboardShortcut } from "./KeyboardShortcut";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -42,6 +43,7 @@ export const Blank = () => {
       <LocalChangeWatcher />
       <EditGroupTitleDialog />
       <SplitKozaneDialog />
+      <KeyboardShortcut />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { finishButtons } from "../App/hotKey";
 import { get_item } from "../Event/get_item";
 import { add_multiple_kozane } from "./AddKozaneDialog";
 
@@ -18,20 +19,24 @@ export const SplitKozaneDialog = () => {
   const onClose = () => {
     setDialog("");
   };
+
+  const onAddKozane = () => {
+    if (textarea.current === null) return;
+    if (!open) return;
+    let multiline = textarea.current.value;
+
+    add_multiple_kozane(multiline);
+  };
+  // MAY add `replace kozane` button
+
+  finishButtons["SplitKozaneDialog"] = onAddKozane;
+
   if (!open) return null;
 
   const g = getGlobal();
   const id = g.clicked_kozane;
   const item = get_item(g, id);
   const text = item.text;
-
-  const onAddKozane = () => {
-    if (textarea.current === null) return;
-    let multiline = textarea.current.value;
-
-    add_multiple_kozane(multiline);
-  };
-  // MAY add `replace kozane` button
 
   const fullScreen = false;
   // It was true, good for edit large contents
