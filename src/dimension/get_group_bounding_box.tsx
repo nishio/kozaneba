@@ -20,7 +20,7 @@ export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
   };
 };
 
-const get_items_bounding_box = (items: ItemId[]): TBoundingBox => {
+export const get_items_bounding_box = (items: ItemId[]): TBoundingBox => {
   if (items.length === 0) {
     return {
       left: 0,

@@ -8,6 +8,7 @@ export const MyAppBar = () => {
     <AppBar
       position="absolute"
       style={{ opacity: "50%", backgroundColor: APP_BAR_BGCOLOR }}
+      id="appbar"
     >
       <Toolbar>
         <MainMenu />
