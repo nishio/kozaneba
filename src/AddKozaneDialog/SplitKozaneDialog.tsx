@@ -10,7 +10,10 @@ import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { finishButtons } from "../App/hotKey";
 import { get_item } from "../Event/get_item";
-import { add_multiple_kozane } from "./AddKozaneDialog";
+import {
+  add_multiple_kozane,
+  replace_multiple_kozane,
+} from "./add_multiple_kozane";
 
 export const SplitKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -26,6 +29,14 @@ export const SplitKozaneDialog = () => {
     let multiline = textarea.current.value;
 
     add_multiple_kozane(multiline);
+  };
+
+  const onReplaceKozane = () => {
+    if (textarea.current === null) return;
+    if (!open) return;
+    let multiline = textarea.current.value;
+
+    replace_multiple_kozane(multiline);
   };
   // MAY add `replace kozane` button
 
@@ -74,6 +85,13 @@ export const SplitKozaneDialog = () => {
       <DialogActions>
         <Button color="primary" onClick={onClose}>
           Close
+        </Button>
+        <Button
+          color="primary"
+          onClick={onReplaceKozane}
+          data-testid="replace-kozane-button"
+        >
+          Replace Kozane
         </Button>
         <Button
           color="primary"

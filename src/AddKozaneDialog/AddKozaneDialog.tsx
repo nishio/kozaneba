@@ -8,13 +8,8 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { useGlobal } from "reactn";
-import { KozaneItem } from "../Kozane/KozaneItem";
-import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
-import { updateGlobal } from "../Global/updateGlobal";
-import { GroupItem } from "../Group/GroupItem";
-import { multiline_to_lines } from "./multiline_to_lines";
-import { TWorldCoord } from "../dimension/world_to_screen";
 import { finishButtons } from "../App/hotKey";
+import { add_multiple_kozane } from "./add_multiple_kozane";
 
 export const AddKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -100,50 +95,4 @@ export const AddKozaneDialog = () => {
       </DialogActions>
     </Dialog>
   );
-};
-
-export const add_multiple_kozane = (multiline: string) => {
-  const items = multiline_to_lines(multiline);
-  if (items.length === 0) return;
-  updateGlobal((g) => {
-    if (g.title === "") {
-      g.title = items[0]!;
-    }
-  });
-
-  const N = items.length;
-  const area = N * KOZANE_WIDTH * KOZANE_HEIGHT;
-  const numX = Math.ceil(Math.sqrt(area) / KOZANE_WIDTH);
-  const width = numX * KOZANE_WIDTH;
-  const height = Math.ceil(N / numX) * KOZANE_HEIGHT;
-  const [cx, cy] = [0, 0];
-
-  updateGlobal((g) => {
-    const group = new GroupItem();
-    g.itemStore[group.id] = group;
-
-    items.forEach((line, index) => {
-      if (line === "") return;
-      let x = index % numX;
-      let y = Math.floor(index / numX);
-      x *= KOZANE_WIDTH;
-      y *= KOZANE_HEIGHT;
-
-      x += cx - width / 2 + KOZANE_WIDTH / 2;
-      y += cy - height / 2 + KOZANE_HEIGHT / 2;
-
-      const kozane = new KozaneItem();
-      kozane.text = line;
-      kozane.position = [x, y] as TWorldCoord;
-      g.itemStore[kozane.id] = kozane;
-      group.items.push(kozane.id);
-    });
-    group.position = [-g.trans_x, -g.trans_y] as TWorldCoord;
-    g.drawOrder.push(group.id);
-    g.dialog = "";
-    g.add_kozane_text = "";
-
-    g.is_local_change = true;
-    g.last_updated = Date.now();
-  });
 };
