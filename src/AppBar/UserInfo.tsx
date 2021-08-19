@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "reactn";
 
 export const UserInfo = () => {
   const [user] = useGlobal("user");
@@ -11,10 +11,14 @@ export const UserInfo = () => {
         {user.photoURL !== null ? (
           <img src={user.photoURL} alt="" width="16px" />
         ) : null}
-        {user.displayName ?? "Anonymous"}
+        {get_display_name()}
       </span>
     );
   } else {
     return <span>Not signed in</span>;
   }
+};
+
+export const get_display_name = () => {
+  return getGlobal().user?.displayName ?? "Anonymous";
 };

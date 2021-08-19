@@ -1,17 +1,22 @@
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import React from "react";
-import { useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "reactn";
 import MenuIcon from "@material-ui/icons/Menu";
 import { show_menu } from "../Menu/show_menu";
 import { updateGlobal } from "../Global/updateGlobal";
 import { initial_save } from "../Cloud/initial_save";
 import { close_menu_and_dialog } from "./close_menu";
 import { Sentry } from "../initSentry";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
 
 export const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
   const [cloud_ba] = useGlobal("cloud_ba");
+  const [in_tutorial] = useGlobal("in_tutorial");
+  const [user] = useGlobal("user");
+  const [title, setTitle] = useGlobal("title");
+
   const open = menu === "Main";
   const onClose = () => {
     setMenu("");
@@ -39,6 +44,35 @@ export const MainMenu = () => {
   } else {
     EnableCloudAutoSave = null;
   }
+
+  let Tutorial;
+  if (!in_tutorial) {
+    const onTutorial = () => {
+      setGlobal({ in_tutorial: true });
+    };
+    Tutorial = <MenuItem onClick={onTutorial}>Tutorial</MenuItem>;
+  } else {
+    Tutorial = null;
+  }
+
+  let User;
+  if (user !== null) {
+    const onUser = () => {
+      setGlobal({ dialog: "User" });
+    };
+    User = <MenuItem onClick={onUser}>User</MenuItem>;
+  } else {
+    User = null;
+  }
+
+  const onTitle = () => {
+    const x = prompt(`Current Title: ${title}\nNew Title:`);
+    if (x !== null) {
+      setTitle(x);
+      mark_local_changed();
+    }
+  };
+
   return (
     <>
       <IconButton
@@ -55,6 +89,10 @@ export const MainMenu = () => {
         <MenuItem onClick={onAddKozane}>Add Kozane</MenuItem>
         {EnableCloudAutoSave}
 
+        <MenuItem onClick={onTitle}>Title: {title}</MenuItem>
+
+        {Tutorial}
+        {User}
         <MenuItem
           onClick={() => {
             Sentry.captureMessage("Manual Feedback " + Date.now());

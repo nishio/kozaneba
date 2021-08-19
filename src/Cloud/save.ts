@@ -29,18 +29,3 @@ export const save = () => {
       });
     });
 };
-
-//@ts-ignore
-window.test = () => {
-  console.log(auth.currentUser?.uid);
-  const NISHIO = "X4csZggYy1dAhcilL1FyNfjBJj12";
-  db.collection("ba")
-    .where("writer", "array-contains", NISHIO)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id);
-      });
-    });
-};
