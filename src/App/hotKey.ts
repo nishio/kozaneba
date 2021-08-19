@@ -1,4 +1,5 @@
 import { getGlobal } from "reactn";
+import { zoom_around_pointer } from "../Event/onWheel";
 import { updateGlobal } from "../Global/updateGlobal";
 import { toggle_fit_to_contents } from "./toggle_fit_to_contents";
 
@@ -29,6 +30,9 @@ export const hotKey = (e: KeyboardEvent) => {
   } else if (e.code === "Space") {
     toggle_fit_to_contents();
     e.preventDefault();
+  } else if (e.key === "b") {
+    zoom_in_pointer();
+    e.preventDefault();
   } else {
     console.log(e);
   }
@@ -47,3 +51,7 @@ const finishDialog = () => {
   });
 };
 const moveDirection = 1;
+
+const zoom_in_pointer = () => {
+  zoom_around_pointer(2);
+};
