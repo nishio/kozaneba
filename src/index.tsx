@@ -20,6 +20,7 @@ const initProduction = () => {
 const initDevelopment = () => {
   exposeGlobal();
   addReactNDevTools({ trace: true, traceLimit: 25 });
+  window.gtag = () => {};
 };
 
 setGlobal(INITIAL_GLOBAL_STATE);

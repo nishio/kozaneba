@@ -1,4 +1,4 @@
-import { useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "reactn";
 import {
   Button,
   Dialog,
@@ -22,7 +22,10 @@ export const TutorialDialog = () => {
   }, [p, open]);
 
   const page = tutorial_pages[p];
-
+  if (page?.title === "Tutorial Finished🎉") {
+    setGlobal({ in_tutorial: false });
+    window.gtag("event", "tutorial_finished");
+  }
   const Prev =
     p > 0 ? (
       <Button
