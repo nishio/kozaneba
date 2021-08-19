@@ -12,10 +12,6 @@ import { mark_local_changed } from "../../Cloud/mark_local_changed";
 export const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
-  const [cloud_ba] = useGlobal("cloud_ba");
-  const [in_tutorial] = useGlobal("in_tutorial");
-  const [user] = useGlobal("user");
-  const [title, setTitle] = useGlobal("title");
 
   const open = menu === "Main";
   const onClose = () => {
@@ -24,53 +20,12 @@ export const MainMenu = () => {
   const onButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     show_menu("Main", event);
   };
+
   const onAddKozane = () => {
     updateGlobal((g) => {
       g.dialog = "AddKozane";
       g.menu = "";
     });
-  };
-
-  let EnableCloudAutoSave;
-  if (cloud_ba === "") {
-    const onEnableCloudAutoSave = () => {
-      initial_save();
-    };
-    EnableCloudAutoSave = (
-      <MenuItem onClick={onEnableCloudAutoSave}>
-        Enable Cloud Auto-Save
-      </MenuItem>
-    );
-  } else {
-    EnableCloudAutoSave = null;
-  }
-
-  let Tutorial;
-  if (!in_tutorial) {
-    const onTutorial = () => {
-      setGlobal({ in_tutorial: true });
-    };
-    Tutorial = <MenuItem onClick={onTutorial}>Tutorial</MenuItem>;
-  } else {
-    Tutorial = null;
-  }
-
-  let User;
-  if (user !== null) {
-    const onUser = () => {
-      setGlobal({ dialog: "User" });
-    };
-    User = <MenuItem onClick={onUser}>User</MenuItem>;
-  } else {
-    User = null;
-  }
-
-  const onTitle = () => {
-    const x = prompt(`Current Title: ${title}\nNew Title:`);
-    if (x !== null) {
-      setTitle(x);
-      mark_local_changed();
-    }
   };
 
   return (
@@ -87,21 +42,70 @@ export const MainMenu = () => {
       </IconButton>
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
         <MenuItem onClick={onAddKozane}>Add Kozane</MenuItem>
-        {EnableCloudAutoSave}
+        <EnableCloudAutoSave />
 
-        <MenuItem onClick={onTitle}>Title: {title}</MenuItem>
-
-        {Tutorial}
-        {User}
-        <MenuItem
-          onClick={() => {
-            Sentry.captureMessage("Manual Feedback " + Date.now());
-            close_menu_and_dialog();
-          }}
-        >
-          Send Feedback
-        </MenuItem>
+        <Title />
+        <Tutorial />
+        <User />
+        <SendFeedback />
       </Menu>
     </>
   );
+};
+
+const Title = () => {
+  const [title, setTitle] = useGlobal("title");
+  const onTitle = () => {
+    const x = prompt(`Current Title: ${title}\nNew Title:`);
+    if (x !== null) {
+      setTitle(x);
+      mark_local_changed();
+    }
+  };
+  return <MenuItem onClick={onTitle}>Title: {title}</MenuItem>;
+};
+
+const SendFeedback = () => {
+  const onClick = () => {
+    Sentry.captureMessage("Manual Feedback " + Date.now());
+    close_menu_and_dialog();
+  };
+  return <MenuItem onClick={onClick}>Send Feedback</MenuItem>;
+};
+
+const User = () => {
+  const [user] = useGlobal("user");
+  if (user !== null) {
+    const onUser = () => {
+      setGlobal({ dialog: "User" });
+    };
+    return <MenuItem onClick={onUser}>User</MenuItem>;
+  }
+  return null;
+};
+
+const Tutorial = () => {
+  const [in_tutorial] = useGlobal("in_tutorial");
+  if (!in_tutorial) {
+    const onTutorial = () => {
+      setGlobal({ in_tutorial: true });
+    };
+    return <MenuItem onClick={onTutorial}>Tutorial</MenuItem>;
+  }
+  return null;
+};
+
+const EnableCloudAutoSave = () => {
+  const [cloud_ba] = useGlobal("cloud_ba");
+  if (cloud_ba === "") {
+    const onEnableCloudAutoSave = () => {
+      initial_save();
+    };
+    return (
+      <MenuItem onClick={onEnableCloudAutoSave}>
+        Enable Cloud Auto-Save
+      </MenuItem>
+    );
+  }
+  return null;
 };
