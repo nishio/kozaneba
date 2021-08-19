@@ -98,6 +98,12 @@ class Buffer {
   push(s: string) {
     this.last_line += s;
   }
+  addline(s: string) {
+    if (this.last_line !== "") {
+      this.newline();
+    }
+    this.lines.push(s);
+  }
   newline(): void {
     this.lines.push(this.last_line);
     this.last_line = "";
@@ -110,6 +116,28 @@ class Buffer {
 const push = (item: TItem, out: Buffer) => {
   if (item.type === "kozane") {
     out.push(item.text);
+  } else if (item.type === "group") {
+    if (!item.isOpen) {
+      // closed group is as kozane
+      out.push(item.text);
+    } else {
+      if (item.items.length === 0) {
+        return;
+      }
+      const g_out = new Buffer();
+      serialize(item.items, g_out);
+      if (item.text !== "") {
+        out.addline(item.text);
+        g_out.lines.forEach((line) => {
+          out.addline("\t" + line);
+        });
+      } else {
+        out.addline(g_out.lines[0]!);
+        g_out.lines.slice(1).forEach((line) => {
+          out.addline("\t" + line);
+        });
+      }
+    }
   }
 };
 
