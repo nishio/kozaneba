@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { updateGlobal } from "../Global/updateGlobal";
 import { Blank } from "./Blank";
 
-export const Tutorial = () => {
+export const StartTutorial = () => {
   useEffect(() => {
     updateGlobal((g) => {
       g.dialog = "Tutorial";
