@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { get_display_name } from "../AppBar/UserInfo";
 import { auth, db } from "../Cloud/FirestoreIO";
+import { date_to_str } from "../utils/date_to_str";
 
 type Ba = { title: string; id: string; last_updated: number };
 export const UserDialog = () => {
@@ -90,15 +91,4 @@ export const UserDialog = () => {
       </DialogActions>
     </Dialog>
   );
-};
-
-export const date_to_str = (date: number) => {
-  const d = new Date(date);
-  const Y = d.getFullYear();
-  const M = (d.getMonth() + 1).toString().padStart(2, "0");
-  const D = d.getDate().toString().padStart(2, "0");
-  const H = d.getHours().toString().padStart(2, "0");
-  const m = d.getMinutes().toString().padStart(2, "0");
-  const s = `${Y}-${M}-${D} ${H}:${m}`;
-  return s;
 };
