@@ -1,5 +1,11 @@
-export type HelpPage = { title: string; body: JSX.Element };
-export const tutorial_pages: HelpPage[] = [
+import { Collapse, List, ListItem, ListItemText } from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { setGlobal, useState } from "reactn";
+import { tutorial_pages } from "./tutorial_pages";
+
+export type HelpPage = { title: string; body: JSX.Element; page_no?: number };
+
+const other_pages: HelpPage[] = [
   {
     title: "Don't classify, organize!",
     body: (
@@ -29,3 +35,59 @@ export const tutorial_pages: HelpPage[] = [
     ),
   },
 ];
+export const help_pages: HelpPage[] = [
+  {
+    title: "Table of contents",
+    body: <></>, // filled after
+  },
+  ...tutorial_pages,
+  ...other_pages,
+];
+
+help_pages.forEach((value, index) => {
+  value.page_no = index;
+});
+
+const TOC = () => {
+  const [isOpenTutorial, setIsOpenTutorial] = useState(false);
+  const onOpenTutorial = () => {
+    setIsOpenTutorial(!isOpenTutorial);
+  };
+  const make_LI = (x: HelpPage) => (
+    <ListItem
+      button
+      style={{
+        paddingLeft: "2em",
+        paddingTop: 0,
+        paddingBottom: 0,
+        lineHeight: 1,
+      }}
+      onClick={() => {
+        setGlobal({ tutorial_page: x.page_no });
+      }}
+    >
+      <ListItemText primary={x.title} />
+    </ListItem>
+  );
+  const tutorial_items = tutorial_pages.map(make_LI);
+  const other_items = other_pages.map(make_LI);
+  return (
+    <div>
+      <ListItem button onClick={onOpenTutorial}>
+        <ListItemText primary="Section 1: Tutorial" />
+        {isOpenTutorial ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={isOpenTutorial} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {tutorial_items}
+        </List>
+      </Collapse>
+      <ListItem button onClick={onOpenTutorial}>
+        <ListItemText primary="Section 2:" />
+      </ListItem>
+      {other_items}
+    </div>
+  );
+};
+
+help_pages[0]!.body = <TOC />;

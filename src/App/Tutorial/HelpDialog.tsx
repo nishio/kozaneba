@@ -5,9 +5,9 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import { useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../../AppBar/close_menu";
-import { tutorial_pages } from "./tutorial_pages";
+import { help_pages } from "./help_pages";
 
 export const HelpDialog = () => {
   const [dialog] = useGlobal("dialog");
@@ -17,8 +17,11 @@ export const HelpDialog = () => {
     close_menu_and_dialog();
   };
 
-  const page = tutorial_pages[p];
+  const page = help_pages[p];
 
+  const onTOC = () => {
+    setGlobal({ tutorial_page: 0 });
+  };
   const Prev =
     p > 0 ? (
       <Button
@@ -33,7 +36,7 @@ export const HelpDialog = () => {
     ) : null;
 
   const Next =
-    p < tutorial_pages.length - 1 ? (
+    p < help_pages.length - 1 ? (
       <Button
         color="primary"
         onClick={() => {
@@ -50,7 +53,8 @@ export const HelpDialog = () => {
       open={open}
       onClose={onClose}
       scroll="body"
-      data-testid="tutorial-dialog"
+      data-testid="help-dialog"
+      fullWidth={true}
     >
       <DialogTitle id="form-dialog-title">
         {/* Tutorial ({p + 1} / {tutorial_pages.length}) */}
@@ -68,9 +72,13 @@ export const HelpDialog = () => {
         {/* <hr /> */}
       </DialogContent>
       <DialogActions>
+        <Button color="primary" onClick={onTOC}>
+          TOC
+        </Button>
+
         {Prev}
         {Next}
-        <Button color="primary" onClick={onClose} data-testid="tutorial-close">
+        <Button color="primary" onClick={onClose} data-testid="help-close">
           Close
         </Button>
       </DialogActions>
