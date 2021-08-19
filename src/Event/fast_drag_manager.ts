@@ -1,6 +1,6 @@
 // for fast dragging, do not update the ReactN states
 import React from "react";
-import { add_v2, sub_v2w } from "../dimension/V2";
+import { add_v2, add_v2s, sub_v2s, sub_v2w } from "../dimension/V2";
 import {
   screen_to_world,
   TScreenCoord,
@@ -50,6 +50,21 @@ export const move_target = (event: React.MouseEvent) => {
     screen_to_world(_mouse_down_point)
   );
   const pos = add_v2(_first_element_position, delta) as TWorldCoord;
+  const style = {
+    left: pos[0] + "px",
+    top: pos[1] + "px",
+  };
+  Object.assign(_target.style, style);
+  _is_mousemoved = true;
+};
+
+export const move_target_on_screen = (event: React.MouseEvent) => {
+  // for SelectionView, it is not under `world` transform
+  if (_target === null) {
+    throw new Error("try to move element:null");
+  }
+  const delta = sub_v2s(get_client_pos(event), _mouse_down_point);
+  const pos = add_v2s(_first_element_position, delta);
   const style = {
     left: pos[0] + "px",
     top: pos[1] + "px",

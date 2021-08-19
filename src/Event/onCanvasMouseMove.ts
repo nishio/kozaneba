@@ -2,7 +2,7 @@ import React from "react";
 import { getGlobal } from "reactn";
 import { TScreenCoord } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
-import { move_target } from "./fast_drag_manager";
+import { move_target, move_target_on_screen } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
 
 let last_mouse_position = [0, 0] as TScreenCoord;
@@ -20,6 +20,8 @@ export const onCanvasMouseMove = (
       g.selectionRange.width = last_mouse_position[0] - g.selectionRange.left;
       g.selectionRange.height = last_mouse_position[1] - g.selectionRange.top;
     });
+  } else if (g.drag_target === "selection") {
+    move_target_on_screen(event);
   } else if (g.drag_target !== "") {
     move_target(event);
   }
