@@ -7,7 +7,7 @@ import { ItemCanvas } from "../Canvas/ItemCanvas";
 import { SelectionMenu } from "../Menu/SelectionMenu";
 import { GroupMenu } from "../Menu/GroupMenu";
 import { StatusBar } from "./StatusBar";
-import { TutorialDialog } from "./TutorialDialog";
+import { TutorialDialog } from "./Tutorial/TutorialDialog";
 import { SignDialog } from "./SignDialog";
 import { CloudSaveDialog } from "./CloudSaveDialog";
 import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";

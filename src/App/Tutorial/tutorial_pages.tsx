@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { updateGlobal } from "../Global/updateGlobal";
+import { updateGlobal } from "../../Global/updateGlobal";
 
 const H = styled.h2`
   margin-top: 0;
