@@ -57,7 +57,8 @@ export const TutorialDialog = () => {
       data-testid="tutorial-dialog"
     >
       <DialogTitle id="form-dialog-title">
-        Tutorial ({p + 1} / {tutorial_pages.length})
+        {/* Tutorial ({p + 1} / {tutorial_pages.length}) */}
+        {page?.title}
       </DialogTitle>
       <DialogContent
         style={{
@@ -66,8 +67,9 @@ export const TutorialDialog = () => {
         }}
       >
         {/* <DialogContentText>Tutorial</DialogContentText> */}
-        {page}
-        <hr />
+
+        {page?.body}
+        {/* <hr /> */}
       </DialogContent>
       <DialogActions>
         {Prev}
