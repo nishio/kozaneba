@@ -90,7 +90,7 @@ describe("tutorial", () => {
     cy.viewport(600, 400);
     cy.testid("ba").trigger("mousedown", 100, 150);
     cy.testid("ba").trigger("mouseup", 250, 250);
-    const num_selected = 12;
+    const num_selected = 10;
     cy.getGlobal((g) => g.selected_items.length).should("eql", num_selected);
     cy.testid("selection-view").click();
     cy.contains("make group").click();
