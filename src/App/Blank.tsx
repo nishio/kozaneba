@@ -17,6 +17,7 @@ import { EditGroupTitleDialog } from "../AddKozaneDialog/EditGroupTitleDialog";
 import { SplitKozaneDialog } from "../AddKozaneDialog/SplitKozaneDialog";
 import { KeyboardShortcut } from "./KeyboardShortcut";
 import { UserDialog } from "./UserDialog";
+import { HelpDialog } from "./Tutorial/HelpDialog";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -46,6 +47,7 @@ export const Blank = () => {
       <SplitKozaneDialog />
       <KeyboardShortcut />
       <UserDialog />
+      <HelpDialog />
     </div>
   );
 };

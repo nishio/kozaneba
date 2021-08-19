@@ -28,7 +28,6 @@ export const StatusBar = () => {
   const [user] = useGlobal("user");
   const [cloud_ba] = useGlobal("cloud_ba");
   const [usingFirestoreEmulator] = useGlobal("usingFirestoreEmulator");
-  const [in_tutorial] = useGlobal("in_tutorial");
 
   let contents = null;
   if (statusBar.type === "loading") {
@@ -115,22 +114,6 @@ export const StatusBar = () => {
     );
   }
 
-  const tutorialStatus = in_tutorial
-    ? addTooltip(
-        <FontAwesomeIcon
-          icon={faQuestionCircle}
-          data-testid="tutorial-status"
-          onClick={() => {
-            updateGlobal((g) => {
-              g.dialog = "Tutorial";
-            });
-          }}
-        />,
-        "open tutorial",
-        "tutorial-status-tooltip"
-      )
-    : null;
-
   return (
     <div
       style={{
@@ -163,7 +146,7 @@ export const StatusBar = () => {
         ></div>
         <div style={{ position: "relative" }}>
           <span style={{ margin: "5px" }}>
-            {tutorialStatus}
+            <TutorialStatus />
             {userStatus}
             {cloudStatus}
             {contents}
@@ -172,4 +155,37 @@ export const StatusBar = () => {
       </div>
     </div>
   );
+};
+
+const TutorialStatus = () => {
+  const [in_tutorial] = useGlobal("in_tutorial");
+  if (in_tutorial) {
+    return addTooltip(
+      <FontAwesomeIcon
+        icon={faQuestionCircle}
+        data-testid="tutorial-status"
+        onClick={() => {
+          updateGlobal((g) => {
+            g.dialog = "Tutorial";
+          });
+        }}
+      />,
+      "open tutorial",
+      "tutorial-status-tooltip"
+    );
+  } else {
+    return addTooltip(
+      <FontAwesomeIcon
+        icon={faQuestionCircle}
+        data-testid="tutorial-status"
+        onClick={() => {
+          updateGlobal((g) => {
+            g.dialog = "Help";
+          });
+        }}
+      />,
+      "open help",
+      "tutorial-status-tooltip"
+    );
+  }
 };

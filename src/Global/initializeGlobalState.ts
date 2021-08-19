@@ -67,7 +67,8 @@ type TDialog =
   | "CloudSave"
   | "EditGroupTitle"
   | "SplitKozane"
-  | "User";
+  | "User"
+  | "Help";
 export type TMenu = "" | "Main" | "Dev" | "Kozane" | "Selection" | "Group";
 export type TStatusType =
   | "text"
