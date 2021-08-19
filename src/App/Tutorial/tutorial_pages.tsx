@@ -1,3 +1,4 @@
+import { setGlobal } from "reactn";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { HelpPage } from "./help_pages";
 import { SAMPLE_LINES } from "./SAMPLE_LINES";
@@ -29,6 +30,16 @@ const openPrefilledDialog = () => {
   });
 };
 
+const finishTutorialButton = (
+  <button
+    onClick={() => {
+      setGlobal({ in_tutorial: false, dialog: "" });
+    }}
+  >
+    finish the tutorial
+  </button>
+);
+
 export const tutorial_pages: HelpPage[] = [
   {
     title: "Welcome to Kozaneba!",
@@ -37,7 +48,7 @@ export const tutorial_pages: HelpPage[] = [
         <p>Kozaneba is digital stationery to organize your thought.</p>
         <p>
           You are currently in the tutorial mode. If you do not need tutorial,
-          you can close this dialog now.
+          you can {finishTutorialButton} now.
         </p>
         <p>Please click `Next` button...</p>
       </div>
