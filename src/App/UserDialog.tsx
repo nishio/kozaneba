@@ -1,17 +1,20 @@
-import { useGlobal } from "reactn";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  List,
+  ListItem,
+  ListItemText,
+  ListSubheader,
 } from "@material-ui/core";
+import { useEffect, useState } from "react";
+import { useGlobal } from "reactn";
 import { get_display_name } from "../AppBar/UserInfo";
-import { useState } from "react";
-import { useEffect } from "react";
 import { auth, db } from "../Cloud/FirestoreIO";
 
-type Ba = { title: string; id: string };
+type Ba = { title: string; id: string; last_updated: number };
 export const UserDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
   const [ba_list, set_ba_list] = useState(null as Ba[] | null);
@@ -36,6 +39,7 @@ export const UserDialog = () => {
             ba_list.push({
               title: doc.data().title,
               id: doc.id,
+              last_updated: doc.data().last_updated,
             });
           });
           set_ba_list(ba_list);
@@ -48,16 +52,25 @@ export const UserDialog = () => {
     if (ba_list.length === 0) {
       BaList = <span>Not saved yet</span>;
     } else {
+      const items = ba_list.map((x) => (
+        <ListItem
+          button
+          onClick={() => {
+            window.open("/#edit=" + x.id, "_blank");
+          }}
+          style={{}}
+        >
+          <ListItemText
+            primary={date_to_str(x.last_updated) + ": " + x.title}
+          />
+        </ListItem>
+      ));
       BaList = (
-        <ul>
-          {ba_list.map((x) => (
-            <li key={x.id}>
-              <a href={"/#edit=" + x.id} target="blank">
-                {x.title}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <List
+          subheader={<ListSubheader component="div">Writable Ba</ListSubheader>}
+        >
+          {items}
+        </List>
       );
     }
   }
@@ -77,4 +90,15 @@ export const UserDialog = () => {
       </DialogActions>
     </Dialog>
   );
+};
+
+export const date_to_str = (date: number) => {
+  const d = new Date(date);
+  const Y = d.getFullYear();
+  const M = (d.getMonth() + 1).toString().padStart(2, "0");
+  const D = d.getDate().toString().padStart(2, "0");
+  const H = d.getHours().toString().padStart(2, "0");
+  const m = d.getMinutes().toString().padStart(2, "0");
+  const s = `${Y}-${M}-${D} ${H}:${m}`;
+  return s;
 };
