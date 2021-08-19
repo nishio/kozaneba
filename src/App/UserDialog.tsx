@@ -24,7 +24,6 @@ export const UserDialog = () => {
     set_ba_list(null); // will reload when next open
     setDialog("");
   };
-  console.log(dialog, ba_list);
 
   const display_name = get_display_name();
   useEffect(() => {
