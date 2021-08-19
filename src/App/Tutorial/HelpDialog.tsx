@@ -1,4 +1,3 @@
-import { useGlobal } from "reactn";
 import {
   Button,
   Dialog,
@@ -6,9 +5,9 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
+import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../../AppBar/close_menu";
 import { tutorial_pages } from "./tutorial_pages";
-import { useEffect } from "react";
 
 export const HelpDialog = () => {
   const [dialog] = useGlobal("dialog");
