@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import { MainMenu } from "./MainMenu";
+import { MainMenu } from "./MainMenu/MainMenu";
 import { DevMenu } from "./DevMenu";
 
 export const MyAppBar = () => {

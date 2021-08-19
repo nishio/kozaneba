@@ -2,12 +2,12 @@ import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { setGlobal, useGlobal } from "reactn";
 import MenuIcon from "@material-ui/icons/Menu";
-import { show_menu } from "../Menu/show_menu";
-import { updateGlobal } from "../Global/updateGlobal";
-import { initial_save } from "../Cloud/initial_save";
-import { close_menu_and_dialog } from "./close_menu";
-import { Sentry } from "../initSentry";
-import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { show_menu } from "../../Menu/show_menu";
+import { updateGlobal } from "../../Global/updateGlobal";
+import { initial_save } from "../../Cloud/initial_save";
+import { close_menu_and_dialog } from "../close_menu";
+import { Sentry } from "../../initSentry";
+import { mark_local_changed } from "../../Cloud/mark_local_changed";
 
 export const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");

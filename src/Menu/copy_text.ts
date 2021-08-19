@@ -1,5 +1,5 @@
 import { getGlobal } from "reactn";
-import { L1norm, L2norm, sub_v2, V2 } from "../dimension/V2";
+import { L1norm, L2norm, V2 } from "../dimension/V2";
 import { get_item } from "../Event/get_item";
 import { ItemId, TItem } from "../Global/initializeGlobalState";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
@@ -27,19 +27,19 @@ const get_left_top = (items: ItemId[]): ItemId => {
   return result;
 };
 
-const get_top = (items: ItemId[]): ItemId => {
-  let [result, cdr] = split_head(items);
-  const g = getGlobal();
-  const score = (id: ItemId) => {
-    return -get_item(g, id).position[1];
-  };
-  cdr.forEach((x) => {
-    if (score(x) > score(result)) {
-      result = x;
-    }
-  });
-  return result;
-};
+// const get_top = (items: ItemId[]): ItemId => {
+//   let [result, cdr] = split_head(items);
+//   const g = getGlobal();
+//   const score = (id: ItemId) => {
+//     return -get_item(g, id).position[1];
+//   };
+//   cdr.forEach((x) => {
+//     if (score(x) > score(result)) {
+//       result = x;
+//     }
+//   });
+//   return result;
+// };
 
 const bound = 1.5; // slightly larger than sqrt(2)
 const get_neighbors = ([px, py]: V2, items: ItemId[]): ItemId[] => {
