@@ -5,7 +5,7 @@ import App from "./App/App";
 import reportWebVitals from "./reportWebVitals";
 import { INITIAL_GLOBAL_STATE } from "./Global/initializeGlobalState";
 import { setGlobal } from "reactn";
-import { exposeGlobal } from "./Global/exposeGlobal";
+import { exposeGlobalForTest } from "./Global/exposeGlobal";
 
 import { initSentry } from "./initSentry";
 import { initGoogleAnalytics } from "./initGoogleAnalytics";
@@ -18,7 +18,7 @@ const initProduction = () => {
 };
 
 const initDevelopment = () => {
-  exposeGlobal();
+  exposeGlobalForTest();
   addReactNDevTools({ trace: true, traceLimit: 25 });
   window.gtag = () => {};
 };

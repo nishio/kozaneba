@@ -1,6 +1,7 @@
 import { add_v2, mul_v2, sub_v2, V2 } from "../dimension/V2";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
+import { constants } from "../UserCustomize/UserCustomize";
 import { get_last_mouse_position } from "./onCanvasMouseMove";
 
 function zoomAroundMousePointer(
@@ -30,22 +31,24 @@ export const zoom_around_pointer = (delta_scale: number) => {
 };
 
 const deltaY_to_scale = (v: number) => {
-  return Math.exp(-v / 100);
+  const speed = constants.wheel_scale_speed;
+  return Math.exp((-v * speed) / 10000);
 };
 
 export const onWheel = (e: WheelEvent) => {
   e.preventDefault();
+  const speed = constants.wheel_move_speed;
   if (e.ctrlKey) {
     zoom_around_pointer(deltaY_to_scale(e.deltaY));
   } else if (e.shiftKey) {
     updateGlobal((g) => {
-      g.trans_x -= e.deltaY / g.scale;
-      g.trans_y -= e.deltaX / g.scale;
+      g.trans_x -= (e.deltaY / g.scale) * speed;
+      g.trans_y -= (e.deltaX / g.scale) * speed;
     });
   } else {
     updateGlobal((g) => {
-      g.trans_x -= e.deltaX / g.scale;
-      g.trans_y -= e.deltaY / g.scale;
+      g.trans_x -= (e.deltaX / g.scale) * speed;
+      g.trans_y -= (e.deltaY / g.scale) * speed;
     });
   }
 };
