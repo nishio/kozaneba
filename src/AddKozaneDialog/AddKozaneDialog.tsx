@@ -16,7 +16,8 @@ export const AddKozaneDialog = () => {
   const [text, setText] = useGlobal("add_kozane_text");
   const textarea = createRef<HTMLTextAreaElement>();
   const open = dialog === "AddKozane";
-  const onClose = () => {
+  const onClose = (e: unknown, reason?: string) => {
+    if (reason === "backdropClick") return;
     setDialog("");
     setText("");
   };
@@ -41,6 +42,7 @@ export const AddKozaneDialog = () => {
       fullWidth={true}
       fullScreen={fullScreen}
       onClose={onClose}
+      disableEscapeKeyDown={true}
       data-testid="add-kozane-dialog"
     >
       <DialogTitle id="form-dialog-title">Add Kozane</DialogTitle>
