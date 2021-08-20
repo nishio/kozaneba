@@ -80,6 +80,20 @@ export const GroupMenu = () => {
       big
     </MenuItem>
   );
+
+  const onSmall = () => {
+    updateGlobal((g) => {
+      const item = get_item(g, gid);
+      item.scale--;
+    });
+  };
+  const Small =
+    isOpenGroup && group.scale > 1 ? (
+      <MenuItem onClick={onSmall} data-testid="group-small">
+        small
+      </MenuItem>
+    ) : null;
+
   return (
     <Menu
       anchorEl={anchor}
@@ -91,14 +105,12 @@ export const GroupMenu = () => {
       <MenuItem onClick={onOpenClose} data-testid="group-open-close">
         {labelOpenClose}
       </MenuItem>
-
       {Big}
-
+      {Small}
       <MenuItem onClick={onUngroup} data-testid="group-ungroup">
         ungroup
       </MenuItem>
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
-
       <MenuItem onClick={onDelete} data-testid="group-delete">
         delete
       </MenuItem>
