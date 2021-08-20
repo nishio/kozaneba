@@ -144,6 +144,11 @@ export const tutorial_pages: HelpPage[] = [
           If you don't have a touchpad, you can use a wheel to move vertically,
           shift+wheel to horizontal, and ctrl+wheel to zoom.
         </p>
+        <p>
+          If you don't have a wheel, you can use Arrow keys or the WASD keys to
+          move. You can also use the Space key to view the entire content and
+          the B key to zoom in.
+        </p>
       </div>
     ),
   },
@@ -151,9 +156,12 @@ export const tutorial_pages: HelpPage[] = [
     title: "Let's click to show context menu",
     body: (
       <div>
-        <p>By clicking an object, the menu to handle the object appears.</p>
+        <p>
+          By clicking an object, the menu to handle the object appears.You can
+          delete the clicked object and make the important object bigger.
+        </p>
         <Gyazo
-          url="https://gyazo.com/7988397249341e8a42570e47a2f22b6b"
+          url="https://gyazo.com/ded56b27aab3057542d576d46239b559"
           key="object menu"
         />
       </div>
@@ -186,7 +194,7 @@ export const tutorial_pages: HelpPage[] = [
     ),
   },
   {
-    title: "You can ungroup a group",
+    title: "Let's ungroup the group!",
     body: (
       <div>
         <p>You can convert a group into individual kozane.</p>
@@ -198,7 +206,7 @@ export const tutorial_pages: HelpPage[] = [
     ),
   },
   {
-    title: "Let's select objects!",
+    title: "Let's select objects and make them into a group!",
     body: (
       <div>
         <p>You can select multiple objects and make them into a new group.</p>
@@ -206,6 +214,37 @@ export const tutorial_pages: HelpPage[] = [
           url="https://gyazo.com/43fe6d98037a2d91a94618ca3a736978"
           key="select objects"
         />
+      </div>
+    ),
+  },
+  {
+    title: "Let's close and open a group!",
+    body: (
+      <div>
+        <p>You can close the group.</p>
+        <p>
+          In the process of organizing your thoughts, you will often find some
+          kozane that are not so important. They don't need to be on the screen
+          now, but you don't want to delete them because you might use them
+          later. In such a case, you can make such kozane temporarily invisible
+          by closing the group.
+        </p>
+        <Gyazo url="https://gyazo.com/e7bd72693b5259a03de28de403eb992d" />
+      </div>
+    ),
+  },
+
+  {
+    title: "Let's edit group title!",
+    body: (
+      <div>
+        <p>You can put a nameplate on a closed group.</p>
+        <p>
+          If there is no nameplate, the closed group uses all its contents as a
+          nameplate. The nameplate appears as the group title when the group is
+          open. It becomes a new Kozane when the group is ungrouped.
+        </p>
+        <Gyazo url="https://gyazo.com/aba547cf9ebab645e0cda2eed939fb89" />
       </div>
     ),
   },
@@ -249,10 +288,25 @@ export const tutorial_pages: HelpPage[] = [
           user status icon on the status bar changed. The `check mark` on the
           status bar indicates that saved all local changes.
         </p>
-        <Gyazo
-          url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584"
-          key="saved"
-        />
+        <p></p>
+        <Gyazo url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584" />
+      </div>
+    ),
+  },
+  {
+    title: "Let's open the saved Ba",
+    body: (
+      <div>
+        <p>
+          You may find the URL changed like "/#edit=XXX". You can open the saved
+          Ba by the URL. The URL grants write-permission. Currently, there is no
+          way to share read-only, coming soon.
+        </p>
+        <p>
+          In the User dialog, you can see all Ba which you have
+          write-permission.
+        </p>
+        <Gyazo url="https://gyazo.com/d05e3effdf4935a29d5107386b3758ff" />
       </div>
     ),
   },
@@ -261,6 +315,15 @@ export const tutorial_pages: HelpPage[] = [
     body: (
       <div>
         <p>Now you learned how to use Kozaneba! Congratulation!!</p>
+        <p>
+          You can send any questions and comments from the "Send Feedback" menu.
+          It automatically attaches the Ba data. You can also join and talk in
+          the{" "}
+          <a href="https://scrapbox.io/kozaneba-forum/" target="blank">
+            forum
+          </a>
+          .
+        </p>
         <p>
           Next, on the last page of the tutorial, I recommend some practices.
         </p>
