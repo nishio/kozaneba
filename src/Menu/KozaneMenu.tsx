@@ -12,21 +12,39 @@ export const KozaneMenu = () => {
   const onClose = () => {
     setMenu("");
   };
+  const g = getGlobal();
+  const id = g.clicked_kozane;
+  if (id === "") return null;
+  const kozane = get_item(g, id);
+
   const onDelete = () => {
-    const id = getGlobal().clicked_kozane;
-    if (id === "") return;
     delete_item_from_world(id);
+    updateGlobal((g) => {
+      g.clicked_kozane = "";
+    });
     setMenu("");
   };
   const onBig = () => {
-    const id = getGlobal().clicked_kozane;
-    if (id === "") return;
     updateGlobal((g) => {
       const item = get_item(g, id);
       item.scale++;
     });
     setMenu("");
   };
+  const onSmall = () => {
+    updateGlobal((g) => {
+      const item = get_item(g, id);
+      item.scale--;
+    });
+    setMenu("");
+  };
+  const Small =
+    kozane.scale > 1 ? (
+      <MenuItem onClick={onSmall} data-testid="group-small">
+        small
+      </MenuItem>
+    ) : null;
+
   const onSplit = () => {
     updateGlobal((g) => {
       g.dialog = "SplitKozane";
@@ -36,13 +54,14 @@ export const KozaneMenu = () => {
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onBig} data-testid="kozane-big">
-        Big
+        big
       </MenuItem>
+      {Small}
       <MenuItem onClick={onSplit} data-testid="kozane-split">
-        Split
+        split
       </MenuItem>
       <MenuItem onClick={onDelete} data-testid="kozane-delete">
-        Delete
+        delete
       </MenuItem>
     </Menu>
   );
