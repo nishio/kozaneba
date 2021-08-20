@@ -96,7 +96,7 @@ export const tutorial_pages: HelpPage[] = [
     body: (
       <div>
         <p>
-          The three line button on the top left corner is for main manu. Let's
+          The three line button on the top left corner is for main menu. Let's
           show `Add Kozane` dialog.
         </p>
         <p>
@@ -184,7 +184,7 @@ export const tutorial_pages: HelpPage[] = [
             Click me
           </button>{" "}
           to open the pre-filled `Add Kozane` dialog. It makes a lot of kozane
-          to further explanation.
+          for further explanation.
         </p>
         <Gyazo
           url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"

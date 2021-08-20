@@ -45,6 +45,7 @@ export const TutorialDialog = () => {
         color="primary"
         onClick={() => {
           setPage(p + 1);
+          window.gtag("event", `tutorial_next_${p}`);
         }}
         data-testid="tutorial-next"
       >
