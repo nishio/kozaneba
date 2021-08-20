@@ -59,7 +59,7 @@ export const TutorialDialog = () => {
       scroll="body"
       data-testid="tutorial-dialog"
     >
-      <DialogTitle id="form-dialog-title">
+      <DialogTitle id="form-dialog-title" data-testid="tutorial-title">
         {/* Tutorial ({p + 1} / {tutorial_pages.length}) */}
         {page?.title}
       </DialogTitle>

@@ -3,7 +3,7 @@ service cloud.firestore {
     match /{document=**} {
       allow write: if true;
       allow get: if true;
-//      allow list: if false;
+      allow list: if request.auth.uid in resource.data.writers;
     }
   }
 }

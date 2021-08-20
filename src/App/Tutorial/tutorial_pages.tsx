@@ -55,7 +55,7 @@ export const tutorial_pages: HelpPage[] = [
     ),
   },
   {
-    title: "digital stationery to organize your thought",
+    title: "Kozaneba is digital stationery to organize your thought",
     body: (
       <div>
         <p>

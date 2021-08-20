@@ -59,6 +59,8 @@ export const UserDialog = () => {
             window.open("/#edit=" + x.id, "_blank");
           }}
           style={{}}
+          data-testid={`edit-link-${x.id}`}
+          key={x.id}
         >
           <ListItemText
             primary={date_to_str(x.last_updated) + ": " + x.title}
