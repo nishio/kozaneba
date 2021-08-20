@@ -5,6 +5,7 @@ import { toggle_fit_to_contents } from "./toggle_fit_to_contents";
 
 export const hotKey = (e: KeyboardEvent) => {
   const g = getGlobal();
+  if (g.disableHotKey) return;
 
   if (e.metaKey && e.key === "Enter") {
     finishDialog();

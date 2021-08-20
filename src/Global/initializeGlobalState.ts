@@ -45,6 +45,8 @@ export const INITIAL_GLOBAL_STATE = {
   title: "",
   writers: [] as string[],
   anyone_writable: true,
+
+  disableHotKey: false,
 };
 
 type TDragTarget = "" | "selection" | ItemId;

@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal, setGlobal } from "reactn";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 
@@ -11,6 +11,9 @@ const CONFIG = {
   onLoad: () => {
     const t = document.getElementById("id_comments") as HTMLTextAreaElement;
     t.placeholder = "";
+  },
+  onclose: () => {
+    setGlobal({ disableHotKey: false });
   },
 };
 const CONFIG_FOR_FEEDBACK = {
@@ -31,8 +34,8 @@ export const initSentry = () => {
     tracesSampleRate: 1.0,
 
     beforeSend(event, hint) {
+      setGlobal({ disableHotKey: true });
       // Check if it is an exception, and if so, show the report dialog
-      console.log(event);
       if (event.exception) {
         Sentry.showReportDialog({
           eventId: event.event_id,

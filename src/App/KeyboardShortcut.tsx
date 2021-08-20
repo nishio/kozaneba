@@ -3,7 +3,7 @@ import { hotKey } from "./hotKey";
 
 export const KeyboardShortcut = () => {
   useEffect(() => {
-    document.getElementById("root")!.addEventListener("keydown", hotKey);
+    document.addEventListener("keydown", hotKey);
   });
   return null;
 };
