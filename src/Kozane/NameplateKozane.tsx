@@ -21,17 +21,12 @@ export const NameplateKozane: React.FC<Props> = ({
     backgroundColor: "rgba(0, 0, 0, 0)",
   };
 
-  // const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) =>
-  //   onKozaneMouseDown(e, value);
-
   return (
     <KozaneDiv
       className="kozane"
       data-testid={value.id}
       key={value.id}
       style={style}
-      // onMouseDown={onMouseDown}
-      // draggable={true}
     >
       <KozaneDiv2>{value.text}</KozaneDiv2>
     </KozaneDiv>
