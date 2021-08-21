@@ -31,6 +31,12 @@ if (process.env.NODE_ENV !== "production") {
   initProduction();
 }
 
+const user_script = localStorage.getItem("onLoad");
+if (user_script !== null) {
+  // eslint-disable-next-line no-eval
+  eval(user_script);
+}
+
 ReactDOM.render(
   //  <React.StrictMode>  // Material-UI is not support it
   <App />,
