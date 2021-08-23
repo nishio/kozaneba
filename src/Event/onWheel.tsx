@@ -1,7 +1,7 @@
 import { add_v2, mul_v2, sub_v2, V2 } from "../dimension/V2";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
-import { constants } from "../UserCustomize/UserCustomize";
+import { constants } from "../API/constants";
 import { get_last_mouse_position } from "./onCanvasMouseMove";
 
 function zoomAroundMousePointer(

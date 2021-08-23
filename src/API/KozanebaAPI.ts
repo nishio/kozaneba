@@ -1,11 +1,13 @@
-import { constants } from "../UserCustomize/UserCustomize";
+import { constants } from "./constants";
 import { show_dialog } from "./show_dialog";
 import { start_tutorial } from "./start_tutorial";
 
 export const kozaneba = {
   constants,
-  after_render_toppage: start_tutorial,
   show_dialog,
+  start_tutorial,
+
+  after_render_toppage: start_tutorial,
 };
 
 export type TKozaneba = typeof kozaneba;

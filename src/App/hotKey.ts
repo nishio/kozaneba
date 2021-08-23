@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { zoom_around_pointer } from "../Event/onWheel";
 import { updateGlobal } from "../Global/updateGlobal";
-import { constants } from "../UserCustomize/UserCustomize";
+import { constants } from "../API/constants";
 import { toggle_fit_to_contents } from "./toggle_fit_to_contents";
 
 export const hotKey = (e: KeyboardEvent) => {
