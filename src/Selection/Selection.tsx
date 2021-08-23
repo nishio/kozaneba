@@ -17,7 +17,7 @@ export const SelectionView: React.FC<{}> = ({ children }) => {
 
   return (
     <SelectionDiv
-      style={rect}
+      rect={rect}
       onMouseDown={onSelectionMouseDown}
       id="selection-view"
       data-testid="selection-view"
