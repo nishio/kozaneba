@@ -96,7 +96,9 @@ chai.use((_chai, utils) => {
   function hasPosition(options) {
     const [x, y] = options;
     const cr = this._obj[0].getBoundingClientRect();
-
+    if (cr.x !== x || cr.y !== y) {
+      console.log("hasPosition failed", cr);
+    }
     this.assert(
       cr.x === x,
       `expected x:${cr.x} is ${x}`,
@@ -117,7 +119,7 @@ chai.use((_chai, utils) => {
 export const ready_one_group = () => {
   cy.movidea((m) => {
     m.make_one_kozane({ id: "1" as ItemId, text: "1" });
-    m.make_items_into_new_group(["1"]);
+    m.make_items_into_new_group(["1"], { id: "G1", text: "G1" });
   });
 };
 
