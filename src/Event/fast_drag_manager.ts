@@ -17,9 +17,10 @@ let _is_dragging = false;
 export const set_target = (event: React.MouseEvent<HTMLDivElement>) => {
   _target = event.currentTarget;
   _mouse_down_point = get_client_pos(event);
+  const style = window.getComputedStyle(_target);
   _first_element_position = [
-    Number.parseFloat(_target.style.left),
-    Number.parseFloat(_target.style.top),
+    Number.parseFloat(style.left),
+    Number.parseFloat(style.top),
   ] as TScreenCoord;
 
   _target.style.pointerEvents = "none";
@@ -36,6 +37,8 @@ export const reset_target = () => {
 
   _target.style.pointerEvents = "auto";
   _target.style.zIndex = "0";
+  _target.style.top = "";
+  _target.style.left = "";
 
   _target = null;
   _is_dragging = false;
