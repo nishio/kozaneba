@@ -61,7 +61,7 @@ enum NameplateIdBrand {
 export type NameplateId = NameplateIdBrand & string;
 export type KozaneViewId = ItemId | NameplateId;
 
-type TDialog =
+export type TDialog =
   | ""
   | "AddKozane"
   | "Tutorial"

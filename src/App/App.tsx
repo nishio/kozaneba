@@ -1,12 +1,12 @@
 import "./App.css";
 import { TinySample } from "./TinySample";
-import { StartTutorial } from "./StartTutorial";
+import { TopPage } from "./StartTutorial";
 import { Blank } from "./Blank";
 import { Edit } from "./Edit";
 
 function App() {
   if (document.location.hash === "") {
-    return <StartTutorial />; // tutorial for first visiter
+    return <TopPage />; // tutorial for first visiter
   }
 
   const hash = new URLSearchParams(window.location.hash.substring(1));

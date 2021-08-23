@@ -1,14 +1,10 @@
 import { useEffect } from "react";
-import { updateGlobal } from "../Global/updateGlobal";
 import { Blank } from "./Blank";
+import { kozaneba } from "../API/KozanebaAPI";
 
-export const StartTutorial = () => {
+export const TopPage = () => {
   useEffect(() => {
-    updateGlobal((g) => {
-      g.dialog = "Tutorial";
-      g.in_tutorial = true;
-      g.tutorial_page = 0;
-    });
+    kozaneba.after_render_toppage();
   });
   return <Blank />;
 };

@@ -7,7 +7,7 @@ import { reset_selection } from "../Selection/reset_selection";
 import { db, auth } from "../Cloud/FirestoreIO";
 import { make_items_into_new_group } from "../Menu/make_items_into_new_group";
 import { KozaneItem, TKozaneItem } from "../Kozane/KozaneItem";
-import { constants } from "../UserCustomize/UserCustomize";
+import { TKozaneba } from "../API/KozanebaAPI";
 
 const tmpfunc = () => {
   console.log("write");
@@ -56,12 +56,6 @@ const movidea = {
 
 export type TMovidea = typeof movidea;
 
-const kozaneba = {
-  constants,
-};
-
-export type TKozaneba = typeof kozaneba;
-
 const debug = {};
 
 declare global {
@@ -76,4 +70,3 @@ export const exposeGlobalForTest = () => {
   window.movidea = movidea;
   window.debug = debug;
 };
-window.kozaneba = kozaneba;

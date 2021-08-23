@@ -10,6 +10,8 @@ import { exposeGlobalForTest } from "./Global/exposeGlobal";
 import { initSentry } from "./initSentry";
 import { initGoogleAnalytics } from "./initGoogleAnalytics";
 import addReactNDevTools from "reactn-devtools";
+import { run_user_script } from "./API/run_user_script";
+import { expose_kozaneba_api } from "./API/KozanebaAPI";
 
 const initProduction = () => {
   initSentry();
@@ -31,11 +33,8 @@ if (process.env.NODE_ENV !== "production") {
   initProduction();
 }
 
-const user_script = localStorage.getItem("onLoad");
-if (user_script !== null) {
-  // eslint-disable-next-line no-eval
-  eval(user_script);
-}
+expose_kozaneba_api();
+run_user_script();
 
 ReactDOM.render(
   //  <React.StrictMode>  // Material-UI is not support it
