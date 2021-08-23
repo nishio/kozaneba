@@ -1,6 +1,6 @@
 import "./App.css";
 import { TinySample } from "./TinySample";
-import { TopPage } from "./StartTutorial";
+import { TopPage } from "./TopPage";
 import { Blank } from "./Blank";
 import { Edit } from "./Edit";
 
