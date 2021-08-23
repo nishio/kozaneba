@@ -10,6 +10,8 @@ export const GroupDiv = styled.div`
   border: ${BORDER}px solid ${GROUP_BORDER_COLOR};
   position: absolute;
   border-radius: 5px;
+  top: ${(props) => props.style?.top ?? "0px"};
+  left: ${(props) => props.style?.left ?? "0px"};
 `;
 
 export const GroupBack = styled.div`
