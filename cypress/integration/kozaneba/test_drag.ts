@@ -1,7 +1,10 @@
 /// <reference types="cypress" />
 
+import { TGroupItem } from "../../../src/Group/GroupItem";
 import {
+  do_drag,
   ready_nested_group,
+  ready_one_group,
   ready_one_kozane,
   ready_two_groups,
 } from "../../support";
@@ -81,14 +84,25 @@ describe("drag", () => {
   });
   it("nested group", () => {
     ready_nested_group();
-    cy.testid("1").trigger("mousedown", "center");
-    cy.testid("ba").trigger("mousemove", 400, 400);
-    cy.testid("G2").trigger("mouseup", 0, 0);
+    do_drag("1", "G2", 0, 0);
     cy.getGroup("G2", (g) => g.items).should("eql", ["G1", "1"]);
 
-    cy.testid("1").trigger("mousedown", "center");
-    cy.testid("ba").trigger("mousemove", 400, 400);
-    cy.testid("G1").trigger("mouseup", 0, 0);
+    do_drag("1", "G1", 0, 0);
     cy.getGroup("G2", (g) => g.items).should("eql", ["G1"]);
+  });
+  it("closed group in another group", () => {
+    ready_nested_group();
+    cy.updateGlobal((g) => {
+      (g.itemStore["G1"] as TGroupItem).isOpen = false;
+    });
+    cy.testid("G1").should("hasPosition", [155, 170]);
+    cy.testid("G2").should("hasPosition", [130, 120]);
+  });
+  it("drag inside", () => {
+    ready_one_group();
+    cy.testid("1").trigger("mousedown", 0, 0, { force: true });
+    cy.testid("G1").trigger("mousemove", 0, 0, { force: true });
+    cy.testid("G1").trigger("mouseup", 0, 0, { force: true });
+    cy.testid("1").should("hasPosition", [154, 144]);
   });
 });
