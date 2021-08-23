@@ -8,6 +8,7 @@ import { initial_save } from "../../Cloud/initial_save";
 import { close_menu_and_dialog } from "../close_menu";
 import { Sentry } from "../../initSentry";
 import { mark_local_changed } from "../../Cloud/mark_local_changed";
+// import { StartTutorial } from "./StartTutorial";
 
 export const MainMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -43,10 +44,10 @@ export const MainMenu = () => {
       <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
         <MenuItem onClick={onAddKozane}>Add Kozane</MenuItem>
         <EnableCloudAutoSave />
+        <User />
 
         <Title />
-        <Tutorial />
-        <User />
+        {/* <StartTutorial /> */}
         <SendFeedback />
       </Menu>
     </>
@@ -80,17 +81,6 @@ const User = () => {
       setGlobal({ dialog: "User" });
     };
     return <MenuItem onClick={onUser}>User</MenuItem>;
-  }
-  return null;
-};
-
-const Tutorial = () => {
-  const [in_tutorial] = useGlobal("in_tutorial");
-  if (!in_tutorial) {
-    const onTutorial = () => {
-      setGlobal({ in_tutorial: true });
-    };
-    return <MenuItem onClick={onTutorial}>Tutorial</MenuItem>;
   }
   return null;
 };
