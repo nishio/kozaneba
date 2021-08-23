@@ -3,6 +3,7 @@ import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
 import { constants } from "../API/constants";
 import { get_last_mouse_position } from "./onCanvasMouseMove";
+import { kozaneba } from "../API/KozanebaAPI";
 
 function zoomAroundMousePointer(
   initZoom: number,
@@ -30,26 +31,12 @@ export const zoom_around_pointer = (delta_scale: number) => {
   });
 };
 
-const is_touchpad = (event: WheelEvent): boolean => {
-  // distinguish touchpad and mouse-wheel
-  // ref. https://stackoverflow.com/a/62415754/3651086
-  var isTrackpad = false;
-  const e = event as any;
-  if (e.wheelDeltaY) {
-    if (e.wheelDeltaY === e.deltaY * -3) {
-      isTrackpad = true;
-    }
-  } else if (e.deltaMode === 0) {
-    isTrackpad = true;
-  }
-  return isTrackpad;
-};
-
 const zoom = (e: WheelEvent) => {
   let speed = constants.wheel_scale_speed;
-  if (is_touchpad(e)) {
+  if (kozaneba.is_touchpad(e)) {
     speed = constants.touchpad_scale_speed;
   }
+
   let v = e.deltaY;
   const scale = Math.exp((-v * speed) / 10000);
   zoom_around_pointer(scale);
