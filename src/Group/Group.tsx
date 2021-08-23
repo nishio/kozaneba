@@ -48,7 +48,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
   };
 
   if (value.isOpen === false) {
-    const { style, new_offset, text } = calc_closed_style(value);
+    const { style, new_offset, text } = calc_closed_style(value, offset);
     return (
       <GroupDiv
         style={style}
@@ -73,7 +73,6 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     );
   }
   const { style, title_height, title, new_offset } = calc_style(value, offset);
-
   return (
     <GroupDiv
       ref={self}
@@ -126,13 +125,16 @@ function calc_style(value: TGroupItem, offset: { x: number; y: number }) {
 const get_nameplate_id = (kozaneId: ItemId): NameplateId => {
   return ("nameplate-" + kozaneId) as NameplateId;
 };
-function calc_closed_style(value: TGroupItem) {
+function calc_closed_style(
+  value: TGroupItem,
+  offset: { x: number; y: number }
+) {
   const [x, y] = value.position;
   const scale = value.scale;
   const width = KOZANE_WIDTH * scale + PADDING * 2;
   const height = KOZANE_HEIGHT * scale + PADDING * 2;
-  const top = y - height / 2 - BORDER;
-  const left = x - width / 2 - BORDER;
+  const top = offset.y + y - height / 2 - BORDER;
+  const left = offset.x + x - width / 2 - BORDER;
 
   const style = {
     top,
