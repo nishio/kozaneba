@@ -12,13 +12,14 @@ import {
 import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { get_display_name } from "../AppBar/UserInfo";
-import { auth, db } from "../Cloud/FirestoreIO";
+import { db } from "../Cloud/FirestoreIO";
 import { date_to_str } from "../utils/date_to_str";
 
 type Ba = { title: string; id: string; last_updated: number };
 export const UserDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
   const [ba_list, set_ba_list] = useState(null as Ba[] | null);
+  const [user] = useGlobal("user");
   const open = dialog === "User";
   const onClose = () => {
     set_ba_list(null); // will reload when next open
@@ -27,10 +28,10 @@ export const UserDialog = () => {
 
   const display_name = get_display_name();
   useEffect(() => {
-    if (open && auth.currentUser !== null && ba_list === null) {
+    if (open && user !== null && ba_list === null) {
       const ba_list = [] as Ba[];
       db.collection("ba")
-        .where("writers", "array-contains", auth.currentUser.uid)
+        .where("writers", "array-contains", user.uid)
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
