@@ -30,16 +30,36 @@ export const zoom_around_pointer = (delta_scale: number) => {
   });
 };
 
-const deltaY_to_scale = (v: number) => {
-  const speed = constants.wheel_scale_speed;
-  return Math.exp((-v * speed) / 10000);
+const is_touchpad = (event: WheelEvent): boolean => {
+  // distinguish touchpad and mouse-wheel
+  // ref. https://stackoverflow.com/a/62415754/3651086
+  var isTrackpad = false;
+  const e = event as any;
+  if (e.wheelDeltaY) {
+    if (e.wheelDeltaY === e.deltaY * -3) {
+      isTrackpad = true;
+    }
+  } else if (e.deltaMode === 0) {
+    isTrackpad = true;
+  }
+  return isTrackpad;
+};
+
+const zoom = (e: WheelEvent) => {
+  let speed = constants.wheel_scale_speed;
+  if (is_touchpad(e)) {
+    speed = constants.touchpad_scale_speed;
+  }
+  let v = e.deltaY;
+  const scale = Math.exp((-v * speed) / 10000);
+  zoom_around_pointer(scale);
 };
 
 export const onWheel = (e: WheelEvent) => {
   e.preventDefault();
   const speed = constants.wheel_move_speed;
   if (e.ctrlKey) {
-    zoom_around_pointer(deltaY_to_scale(e.deltaY));
+    zoom(e);
   } else if (e.shiftKey) {
     updateGlobal((g) => {
       g.trans_x -= (e.deltaY / g.scale) * speed;
