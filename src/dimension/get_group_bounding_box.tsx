@@ -1,5 +1,6 @@
 import { ItemId } from "../Global/initializeGlobalState";
 import { TGroupItem } from "../Group/GroupItem";
+import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
 import {
   get_item_bounding_box,
   PADDING,
@@ -8,15 +9,26 @@ import {
 import { TBoundingBox } from "./TBoundingBox";
 
 export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
-  const { left, top, right, bottom } = get_items_bounding_box(g.items);
   const [x, y] = g.position;
-  const title_height = g.text.length !== 0 ? TITLE_HEIGHT : 0;
+  if (g.isOpen) {
+    const { left, top, right, bottom } = get_items_bounding_box(g.items);
+    const title_height = g.text.length !== 0 ? TITLE_HEIGHT : 0;
+
+    return {
+      left: x + left - PADDING,
+      top: y + top - PADDING - title_height,
+      right: x + right + PADDING,
+      bottom: y + bottom + PADDING,
+    };
+  }
+  const width = KOZANE_WIDTH * g.scale + PADDING * 2;
+  const height = KOZANE_HEIGHT * g.scale + PADDING * 2;
 
   return {
-    left: x + left - PADDING,
-    top: y + top - PADDING - title_height,
-    right: x + right + PADDING,
-    bottom: y + bottom + PADDING,
+    left: x - width / 2,
+    top: y - height / 2,
+    right: x + width / 2,
+    bottom: y + height / 2,
   };
 };
 
