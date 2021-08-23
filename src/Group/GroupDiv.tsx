@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
 import {
   GROUP_BACKGROUND_COLOR,
@@ -6,12 +6,19 @@ import {
   GROUP_TITLE_COLOR,
 } from "./group_constants";
 
+export const NoSelect = css`
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+`;
+
 export const GroupDiv = styled.div`
   border: ${BORDER}px solid ${GROUP_BORDER_COLOR};
   position: absolute;
   border-radius: 5px;
   top: ${(props) => props.style?.top ?? "0px"};
   left: ${(props) => props.style?.left ?? "0px"};
+  ${NoSelect};
 `;
 
 export const GroupBack = styled.div`

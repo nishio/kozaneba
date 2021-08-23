@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NoSelect } from "../Group/GroupDiv";
 import {
   KOZANE_WIDTH,
   KOZANE_HEIGHT,
@@ -24,7 +25,7 @@ export const KozaneDiv = styled.div`
   border: #aaa ${KOZANE_BORDER}px solid;
   position: absolute;
   line-height: 0.9;
-  user-select: none;
+  ${NoSelect};
 
   // background: linear-gradient(
   //   90deg,
