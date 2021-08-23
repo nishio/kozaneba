@@ -14,7 +14,7 @@ import { toUseEmulator } from "../Global/exposeGlobal";
 import { close_menu_and_dialog } from "./close_menu";
 import { initSentry } from "../initSentry";
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
   root: {
     "& .MuiButton-label": {
       border: "solid",
