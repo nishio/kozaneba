@@ -50,7 +50,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     onMouseUp,
     id: "group-" + value.id,
   };
-  console.log("offset", offset);
+
   if (value.isOpen === false) {
     const { style, new_offset, text } = calc_closed_style(value, offset);
     return (

@@ -27,7 +27,7 @@ export const onGroupMouseUp = (
   // }
   updateGlobal((g) => {
     const group = g.itemStore[group_id] as TGroupItem;
-    console.log(g.drag_target);
+    console.log("drag_target", g.drag_target);
     if (g.drag_target === "selection") {
       const delta = sub_v2w(
         screen_to_world(get_client_pos(event)),

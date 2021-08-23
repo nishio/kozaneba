@@ -14,7 +14,7 @@ export function calc_closed_style(
   const height = KOZANE_HEIGHT * scale + PADDING * 2;
   const top = offset.y + y - height / 2 - BORDER;
   const left = offset.x + x - width / 2 - BORDER;
-  console.log(offset, x, y);
+
   const style = {
     top,
     left,
