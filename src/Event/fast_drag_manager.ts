@@ -37,11 +37,13 @@ export const reset_target = () => {
 
   _target.style.pointerEvents = "auto";
   _target.style.zIndex = "0";
+
   if (_is_mousemoved) {
+    // it is drag, need to reset temporary style
     _target.style.top = "";
     _target.style.left = "";
-  }
-  
+  } // else, it is click
+
   _target = null;
   _is_dragging = false;
 };
