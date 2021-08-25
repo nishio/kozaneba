@@ -37,9 +37,11 @@ export const reset_target = () => {
 
   _target.style.pointerEvents = "auto";
   _target.style.zIndex = "0";
-  _target.style.top = "";
-  _target.style.left = "";
-
+  if (_is_mousemoved) {
+    _target.style.top = "";
+    _target.style.left = "";
+  }
+  
   _target = null;
   _is_dragging = false;
 };

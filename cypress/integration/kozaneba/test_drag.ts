@@ -105,4 +105,15 @@ describe("drag", () => {
     cy.testid("G1").trigger("mouseup", 0, 0, { force: true });
     cy.testid("1").should("hasPosition", [154, 144]);
   });
+  it("should not move when click", () => {
+    cy.testid("G1").then((x: any) => {
+      const {top, left} = x[0].style;
+      cy.testid("G1").trigger("mousedown", 0, 0, { force: true });
+      cy.testid("G1").trigger("mouseup", 0, 0, { force: true }).then((x: any) => {
+        expect(x[0].style.top).eql(top);
+        expect(x[0].style.left).eql(left);
+      });
+    });
+  });
+
 });
