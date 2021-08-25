@@ -1,4 +1,4 @@
-import { setGlobal, useGlobal } from "reactn";
+import { getGlobal, setGlobal, useGlobal } from "reactn";
 import {
   Button,
   Dialog,
@@ -15,6 +15,9 @@ export const TutorialDialog = () => {
   const [p, setPage] = useGlobal("tutorial_page");
   const open = dialog === "Tutorial";
   const onClose = () => {
+    if (getGlobal().in_tutorial === false) {
+      setGlobal({ tutorial_page: 0 }); // GO to TOC
+    }
     close_menu_and_dialog();
   };
   useEffect(() => {

@@ -173,10 +173,12 @@ describe("tutorial", () => {
     cy.testid("tutorial-next").click();
     cy.testid("tutorial-title").contains("Tutorial Finished🎉");
     cy.testid("tutorial-next").click();
-    
 
     cy.testid("tutorial-title").contains(
       "We need the practice to use stationery effectively"
     );
+    cy.testid("tutorial-close").click();
+    cy.testid("tutorial-status").click();
+    cy.contains("TOC").click();
   });
 });
