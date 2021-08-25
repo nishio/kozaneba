@@ -5,7 +5,7 @@ import { is_draggeing } from "../Event/fast_drag_manager";
 import { get_item } from "../Event/get_item";
 import { onGroupMouseUp } from "../Event/mouseEventMamager";
 import { onGroupMouseDown } from "../Event/onGroupMouseDown";
-import { ItemId, NameplateId } from "../Global/initializeGlobalState";
+import { ItemId, NameplateId, TItem } from "../Global/initializeGlobalState";
 import { NameplateKozane } from "../Kozane/NameplateKozane";
 import { calc_closed_style } from "./calc_closed_style";
 import { calc_style } from "./calc_style";
@@ -89,11 +89,18 @@ export type Props = {
 const get_nameplate_id = (kozaneId: ItemId): NameplateId => {
   return ("nameplate-" + kozaneId) as NameplateId;
 };
-export const get_group_title = (group: GroupItem): string => {
-  let text = group.text;
+
+const to_text = (item: TItem): string => {
+  let text = item.text;
   if (text === "") {
-    const g = getGlobal();
-    text = group.items.map((x) => get_item(g, x).text).join("\n");
+    if (item.type === "group") {
+      const g = getGlobal();
+      text = item.items.map((x) => to_text(get_item(g, x))).join("\n");
+    }
   }
   return text;
+};
+
+export const get_group_title = (group: GroupItem): string => {
+  return to_text(group);
 };
