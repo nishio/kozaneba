@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
-import { get_item } from "../Event/get_item";
 
 export const LoadingDialog = () => {
   const [dialog] = useGlobal("dialog");
