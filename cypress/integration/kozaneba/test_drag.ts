@@ -106,6 +106,7 @@ describe("drag", () => {
     cy.testid("1").should("hasPosition", [154, 144]);
   });
   it("should not move when click", () => {
+    ready_nested_group();
     cy.testid("G1").then((x: any) => {
       const { top, left } = x[0].style;
       cy.testid("G1").trigger("mousedown", 0, 0, { force: true });
