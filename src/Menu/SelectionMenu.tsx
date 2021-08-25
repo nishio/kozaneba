@@ -1,6 +1,7 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { reset_selection } from "../Selection/reset_selection";
 import { copy_text } from "./copy_text";
 import { delete_item_from_world } from "./delete_item_from_world";
@@ -18,6 +19,7 @@ export const SelectionMenu = () => {
     make_items_into_new_group(g.selected_items, {});
 
     reset_selection();
+    mark_local_changed();
     setMenu("");
   };
 
@@ -26,6 +28,7 @@ export const SelectionMenu = () => {
       delete_item_from_world(id);
     });
     reset_selection();
+    mark_local_changed();
     setMenu("");
   };
 
