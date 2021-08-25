@@ -3,6 +3,7 @@ import { TKozaneItem } from "../Kozane/KozaneItem";
 import { TGroupItem } from "../Group/GroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
 import { TWorldCoord } from "../dimension/world_to_screen";
+import { TDialog } from "./TDialog";
 
 export const INITIAL_GLOBAL_STATE = {
   kozane: [] as VKozane[], // for small tests
@@ -60,18 +61,6 @@ enum NameplateIdBrand {
 }
 export type NameplateId = NameplateIdBrand & string;
 export type KozaneViewId = ItemId | NameplateId;
-
-export type TDialog =
-  | ""
-  | "AddKozane"
-  | "Tutorial"
-  | "Sign"
-  | "CloudSave"
-  | "EditGroupTitle"
-  | "SplitKozane"
-  | "User"
-  | "Help"
-  | "Loading";
 
 export type TMenu = "" | "Main" | "Dev" | "Kozane" | "Selection" | "Group";
 export type TStatusType =
