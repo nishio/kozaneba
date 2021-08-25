@@ -70,7 +70,9 @@ export type TDialog =
   | "EditGroupTitle"
   | "SplitKozane"
   | "User"
-  | "Help";
+  | "Help"
+  | "Loading";
+
 export type TMenu = "" | "Main" | "Dev" | "Kozane" | "Selection" | "Group";
 export type TStatusType =
   | "text"
