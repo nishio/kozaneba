@@ -82,6 +82,7 @@ describe("drag", () => {
     cy.testid("G2").trigger("mouseup");
     cy.getGroup("G2", (g) => g.items).should("eql", ["1"]);
   });
+
   it("nested group", () => {
     ready_nested_group();
     do_drag("1", "G2", 0, 0);
@@ -90,6 +91,7 @@ describe("drag", () => {
     do_drag("1", "G1", 0, 0);
     cy.getGroup("G2", (g) => g.items).should("eql", ["G1"]);
   });
+
   it("closed group in another group", () => {
     ready_nested_group();
     cy.updateGlobal((g) => {
@@ -98,13 +100,14 @@ describe("drag", () => {
     cy.testid("G1").should("hasPosition", [155, 170]);
     cy.testid("G2").should("hasPosition", [130, 120]);
   });
+
   it("drag inside", () => {
     ready_one_group();
-    cy.testid("1").trigger("mousedown", 0, 0, { force: true });
-    cy.testid("G1").trigger("mousemove", 0, 0, { force: true });
-    cy.testid("G1").trigger("mouseup", 0, 0, { force: true });
+    cy.testid("1").should("hasPosition", [184, 199]);
+    do_drag("1", "G1", 0, 0);
     cy.testid("1").should("hasPosition", [154, 144]);
   });
+
   it("should not move when click", () => {
     ready_nested_group();
     cy.testid("G1").then((x: any) => {

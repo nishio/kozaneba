@@ -162,7 +162,7 @@ export const do_drag = (
   x: number,
   y: number
 ) => {
-  cy.testid(target).trigger("mousedown");
+  cy.testid(target).trigger("mousedown", 0, 0, { force: true });
   cy.testid(destination).trigger("mousemove", { force: true });
   cy.testid(destination).trigger("mouseup", x, y, { force: true });
 };
