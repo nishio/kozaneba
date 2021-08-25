@@ -11,19 +11,20 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
+import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { get_display_name } from "../AppBar/UserInfo";
 import { db } from "../Cloud/FirestoreIO";
 import { date_to_str } from "../utils/date_to_str";
 
 type Ba = { title: string; id: string; last_updated: number };
 export const UserDialog = () => {
-  const [dialog, setDialog] = useGlobal("dialog");
+  const [dialog] = useGlobal("dialog");
   const [ba_list, set_ba_list] = useState(null as Ba[] | null);
   const [user] = useGlobal("user");
   const open = dialog === "User";
   const onClose = () => {
     set_ba_list(null); // will reload when next open
-    setDialog("");
+    close_menu_and_dialog();
   };
 
   const display_name = get_display_name();

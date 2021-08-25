@@ -144,7 +144,7 @@ describe("tutorial", () => {
         )
       );
     });
-    cy.testid("login-status").contains("NISHIO_TEST", { timeout: 10000 });
+    cy.testid("login-status").contains("NISHIO_TEST", { timeout: 20000 });
 
     cy.setGlobal({ fix_ba_for_test: "test" });
     cy.testid("main-menu").click();
@@ -166,13 +166,14 @@ describe("tutorial", () => {
     cy.testid("tutorial-close").click();
     cy.testid("main-menu").click();
     cy.contains("User").click();
-    cy.testid("edit-link-test");
-    cy.get("#root").type("{esc}", { force: true });
+    cy.testid("edit-link-test").should("be.visible");
+    cy.testid("user-dialog").contains("Close").click();
 
     cy.testid("tutorial-status").click();
     cy.testid("tutorial-next").click();
     cy.testid("tutorial-title").contains("Tutorial Finished🎉");
     cy.testid("tutorial-next").click();
+    
 
     cy.testid("tutorial-title").contains(
       "We need the practice to use stationery effectively"
