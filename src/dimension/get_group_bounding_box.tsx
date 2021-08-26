@@ -11,13 +11,24 @@ export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
   if (g.isOpen) {
     const { left, top, right, bottom } = get_items_bounding_box(g.items);
     const title_height = g.text.length !== 0 ? TITLE_HEIGHT : 0;
-
-    return {
+    const bb = {
       left: x + left - PADDING,
       top: y + top - PADDING - title_height,
       right: x + right + PADDING,
       bottom: y + bottom + PADDING,
     };
+
+    const MIN_SIZE = 200;
+    const width = bb.right - bb.left;
+    const w_padding = width < MIN_SIZE ? (MIN_SIZE - width) / 2 : 0;
+    bb.left -= w_padding;
+    bb.right += w_padding;
+    const height = bb.bottom - bb.top;
+    const h_padding = height < MIN_SIZE ? (MIN_SIZE - height) / 2 : 0;
+    bb.top -= h_padding;
+    bb.bottom += h_padding;
+
+    return bb;
   }
   const width = KOZANE_WIDTH * g.scale + PADDING * 2;
   const height = KOZANE_HEIGHT * g.scale + PADDING * 2;
