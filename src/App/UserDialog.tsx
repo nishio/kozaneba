@@ -12,6 +12,27 @@ import { get_display_name } from "../AppBar/UserInfo";
 import { db } from "../Cloud/FirestoreIO";
 import { WritableBaList } from "./WritableBaList";
 
+const get_writable_ba = (uid: string) => {
+  const ba_list = [] as Ba[];
+  return db
+    .collection("ba")
+    .where("writers", "array-contains", uid)
+    .orderBy("last_updated", "desc")
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // ba_list.push(doc.id);
+        ba_list.push({
+          title: doc.data().title,
+          id: doc.id,
+          last_updated: doc.data().last_updated,
+        });
+      });
+      return ba_list;
+    });
+};
+
 export type Ba = { title: string; id: string; last_updated: number };
 export const UserDialog = () => {
   const [dialog] = useGlobal("dialog");
@@ -26,25 +47,10 @@ export const UserDialog = () => {
   const display_name = get_display_name();
   useEffect(() => {
     if (open && user !== null && ba_list === null) {
-      const ba_list = [] as Ba[];
-      db.collection("ba")
-        .where("writers", "array-contains", user.uid)
-        .orderBy("last_updated", "desc")
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            // ba_list.push(doc.id);
-            ba_list.push({
-              title: doc.data().title,
-              id: doc.id,
-              last_updated: doc.data().last_updated,
-            });
-          });
-          set_ba_list(ba_list);
-        });
+      get_writable_ba(user.uid).then(set_ba_list);
     }
-  });
+  }, [open, user, ba_list]);
+
   return (
     <Dialog
       open={open}
