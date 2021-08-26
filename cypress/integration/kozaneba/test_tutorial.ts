@@ -140,7 +140,7 @@ describe("tutorial", () => {
       m.auth.signInWithCredential(
         firebase.auth.GoogleAuthProvider.credential(
           null,
-          '{"sub": "abc123", "email": "foo@example.com", "email_verified": true}'
+          '{"sub": "abc123", "email": "nishio@example.com", "email_verified": true}'
         )
       );
     });
