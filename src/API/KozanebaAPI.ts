@@ -3,13 +3,19 @@ import { constants } from "./constants";
 import { show_dialog } from "./show_dialog";
 import { start_tutorial } from "./start_tutorial";
 import { is_touchpad } from "./is_touchpad";
+import { redraw } from "./redraw";
 
 export const kozaneba = {
+  // simple values to modify
   constants,
+
+  // commands
   show_dialog,
   start_tutorial,
   is_touchpad,
+  redraw,
 
+  // complex values
   after_render_toppage: start_tutorial,
   user_buttons,
 };
