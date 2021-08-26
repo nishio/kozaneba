@@ -1,5 +1,5 @@
 import React from "react";
-import { CSSProperties } from "styled-components";
+import { CSSProperties } from "react";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
@@ -17,7 +17,12 @@ export const Kozane: React.FC<Props> = ({
   offset,
   custom_style = {},
 }) => {
-  const style = { ...useAdjustFontsizeStyle(value, offset), ...custom_style };
+  const custom = value.custom?.style ?? {};
+  const style = {
+    ...useAdjustFontsizeStyle(value, offset),
+    ...custom_style,
+    ...custom,
+  };
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     onKozaneMouseDown(e, value);

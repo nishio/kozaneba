@@ -13,7 +13,7 @@ export const onKozaneMouseDown = (
   event: React.MouseEvent<HTMLDivElement>,
   value: { id: ItemId; position: V2 }
 ) => {
-  console.log("onKozaneMouseDown");
+  console.log(`onKozaneMouseDown id:${value.id}`);
   reset_selection();
   set_target(event);
   updateGlobal((g) => {

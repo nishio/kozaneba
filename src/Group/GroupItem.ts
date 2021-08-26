@@ -1,6 +1,7 @@
 import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TWorldCoord } from "../dimension/world_to_screen";
+import { CSSProperties } from "react";
 
 export type TGroupItem = {
   type: "group";
@@ -10,6 +11,7 @@ export type TGroupItem = {
   id: ItemId;
   scale: number; // scale of Nameplate Kozane
   isOpen: boolean;
+  custom?: { style?: CSSProperties };
 };
 
 export class GroupItem {

@@ -17,12 +17,14 @@ export function calc_closed_style(
   const top = offset.y + y - height / 2 - BORDER;
   const left = offset.x + x - width / 2 - BORDER;
 
+  const custom = value.custom?.style ?? {};
   const style = {
     top,
     left,
     height,
     width,
     borderColor: CLOSED_GROUP_BORDER_COLOR,
+    ...custom,
   };
   const new_offset = {
     x: width / 2,

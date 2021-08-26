@@ -12,7 +12,7 @@ export const onGroupMouseDown = (
   event: React.MouseEvent<HTMLDivElement>,
   value: { id: ItemId; position: V2 }
 ) => {
-  console.log("onGroupMouseDown");
+  console.log(`onGroupMouseDown id:${value.id}`);
   reset_selection();
   set_target(event);
   updateGlobal((g) => {

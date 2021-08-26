@@ -18,7 +18,9 @@ export function calc_style(
   const relative_y = value.position[1];
   const top = offset.y + b.top - BORDER;
   const left = offset.x + b.left - BORDER;
-  const style = { top, left, height, width };
+
+  const custom = value.custom?.style ?? {};
+  const style = { top, left, height, width, ...custom };
   const new_offset = {
     x: width / 2 - center_shift_x / 2 + relative_x,
     y: height / 2 - center_shift_y / 2 + relative_y,
