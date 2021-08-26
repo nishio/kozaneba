@@ -1,15 +1,13 @@
+import { constants } from "../API/constants";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TGroupItem } from "../Group/GroupItem";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
-import {
-  get_item_bounding_box,
-  PADDING,
-  TITLE_HEIGHT,
-} from "./get_bounding_box";
+import { get_item_bounding_box, TITLE_HEIGHT } from "./get_bounding_box";
 import { TBoundingBox } from "./TBoundingBox";
 
 export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
   const [x, y] = g.position;
+  const PADDING = constants.group_padding;
   if (g.isOpen) {
     const { left, top, right, bottom } = get_items_bounding_box(g.items);
     const title_height = g.text.length !== 0 ? TITLE_HEIGHT : 0;

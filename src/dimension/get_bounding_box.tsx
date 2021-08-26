@@ -4,7 +4,6 @@ import { get_group_bounding_box } from "./get_group_bounding_box";
 import { ItemId } from "../Global/initializeGlobalState";
 import { get_item } from "../Event/get_item";
 
-export const PADDING = 25;
 export const BORDER = 5;
 export const TITLE_HEIGHT = 25;
 
