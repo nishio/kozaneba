@@ -14,9 +14,11 @@ export const set_up_read_subscription = (ba: string) => {
         throw new TypeError("doc.data() is undefined");
       }
 
+      console.log("new data from server");
       const server = docdate_to_state(data);
       const local_latest = getGlobal().last_updated;
       if (data.last_updated > local_latest) {
+        console.log("update local with data from server", server);
         setGlobal(server);
         setGlobal(fit_to_contents());
       } else if (data.last_updated < local_latest) {
