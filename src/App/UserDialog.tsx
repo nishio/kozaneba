@@ -1,24 +1,18 @@
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  List,
-  ListItem,
-  ListItemText,
-  ListSubheader,
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { get_display_name } from "../AppBar/UserInfo";
 import { db } from "../Cloud/FirestoreIO";
-import { date_to_str } from "../utils/date_to_str";
+import { WritableBaList } from "./WritableBaList";
 
-type Ba = { title: string; id: string; last_updated: number };
+export type Ba = { title: string; id: string; last_updated: number };
 export const UserDialog = () => {
   const [dialog] = useGlobal("dialog");
   const [ba_list, set_ba_list] = useState(null as Ba[] | null);
@@ -69,42 +63,4 @@ export const UserDialog = () => {
       </DialogActions>
     </Dialog>
   );
-};
-
-const WritableBaList = (ba_list: Ba[] | null) => {
-  let BaList = (
-    <span>
-      Loading...
-      <FontAwesomeIcon icon={faSpinner} spin={true} />
-    </span>
-  );
-  if (ba_list !== null) {
-    if (ba_list.length === 0) {
-      BaList = <span>Not saved yet</span>;
-    } else {
-      const items = ba_list.map((x) => (
-        <ListItem
-          button
-          onClick={() => {
-            window.open("/#edit=" + x.id, "_blank");
-          }}
-          style={{}}
-          data-testid={`edit-link-${x.id}`}
-          key={x.id}
-        >
-          <ListItemText
-            primary={date_to_str(x.last_updated) + ": " + x.title}
-          />
-        </ListItem>
-      ));
-      BaList = (
-        <List
-          subheader={<ListSubheader component="div">Writable Ba</ListSubheader>}
-        >
-          {items}
-        </List>
-      );
-    }
-  }
-  return BaList;
 };
