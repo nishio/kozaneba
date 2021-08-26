@@ -1,9 +1,24 @@
+rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow write: if true;
+    match /ba/{document=*} {
+      function is_writer() {
+        return request.auth.uid in resource.data.writers;
+      }
+      allow create: if true;
+      allow update, delete: if resource.data.anyone_writable || is_writer();
       allow get: if true;
-      allow list: if request.auth.uid in resource.data.writers;
+      allow list: if is_writer();
+    }
+  }
+
+  // rules for other prototype
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow write: if database != "ba";
+      allow get: if database != "ba";
+      // deny list
     }
   }
 }
