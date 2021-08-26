@@ -6,14 +6,14 @@ import { Ba } from "./UserDialog";
 
 export const WritableBaList = (ba_list: Ba[] | null) => {
   let items = [
-    <span>
+    <span key="loading">
       Loading...
       <FontAwesomeIcon icon={faSpinner} spin={true} />
     </span>,
   ];
   if (ba_list !== null) {
     if (ba_list.length === 0) {
-      items = [<span>Not saved yet</span>];
+      items = [<span key="no_item">Not saved yet</span>];
     } else {
       items = ba_list.map((x) => (
         <ListItem
