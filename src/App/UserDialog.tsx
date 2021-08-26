@@ -33,6 +33,7 @@ export const UserDialog = () => {
       const ba_list = [] as Ba[];
       db.collection("ba")
         .where("writers", "array-contains", user.uid)
+        .orderBy("last_updated", "desc")
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
