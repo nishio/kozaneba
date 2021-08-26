@@ -43,9 +43,6 @@ describe("tutorial", () => {
     cy.testid("tutorial-title").contains("Let's move Kozane!");
     // drag in/out
     cy.testid("tutorial-close").click();
-    cy.getGlobal((g) => {
-      console.log(g.itemStore);
-    });
     // drag out
     do_drag("3", "ba", 135, 350);
     do_drag("4", "ba", 135, 550);
@@ -179,6 +176,7 @@ describe("tutorial", () => {
     );
     cy.testid("tutorial-close").click();
     cy.testid("tutorial-status").click();
+    cy.getGlobal((g) => g.dialog).should("eql", "Help");
     cy.contains("TOC").click();
   });
 });
