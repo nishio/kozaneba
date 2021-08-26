@@ -9,31 +9,11 @@ import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { get_display_name } from "../AppBar/UserInfo";
-import { db } from "../Cloud/FirestoreIO";
+import { get_writable_ba } from "./get_writable_ba";
 import { WritableBaList } from "./WritableBaList";
 
-const get_writable_ba = (uid: string) => {
-  const ba_list = [] as Ba[];
-  return db
-    .collection("ba")
-    .where("writers", "array-contains", uid)
-    .orderBy("last_updated", "desc")
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        // ba_list.push(doc.id);
-        ba_list.push({
-          title: doc.data().title,
-          id: doc.id,
-          last_updated: doc.data().last_updated,
-        });
-      });
-      return ba_list;
-    });
-};
-
 export type Ba = { title: string; id: string; last_updated: number };
+
 export const UserDialog = () => {
   const [dialog] = useGlobal("dialog");
   const [ba_list, set_ba_list] = useState(null as Ba[] | null);
