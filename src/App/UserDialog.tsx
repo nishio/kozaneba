@@ -1,3 +1,5 @@
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
   Dialog,
@@ -50,7 +52,12 @@ export const UserDialog = () => {
     }
   });
 
-  let BaList = <span>Loading...</span>;
+  let BaList = (
+    <span>
+      Loading...
+      <FontAwesomeIcon icon={faSpinner} spin={true} />
+    </span>
+  );
   if (ba_list !== null) {
     if (ba_list.length === 0) {
       BaList = <span>Not saved yet</span>;
