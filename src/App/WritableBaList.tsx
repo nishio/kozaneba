@@ -34,7 +34,14 @@ export const WritableBaList = (ba_list: Ba[] | null) => {
   }
   return (
     <List
-      subheader={<ListSubheader component="div">Writable Ba</ListSubheader>}
+      subheader={
+        <ListSubheader
+          component="div"
+          style={{ paddingLeft: "0px", lineHeight: "", paddingTop: "1em" }}
+        >
+          Writable Ba
+        </ListSubheader>
+      }
     >
       {items}
     </List>
