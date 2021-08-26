@@ -51,7 +51,27 @@ export const UserDialog = () => {
         });
     }
   });
+  return (
+    <Dialog
+      open={open}
+      onClose={onClose}
+      data-testid="user-dialog"
+      keepMounted={true}
+    >
+      <DialogTitle id="form-dialog-title">User: {display_name}</DialogTitle>
+      <DialogContent style={{ padding: "0px 24px" }}>
+        {WritableBaList(ba_list)}
+      </DialogContent>
+      <DialogActions>
+        <Button color="primary" onClick={onClose}>
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
 
+const WritableBaList = (ba_list: Ba[] | null) => {
   let BaList = (
     <span>
       Loading...
@@ -86,20 +106,5 @@ export const UserDialog = () => {
       );
     }
   }
-  return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      data-testid="user-dialog"
-      keepMounted={true}
-    >
-      <DialogTitle id="form-dialog-title">User: {display_name}</DialogTitle>
-      <DialogContent style={{ padding: "0px 24px" }}>{BaList}</DialogContent>
-      <DialogActions>
-        <Button color="primary" onClick={onClose}>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+  return BaList;
 };
