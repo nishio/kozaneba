@@ -3,6 +3,7 @@ import { TinySample } from "./TinySample";
 import { TopPage } from "./TopPage";
 import { Blank } from "./Blank";
 import { Edit } from "./Edit";
+import { NewBa } from "./NewBa";
 
 function App() {
   if (document.location.hash === "") {
@@ -17,6 +18,9 @@ function App() {
   }
   if (hash.has("tinysample")) {
     return <TinySample />;
+  }
+  if (hash.has("new")) {
+    return <NewBa />;
   }
   if (hash.has("edit")) {
     const ba = hash.get("edit")!;

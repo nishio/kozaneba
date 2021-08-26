@@ -31,6 +31,10 @@ export const UserDialog = () => {
     }
   }, [open, user, ba_list]);
 
+  const onCreateNewBa = () => {
+    window.open("/#new", "_blank");
+  };
+
   return (
     <Dialog
       open={open}
@@ -40,6 +44,10 @@ export const UserDialog = () => {
     >
       <DialogTitle id="form-dialog-title">User: {display_name}</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
+        <Button color="primary" onClick={onCreateNewBa}>
+          Create New Ba
+        </Button>
+
         {WritableBaList(ba_list)}
       </DialogContent>
       <DialogActions>
