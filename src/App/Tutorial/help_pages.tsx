@@ -65,6 +65,7 @@ const TOC = () => {
       onClick={() => {
         setGlobal({ tutorial_page: x.page_no });
       }}
+      key={x.page_no}
     >
       <ListItemText primary={x.title} />
     </ListItem>
