@@ -31,7 +31,7 @@ function App() {
     return <Edit ba={ba} />;
   }
 
-  return <></>;
+  return <span>Error: Bad URL. Maybe you missed a copy?</span>;
 }
 
 export default App;
