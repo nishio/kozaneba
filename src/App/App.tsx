@@ -26,6 +26,10 @@ function App() {
     const ba = hash.get("edit")!;
     return <Edit ba={ba} />;
   }
+  if (hash.has("view")) {
+    const ba = hash.get("view")!;
+    return <Edit ba={ba} />;
+  }
 
   return <></>;
 }
