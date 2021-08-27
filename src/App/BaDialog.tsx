@@ -95,17 +95,22 @@ const Share: React.FC<{ mode: string }> = ({ mode }) => {
 
   return (
     <div>
-      <p>
+      <div>
         URL: <button onClick={onCopy}>copy{copy_done}</button>
-        <input type="text" value={share_url} style={{ width: "30em" }} />
-      </p>
-      <p>
+        <input
+          type="text"
+          value={share_url}
+          style={{ width: "30em" }}
+          readOnly
+        />
+      </div>
+      <div>
         Anyone with the link can{" "}
         <Select value={mode} onChange={onChange}>
           <MenuItem value="edit">edit</MenuItem>
           <MenuItem value="view">view</MenuItem>
         </Select>
-      </p>
+      </div>
     </div>
   );
 };
