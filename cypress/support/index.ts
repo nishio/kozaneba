@@ -26,7 +26,7 @@
 import { State } from "reactn/default";
 import { TWorldCoord } from "../../src/dimension/world_to_screen";
 import { TMovidea } from "../../src/Global/exposeGlobal";
-import { ItemId } from "../../src/Global/initializeGlobalState";
+import { ItemId, TItem } from "../../src/Global/initializeGlobalState";
 import { TGroupItem } from "../../src/Group/GroupItem";
 
 declare global {
@@ -170,4 +170,16 @@ export const do_drag = (
 export const do_click = (target: string) => {
   cy.testid(target).trigger("mousedown", 0, 0, { force: true });
   cy.testid("ba").trigger("mouseup");
+};
+
+export const add_item = (item: TItem) => {
+  cy.movidea((m) => {
+    m.updateGlobal((g) => {
+      if (item.id in g.itemStore) {
+        throw new Error(`add_item: dupricated id: ${item.id}`);
+      }
+      g.itemStore[item.id] = item;
+      g.drawOrder.push(item.id);
+    });
+  });
 };

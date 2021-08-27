@@ -4,6 +4,7 @@ import { TGroupItem } from "../Group/GroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TDialog } from "./TDialog";
+import { CSSProperties } from "react";
 
 export const INITIAL_GLOBAL_STATE = {
   kozane: [] as VKozane[], // for small tests
@@ -51,7 +52,30 @@ export const INITIAL_GLOBAL_STATE = {
 };
 
 type TDragTarget = "" | "selection" | ItemId;
-export type TItem = TKozaneItem | TGroupItem;
+
+export type TGyazoItem = {
+  type: "gyazo";
+  text: string;
+  position: TWorldCoord;
+  id: ItemId;
+  scale: number;
+  url: string;
+  custom?: { style?: CSSProperties };
+};
+
+export type TScrapboxItem = {
+  type: "scrapbox";
+  text: string;
+  icon: string;
+  url: "";
+  position: TWorldCoord;
+  id: ItemId;
+  scale: number;
+  description: string[];
+  custom?: { style?: CSSProperties };
+};
+
+export type TItem = TKozaneItem | TGroupItem | TGyazoItem | TScrapboxItem;
 enum ItemIdBrand {
   _ = "",
 }
