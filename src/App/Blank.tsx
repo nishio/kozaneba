@@ -19,6 +19,7 @@ import { KeyboardShortcut } from "./KeyboardShortcut";
 import { UserDialog } from "./User/UserDialog";
 import { HelpDialog } from "./Tutorial/HelpDialog";
 import { LoadingDialog } from "./LoadingDialog";
+import { BaDialog } from "./BaDialog";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -50,6 +51,7 @@ export const Blank = () => {
       <UserDialog />
       <HelpDialog />
       <LoadingDialog />
+      <BaDialog />
     </div>
   );
 };

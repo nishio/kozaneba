@@ -8,4 +8,5 @@ export type TDialog =
   | "SplitKozane"
   | "User"
   | "Help"
-  | "Loading";
+  | "Loading"
+  | "Ba";

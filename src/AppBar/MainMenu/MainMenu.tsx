@@ -1,13 +1,12 @@
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { setGlobal, useGlobal } from "reactn";
-import MenuIcon from "@material-ui/icons/Menu";
-import { show_menu } from "../../Menu/show_menu";
-import { updateGlobal } from "../../Global/updateGlobal";
 import { initial_save } from "../../Cloud/initial_save";
-import { close_menu_and_dialog } from "../close_menu";
+import { updateGlobal } from "../../Global/updateGlobal";
 import { Sentry } from "../../initSentry";
-import { mark_local_changed } from "../../Cloud/mark_local_changed";
+import { show_menu } from "../../Menu/show_menu";
+import { close_menu_and_dialog } from "../close_menu";
 // import { StartTutorial } from "./StartTutorial";
 
 export const MainMenu = () => {
@@ -46,7 +45,7 @@ export const MainMenu = () => {
         <EnableCloudAutoSave />
         <User />
 
-        <Title />
+        <Ba />
         {/* <StartTutorial /> */}
         <SendFeedback />
       </Menu>
@@ -54,16 +53,11 @@ export const MainMenu = () => {
   );
 };
 
-const Title = () => {
-  const [title, setTitle] = useGlobal("title");
-  const onTitle = () => {
-    const x = prompt(`Current Title: ${title}\nNew Title:`);
-    if (x !== null) {
-      setTitle(x);
-      mark_local_changed();
-    }
+const Ba = () => {
+  const onClick = () => {
+    setGlobal({ dialog: "Ba" });
   };
-  return <MenuItem onClick={onTitle}>Title: {title}</MenuItem>;
+  return <MenuItem onClick={onClick}>Ba</MenuItem>;
 };
 
 const SendFeedback = () => {
