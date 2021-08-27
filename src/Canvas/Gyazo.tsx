@@ -33,6 +33,7 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
   };
   return (
     <GyazoImg
+      data-testid={value.id}
       ref={ref}
       src={value.url + "/thumb/400"}
       alt=""
