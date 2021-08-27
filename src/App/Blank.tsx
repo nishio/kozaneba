@@ -16,7 +16,7 @@ import { LocalChangeWatcher } from "./LocalChangeWatcher";
 import { EditGroupTitleDialog } from "../AddKozaneDialog/EditGroupTitleDialog";
 import { SplitKozaneDialog } from "../AddKozaneDialog/SplitKozaneDialog";
 import { KeyboardShortcut } from "./KeyboardShortcut";
-import { UserDialog } from "./UserDialog";
+import { UserDialog } from "./User/UserDialog";
 import { HelpDialog } from "./Tutorial/HelpDialog";
 import { LoadingDialog } from "./LoadingDialog";
 

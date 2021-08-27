@@ -7,8 +7,8 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
-import { close_menu_and_dialog } from "../AppBar/close_menu";
-import { get_display_name } from "../AppBar/UserInfo";
+import { close_menu_and_dialog } from "../../AppBar/close_menu";
+import { get_display_name } from "../../AppBar/UserInfo";
 import { get_writable_ba } from "./get_writable_ba";
 import { WritableBaList } from "./WritableBaList";
 

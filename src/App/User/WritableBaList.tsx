@@ -1,7 +1,7 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { List, ListItem, ListItemText, ListSubheader } from "@material-ui/core";
-import { date_to_str } from "../utils/date_to_str";
+import { date_to_str } from "../../utils/date_to_str";
 import { Ba } from "./UserDialog";
 
 export const WritableBaList = (ba_list: Ba[] | null) => {

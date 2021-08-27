@@ -1,4 +1,4 @@
-import { db } from "../Cloud/FirestoreIO";
+import { db } from "../../Cloud/FirestoreIO";
 import { Ba } from "./UserDialog";
 
 export const get_writable_ba = (uid: string) => {
