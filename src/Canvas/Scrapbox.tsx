@@ -13,7 +13,6 @@ const ScrapboxLine = styled.p`
 `;
 
 export const ScrapboxDiv = styled.div`
-  // background: #ffc;
   width: 400px;
   height: 400px;
   font-size: 200%;
@@ -24,8 +23,7 @@ export const ScrapboxDiv = styled.div`
   overflow: hidden;
   border: #aaa 1px solid;
   position: absolute;
-  // line-height: 0.9;
-  border-radius: 5px;
+  border-radius: 15px;
   ${NoSelect};
 `;
 export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
