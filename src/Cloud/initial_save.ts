@@ -4,6 +4,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { set_up_read_subscription } from "./set_up_read_subscription";
 import { close_menu } from "../AppBar/close_menu";
 import { TStatusType } from "../Global/initializeGlobalState";
+import { State } from "reactn/default";
 
 export const get_user_id = (): string => {
   const uid = auth.currentUser?.uid;
@@ -29,21 +30,33 @@ export const set_status = (status: TStatusType) => {
   });
 };
 
-export const initial_save = () => {
-  console.log("initial save");
+export const not_login_then_show_dialog = () => {
   if (auth.currentUser === null) {
     updateGlobal((g) => {
       g.dialog = "CloudSave";
     });
-    return;
+    console.log(`not login. show dialog.`);
+    return true;
   }
-  close_menu();
   console.log(`save as ${auth.currentUser.displayName ?? "Anonymous"}`);
-  set_status("uploading");
+  return false;
+};
 
+export const initial_save = () => {
+  console.log("initial save");
+  if (not_login_then_show_dialog()) return;
+  close_menu();
+  set_status("uploading");
+  save_new();
+};
+
+export const save_new = (state?: State) => {
   if_not_in_writer_add_self();
   const g = getGlobal();
-  const doc = state_to_docdate(g);
+  if (state === undefined) {
+    state = g;
+  }
+  const doc = state_to_docdate(state);
   let p;
   if (g.fix_ba_for_test === "") {
     p = db.collection("ba").add(doc);

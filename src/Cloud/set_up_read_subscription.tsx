@@ -2,10 +2,11 @@ import { getGlobal, setGlobal } from "reactn";
 import { fit_to_contents } from "../App/toggle_fit_to_contents";
 import { db, docdate_to_state, DocSnap } from "./FirestoreIO";
 import { set_status } from "./initial_save";
+let unsubscribe = null as null | (() => void);
 
 export const set_up_read_subscription = (ba: string) => {
   console.log("set_up_read_subscription", ba);
-  let unsubscribe = db
+  unsubscribe = db
     .collection("ba")
     .doc(ba)
     .onSnapshot((doc: DocSnap) => {
@@ -27,4 +28,13 @@ export const set_up_read_subscription = (ba: string) => {
       set_status("done");
     });
   return unsubscribe;
+};
+
+export const stop_current_subscription = () => {
+  console.log("stop_current_subscription");
+  if (unsubscribe === null) {
+    console.log("no current subscription");
+  } else {
+    unsubscribe();
+  }
 };

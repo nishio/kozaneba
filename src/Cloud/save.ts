@@ -1,21 +1,15 @@
-import { updateGlobal } from "../Global/updateGlobal";
-import { auth, db, state_to_docdate } from "./FirestoreIO";
 import { getGlobal } from "reactn";
-import { if_not_in_writer_add_self } from "./initial_save";
+import { db, state_to_docdate } from "./FirestoreIO";
+import {
+  if_not_in_writer_add_self,
+  not_login_then_show_dialog,
+  set_status,
+} from "./initial_save";
 
 export const save = () => {
   console.log("update save");
-  if (auth.currentUser === null) {
-    updateGlobal((g) => {
-      g.dialog = "CloudSave";
-    });
-    return;
-  }
-  console.log(`save as ${auth.currentUser.displayName ?? "Anonymous"}`);
-  updateGlobal((g) => {
-    g.statusBar.type = "uploading";
-  });
-
+  if (not_login_then_show_dialog()) return;
+  set_status("uploading");
   if_not_in_writer_add_self();
 
   const ba = getGlobal().cloud_ba;
@@ -24,8 +18,6 @@ export const save = () => {
     .doc(ba)
     .set(doc)
     .then(() => {
-      updateGlobal((g) => {
-        g.statusBar.type = "done";
-      });
+      set_status("done");
     });
 };
