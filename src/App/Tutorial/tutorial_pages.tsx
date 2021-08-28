@@ -1,4 +1,5 @@
 import { setGlobal } from "reactn";
+import { in_readonly_mode } from "../../AppBar/MainMenu/MainMenu";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { HelpPage } from "./help_pages";
 import { SAMPLE_LINES } from "./SAMPLE_LINES";
@@ -261,6 +262,12 @@ export const tutorial_pages: HelpPage[] = [
           url="https://gyazo.com/6f34fd9f2cda800a56ab77429323d39c"
           key="not saved"
         />
+        {in_readonly_mode() ? (
+          <p>
+            Now you are in read-only mode. By enabling auto-save, Kozaneba makes
+            an editable copy for you.
+          </p>
+        ) : null}
       </div>
     ),
   },
