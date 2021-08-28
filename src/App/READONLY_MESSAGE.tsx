@@ -6,8 +6,8 @@ export const READONLY_MESSAGE = (
       This ba is for viewing only. You can edit it, but it will not be saved.
     </p>
     <p>
-      Don't know how to use Kozaneba? Watch the{" "}
-      <button onClick={start_tutorial}>tutorial</button>!
+      Don't know how to use Kozaneba?
+      <button onClick={start_tutorial}>Watch the tutorial!</button>
     </p>
   </div>
 );
