@@ -7,16 +7,16 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { can_write } from "./can_write";
+import { READONLY_MESSAGE } from "./READONLY_MESSAGE";
 
 export const LoadingDialog = () => {
   const [dialog] = useGlobal("dialog");
   const [statusBar] = useGlobal("statusBar");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(null as null | JSX.Element);
   const [is_loading, set_is_loading] = useState(true);
   const [to_show_close_button, set_to_show_close_button] = useState(false);
 
@@ -24,15 +24,11 @@ export const LoadingDialog = () => {
 
   useEffect(() => {
     if (open && statusBar.type === "done") {
-      // currently no "read-only message"
-      // FUTURE: when some message to show visiter exists, do not close
       if (can_write()) {
         // auto-close
         close_menu_and_dialog();
       } else {
-        setMessage(
-          "This ba is for viewing only. You can edit it, but it will not be saved."
-        );
+        setMessage(READONLY_MESSAGE);
         set_to_show_close_button(true);
         set_is_loading(false);
       }
@@ -62,13 +58,13 @@ export const LoadingDialog = () => {
     <Dialog
       open={open}
       onClose={onClose}
-      data-testid="user-dialog"
+      data-testid="loading-dialog"
       keepMounted={true}
     >
       <DialogTitle id="form-dialog-title">{title}</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
         <div style={{ textAlign: "center" }}>{spinner}</div>
-        <p>{message}</p>
+        {message}
       </DialogContent>
       <DialogActions>{CloseButton}</DialogActions>
     </Dialog>
