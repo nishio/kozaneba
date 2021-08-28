@@ -37,6 +37,10 @@ export const LoadingDialog = () => {
 
   const onClose = () => {
     close_menu_and_dialog();
+    // reset
+    setMessage(null);
+    set_is_loading(true);
+    set_to_show_close_button(false);
   };
   let CloseButton = null;
   if (to_show_close_button) {
