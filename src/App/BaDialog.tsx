@@ -67,10 +67,13 @@ const Title = () => {
 
 const Share: React.FC<{ mode: string }> = ({ mode }) => {
   const [copy_done, set_copy_done] = useState("");
+  const [cloud_ba] = useGlobal("cloud_ba");
   if (!can_write()) return null;
+  if (cloud_ba === "") {
+    return <span>Not saved yet</span>;
+  }
 
-  const g = getGlobal();
-  const share_url = `https://kozaneba.netlify.app/#${mode}=${g.cloud_ba}`;
+  const share_url = `https://kozaneba.netlify.app/#${mode}=${cloud_ba}`;
   const onChange = (
     e: React.ChangeEvent<{
       name?: string | undefined;
