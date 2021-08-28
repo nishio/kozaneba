@@ -1,7 +1,8 @@
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
-import { setGlobal, useGlobal } from "reactn";
+import { getGlobal, setGlobal, useGlobal } from "reactn";
+import { can_write } from "../../App/can_write";
 import { initial_save } from "../../Cloud/initial_save";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { Sentry } from "../../initSentry";
@@ -81,7 +82,7 @@ const User = () => {
 
 const EnableCloudAutoSave = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
-  if (cloud_ba === "") {
+  if (cloud_ba === "" || in_readonly_mode()) {
     const onEnableCloudAutoSave = () => {
       initial_save();
     };
@@ -92,4 +93,9 @@ const EnableCloudAutoSave = () => {
     );
   }
   return null;
+};
+
+export const in_readonly_mode = () => {
+  const g = getGlobal();
+  return g.cloud_ba !== "" && !can_write();
 };
