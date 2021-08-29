@@ -20,6 +20,15 @@ describe("ready one kozane", () => {
       scale: 1,
     };
     add_item(gyazo);
+    const gyazo2: TGyazoItem = {
+      id: "gyazo2" as ItemId,
+      type: "gyazo",
+      url: "https://gyazo.com/9c7c5b3f49b167008fc1796d536c122c",
+      text: "" as "",
+      position: [202, 0] as TWorldCoord,
+      scale: 1,
+    };
+    add_item(gyazo2);
   });
 
   it("do nothing", () => {});
