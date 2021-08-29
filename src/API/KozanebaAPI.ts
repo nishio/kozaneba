@@ -13,17 +13,17 @@ import { update_style } from "./update_style";
 export const add_scrapbox_item_raw = (props: {
   text: string;
   url?: string;
-  icon?: string;
-  description?: string[];
+  image?: string;
+  descriptions?: string[];
 }) => {
-  const { text, icon, url, description } = props;
+  const { text, image, url, descriptions } = props;
   const scrapbox: TScrapboxItem = {
     id: create_new_itemid(),
     type: "scrapbox",
     text: text,
-    icon: icon ?? "",
+    image: image ?? "",
     url: url ?? "",
-    description: description ?? [],
+    description: descriptions ?? [],
 
     position: [0, 0] as TWorldCoord,
     scale: 1,
@@ -31,7 +31,60 @@ export const add_scrapbox_item_raw = (props: {
   add_item(scrapbox);
 };
 
-export const add_scrapbox_item = (url: string) => {};
+export const add_scrapbox_item = (url: string) => {
+  fetch(
+    "https://us-central1-regroup-d4932.cloudfunctions.net/get_scrapbox_page",
+    {
+      method: "post",
+      body: JSON.stringify({ url }),
+    }
+  )
+    .then((x) => x.json())
+    .then((x) => {
+      console.log(x);
+      add_scrapbox_item_raw({
+        text: x.title,
+        url: url,
+        image: (x.image ?? "").replace("/raw", ""),
+        descriptions: x.descriptions,
+      });
+    });
+};
+
+type TScrapboxPage = {
+  title: string;
+  image: string | null;
+  descriptions: string[];
+};
+const foo = (x: TScrapboxPage, url?: string) => {
+  add_scrapbox_item_raw({
+    text: x.title,
+    url: url,
+    image: (x.image ?? "").replace("/raw", ""),
+    descriptions: x.descriptions,
+  });
+};
+
+export const add_scrapbox_links = (url: string) => {
+  fetch(
+    "https://us-central1-regroup-d4932.cloudfunctions.net/get_scrapbox_page",
+    {
+      method: "post",
+      body: JSON.stringify({ url }),
+    }
+  )
+    .then((x) => x.json())
+    .then((x) => {
+      console.log(x);
+      foo(x);
+      x.relatedPages.links1hop.forEach((x: TScrapboxPage) => {
+        foo(x);
+      });
+      x.relatedPages.links2hop.forEach((x: TScrapboxPage) => {
+        foo(x);
+      });
+    });
+};
 
 export const kozaneba = {
   // simple values to modify
@@ -44,6 +97,7 @@ export const kozaneba = {
   redraw,
   update_style,
   add_scrapbox_item,
+  add_scrapbox_links,
 
   // complex values
   after_render_toppage: start_tutorial,

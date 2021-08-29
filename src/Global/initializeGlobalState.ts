@@ -66,7 +66,7 @@ export type TGyazoItem = {
 export type TScrapboxItem = {
   type: "scrapbox";
   text: string;
-  icon: string;
+  image: string;
   url: string;
   position: TWorldCoord;
   id: ItemId;
