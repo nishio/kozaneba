@@ -38,7 +38,6 @@ const ScrapboxBack = styled.div`
   height: calc(100% + 2px);
   top: -1px;
   left: -1px;
-  z-index: 0;
 `;
 
 export const get_scrapbox_bounding_box = (item: TScrapboxItem) => {
@@ -55,17 +54,21 @@ export const get_scrapbox_bounding_box = (item: TScrapboxItem) => {
 
 export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   let contents = null;
-  if (value.icon !== "") {
+  if (value.image !== "") {
     contents = (
       <img
-        src={value.icon}
+        src={value.image + "/thumb/400"}
         alt=""
-        style={{ maxWidth: "100%", zIndex: 1, position: "relative" }}
+        style={{
+          maxWidth: "100%",
+          position: "relative",
+        }}
+        draggable="false"
       />
     );
   } else {
     contents = (
-      <div style={{ padding: "10px 12px 0", zIndex: 1, position: "relative" }}>
+      <div style={{ padding: "10px 12px 0", position: "relative" }}>
         {value.description.map((x, i) => {
           return <ScrapboxLine key={i}>{x}</ScrapboxLine>;
         })}
@@ -90,12 +93,14 @@ export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
       onMouseDown={onMouseDown}
     >
       <ScrapboxBack />
-      <div style={{ position: "relative", padding: "10px 12px", zIndex: 1 }}>
-        <div style={{ fontWeight: 500 }}>
-          <strong>{value.text}</strong>
+      <div>
+        <div style={{ position: "relative", padding: "10px 12px" }}>
+          <div style={{ fontWeight: 500 }}>
+            <strong>{value.text}</strong>
+          </div>
         </div>
+        {contents}
       </div>
-      {contents}
     </ScrapboxDiv>
   );
 };
