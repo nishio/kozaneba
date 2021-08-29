@@ -1,14 +1,6 @@
 import * as functions from "firebase-functions";
 import fetch from "node-fetch";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", { structuredData: true });
-  response.send("Hello from Firebase!");
-});
-
 export const get_scrapbox_page = functions.https.onRequest((req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
 
