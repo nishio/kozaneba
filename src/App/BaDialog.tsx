@@ -8,7 +8,7 @@ import {
   Select,
 } from "@material-ui/core";
 import { useState } from "react";
-import { getGlobal, setGlobal, useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { can_write } from "./can_write";
