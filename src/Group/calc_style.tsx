@@ -1,4 +1,4 @@
-import { BORDER, TITLE_HEIGHT } from "../dimension/get_bounding_box";
+import { BORDER, TITLE_HEIGHT } from "../dimension/BORDER";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 import { TGroupItem } from "./GroupItem";
 

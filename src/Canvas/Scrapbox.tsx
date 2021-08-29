@@ -12,9 +12,10 @@ const ScrapboxLine = styled.p`
   margin: 0;
 `;
 
+const SCRAPBOX_SIZE = 400;
 export const ScrapboxDiv = styled.div`
-  width: 400px;
-  height: 400px;
+  width: ${SCRAPBOX_SIZE}px;
+  height: ${SCRAPBOX_SIZE}px;
   font-size: 200%;
   top: ${(props) => props.style?.top ?? "0px"};
   left: ${(props) => props.style?.left ?? "0px"};
@@ -26,6 +27,18 @@ export const ScrapboxDiv = styled.div`
   border-radius: 15px;
   ${NoSelect};
 `;
+
+export const get_scrapbox_bounding_box = (item: TScrapboxItem) => {
+  const [x, y] = item.position;
+  const scale = item.scale;
+  const b = {
+    top: y - (SCRAPBOX_SIZE / 2) * scale,
+    left: x - (SCRAPBOX_SIZE / 2) * scale,
+    bottom: y + (SCRAPBOX_SIZE / 2) * scale,
+    right: x + (SCRAPBOX_SIZE / 2) * scale,
+  };
+  return b;
+};
 export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   let contents = null;
   if (value.icon !== "") {

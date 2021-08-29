@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { TITLE_HEIGHT, BORDER } from "../dimension/get_bounding_box";
+import { TITLE_HEIGHT, BORDER } from "../dimension/BORDER";
 import {
   GROUP_BACKGROUND_COLOR,
   GROUP_BORDER_COLOR,
