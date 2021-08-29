@@ -67,7 +67,7 @@ export type TScrapboxItem = {
   type: "scrapbox";
   text: string;
   icon: string;
-  url: "";
+  url: string;
   position: TWorldCoord;
   id: ItemId;
   scale: number;
