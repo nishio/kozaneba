@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { TOffset } from "../dimension/TOffset";
+import { add_v2w } from "../dimension/V2";
+import { TWorldCoord } from "../dimension/world_to_screen";
+import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { NoSelect } from "../Group/GroupDiv";
 import { position_to_left_top } from "../Kozane/position_to_left_top";
@@ -28,6 +31,16 @@ export const ScrapboxDiv = styled.div`
   ${NoSelect};
 `;
 
+const ScrapboxBack = styled.div`
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  top: -1px;
+  left: -1px;
+  z-index: 0;
+`;
+
 export const get_scrapbox_bounding_box = (item: TScrapboxItem) => {
   const [x, y] = item.position;
   const scale = item.scale;
@@ -39,22 +52,45 @@ export const get_scrapbox_bounding_box = (item: TScrapboxItem) => {
   };
   return b;
 };
+
 export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   let contents = null;
   if (value.icon !== "") {
-    contents = <img src={value.icon} alt="" style={{ maxWidth: "100%" }} />;
+    contents = (
+      <img
+        src={value.icon}
+        alt=""
+        style={{ maxWidth: "100%", zIndex: 1, position: "relative" }}
+      />
+    );
   } else {
     contents = (
-      <div style={{ padding: "10px 12px 0" }}>
+      <div style={{ padding: "10px 12px 0", zIndex: 1, position: "relative" }}>
         {value.description.map((x, i) => {
           return <ScrapboxLine key={i}>{x}</ScrapboxLine>;
         })}
       </div>
     );
   }
+
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    onKozaneMouseDown(e, value);
+  };
+
+  const b = get_scrapbox_bounding_box(value);
+
   return (
-    <ScrapboxDiv style={position_to_left_top(value.position)}>
-      <div style={{ padding: "10px 12px" }}>
+    <ScrapboxDiv
+      style={position_to_left_top(
+        add_v2w(
+          [b.left, b.top] as TWorldCoord,
+          [offset.x, offset.y] as TWorldCoord
+        )
+      )}
+      onMouseDown={onMouseDown}
+    >
+      <ScrapboxBack />
+      <div style={{ position: "relative", padding: "10px 12px", zIndex: 1 }}>
         <div style={{ fontWeight: 500 }}>
           <strong>{value.text}</strong>
         </div>
