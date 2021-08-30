@@ -9,7 +9,10 @@ export type TKozaneItem = {
   position: TWorldCoord;
   id: ItemId;
   scale: number;
-  custom?: { style?: CSSProperties };
+  custom?: {
+    style?: CSSProperties;
+    is_link?: boolean;
+  };
 };
 
 export class KozaneItem {

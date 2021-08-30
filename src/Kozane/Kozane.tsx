@@ -1,3 +1,5 @@
+import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { CSSProperties } from "react";
 import { TOffset } from "../dimension/TOffset";
@@ -27,7 +29,13 @@ export const Kozane: React.FC<Props> = ({
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     onKozaneMouseDown(e, value);
   };
-
+  const link_mark =
+    value.custom?.is_link === true ? (
+      <FontAwesomeIcon
+        icon={faLink}
+        style={{ position: "absolute", fontSize: "20px", top: 0 }}
+      />
+    ) : null;
   return (
     <KozaneDiv
       className="kozane"
@@ -36,6 +44,7 @@ export const Kozane: React.FC<Props> = ({
       style={style}
       onMouseDown={onMouseDown}
     >
+      {link_mark}
       <KozaneDiv2>{value.text}</KozaneDiv2>
     </KozaneDiv>
   );

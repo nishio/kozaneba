@@ -6,6 +6,7 @@ import {
   TGyazoItem,
   TScrapboxItem,
 } from "../../../src/Global/initializeGlobalState";
+import { KozaneItem, TKozaneItem } from "../../../src/Kozane/KozaneItem";
 import { add_item } from "../../support";
 
 describe("ready one kozane", () => {
@@ -61,6 +62,11 @@ describe("ready one kozane", () => {
       description: [],
     };
     add_item(scrapbox4);
+
+    const kozane: TKozaneItem = new KozaneItem();
+    kozane.text = "hello";
+    kozane.custom = { is_link: true };
+    add_item(kozane);
   });
 
   it("do nothing", () => {});
