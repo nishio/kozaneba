@@ -9,14 +9,12 @@ import { KozaneItem } from "../Kozane/KozaneItem";
 import { remove_item_from } from "../utils/remove_item";
 import { delete_item_from_world } from "./delete_item_from_world";
 import { BigSmallMenuItem } from "./BigSmallMenuItem";
+import { close_context_menu } from "./close_context_menu";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
   const open = menu === "Group";
-  const onClose = () => {
-    setMenu("");
-  };
 
   const g = getGlobal();
   const gid = g.clicked_target;
@@ -75,7 +73,7 @@ export const GroupMenu = () => {
       anchorEl={anchor}
       keepMounted
       open={open}
-      onClose={onClose}
+      onClose={close_context_menu}
       data-testid="group-menu"
     >
       <MenuItem onClick={onOpenClose} data-testid="group-open-close">
