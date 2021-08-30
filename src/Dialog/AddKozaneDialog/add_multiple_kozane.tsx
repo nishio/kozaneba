@@ -1,18 +1,18 @@
-import { KozaneItem } from "../Kozane/KozaneItem";
+import { KozaneItem } from "../../Kozane/KozaneItem";
 import {
   KOZANE_BORDER,
   KOZANE_HEIGHT,
   KOZANE_WIDTH,
-} from "../Kozane/kozane_constants";
-import { updateGlobal } from "../Global/updateGlobal";
-import { GroupItem, TGroupItem } from "../Group/GroupItem";
+} from "../../Kozane/kozane_constants";
+import { updateGlobal } from "../../Global/updateGlobal";
+import { GroupItem, TGroupItem } from "../../Group/GroupItem";
 import { multiline_to_lines } from "./multiline_to_lines";
-import { TWorldCoord } from "../dimension/world_to_screen";
+import { TWorldCoord } from "../../dimension/world_to_screen";
 import { getGlobal } from "reactn";
-import { get_item } from "../Event/get_item";
-import { find_parent } from "../Group/find_parent";
-import { remove_item_from } from "../utils/remove_item";
-import { ItemId, TItem } from "../Global/initializeGlobalState";
+import { get_item } from "../../Event/get_item";
+import { find_parent } from "../../Group/find_parent";
+import { remove_item_from } from "../../utils/remove_item";
+import { ItemId, TItem } from "../../Global/initializeGlobalState";
 import { State } from "reactn/default";
 
 export const create_squared_group = (items: string[]) => {

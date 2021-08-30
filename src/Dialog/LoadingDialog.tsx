@@ -10,8 +10,8 @@ import {
 import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
-import { can_write } from "./can_write";
-import { READONLY_MESSAGE } from "./READONLY_MESSAGE";
+import { can_write } from "../App/can_write";
+import { READONLY_MESSAGE } from "../App/READONLY_MESSAGE";
 
 export const LoadingDialog = () => {
   const [dialog] = useGlobal("dialog");

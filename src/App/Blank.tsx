@@ -5,7 +5,7 @@ import { ItemCanvas } from "../Canvas/ItemCanvas";
 import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";
 import { Menus } from "../Menu/Menus";
 import { MenuAnchor } from "../Menu/show_menu";
-import { Dialogs } from "./Dialogs";
+import { Dialogs } from "../Dialog/Dialogs";
 import { KeyboardShortcut } from "./KeyboardShortcut";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
 import { StatusBar } from "./StatusBar";

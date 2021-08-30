@@ -8,46 +8,46 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
-import { finishButtons } from "../App/hotKey";
-import { get_item } from "../Event/get_item";
-import { updateGlobal } from "../Global/updateGlobal";
-import { get_group_title } from "../Group/Group";
-import { GroupItem } from "../Group/GroupItem";
+import { finishButtons } from "../../App/hotKey";
+import { get_item } from "../../Event/get_item";
+import {
+  add_multiple_kozane,
+  replace_multiple_kozane,
+} from "./add_multiple_kozane";
 
-export const EditGroupTitleDialog = () => {
+export const SplitKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
-
   const textarea = createRef<HTMLTextAreaElement>();
-  const open = dialog === "EditGroupTitle";
+  const open = dialog === "SplitKozane";
   const onClose = () => {
     setDialog("");
   };
 
-  const onEditGroupTitle = () => {
+  const onAddKozane = () => {
     if (textarea.current === null) return;
     if (!open) return;
-    const multiline = textarea.current.value;
+    let multiline = textarea.current.value;
 
-    updateGlobal((g) => {
-      const x = get_item(g, id);
-      if (x.text !== multiline) {
-        x.text = multiline;
-        g.is_local_change = true;
-        g.last_updated = Date.now();
-      }
-      g.dialog = "";
-      g.menu = "";
-    });
+    add_multiple_kozane(multiline);
   };
-  finishButtons["EditGroupTitleDialog"] = onEditGroupTitle;
 
-  if (!open) {
-    return null;
-  }
+  const onReplaceKozane = () => {
+    if (textarea.current === null) return;
+    if (!open) return;
+    let multiline = textarea.current.value;
+
+    replace_multiple_kozane(multiline);
+  };
+  // MAY add `replace kozane` button
+
+  finishButtons["SplitKozaneDialog"] = onAddKozane;
+
+  if (!open) return null;
+
   const g = getGlobal();
   const id = g.clicked_target;
-  const group = g.itemStore[id] as GroupItem;
-  const text = get_group_title(group);
+  const item = get_item(g, id);
+  const text = item.text;
 
   const fullScreen = false;
   // It was true, good for edit large contents
@@ -59,9 +59,9 @@ export const EditGroupTitleDialog = () => {
       fullWidth={true}
       fullScreen={fullScreen}
       onClose={onClose}
-      data-testid="edit-group-title-dialog"
+      data-testid="add-kozane-dialog"
     >
-      <DialogTitle id="form-dialog-title">Edit Group Title</DialogTitle>
+      <DialogTitle id="form-dialog-title">Split Kozane</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
         {/* <DialogContentText>...</DialogContentText> */}
         <div style={{ display: "flex" }}>
@@ -88,10 +88,17 @@ export const EditGroupTitleDialog = () => {
         </Button>
         <Button
           color="primary"
-          onClick={onEditGroupTitle}
-          data-testid="edit-group-title-button"
+          onClick={onReplaceKozane}
+          data-testid="replace-kozane-button"
         >
-          Save Change
+          Replace Kozane
+        </Button>
+        <Button
+          color="primary"
+          onClick={onAddKozane}
+          data-testid="add-kozane-button"
+        >
+          Add Kozane
         </Button>
       </DialogActions>
     </Dialog>

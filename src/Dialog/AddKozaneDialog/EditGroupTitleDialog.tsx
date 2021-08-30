@@ -7,30 +7,47 @@ import {
   TextareaAutosize,
 } from "@material-ui/core";
 import React, { createRef } from "react";
-import { useGlobal } from "reactn";
-import { finishButtons } from "../App/hotKey";
-import { add_multiple_kozane } from "./add_multiple_kozane";
+import { getGlobal, useGlobal } from "reactn";
+import { finishButtons } from "../../App/hotKey";
+import { get_item } from "../../Event/get_item";
+import { updateGlobal } from "../../Global/updateGlobal";
+import { get_group_title } from "../../Group/Group";
+import { GroupItem } from "../../Group/GroupItem";
 
-export const AddKozaneDialog = () => {
+export const EditGroupTitleDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
-  const [text, setText] = useGlobal("add_kozane_text");
+
   const textarea = createRef<HTMLTextAreaElement>();
-  const open = dialog === "AddKozane";
-  const onClose = (e: unknown, reason?: string) => {
-    if (reason === "backdropClick") return;
+  const open = dialog === "EditGroupTitle";
+  const onClose = () => {
     setDialog("");
-    setText("");
   };
 
-  const onAddKozane = () => {
-    console.log("onAddKozane", open, textarea.current);
+  const onEditGroupTitle = () => {
     if (textarea.current === null) return;
     if (!open) return;
-    let multiline = textarea.current.value;
+    const multiline = textarea.current.value;
 
-    add_multiple_kozane(multiline);
+    updateGlobal((g) => {
+      const x = get_item(g, id);
+      if (x.text !== multiline) {
+        x.text = multiline;
+        g.is_local_change = true;
+        g.last_updated = Date.now();
+      }
+      g.dialog = "";
+      g.menu = "";
+    });
   };
-  finishButtons["AddKozaneDialog"] = onAddKozane;
+  finishButtons["EditGroupTitleDialog"] = onEditGroupTitle;
+
+  if (!open) {
+    return null;
+  }
+  const g = getGlobal();
+  const id = g.clicked_target;
+  const group = g.itemStore[id] as GroupItem;
+  const text = get_group_title(group);
 
   const fullScreen = false;
   // It was true, good for edit large contents
@@ -42,10 +59,9 @@ export const AddKozaneDialog = () => {
       fullWidth={true}
       fullScreen={fullScreen}
       onClose={onClose}
-      disableEscapeKeyDown={true}
-      data-testid="add-kozane-dialog"
+      data-testid="edit-group-title-dialog"
     >
-      <DialogTitle id="form-dialog-title">Add Kozane</DialogTitle>
+      <DialogTitle id="form-dialog-title">Edit Group Title</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
         {/* <DialogContentText>...</DialogContentText> */}
         <div style={{ display: "flex" }}>
@@ -58,29 +74,12 @@ export const AddKozaneDialog = () => {
                 backgroundColor: "#eee",
                 border: "none",
               }}
-              minRows={30}
+              minRows={1}
               data-testid="textarea"
               ref={textarea}
               defaultValue={text}
             />
           </div>
-
-          {/* <div style={{ maxWidth: "20%" }}>
-            <div
-              style={{
-                position: "sticky",
-                top: "0px",
-                background: "#eee",
-                padding: "2px",
-              }}
-            >
-              Menu
-              <hr />
-              New Pieces:
-              <hr />
-              <hr />
-            </div>
-          </div> */}
         </div>
       </DialogContent>
       <DialogActions>
@@ -89,10 +88,10 @@ export const AddKozaneDialog = () => {
         </Button>
         <Button
           color="primary"
-          onClick={onAddKozane}
-          data-testid="add-kozane-button"
+          onClick={onEditGroupTitle}
+          data-testid="edit-group-title-button"
         >
-          Add Kozane
+          Save Change
         </Button>
       </DialogActions>
     </Dialog>

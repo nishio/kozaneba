@@ -11,8 +11,8 @@ import { useState } from "react";
 import { setGlobal, useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { can_write } from "./can_write";
-import { make_copy } from "./make_copy";
+import { can_write } from "../App/can_write";
+import { make_copy } from "../App/make_copy";
 
 export type Ba = { title: string; id: string; last_updated: number };
 
