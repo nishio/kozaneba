@@ -7,11 +7,8 @@ import { BigSmallMenuItem } from "./BigSmallMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
 
-const asTGyazoItem = (x: TItem): TGyazoItem => {
-  if (x.type !== "gyazo") {
-    throw new Error(`expected TGyazoItem, but ${x.type}`);
-  }
-  return x;
+const isTGyazoItem = (x: TItem): x is TGyazoItem => {
+  return x.type === "gyazo";
 };
 
 export const GyazoMenu = () => {
@@ -24,13 +21,15 @@ export const GyazoMenu = () => {
   const g = getGlobal();
   const id = g.clicked_target;
   if (id === "") return null;
-  const item: TGyazoItem = asTGyazoItem(get_item(g, id));
-
-  return (
-    <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-      <BigSmallMenuItem id={id} />
-      <VisitMenuItem item={item} />
-      <DeleteMenuItem id={id} />
-    </Menu>
-  );
+  const item = get_item(g, id);
+  if (isTGyazoItem(item)) {
+    return (
+      <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
+        <BigSmallMenuItem id={id} />
+        <VisitMenuItem item={item} />
+        <DeleteMenuItem id={id} />
+      </Menu>
+    );
+  }
+  return null;
 };

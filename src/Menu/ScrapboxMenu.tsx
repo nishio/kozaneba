@@ -7,11 +7,8 @@ import { BigSmallMenuItem } from "./BigSmallMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
 
-const asTScrapboxItem = (x: TItem): TScrapboxItem => {
-  if (x.type !== "scrapbox") {
-    throw new Error(`expected TScrapboxItem, but ${x.type}`);
-  }
-  return x;
+const isTScrapboxItem = (x: TItem): x is TScrapboxItem => {
+  return x.type === "scrapbox";
 };
 
 export const ScrapboxMenu = () => {
@@ -24,13 +21,15 @@ export const ScrapboxMenu = () => {
   const g = getGlobal();
   const id = g.clicked_target;
   if (id === "") return null;
-  const item = asTScrapboxItem(get_item(g, id));
-
-  return (
-    <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
-      <BigSmallMenuItem id={id} />
-      <VisitMenuItem item={item} />
-      <DeleteMenuItem id={id} />
-    </Menu>
-  );
+  const item = get_item(g, id);
+  if (isTScrapboxItem(item)) {
+    return (
+      <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
+        <BigSmallMenuItem id={id} />
+        <VisitMenuItem item={item} />
+        <DeleteMenuItem id={id} />
+      </Menu>
+    );
+  }
+  return null;
 };
