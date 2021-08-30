@@ -5,7 +5,11 @@ import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import { State } from "reactn/default";
 import { setGlobal } from "reactn";
-import { TItem } from "../Global/initializeGlobalState";
+import {
+  TGyazoItem,
+  TItem,
+  TScrapboxItem,
+} from "../Global/initializeGlobalState";
 import { TKozaneItem } from "../Kozane/KozaneItem";
 import { TGroupItem } from "../Group/GroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
@@ -99,6 +103,10 @@ const to_item = (x: unknown): TItem => {
         return obj as TGroupItem;
       }
       throw new Error(`a group has no items: ${obj}`);
+    } else if (obj.type === "scrapbox") {
+      return obj as TScrapboxItem;
+    } else if (obj.type === "gyazo") {
+      return obj as TGyazoItem;
     } else {
       throw new Error(`unknown type ${obj.type} on item ${obj}`);
     }
