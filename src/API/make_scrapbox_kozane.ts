@@ -1,4 +1,5 @@
 import { set_status } from "../Cloud/initial_save";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
@@ -53,6 +54,12 @@ const add_scrapbox_item_raw = (props: {
 };
 
 export const add_scrapbox_item = (url: string) => {
+  const items = url.split("/");
+  if (items.length < 5 || items[4] === "") {
+    alert(`Pasted URL is not a scrapbox page, ignored: ${url}`);
+    return;
+  }
+
   updateGlobal((g) => {
     g.dialog = "Loading";
     g.statusBar.type = "downloading";
@@ -63,6 +70,7 @@ export const add_scrapbox_item = (url: string) => {
     })
     .then(() => {
       set_status("done");
+      mark_local_changed();
     });
 };
 
