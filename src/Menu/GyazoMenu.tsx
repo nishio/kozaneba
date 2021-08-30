@@ -2,12 +2,7 @@ import { Menu } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { get_item } from "../Event/get_item";
-import {
-  TGyazoItem,
-  TItem,
-  TScrapboxItem,
-} from "../Global/initializeGlobalState";
-import { updateGlobal } from "../Global/updateGlobal";
+import { TGyazoItem, TItem } from "../Global/initializeGlobalState";
 import { BigSmallMenuItem } from "./BigSmallMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
