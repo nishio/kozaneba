@@ -20,6 +20,9 @@ import { UserDialog } from "./User/UserDialog";
 import { HelpDialog } from "./Tutorial/HelpDialog";
 import { LoadingDialog } from "./LoadingDialog";
 import { BaDialog } from "./BaDialog";
+import { Scrapbox } from "../Canvas/Scrapbox";
+import { ScrapboxMenu } from "../Menu/ScrapboxMenu";
+import { GyazoMenu } from "../Menu/GyazoMenu";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -52,6 +55,8 @@ export const Blank = () => {
       <HelpDialog />
       <LoadingDialog />
       <BaDialog />
+      <ScrapboxMenu />
+      <GyazoMenu />
     </div>
   );
 };

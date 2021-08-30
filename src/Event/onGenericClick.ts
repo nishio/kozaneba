@@ -25,10 +25,10 @@ export const onGenericClick = (
     show_menu("Group", event);
     return true;
   } else if (target.type === "scrapbox") {
-    show_menu("Kozane", event);
+    show_menu("Scrapbox", event);
     return true;
   } else if (target.type === "gyazo") {
-    show_menu("Kozane", event);
+    show_menu("Gyazo", event);
     return true;
   }
   return false;

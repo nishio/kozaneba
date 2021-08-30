@@ -35,7 +35,7 @@ export const BigSmallMenuItem: React.FC<{ id: ItemId }> = ({ id }) => {
       <MenuItem onClick={onBig} data-testid="big">
         big
       </MenuItem>
-      ;{Small}
+      {Small}
     </>
   );
 };

@@ -87,7 +87,16 @@ enum NameplateIdBrand {
 export type NameplateId = NameplateIdBrand & string;
 export type KozaneViewId = ItemId | NameplateId;
 
-export type TMenu = "" | "Main" | "Dev" | "Kozane" | "Selection" | "Group";
+export type TMenu =
+  | ""
+  | "Main"
+  | "Dev"
+  | "Kozane"
+  | "Selection"
+  | "Group"
+  | "Scrapbox"
+  | "Gyazo";
+
 export type TStatusType =
   | "text"
   | "no-connection"
