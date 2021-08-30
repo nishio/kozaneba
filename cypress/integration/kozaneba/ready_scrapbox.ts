@@ -16,7 +16,7 @@ describe("ready one kozane", () => {
       id: "scrapbox1" as ItemId,
       type: "scrapbox",
       text: "2021-08-27Kozaneba開発日記",
-      icon: "https://gyazo.com/872f3897132974239c3ad539a6a8df69/thumb/400",
+      image: "https://gyazo.com/872f3897132974239c3ad539a6a8df69/thumb/400",
       position: [0, 0] as TWorldCoord,
       scale: 1,
       url: "",
@@ -28,7 +28,7 @@ describe("ready one kozane", () => {
       id: "scrapbox2" as ItemId,
       type: "scrapbox",
       text: "Wikiは辞書ではない",
-      icon: "",
+      image: "",
       url: "",
       description: [
         "[Wiki]を[辞書]のメタファーで捉えることは有害",
