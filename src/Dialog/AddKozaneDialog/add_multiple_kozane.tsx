@@ -1,43 +1,58 @@
+import { getGlobal } from "reactn";
+import { State } from "reactn/default";
+import { TWorldCoord } from "../../dimension/world_to_screen";
+import { get_item } from "../../Event/get_item";
+import { ItemId, TItem } from "../../Global/initializeGlobalState";
+import { updateGlobal } from "../../Global/updateGlobal";
+import { find_parent } from "../../Group/find_parent";
+import { GroupItem, TGroupItem } from "../../Group/GroupItem";
 import { KozaneItem } from "../../Kozane/KozaneItem";
 import {
   KOZANE_BORDER,
   KOZANE_HEIGHT,
   KOZANE_WIDTH,
 } from "../../Kozane/kozane_constants";
-import { updateGlobal } from "../../Global/updateGlobal";
-import { GroupItem, TGroupItem } from "../../Group/GroupItem";
-import { multiline_to_lines } from "./multiline_to_lines";
-import { TWorldCoord } from "../../dimension/world_to_screen";
-import { getGlobal } from "reactn";
-import { get_item } from "../../Event/get_item";
-import { find_parent } from "../../Group/find_parent";
 import { remove_item_from } from "../../utils/remove_item";
-import { ItemId, TItem } from "../../Global/initializeGlobalState";
-import { State } from "reactn/default";
 import { get_center_of_screen } from "./get_center_of_screen";
+import { multiline_to_lines } from "./multiline_to_lines";
+
+export const create_squared_position = (
+  items: unknown[],
+  UNIT_WIDTH: number,
+  UNIT_HEIGHT: number,
+  MARGIN: number
+): TWorldCoord[] => {
+  const N = items.length;
+  const area = N * UNIT_WIDTH * UNIT_HEIGHT;
+  const numX = Math.ceil(Math.sqrt(area) / UNIT_WIDTH);
+  const width = numX * UNIT_WIDTH;
+  const height = Math.ceil(N / numX) * UNIT_HEIGHT;
+  return items.map((line, index) => {
+    let x = index % numX;
+    let y = Math.floor(index / numX);
+    x *= UNIT_WIDTH - MARGIN;
+    y *= UNIT_HEIGHT - MARGIN;
+
+    x += -width / 2 + UNIT_WIDTH / 2;
+    y += -height / 2 + UNIT_HEIGHT / 2;
+    return [x, y] as TWorldCoord;
+  });
+};
 
 export const create_squared_group = (items: string[]) => {
-  const N = items.length;
-  const area = N * KOZANE_WIDTH * KOZANE_HEIGHT;
-  const numX = Math.ceil(Math.sqrt(area) / KOZANE_WIDTH);
-  const width = numX * KOZANE_WIDTH;
-  const height = Math.ceil(N / numX) * KOZANE_HEIGHT;
-  const [cx, cy] = [0, 0];
+  const positions = create_squared_position(
+    items,
+    KOZANE_WIDTH + KOZANE_BORDER,
+    KOZANE_HEIGHT + KOZANE_BORDER,
+    -KOZANE_BORDER
+  );
   const group = new GroupItem();
   const kozane_list = [] as TItem[];
   items.forEach((line, index) => {
     if (line === "") return;
-    let x = index % numX;
-    let y = Math.floor(index / numX);
-    x *= KOZANE_WIDTH + KOZANE_BORDER;
-    y *= KOZANE_HEIGHT + KOZANE_BORDER;
-
-    x += cx - width / 2 + KOZANE_WIDTH / 2;
-    y += cy - height / 2 + KOZANE_HEIGHT / 2;
-
     const kozane = new KozaneItem();
     kozane.text = line;
-    kozane.position = [x, y] as TWorldCoord;
+    kozane.position = positions[index]!;
     kozane_list.push(kozane);
   });
 
