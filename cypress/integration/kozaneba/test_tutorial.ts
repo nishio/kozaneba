@@ -59,7 +59,7 @@ describe("tutorial", () => {
     cy.testid("tutorial-title").contains("Let's click to show context menu");
     cy.testid("tutorial-close").click();
     do_click("3");
-    cy.testid("kozane-delete").click();
+    cy.testid("delete").click();
     do_click("1");
     cy.testid("group-delete").click();
     cy.testid("tutorial-status").click();
