@@ -9,4 +9,5 @@ export type TDialog =
   | "User"
   | "Help"
   | "Loading"
-  | "Ba";
+  | "Ba"
+  | "EditKozane";
