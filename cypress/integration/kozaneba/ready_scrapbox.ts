@@ -19,7 +19,7 @@ describe("ready one kozane", () => {
       image: "https://gyazo.com/872f3897132974239c3ad539a6a8df69/thumb/400",
       position: [0, 0] as TWorldCoord,
       scale: 1,
-      url: "",
+      url: "https://scrapbox.io/nishio/2021-08-27Kozaneba%E9%96%8B%E7%99%BA%E6%97%A5%E8%A8%98",
       description: [],
     };
     add_item(scrapbox1);

@@ -1,6 +1,7 @@
-import { Menu } from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { add_scrapbox_links } from "../API/make_scrapbox_kozane";
 import { get_item } from "../Event/get_item";
 import { TItem, TScrapboxItem } from "../Global/initializeGlobalState";
 import { BigSmallMenuItem } from "./BigSmallMenuItem";
@@ -21,6 +22,11 @@ export const ScrapboxMenu = () => {
   const id = g.clicked_target;
   if (id === "") return null;
   const item = get_item(g, id);
+  if (!isTScrapboxItem(item)) return null;
+
+  const onExpand = () => {
+    add_scrapbox_links(item.url, false, true);
+  };
   if (isTScrapboxItem(item)) {
     return (
       <Menu
@@ -31,6 +37,8 @@ export const ScrapboxMenu = () => {
       >
         <BigSmallMenuItem id={id} />
         <VisitMenuItem item={item} />
+        <MenuItem onClick={onExpand}>expand</MenuItem>
+
         <DeleteMenuItem id={id} />
       </Menu>
     );

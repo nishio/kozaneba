@@ -16,7 +16,7 @@ const ScrapboxLine = styled.p`
   margin: 0;
 `;
 
-const SCRAPBOX_SIZE = 400;
+export const SCRAPBOX_SIZE = 400;
 export const ScrapboxDiv = styled.div`
   color: #000;
   word-wrap: break-word;
