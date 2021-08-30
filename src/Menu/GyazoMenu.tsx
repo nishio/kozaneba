@@ -14,7 +14,7 @@ const isTGyazoItem = (x: TItem): x is TGyazoItem => {
 export const GyazoMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
-  const open = menu === "Scrapbox";
+  const open = menu === "Gyazo";
   const onClose = () => {
     setMenu("");
   };
