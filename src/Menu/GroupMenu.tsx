@@ -8,6 +8,7 @@ import { GroupItem } from "../Group/GroupItem";
 import { KozaneItem } from "../Kozane/KozaneItem";
 import { remove_item_from } from "../utils/remove_item";
 import { delete_item_from_world } from "./delete_item_from_world";
+import { BigSmallMenuItem } from "./BigSmallMenuItem";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -69,31 +70,6 @@ export const GroupMenu = () => {
     });
   };
 
-  const onBig = () => {
-    updateGlobal((g) => {
-      const item = get_item(g, gid);
-      item.scale++;
-    });
-  };
-  const Big = isOpenGroup ? null : (
-    <MenuItem onClick={onBig} data-testid="group-big">
-      big
-    </MenuItem>
-  );
-
-  const onSmall = () => {
-    updateGlobal((g) => {
-      const item = get_item(g, gid);
-      item.scale--;
-    });
-  };
-  const Small =
-    isOpenGroup && group.scale > 1 ? (
-      <MenuItem onClick={onSmall} data-testid="group-small">
-        small
-      </MenuItem>
-    ) : null;
-
   return (
     <Menu
       anchorEl={anchor}
@@ -105,8 +81,7 @@ export const GroupMenu = () => {
       <MenuItem onClick={onOpenClose} data-testid="group-open-close">
         {labelOpenClose}
       </MenuItem>
-      {Big}
-      {Small}
+      {!isOpenGroup ? <BigSmallMenuItem id={gid} /> : null}
       <MenuItem onClick={onUngroup} data-testid="group-ungroup">
         ungroup
       </MenuItem>
