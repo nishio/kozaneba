@@ -6,6 +6,7 @@ import { TWorldCoord } from "../dimension/world_to_screen";
 import { onGenericMouseDown } from "../Event/onGenericMouseDown";
 import { TGyazoItem } from "../Global/initializeGlobalState";
 import { position_to_left_top } from "../Kozane/position_to_left_top";
+import { modify_image_url } from "./modify_image_url";
 
 const GYAZO_SIZE = 200;
 const GYAZO_BORDER = 1;
@@ -75,7 +76,7 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
       <GyazoImg
         data-testid={value.id}
         ref={ref}
-        src={value.url + "/thumb/400"}
+        src={modify_image_url(value.url)}
         alt=""
         onLoad={onLoad}
         style={{

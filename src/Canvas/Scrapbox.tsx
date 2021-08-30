@@ -6,6 +6,7 @@ import { onGenericMouseDown } from "../Event/onGenericMouseDown";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { NoSelect } from "../Group/GroupDiv";
 import { position_to_left_top } from "../Kozane/position_to_left_top";
+import { modify_image_url } from "./modify_image_url";
 
 type Props = {
   value: TScrapboxItem;
@@ -52,7 +53,7 @@ export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   if (value.image !== "") {
     contents = (
       <img
-        src={value.image + "/thumb/400"}
+        src={modify_image_url(value.image)}
         alt=""
         style={{
           maxWidth: "100%",
@@ -81,7 +82,6 @@ export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   );
   const width = b.right - b.left;
   const height = b.bottom - b.top;
-  console.log(width, height);
   const style = {
     ...left_top,
     width,
@@ -89,11 +89,19 @@ export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
     fontSize: 200 * value.scale + "%",
   };
 
+  const lineHeight = 40 * value.scale;
   return (
     <ScrapboxDiv onMouseDown={onMouseDown} style={style}>
       <ScrapboxBack />
       <div>
-        <div style={{ position: "relative", padding: "10px 12px" }}>
+        <div
+          style={{
+            position: "relative",
+            padding: "10px 12px",
+            lineHeight: lineHeight + "px",
+            maxHeight: lineHeight * 3 - 10 + "px",
+          }}
+        >
           <div style={{ fontWeight: 500 }}>
             <strong>{value.text}</strong>
           </div>
