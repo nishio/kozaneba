@@ -1,4 +1,4 @@
-import { TWorldCoord } from "../dimension/world_to_screen";
+import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { add_item } from "./add_item";
@@ -44,7 +44,7 @@ const add_scrapbox_item_raw = (props: {
     url: url ?? "",
     description: descriptions ?? [],
 
-    position: [0, 0] as TWorldCoord,
+    position: get_center_of_screen(),
     scale: 1,
   };
   add_item(scrapbox);

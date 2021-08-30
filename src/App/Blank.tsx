@@ -9,6 +9,7 @@ import { Dialogs } from "../Dialog/Dialogs";
 import { KeyboardShortcut } from "./KeyboardShortcut";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
 import { StatusBar } from "./StatusBar";
+import { onPaste } from "./onPaste";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -20,7 +21,7 @@ export const Blank = () => {
   }, [cloud_ba]);
 
   return (
-    <div className="App">
+    <div className="App" onPaste={onPaste}>
       <MyAppBar />
       <ItemCanvas />
       <AdjustFontSize />
