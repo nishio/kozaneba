@@ -1,5 +1,7 @@
+import { set_status } from "../Cloud/initial_save";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
+import { updateGlobal } from "../Global/updateGlobal";
 import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { add_item } from "./add_item";
 
@@ -51,21 +53,31 @@ const add_scrapbox_item_raw = (props: {
 };
 
 export const add_scrapbox_item = (url: string) => {
-  get_page_json(url).then((x) => {
-    make_scrapbox_kozane(x, url);
+  updateGlobal((g) => {
+    g.dialog = "Loading";
+    g.statusBar.type = "downloading";
   });
+  get_page_json(url)
+    .then((x) => {
+      make_scrapbox_kozane(x, url);
+    })
+    .then(() => {
+      set_status("done");
+    });
 };
 
 const make_url = (root: string, title: string) => {
   return root + "/" + encodeURIComponent(title);
 };
 
-export const add_scrapbox_links = (url: string) => {
+export const add_scrapbox_links = (url: string, include_self = true) => {
   const m = url.match(/(.*?)\/([^/]*?)$/);
   if (m === null) return;
   const [, root] = m;
   get_page_json(url).then((x) => {
-    make_scrapbox_kozane(x, url);
+    if (include_self) {
+      make_scrapbox_kozane(x, url);
+    }
     x.relatedPages.links1hop.forEach((x: TScrapboxPage) => {
       make_scrapbox_kozane(x, make_url(root!, x.title));
     });
