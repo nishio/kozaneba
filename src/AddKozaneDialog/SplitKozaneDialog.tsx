@@ -45,7 +45,7 @@ export const SplitKozaneDialog = () => {
   if (!open) return null;
 
   const g = getGlobal();
-  const id = g.clicked_kozane;
+  const id = g.clicked_target;
   const item = get_item(g, id);
   const text = item.text;
 

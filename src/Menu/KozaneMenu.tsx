@@ -13,14 +13,14 @@ export const KozaneMenu = () => {
     setMenu("");
   };
   const g = getGlobal();
-  const id = g.clicked_kozane;
+  const id = g.clicked_target;
   if (id === "") return null;
   const kozane = get_item(g, id);
 
   const onDelete = () => {
     delete_item_from_world(id);
     updateGlobal((g) => {
-      g.clicked_kozane = "";
+      g.clicked_target = "";
     });
     setMenu("");
   };

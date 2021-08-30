@@ -11,7 +11,7 @@ export const onGroupClick = (
   if (is_dragged()) return;
   console.log("onGroupClick");
   updateGlobal((g) => {
-    g.clicked_group = group_id;
+    g.clicked_target = group_id;
     g.drag_target = "";
   });
   show_menu("Group", event);

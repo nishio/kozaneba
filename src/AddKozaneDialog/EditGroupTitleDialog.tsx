@@ -45,7 +45,7 @@ export const EditGroupTitleDialog = () => {
     return null;
   }
   const g = getGlobal();
-  const id = g.clicked_group;
+  const id = g.clicked_target;
   const group = g.itemStore[id] as GroupItem;
   const text = get_group_title(group);
 

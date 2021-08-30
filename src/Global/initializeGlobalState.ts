@@ -25,8 +25,9 @@ export const INITIAL_GLOBAL_STATE = {
   selected_items: [] as ItemId[],
   is_selected: false,
   mouseState: "" as TMouseState,
-  clicked_group: "" as "" | ItemId,
-  clicked_kozane: "" as "" | ItemId,
+  clicked_target: "" as "" | ItemId,
+  // clicked_group: "" as "" | ItemId,
+  // clicked_kozane: "" as "" | ItemId,
 
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,

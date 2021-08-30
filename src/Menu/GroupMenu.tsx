@@ -18,7 +18,7 @@ export const GroupMenu = () => {
   };
 
   const g = getGlobal();
-  const gid = g.clicked_group;
+  const gid = g.clicked_target;
   if (gid === "") return null;
   const group = g.itemStore[gid] as GroupItem;
 
@@ -39,7 +39,7 @@ export const GroupMenu = () => {
       }
       g.drawOrder = remove_item_from(g.drawOrder, gid);
       delete g.itemStore[gid];
-      g.clicked_group = "";
+      g.clicked_target = "";
     });
     setMenu("");
   };
@@ -47,7 +47,7 @@ export const GroupMenu = () => {
   const onDelete = () => {
     delete_item_from_world(gid);
     updateGlobal((g) => {
-      g.clicked_group = "";
+      g.clicked_target = "";
     });
     setMenu("");
   };

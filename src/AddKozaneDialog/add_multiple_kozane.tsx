@@ -79,7 +79,7 @@ const finish = () => {
 
 export const replace_multiple_kozane = (multiline: string) => {
   const g = getGlobal();
-  const target_id = g.clicked_kozane;
+  const target_id = g.clicked_target;
   if (target_id === "") {
     // no replacce target specified
     add_multiple_kozane(multiline);

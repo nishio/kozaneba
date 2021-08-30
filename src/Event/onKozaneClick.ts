@@ -11,7 +11,7 @@ export const onKozaneClick = (
   if (is_dragged()) return;
   console.log("onKozaneClick");
   updateGlobal((g) => {
-    g.clicked_kozane = kozane_id;
+    g.clicked_target = kozane_id;
     g.drag_target = "";
   });
   show_menu("Kozane", event);
