@@ -14,6 +14,7 @@ import { find_parent } from "../../Group/find_parent";
 import { remove_item_from } from "../../utils/remove_item";
 import { ItemId, TItem } from "../../Global/initializeGlobalState";
 import { State } from "reactn/default";
+import { get_center_of_screen } from "./get_center_of_screen";
 
 export const create_squared_group = (items: string[]) => {
   const N = items.length;
@@ -60,7 +61,7 @@ export const add_multiple_kozane = (multiline: string) => {
 
   const group = create_squared_group(items);
   updateGlobal((g) => {
-    group.position = [-g.trans_x, -g.trans_y] as TWorldCoord;
+    group.position = get_center_of_screen();
     g.itemStore[group.id] = group;
     g.drawOrder.push(group.id);
   });
