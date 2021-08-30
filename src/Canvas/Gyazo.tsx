@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { TOffset } from "../dimension/TOffset";
 import { add_v2w, mul_v2, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
+import { onGenericMouseDown } from "../Event/onGenericMouseDown";
 import { TGyazoItem } from "../Global/initializeGlobalState";
 import { position_to_left_top } from "../Kozane/position_to_left_top";
 
@@ -67,7 +67,7 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
   const left_top = position_to_left_top(add_v2w(value.position, o));
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    onKozaneMouseDown(e, value);
+    onGenericMouseDown(e, value);
   };
 
   return (
