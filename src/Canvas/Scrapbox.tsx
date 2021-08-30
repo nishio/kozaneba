@@ -17,11 +17,6 @@ const ScrapboxLine = styled.p`
 
 const SCRAPBOX_SIZE = 400;
 export const ScrapboxDiv = styled.div`
-  width: ${SCRAPBOX_SIZE}px;
-  height: ${SCRAPBOX_SIZE}px;
-  font-size: 200%;
-  top: ${(props) => props.style?.top ?? "0px"};
-  left: ${(props) => props.style?.left ?? "0px"};
   color: #000;
   word-wrap: break-word;
   overflow: hidden;
@@ -81,17 +76,21 @@ export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   };
 
   const b = get_scrapbox_bounding_box(value);
+  const left_top = position_to_left_top(
+    add_v2w([b.left, b.top] as TWorldCoord, [offset.x, offset.y] as TWorldCoord)
+  );
+  const width = b.right - b.left;
+  const height = b.bottom - b.top;
+  console.log(width, height);
+  const style = {
+    ...left_top,
+    width,
+    height,
+    fontSize: 200 * value.scale + "%",
+  };
 
   return (
-    <ScrapboxDiv
-      style={position_to_left_top(
-        add_v2w(
-          [b.left, b.top] as TWorldCoord,
-          [offset.x, offset.y] as TWorldCoord
-        )
-      )}
-      onMouseDown={onMouseDown}
-    >
+    <ScrapboxDiv onMouseDown={onMouseDown} style={style}>
       <ScrapboxBack />
       <div>
         <div style={{ position: "relative", padding: "10px 12px" }}>
