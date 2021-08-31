@@ -4,6 +4,7 @@ import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { add_v2w, clone_v2w } from "../dimension/V2";
+import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
@@ -12,6 +13,8 @@ import { remove_item_from } from "../utils/remove_item";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
 import { delete_item_from_world } from "./delete_item_from_world";
+import { move_front } from "./move_front";
+import { normalize_group_position } from "./normalize_group_position";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -61,7 +64,8 @@ export const GroupMenu = () => {
     normalize_group_position(gid);
     move_front(gid);
     updateGlobal((g) => {
-      (g.itemStore[gid] as GroupItem).isOpen = !isOpenGroup;
+      const group = get_group(g, gid);
+      group.isOpen = !isOpenGroup;
       g.menu = "";
     });
   };
