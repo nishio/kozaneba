@@ -10,7 +10,9 @@ import { is_some_dialog_open } from "./is_some_dialog_open";
 export const onPaste = (e: React.ClipboardEvent) => {
   if (is_some_dialog_open()) return;
   if (navigator.clipboard.readText === undefined) {
-    const text = prompt("Paste again");
+    const text = prompt(
+      "Paste URL again\nor if it is multiline text, press Enter to open AddKozane dialog "
+    );
     if (text !== null) {
       pasted(text);
     }
