@@ -1,6 +1,8 @@
 import { Menu } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { kozaneba } from "../API/KozanebaAPI";
+import { UserMenuItem } from "../API/UserMenuItem";
 import { get_item } from "../Event/get_item";
 import { TGyazoItem, TItem } from "../Global/initializeGlobalState";
 import { BigSmallMenuItem } from "./BigSmallMenuItem";
@@ -31,6 +33,7 @@ export const GyazoMenu = () => {
       >
         <BigSmallMenuItem id={id} />
         <VisitMenuItem item={item} />
+        {kozaneba.user_menus["Gyazo"]!.map(UserMenuItem)}
         <DeleteMenuItem id={id} />
       </Menu>
     );
