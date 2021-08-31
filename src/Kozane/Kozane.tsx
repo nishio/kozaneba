@@ -4,6 +4,7 @@ import React from "react";
 import { CSSProperties } from "react";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
+import { dev_log } from "../utils/dev";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { TKozaneItem } from "./KozaneItem";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
@@ -36,6 +37,7 @@ export const Kozane: React.FC<Props> = ({
         style={{ position: "absolute", fontSize: "20px", top: 0 }}
       />
     ) : null;
+  dev_log("style", style);
   return (
     <KozaneDiv
       className="kozane"

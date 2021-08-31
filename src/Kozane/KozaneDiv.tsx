@@ -10,6 +10,10 @@ import {
 export const KozaneDiv = styled.div`
   background: #ffc;
   opacity: ${OPACITY};
+
+  top: ${(props) => props.style?.top ?? "0px"};
+  left: ${(props) => props.style?.left ?? "0px"};
+
   width: ${KOZANE_WIDTH}px;
   height: ${KOZANE_HEIGHT}px;
   color: #000;

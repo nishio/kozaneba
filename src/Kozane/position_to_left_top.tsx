@@ -5,7 +5,7 @@ export const position_to_left_top = (
 ): { left: string; top: string } => {
   const [x, y] = position;
   return {
-    left: x + "px",
-    top: y + "px",
+    left: x.toFixed(2) + "px",
+    top: y.toFixed(2) + "px",
   };
 };

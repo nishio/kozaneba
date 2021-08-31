@@ -73,6 +73,7 @@ export const onCanvasMouseUp = (
       });
       normalize_group_position(parent);
     } else {
+      console.log(`move target ${target_id} on top level`);
       move_front(target_id);
       updateGlobal((g) => {
         const x = get_item(g, target_id);

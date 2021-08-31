@@ -20,7 +20,6 @@ export const useAdjustFontsizeStyle = (
     offset.y - (scale * KOZANE_HEIGHT) / 2 - KOZANE_BORDER,
   ] as TWorldCoord;
   const left_top = position_to_left_top(add_v2w(value.position, o));
-
   useEffect(() => {
     setFontSize(adjustFontSize(text) * scale);
   }, [text, scale]);
