@@ -1,5 +1,6 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
+import { mark_local_changed } from "../../Cloud/mark_local_changed";
 import { TWorldCoord } from "../../dimension/world_to_screen";
 import { get_item } from "../../Event/get_item";
 import { ItemId, TItem } from "../../Global/initializeGlobalState";
@@ -12,6 +13,7 @@ import {
   KOZANE_HEIGHT,
   KOZANE_WIDTH,
 } from "../../Kozane/kozane_constants";
+import { move_front } from "../../Menu/move_front";
 import { remove_item_from } from "../../utils/remove_item";
 import { get_center_of_screen } from "./get_center_of_screen";
 import { multiline_to_lines } from "./multiline_to_lines";
@@ -87,10 +89,8 @@ const finish = () => {
   updateGlobal((g) => {
     g.dialog = "";
     g.add_kozane_text = "";
-
-    g.is_local_change = true;
-    g.last_updated = Date.now();
   });
+  mark_local_changed();
 };
 
 export const replace_multiple_kozane = (multiline: string) => {
@@ -111,6 +111,7 @@ export const replace_multiple_kozane = (multiline: string) => {
     updateGlobal((g) => {
       g.itemStore[target_id] = { ...target, text: items[0]! };
     });
+    move_front(target_id);
     finish();
     return;
   }
