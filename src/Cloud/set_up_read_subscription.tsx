@@ -1,5 +1,6 @@
 import { getGlobal, setGlobal } from "reactn";
 import { fit_to_contents } from "../App/toggle_fit_to_contents";
+import { dev_log } from "../utils/dev";
 import { db, docdate_to_state, DocSnap } from "./FirestoreIO";
 import { set_status } from "./initial_save";
 let unsubscribe = null as null | (() => void);
@@ -24,8 +25,12 @@ export const set_up_read_subscription = (ba: string) => {
         setGlobal(fit_to_contents());
       } else if (data.last_updated < local_latest) {
         throw new Error("received old data from server (warning)"); // it happens?
+      } else {
+        console.log("no need to update");
       }
+      dev_log("before done");
       set_status("done");
+      dev_log("done");
     });
   return unsubscribe;
 };

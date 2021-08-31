@@ -1,11 +1,13 @@
+import { dev_log } from "../utils/dev";
 import "./App.css";
-import { TinySample } from "./TinySample";
-import { TopPage } from "./TopPage";
 import { Blank } from "./Blank";
 import { Edit } from "./Edit";
 import { NewBa } from "./NewBa";
+import { TinySample } from "./TinySample";
+import { TopPage } from "./TopPage";
 
 function App() {
+  dev_log("render App");
   if (document.location.hash === "") {
     return <TopPage />; // tutorial for first visiter
   }

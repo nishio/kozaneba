@@ -12,6 +12,7 @@ import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { can_write } from "../App/can_write";
 import { READONLY_MESSAGE } from "../App/READONLY_MESSAGE";
+import { dev_log } from "../utils/dev";
 
 export const LoadingDialog = () => {
   const [dialog] = useGlobal("dialog");
@@ -21,7 +22,7 @@ export const LoadingDialog = () => {
   const [to_show_close_button, set_to_show_close_button] = useState(false);
 
   const open = dialog === "Loading";
-
+  dev_log("render LoadingDialog");
   useEffect(() => {
     if (open && statusBar.type === "done") {
       if (can_write()) {

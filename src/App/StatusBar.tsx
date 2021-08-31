@@ -12,6 +12,7 @@ import {
   faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { updateGlobal } from "../Global/updateGlobal";
+import { dev_log } from "../utils/dev";
 
 const addTooltip = (children: JSX.Element, text: string, testid: string) => {
   return (
@@ -29,6 +30,7 @@ export const StatusBar = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
   const [usingFirestoreEmulator] = useGlobal("usingFirestoreEmulator");
 
+  dev_log("render StatusBar", statusBar);
   let contents = null;
   if (statusBar.type === "loading") {
     contents = <FontAwesomeIcon icon={faSpinner} spin={true} />;

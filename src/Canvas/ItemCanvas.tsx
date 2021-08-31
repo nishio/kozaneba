@@ -3,13 +3,14 @@ import { Center } from "./Center";
 import { Kozane } from "../Kozane/Kozane";
 import { kozaneToKozaneItem } from "../kozaneToKozaneItem";
 import { ids_to_dom } from "./ids_to_dom";
-import { onCanvasMouseDown } from "../Event/mouseEventMamager";
+import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { SelectionView } from "../Selection/Selection";
 import { ItemId } from "../Global/initializeGlobalState";
 import { useEffect, useRef } from "react";
 import { onWheel } from "../Event/onWheel";
+import { dev_log, dev_time, dev_time_end } from "../utils/dev";
 
 export const ItemCanvas = () => {
   const [kozane] = useGlobal("kozane");
@@ -21,6 +22,7 @@ export const ItemCanvas = () => {
   const not_selected_items = [] as ItemId[];
   let contents: JSX.Element;
 
+  dev_log("render ItemCanvas");
   useEffect(() => {
     if (ref.current !== null) {
       ref.current.addEventListener("wheel", onWheel, { passive: false });
@@ -44,13 +46,17 @@ export const ItemCanvas = () => {
       </>
     );
   } else {
+    dev_time("ids_to_dom");
+    const dom = ids_to_dom(drawOrder, offset);
+    dev_time_end("ids_to_dom");
+
     contents = (
       <>
         <Center opacity={1}>
           {kozane.map((k) => (
             <Kozane value={kozaneToKozaneItem(k)} offset={offset} />
           ))}
-          {ids_to_dom(drawOrder, offset)}
+          {dom}
         </Center>
         <SelectionView />
       </>

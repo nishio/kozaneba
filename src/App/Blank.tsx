@@ -10,9 +10,11 @@ import { KeyboardShortcut } from "./KeyboardShortcut";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
 import { StatusBar } from "./StatusBar";
 import { onPaste } from "./onPaste";
+import { dev_log } from "../utils/dev";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
+  dev_log("render Blank", cloud_ba);
 
   useEffect(() => {
     if (cloud_ba !== "") {
