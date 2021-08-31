@@ -1,4 +1,5 @@
 import { getGlobal } from "reactn";
+import { redraw } from "../API/redraw";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem, TGroupItem } from "../Group/GroupItem";
@@ -24,5 +25,6 @@ export const make_items_into_new_group = (
     g.itemStore[group.id] = group;
   });
   normalize_group_position(group.id);
+  redraw();
   return group.id;
 };
