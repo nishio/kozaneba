@@ -1,3 +1,5 @@
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import React from "react";
 import { useRef, useState } from "reactn";
 import styled from "styled-components";
 import { TOffset } from "../dimension/TOffset";
@@ -32,8 +34,6 @@ export const get_gyazo_bounding_box = (item: TGyazoItem) => {
 };
 
 export const GyazoImg = styled.img`
-  top: ${(props) => props.style?.top ?? "0px"};
-  left: ${(props) => props.style?.left ?? "0px"};
   border: #aaa ${GYAZO_BORDER}px solid;
   position: absolute;
 `;
@@ -71,6 +71,13 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
     onGenericMouseDown(e, value);
   };
 
+  const style: CSSProperties = {
+    ...(value.custom?.style ?? {}),
+    ...left_top,
+    width: f(w),
+    height: f(h),
+    visibility: loaded ? "visible" : "hidden",
+  };
   return (
     <>
       <GyazoImg
@@ -79,12 +86,7 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
         src={modify_image_url(value.url)}
         alt=""
         onLoad={onLoad}
-        style={{
-          ...left_top,
-          width: f(w),
-          height: f(h),
-          visibility: loaded ? "visible" : "hidden",
-        }}
+        style={style}
         onMouseDown={onMouseDown}
       />
       {loaded ? null : <img src="spinner.gif" alt="" />}
