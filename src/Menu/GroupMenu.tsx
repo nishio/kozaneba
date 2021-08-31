@@ -58,6 +58,8 @@ export const GroupMenu = () => {
   const isOpenGroup = group !== null && group.isOpen;
   const labelOpenClose = isOpenGroup ? "close" : "open";
   const onOpenClose = () => {
+    normalize_group_position(gid);
+    move_front(gid);
     updateGlobal((g) => {
       (g.itemStore[gid] as GroupItem).isOpen = !isOpenGroup;
       g.menu = "";
