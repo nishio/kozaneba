@@ -2,6 +2,8 @@ import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { getGlobal, setGlobal, useGlobal } from "reactn";
+import { kozaneba } from "../../API/KozanebaAPI";
+import { UserMenuItem } from "../../API/UserMenuItem";
 import { can_write } from "../../App/can_write";
 import { initial_save } from "../../Cloud/initial_save";
 import { updateGlobal } from "../../Global/updateGlobal";
@@ -49,6 +51,7 @@ export const MainMenu = () => {
         <Ba />
         {/* <StartTutorial /> */}
         <SendFeedback />
+        {kozaneba.user_menus["Main"]!.map(UserMenuItem)}
       </Menu>
     </>
   );

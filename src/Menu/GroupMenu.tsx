@@ -10,6 +10,8 @@ import { remove_item_from } from "../utils/remove_item";
 import { delete_item_from_world } from "./delete_item_from_world";
 import { BigSmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
+import { kozaneba } from "../API/KozanebaAPI";
+import { UserMenuItem } from "../API/UserMenuItem";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -84,6 +86,8 @@ export const GroupMenu = () => {
         ungroup
       </MenuItem>
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
+
+      {kozaneba.user_menus["Group"]!.map(UserMenuItem)}
       <MenuItem onClick={onDelete} data-testid="group-delete">
         delete
       </MenuItem>

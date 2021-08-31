@@ -1,6 +1,8 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { kozaneba } from "../API/KozanebaAPI";
+import { UserMenuItem } from "../API/UserMenuItem";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { reset_selection } from "../Selection/reset_selection";
 import { copy_text } from "./copy_text";
@@ -44,6 +46,9 @@ export const SelectionMenu = () => {
       <MenuItem onClick={onCopyText} data-testid="copy-text">
         copy text
       </MenuItem>
+
+      {kozaneba.user_menus["Selection"]!.map(UserMenuItem)}
+
       <MenuItem onClick={onDelete}>delete items</MenuItem>
     </Menu>
   );

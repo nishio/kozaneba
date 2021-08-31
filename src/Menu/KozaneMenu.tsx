@@ -2,6 +2,8 @@ import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { add_item } from "../API/add_item";
+import { kozaneba } from "../API/KozanebaAPI";
+import { UserMenuItem } from "../API/UserMenuItem";
 import { close_menu } from "../AppBar/close_menu";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 import { get_item } from "../Event/get_item";
@@ -50,6 +52,8 @@ export const KozaneMenu = () => {
       <MenuItem onClick={onClone} data-testid="kozane-clone">
         clone
       </MenuItem>
+
+      {kozaneba.user_menus["Kozane"]!.map(UserMenuItem)}
       <DeleteMenuItem id={id} />
     </Menu>
   );

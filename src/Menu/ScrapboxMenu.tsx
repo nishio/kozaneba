@@ -1,7 +1,9 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { kozaneba } from "../API/KozanebaAPI";
 import { add_scrapbox_links } from "../API/make_scrapbox_kozane";
+import { UserMenuItem } from "../API/UserMenuItem";
 import { get_item } from "../Event/get_item";
 import { TItem, TScrapboxItem } from "../Global/initializeGlobalState";
 import { BigSmallMenuItem } from "./BigSmallMenuItem";
@@ -39,6 +41,7 @@ export const ScrapboxMenu = () => {
         <VisitMenuItem item={item} />
         <MenuItem onClick={onExpand}>expand</MenuItem>
 
+        {kozaneba.user_menus["Scrapbox"]!.map(UserMenuItem)}
         <DeleteMenuItem id={id} />
       </Menu>
     );
