@@ -36,6 +36,8 @@ export const get_gyazo_bounding_box = (item: TGyazoItem) => {
 export const GyazoImg = styled.img`
   border: #aaa ${GYAZO_BORDER}px solid;
   position: absolute;
+  top: ${(props) => props.style?.top ?? "0px"};
+  left: ${(props) => props.style?.left ?? "0px"};
 `;
 
 const base_size_cache: { [url: string]: [number, number] } = {};

@@ -24,6 +24,9 @@ export const ScrapboxDiv = styled.div`
   border: #aaa 1px solid;
   position: absolute;
   border-radius: 15px;
+  top: ${(props) => props.style?.top ?? "0px"};
+  left: ${(props) => props.style?.left ?? "0px"};
+
   ${NoSelect};
 `;
 
