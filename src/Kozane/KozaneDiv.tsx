@@ -12,8 +12,6 @@ export const KozaneDiv = styled.div`
   opacity: ${OPACITY};
   width: ${KOZANE_WIDTH}px;
   height: ${KOZANE_HEIGHT}px;
-  top: ${(props) => props.style?.top ?? "0px"};
-  left: ${(props) => props.style?.left ?? "0px"};
   color: #000;
   word-wrap: break-word;
   overflow: hidden;
