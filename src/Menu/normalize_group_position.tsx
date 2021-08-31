@@ -9,6 +9,7 @@ import { get_gravity_point } from "./get_gravity_point";
 export const normalize_group_position = (gid: ItemId) => {
   updateGlobal((g) => {
     const group = get_group(g, gid);
+    if (group.items.length === 0) return;
     const positions = group.items.map((id) => {
       const item = get_item(g, id);
       return item.position;
