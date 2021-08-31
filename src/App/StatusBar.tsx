@@ -13,17 +13,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { updateGlobal } from "../Global/updateGlobal";
 import { dev_log } from "../utils/dev";
+import { addTooltip } from "./addTooltip";
 
-const addTooltip = (children: JSX.Element, text: string, testid: string) => {
-  return (
-    <span className="tooltip" style={{ margin: "5px" }}>
-      {children}
-      <span className="tooltiptext" data-testid={testid}>
-        {text}
-      </span>
-    </span>
-  );
-};
 export const StatusBar = () => {
   const [statusBar] = useGlobal("statusBar");
   const [user] = useGlobal("user");
