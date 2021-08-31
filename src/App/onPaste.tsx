@@ -8,6 +8,7 @@ import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { is_some_dialog_open } from "./is_some_dialog_open";
 
 export const onPaste = (e: React.ClipboardEvent) => {
+  if (is_some_dialog_open()) return;
   if (navigator.clipboard.readText === undefined) {
     const text = prompt("Paste again");
     if (text !== null) {
@@ -19,8 +20,6 @@ export const onPaste = (e: React.ClipboardEvent) => {
 };
 
 const pasted = (text: string) => {
-  if (is_some_dialog_open()) return;
-
   if (text.startsWith("https://scrapbox.io/")) {
     add_scrapbox_item(text);
   } else if (text.startsWith("https://gyazo.com/")) {
