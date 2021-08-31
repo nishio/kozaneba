@@ -8,8 +8,13 @@ import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { is_some_dialog_open } from "./is_some_dialog_open";
 
 export const onPaste = (e: React.ClipboardEvent) => {
-  // console.log("onPaste", e);
-  // console.log(e.clipboardData);
+  if (navigator.clipboard.readText === undefined) {
+    const text = prompt("Paste again");
+    if (text !== null) {
+      pasted(text);
+    }
+    return;
+  }
   navigator.clipboard.readText().then(pasted);
 };
 
