@@ -2,7 +2,6 @@ import React from "react";
 import { getGlobal } from "reactn";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { add_v2w, sub_v2w } from "../dimension/V2";
-import { screen_to_world } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
@@ -10,9 +9,10 @@ import { move_front } from "../Menu/move_front";
 import { normalize_group_position } from "../Menu/normalize_group_position";
 import { remove_item_from } from "../utils/remove_item";
 import { reset_target } from "./fast_drag_manager";
-import { get_client_pos } from "./get_client_pos";
+import { get_group } from "./get_group";
 import { get_item } from "./get_item";
 import { handle_if_is_click } from "./handle_if_is_click";
+import { get_delta } from "./onCanvasMouseUp";
 
 export const onGroupMouseUp = (
   event: React.MouseEvent<HTMLDivElement>,
@@ -28,17 +28,14 @@ export const onGroupMouseUp = (
   const g = getGlobal();
 
   const target_id = g.drag_target;
+  const delta = get_delta(event);
   if (target_id === "selection") {
     console.log("selection drop on group", group_id);
-    const delta = sub_v2w(
-      screen_to_world(get_client_pos(event)),
-      g.dragstart_position
-    );
     updateGlobal((g) => {
-      const group_draft = g.itemStore[group_id] as TGroupItem;
+      const group_draft = get_group(g, group_id);
       g.selected_items.forEach((id) => {
         const x = get_item(g, id);
-        x.position = sub_v2w(add_v2w(x.position, delta), group.position);
+        x.position = sub_v2w(add_v2w(x.position, delta), group_draft.position);
         g.drawOrder = remove_item_from(g.drawOrder, id);
         group_draft.items.push(id);
       });
@@ -53,23 +50,22 @@ export const onGroupMouseUp = (
     mark_local_changed();
   } else if (target_id !== "") {
     console.log("drop on group", group_id);
+
     updateGlobal((g) => {
-      let position = sub_v2w(
-        screen_to_world(get_client_pos(event)),
-        g.dragstart_position
-      );
+      const group_draft = get_group(g, group_id);
+      let position = delta;
 
       const parent = find_parent(target_id);
       if (parent !== null) {
         const p = g.itemStore[parent] as TGroupItem;
         // `p` may equals to `group`, it's OK
         p.items = remove_item_from(p.items, target_id);
-        group.items.push(target_id);
-        position = sub_v2w(add_v2w(position, p.position), group.position);
+        group_draft.items.push(target_id);
+        position = sub_v2w(add_v2w(position, p.position), group_draft.position);
       } else {
         g.drawOrder = remove_item_from(g.drawOrder, target_id);
-        group.items.push(target_id);
-        position = sub_v2w(position, group.position);
+        group_draft.items.push(target_id);
+        position = sub_v2w(position, group_draft.position);
       }
       const target = get_item(g, target_id);
       target.position = position;

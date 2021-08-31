@@ -23,7 +23,9 @@ import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { normalize_group_position } from "../Menu/normalize_group_position";
 import { move_front } from "../Menu/move_front";
 
-const get_delta = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+export const get_delta = (
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>
+) => {
   const g = getGlobal();
   return sub_v2w(screen_to_world(get_client_pos(event)), g.dragstart_position);
 };
