@@ -9,10 +9,19 @@ import {
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { finishButtons } from "../../App/hotKey";
+import { close_menu_and_dialog } from "../../AppBar/close_menu";
+import { mark_local_changed } from "../../Cloud/mark_local_changed";
 import { get_item } from "../../Event/get_item";
+import { ItemId } from "../../Global/initializeGlobalState";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { get_group_title } from "../../Group/Group";
 import { GroupItem } from "../../Group/GroupItem";
+import { move_front } from "../../Menu/move_front";
+
+const is_item_id = (id: string): id is ItemId => {
+  const g = getGlobal();
+  return id in g.itemStore;
+};
 
 export const EditGroupTitleDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -28,16 +37,15 @@ export const EditGroupTitleDialog = () => {
     if (!open) return;
     const multiline = textarea.current.value;
 
-    updateGlobal((g) => {
-      const x = get_item(g, id);
-      if (x.text !== multiline) {
+    if (is_item_id(id)) {
+      updateGlobal((g) => {
+        const x = get_item(g, id);
         x.text = multiline;
-        g.is_local_change = true;
-        g.last_updated = Date.now();
-      }
-      g.dialog = "";
-      g.menu = "";
-    });
+      });
+      move_front(id);
+      mark_local_changed();
+      close_menu_and_dialog();
+    }
   };
   finishButtons["EditGroupTitleDialog"] = onEditGroupTitle;
 
