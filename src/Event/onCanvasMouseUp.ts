@@ -19,6 +19,14 @@ import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
 import { handle_if_is_click } from "./handle_if_is_click";
 import { get_item } from "./get_item";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { normalize_group_position } from "../Menu/normalize_group_position";
+import { move_front } from "../Menu/move_front";
+
+const get_delta = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const g = getGlobal();
+  return sub_v2w(screen_to_world(get_client_pos(event)), g.dragstart_position);
+};
 
 export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -27,15 +35,12 @@ export const onCanvasMouseUp = (
   if (handle_if_is_click(event)) return;
 
   const g = getGlobal();
+  const delta = get_delta(event);
 
   if (g.mouseState === "selecting") {
     finish_selecting(event);
   } else if (g.drag_target === "selection") {
     updateGlobal((g) => {
-      const delta = sub_v2w(
-        screen_to_world(get_client_pos(event)),
-        g.dragstart_position
-      );
       g.selected_items.forEach((id) => {
         const x = get_item(g, id);
         x.position = add_v2w(x.position, delta);
@@ -47,40 +52,34 @@ export const onCanvasMouseUp = (
       g.selectionRange.left = qx;
       g.selectionRange.top = qy;
       g.drag_target = "";
-      g.is_local_change = true;
-      g.last_updated = Date.now();
     });
+    mark_local_changed();
     reset_target();
   } else if (g.drag_target !== "") {
     const target_id: ItemId = g.drag_target;
-    updateGlobal((g) => {
-      let position = sub_v2w(
-        screen_to_world(get_client_pos(event)),
-        g.dragstart_position
-      );
 
-      // find parent
-      const parent = find_parent(target_id);
-      if (parent !== null) {
+    const parent = find_parent(target_id);
+    if (parent !== null) {
+      console.log(`move target ${target_id} out from parent`);
+      updateGlobal((g) => {
         const p = g.itemStore[parent] as TGroupItem;
         p.items = remove_item_from(p.items, target_id);
         g.drawOrder.push(target_id);
-        position = add_v2w(position, p.position);
-      } else {
-        g.drawOrder = remove_item_from(g.drawOrder, target_id);
-        g.drawOrder.push(target_id);
-      }
-      const x = get_item(g, target_id);
-      x.position = position;
-      g.drag_target = "";
-      g.is_local_change = true;
-      g.last_updated = Date.now();
+        const x = get_item(g, target_id);
+        x.position = add_v2w(delta, p.position);
+        g.drag_target = "";
+      });
+      normalize_group_position(parent);
+    } else {
+      move_front(target_id);
+      updateGlobal((g) => {
+        const x = get_item(g, target_id);
+        x.position = delta;
+        g.drag_target = "";
+      });
+    }
 
-      // const target = g.itemStore[g.drag_target];
-      // const delta = get_delta(event);
-      // target.position = add_v2w(target.position, delta);
-    });
-
+    mark_local_changed();
     reset_target();
   } else {
     throw new Error();
