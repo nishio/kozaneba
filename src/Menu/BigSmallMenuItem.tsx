@@ -6,16 +6,28 @@ import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 
-export const BigSmallMenuItem: React.FC<{ id: ItemId }> = ({ id }) => {
+type PropsType = { id: ItemId };
+export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
+  ({ id }, ref) => {
+    const onBig = () => {
+      updateGlobal((g) => {
+        const item = get_item(g, id);
+        item.scale++;
+      });
+      close_menu();
+    };
+
+    return (
+      <MenuItem onClick={onBig} ref={ref} data-testid="big">
+        big
+      </MenuItem>
+    );
+  }
+);
+
+export const SmallMenuItem: React.FC<{ id: ItemId }> = ({ id }) => {
   const g = getGlobal();
   const target = get_item(g, id);
-  const onBig = () => {
-    updateGlobal((g) => {
-      const item = get_item(g, id);
-      item.scale++;
-    });
-    close_menu();
-  };
   const onSmall = () => {
     updateGlobal((g) => {
       const item = get_item(g, id);
@@ -30,12 +42,5 @@ export const BigSmallMenuItem: React.FC<{ id: ItemId }> = ({ id }) => {
       </MenuItem>
     ) : null;
 
-  return (
-    <>
-      <MenuItem onClick={onBig} data-testid="big">
-        big
-      </MenuItem>
-      {Small}
-    </>
-  );
+  return Small;
 };

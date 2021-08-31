@@ -8,7 +8,7 @@ import { close_menu } from "../AppBar/close_menu";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 import { get_item } from "../Event/get_item";
 import { create_new_itemid } from "../Kozane/create_new_itemid";
-import { BigSmallMenuItem } from "./BigSmallMenuItem";
+import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { open_dialog } from "./open_dialog";
@@ -42,7 +42,8 @@ export const KozaneMenu = () => {
       open={open}
       onClose={close_context_menu}
     >
-      <BigSmallMenuItem id={id} />
+      <BigMenuItem id={id} />
+      <SmallMenuItem id={id} />
       <MenuItem onClick={onSplit} data-testid="kozane-split">
         split
       </MenuItem>

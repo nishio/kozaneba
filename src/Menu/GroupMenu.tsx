@@ -1,17 +1,17 @@
 import { Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { kozaneba } from "../API/KozanebaAPI";
+import { UserMenuItem } from "../API/UserMenuItem";
 import { add_v2w, clone_v2w } from "../dimension/V2";
 import { get_item } from "../Event/get_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { KozaneItem } from "../Kozane/KozaneItem";
 import { remove_item_from } from "../utils/remove_item";
-import { delete_item_from_world } from "./delete_item_from_world";
-import { BigSmallMenuItem } from "./BigSmallMenuItem";
+import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
-import { kozaneba } from "../API/KozanebaAPI";
-import { UserMenuItem } from "../API/UserMenuItem";
+import { delete_item_from_world } from "./delete_item_from_world";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -81,7 +81,8 @@ export const GroupMenu = () => {
       <MenuItem onClick={onOpenClose} data-testid="group-open-close">
         {labelOpenClose}
       </MenuItem>
-      {!isOpenGroup ? <BigSmallMenuItem id={gid} /> : null}
+      {!isOpenGroup ? <BigMenuItem id={gid} /> : null}
+      {!isOpenGroup ? <SmallMenuItem id={gid} /> : null}
       <MenuItem onClick={onUngroup} data-testid="group-ungroup">
         ungroup
       </MenuItem>

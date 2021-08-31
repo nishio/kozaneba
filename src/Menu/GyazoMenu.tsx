@@ -5,7 +5,7 @@ import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { get_item } from "../Event/get_item";
 import { TGyazoItem, TItem } from "../Global/initializeGlobalState";
-import { BigSmallMenuItem } from "./BigSmallMenuItem";
+import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
@@ -31,7 +31,8 @@ export const GyazoMenu = () => {
         open={open}
         onClose={close_context_menu}
       >
-        <BigSmallMenuItem id={id} />
+        <BigMenuItem id={id} />
+        <SmallMenuItem id={id} />
         <VisitMenuItem item={item} />
         {kozaneba.user_menus["Gyazo"]!.map(UserMenuItem)}
         <DeleteMenuItem id={id} />

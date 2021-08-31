@@ -6,7 +6,7 @@ import { add_scrapbox_links } from "../API/make_scrapbox_kozane";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { get_item } from "../Event/get_item";
 import { TItem, TScrapboxItem } from "../Global/initializeGlobalState";
-import { BigSmallMenuItem } from "./BigSmallMenuItem";
+import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
@@ -37,7 +37,8 @@ export const ScrapboxMenu = () => {
         open={open}
         onClose={close_context_menu}
       >
-        <BigSmallMenuItem id={id} />
+        <BigMenuItem id={id} />
+        <SmallMenuItem id={id} />
         <VisitMenuItem item={item} />
         <MenuItem onClick={onExpand}>expand</MenuItem>
 
