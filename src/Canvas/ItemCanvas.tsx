@@ -15,8 +15,10 @@ import { dev_log, dev_time, dev_time_end } from "../utils/dev";
 export const ItemCanvas = () => {
   const [kozane] = useGlobal("kozane");
   const [drawOrder] = useGlobal("drawOrder");
+  useGlobal("itemStore");
   const [selected_items] = useGlobal("selected_items");
   const [is_selected] = useGlobal("is_selected");
+
   const ref = useRef<HTMLDivElement>(null);
   const offset = { x: 0, y: 0 };
   const not_selected_items = [] as ItemId[];
