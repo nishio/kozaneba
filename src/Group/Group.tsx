@@ -3,7 +3,7 @@ import { getGlobal } from "reactn";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { is_draggeing } from "../Event/fast_drag_manager";
 import { get_item } from "../Event/get_item";
-import { onGroupMouseUp } from "../Event/mouseEventMamager";
+import { onGroupMouseUp } from "../Event/onGroupMouseUp";
 import { onGroupMouseDown } from "../Event/onGroupMouseDown";
 import { ItemId, NameplateId, TItem } from "../Global/initializeGlobalState";
 import { NameplateKozane } from "../Kozane/NameplateKozane";
