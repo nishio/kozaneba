@@ -2,9 +2,11 @@ import { MenuItem } from "@material-ui/core";
 import React from "react";
 import { getGlobal } from "reactn";
 import { close_menu } from "../AppBar/close_menu";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
+import { move_front } from "./move_front";
 
 type PropsType = { id: ItemId };
 export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
@@ -14,7 +16,9 @@ export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
         const item = get_item(g, id);
         item.scale++;
       });
+      move_front(id);
       close_menu();
+      mark_local_changed();
     };
 
     return (
@@ -33,7 +37,9 @@ export const SmallMenuItem: React.FC<{ id: ItemId }> = ({ id }) => {
       const item = get_item(g, id);
       item.scale--;
     });
+    move_front(id);
     close_menu();
+    mark_local_changed();
   };
   const Small =
     target.scale > 1 ? (
