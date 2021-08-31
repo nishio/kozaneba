@@ -2,6 +2,7 @@ import { CSSProperties } from "react";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
+import { move_front } from "../Menu/move_front";
 
 export const update_style = (
   id: ItemId,
@@ -20,5 +21,6 @@ export const update_style = (
     const style = g.itemStore[id]!.custom!.style!;
     g.itemStore[id]!.custom!.style = callback(style);
   });
+  move_front(id);
   mark_local_changed();
 };
