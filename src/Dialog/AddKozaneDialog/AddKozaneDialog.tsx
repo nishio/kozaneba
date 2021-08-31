@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { useGlobal } from "reactn";
+import { addTooltip } from "../../App/addTooltip";
 import { finishButtons } from "../../App/hotKey";
 import { add_multiple_kozane } from "./add_multiple_kozane";
 
@@ -87,13 +88,18 @@ export const AddKozaneDialog = () => {
         <Button color="primary" onClick={onClose}>
           Close
         </Button>
-        <Button
-          color="primary"
-          onClick={onAddKozane}
-          data-testid="add-kozane-button"
-        >
-          Add Kozane
-        </Button>
+
+        {addTooltip(
+          <Button
+            color="primary"
+            onClick={onAddKozane}
+            data-testid="add-kozane-button"
+          >
+            Add Kozane
+          </Button>,
+          "Cmd+Enter",
+          ""
+        )}
       </DialogActions>
     </Dialog>
   );
