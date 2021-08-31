@@ -2,9 +2,18 @@ import { State } from "reactn/default";
 import { setGlobal } from "reactn";
 import { produce } from "immer";
 
-export const updateGlobal = (update: (g: State) => void) => {
+export const updateGlobal = (update: (draft: State) => void) => {
   // update global variable in destructive manner using immer
-  setGlobal((g: State) => {
-    return produce(g, update);
+  setGlobal((current_state: State) => {
+    const new_state = produce(current_state, update);
+    const update_delta: { [key: string]: unknown } = {};
+    Object.entries(current_state).forEach(([key, ref]) => {
+      // @ts-ignore
+      if (current_state[key] !== new_state[key]) {
+        // @ts-ignore
+        update_delta[key] = new_state[key];
+      }
+    });
+    return update_delta;
   });
 };
