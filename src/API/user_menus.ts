@@ -13,6 +13,7 @@ const make_transparent: TUserMenu = {
       style.border = "none";
       return style;
     });
+    kozaneba.redraw();
   },
 };
 
