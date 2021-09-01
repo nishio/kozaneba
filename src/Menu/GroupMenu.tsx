@@ -17,6 +17,7 @@ export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
   const open = menu === "Group";
+  if (!open) return null;
 
   const g = getGlobal();
   const gid = g.clicked_target;
@@ -35,8 +36,6 @@ export const GroupMenu = () => {
     mark_local_changed();
     setMenu("");
   };
-
-  // after deletion of group it causes error?
 
   const isOpenGroup = group !== null && group.isOpen;
   const labelOpenClose = isOpenGroup ? "close" : "open";
