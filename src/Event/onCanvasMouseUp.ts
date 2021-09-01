@@ -90,7 +90,9 @@ export const onCanvasMouseUp = (
   event.preventDefault();
 };
 
-function finish_selecting(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+export function finish_selecting(
+  event: React.MouseEvent<HTMLDivElement, MouseEvent>
+) {
   updateGlobal((g) => {
     g.selectionRange.width = event.pageX - g.selectionRange.left;
     g.selectionRange.height = event.pageY - g.selectionRange.top;

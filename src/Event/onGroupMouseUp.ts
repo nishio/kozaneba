@@ -12,7 +12,7 @@ import { reset_target } from "./fast_drag_manager";
 import { get_group } from "./get_group";
 import { get_item } from "./get_item";
 import { handle_if_is_click } from "./handle_if_is_click";
-import { get_delta } from "./onCanvasMouseUp";
+import { finish_selecting, get_delta } from "./onCanvasMouseUp";
 
 export const onGroupMouseUp = (
   event: React.MouseEvent<HTMLDivElement>,
@@ -22,10 +22,15 @@ export const onGroupMouseUp = (
   event.preventDefault();
   event.stopPropagation();
   if (handle_if_is_click(event)) return;
+  const g = getGlobal();
+
+  if (g.mouseState === "selecting") {
+    finish_selecting(event);
+    return;
+  }
 
   const group_id = group.id;
   move_front(group_id);
-  const g = getGlobal();
 
   const target_id = g.drag_target;
   const delta = get_delta(event);
@@ -75,6 +80,8 @@ export const onGroupMouseUp = (
     mark_local_changed();
     reset_target();
   } else {
+    console.log("unexpected behavior", group_id);
+
     throw new Error();
   }
 };
