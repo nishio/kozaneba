@@ -1,4 +1,4 @@
-import { useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "reactn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSpinner,
@@ -14,6 +14,7 @@ import {
 import { updateGlobal } from "../Global/updateGlobal";
 import { dev_log } from "../utils/dev";
 import { addTooltip } from "./addTooltip";
+import { date_to_str } from "../utils/date_to_str";
 
 export const StatusBar = () => {
   const [statusBar] = useGlobal("statusBar");
@@ -28,7 +29,7 @@ export const StatusBar = () => {
   } else if (statusBar.type === "done") {
     contents = addTooltip(
       <FontAwesomeIcon icon={faCheckCircle} />,
-      "done",
+      "done " + date_to_str(getGlobal().last_updated, true),
       "save-status"
     );
   } else if (statusBar.type === "no-connection") {
