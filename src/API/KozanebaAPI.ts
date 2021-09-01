@@ -10,6 +10,11 @@ import { user_menus } from "./user_menus";
 import { getGlobal } from "reactn";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 import { try_to_import_json } from "../App/try_to_import_json";
+import { get_clicked_item } from "./get_clicked_item";
+import { fit_to_contents } from "../App/toggle_fit_to_contents";
+import { get_selected_ids } from "./get_selected_ids";
+import { reset_selection } from "../Selection/reset_selection";
+
 export const kozaneba = {
   // simple values to modify
   constants,
@@ -23,10 +28,14 @@ export const kozaneba = {
   add_scrapbox_item,
   add_scrapbox_links,
   try_to_import_json,
+  fit_to_contents,
+  reset_selection,
 
   // getter
   get_global: getGlobal,
   get_center_of_screen,
+  get_clicked_item,
+  get_selected_ids,
 
   // complex values
   after_render_toppage: start_tutorial,

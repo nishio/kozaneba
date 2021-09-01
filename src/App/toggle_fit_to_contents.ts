@@ -1,8 +1,9 @@
 import { getGlobal, setGlobal } from "reactn";
 import { get_items_bounding_box } from "../dimension/get_group_bounding_box";
+import { ItemId } from "../Global/initializeGlobalState";
 
 export const toggle_fit_to_contents = () => {
-  const new_view = fit_to_contents();
+  const new_view = fit_to_contents(undefined, false);
   console.log("new_view:", new_view);
   const g = getGlobal();
   if (
@@ -20,11 +21,14 @@ export const toggle_fit_to_contents = () => {
     setGlobal(new_view);
   }
 };
+
 const shrink = 0.9;
 let prev_view = { scale: 1, trans_x: 0, trans_y: 0 };
-export function fit_to_contents() {
+export function fit_to_contents(items?: ItemId[], to_set = true) {
   const g = getGlobal();
-  const items = g.drawOrder;
+  if (items === undefined) {
+    items = g.drawOrder;
+  }
   if (items.length === 0) return prev_view;
   const b = get_items_bounding_box(items);
 
@@ -45,5 +49,9 @@ export function fit_to_contents() {
   }
   const scale = Math.min(hscale, vscale) * shrink;
   const center_y = (b.bottom + b.top) / 2 - appBarHeight / 2 / scale;
-  return { scale, trans_x: -center_x, trans_y: -center_y };
+  const view = { scale, trans_x: -center_x, trans_y: -center_y };
+  if (to_set) {
+    setGlobal(view);
+  }
+  return view;
 }
