@@ -49,3 +49,16 @@ const make_transparent = {
   },
 };
 kozaneba.user_menus.Gyazo.push(make_transparent);
+
+kozaneba.user_menus.Main.push({
+  label: "↔",
+  onClick: () => kozaneba.add_kozane("↔"),
+});
+kozaneba.user_menus.Main.push({
+  label: "↕",
+  onClick: () => kozaneba.add_kozane("↕"),
+});
+kozaneba.user_menus.Main.push({
+  label: "🤔",
+  onClick: () => kozaneba.add_kozane("🤔"),
+});

@@ -4,6 +4,7 @@ import { try_to_import_json } from "../App/try_to_import_json";
 import { user_buttons } from "../AppBar/UserButtons";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 import { reset_selection } from "../Selection/reset_selection";
+import { add_kozane } from "./add_kozane";
 import { constants } from "./constants";
 import { get_clicked_item } from "./get_clicked_item";
 import { get_selected_ids } from "./get_selected_ids";
@@ -30,6 +31,7 @@ export const kozaneba = {
   try_to_import_json,
   fit_to_contents,
   reset_selection,
+  add_kozane,
 
   // getter
   get_global: getGlobal,
