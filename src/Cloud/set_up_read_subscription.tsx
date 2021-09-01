@@ -1,7 +1,6 @@
 import { getGlobal, setGlobal } from "reactn";
 import { fit_to_contents } from "../App/toggle_fit_to_contents";
 import { updateGlobal } from "../Global/updateGlobal";
-import { dev_log } from "../utils/dev";
 import { db, docdate_to_state, DocSnap } from "./FirestoreIO";
 import { set_status } from "./initial_save";
 let unsubscribe = null as null | (() => void);

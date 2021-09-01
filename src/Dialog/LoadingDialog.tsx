@@ -1,7 +1,5 @@
 import {
   faCheckCircle,
-  faCircleNotch,
-  faExclamationCircle,
   faExclamationTriangle,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
@@ -15,9 +13,9 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
-import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { can_write } from "../App/can_write";
 import { ERROR_MESSAGE, READONLY_MESSAGE } from "../App/READONLY_MESSAGE";
+import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { dev_log } from "../utils/dev";
 
 export const LoadingDialog = () => {
