@@ -9,7 +9,7 @@ import { add_scrapbox_item, add_scrapbox_links } from "./make_scrapbox_kozane";
 import { user_menus } from "./user_menus";
 import { getGlobal } from "reactn";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
-
+import { try_to_import_json } from "../App/try_to_import_json";
 export const kozaneba = {
   // simple values to modify
   constants,
@@ -22,6 +22,7 @@ export const kozaneba = {
   update_style,
   add_scrapbox_item,
   add_scrapbox_links,
+  try_to_import_json,
 
   // getter
   get_global: getGlobal,
