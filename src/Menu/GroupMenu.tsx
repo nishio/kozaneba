@@ -3,6 +3,7 @@ import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { add_v2w, clone_v2w } from "../dimension/V2";
 import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
@@ -53,6 +54,7 @@ export const GroupMenu = () => {
     updateGlobal((g) => {
       g.clicked_target = "";
     });
+    mark_local_changed();
     setMenu("");
   };
 
