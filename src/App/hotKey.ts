@@ -37,6 +37,9 @@ export const hotKey = (e: KeyboardEvent) => {
   } else if (e.key === "b") {
     zoom_in_pointer();
     e.preventDefault();
+  } else if (e.key === "n") {
+    zoom_out_pointer();
+    e.preventDefault();
   } else {
     console.log(e);
   }
@@ -57,4 +60,8 @@ const finishDialog = () => {
 
 const zoom_in_pointer = () => {
   zoom_around_pointer(2);
+};
+
+const zoom_out_pointer = () => {
+  zoom_around_pointer(0.5);
 };
