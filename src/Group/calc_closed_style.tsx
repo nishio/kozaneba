@@ -4,6 +4,7 @@ import { TGroupItem } from "./GroupItem";
 import { CLOSED_GROUP_BORDER_COLOR } from "./group_constants";
 import { get_group_title } from "./Group";
 import { constants } from "../API/constants";
+import { to_rounded_px } from "../Kozane/to_rounded_px";
 
 export function calc_closed_style(
   value: TGroupItem,
@@ -14,8 +15,8 @@ export function calc_closed_style(
   const scale = value.scale;
   const width = KOZANE_WIDTH * scale + PADDING * 2;
   const height = KOZANE_HEIGHT * scale + PADDING * 2;
-  const top = offset.y + y - height / 2 - BORDER;
-  const left = offset.x + x - width / 2 - BORDER;
+  const top = to_rounded_px(offset.y + y - height / 2 - BORDER);
+  const left = to_rounded_px(offset.x + x - width / 2 - BORDER);
 
   const custom = value.custom?.style ?? {};
   const style = {
