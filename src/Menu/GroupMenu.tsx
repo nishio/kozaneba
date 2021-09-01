@@ -4,12 +4,12 @@ import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { add_v2w, clone_v2w } from "../dimension/V2";
+import { add_v2w, sub_v2w } from "../dimension/V2";
 import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { updateGlobal } from "../Global/updateGlobal";
+import { find_parent } from "../Group/find_parent";
 import { GroupItem } from "../Group/GroupItem";
-import { KozaneItem } from "../Kozane/KozaneItem";
 import { remove_item_from } from "../utils/remove_item";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
@@ -29,21 +29,30 @@ export const GroupMenu = () => {
 
   const onUngroup = () => {
     updateGlobal((g) => {
-      group.items.forEach((id) => {
-        g.drawOrder.push(id);
-        const item = get_item(g, id);
-        item.position = add_v2w(item.position, group.position);
-      });
-      if (group.text !== "") {
-        // add kozane of group title
-        const kozane = new KozaneItem();
-        kozane.text = group.text;
-        kozane.position = clone_v2w(group.position);
-        g.itemStore[kozane.id] = kozane;
-        g.drawOrder.push(kozane.id);
+      let parent = find_parent(gid);
+      if (parent === null) {
+        group.items.forEach((id) => {
+          g.drawOrder.push(id);
+          const item = get_item(g, id);
+          item.position = add_v2w(item.position, group.position);
+        });
+      } else {
+        const new_parent = get_group(g, parent);
+        group.items.forEach((id) => {
+          new_parent.items.push(id);
+          const item = get_item(g, id);
+          item.position = sub_v2w(
+            add_v2w(item.position, group.position),
+            new_parent.position
+          );
+        });
       }
-      g.drawOrder = remove_item_from(g.drawOrder, gid);
-      delete g.itemStore[gid];
+      if (group.text !== "") {
+        group.items = [];
+      } else {
+        g.drawOrder = remove_item_from(g.drawOrder, gid);
+        delete g.itemStore[gid];
+      }
       g.clicked_target = "";
     });
     setMenu("");
