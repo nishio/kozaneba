@@ -8,6 +8,7 @@ import { update_style } from "./update_style";
 import { add_scrapbox_item, add_scrapbox_links } from "./make_scrapbox_kozane";
 import { user_menus } from "./user_menus";
 import { getGlobal } from "reactn";
+import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
 
 export const kozaneba = {
   // simple values to modify
@@ -24,6 +25,7 @@ export const kozaneba = {
 
   // getter
   get_global: getGlobal,
+  get_center_of_screen,
 
   // complex values
   after_render_toppage: start_tutorial,
