@@ -1,19 +1,19 @@
+import { getGlobal } from "reactn";
+import { fit_to_contents } from "../App/toggle_fit_to_contents";
+import { try_to_import_json } from "../App/try_to_import_json";
 import { user_buttons } from "../AppBar/UserButtons";
+import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
+import { reset_selection } from "../Selection/reset_selection";
 import { constants } from "./constants";
+import { get_clicked_item } from "./get_clicked_item";
+import { get_selected_ids } from "./get_selected_ids";
 import { is_touchpad } from "./is_touchpad";
+import { add_scrapbox_item, add_scrapbox_links } from "./make_scrapbox_kozane";
 import { redraw } from "./redraw";
 import { show_dialog } from "./show_dialog";
 import { start_tutorial } from "./start_tutorial";
 import { update_style } from "./update_style";
-import { add_scrapbox_item, add_scrapbox_links } from "./make_scrapbox_kozane";
 import { user_menus } from "./user_menus";
-import { getGlobal } from "reactn";
-import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
-import { try_to_import_json } from "../App/try_to_import_json";
-import { get_clicked_item } from "./get_clicked_item";
-import { fit_to_contents } from "../App/toggle_fit_to_contents";
-import { get_selected_ids } from "./get_selected_ids";
-import { reset_selection } from "../Selection/reset_selection";
 
 export const kozaneba = {
   // simple values to modify
