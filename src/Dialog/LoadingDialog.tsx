@@ -1,4 +1,10 @@
-import { faCheckCircle, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckCircle,
+  faCircleNotch,
+  faExclamationCircle,
+  faExclamationTriangle,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
@@ -11,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { can_write } from "../App/can_write";
-import { READONLY_MESSAGE } from "../App/READONLY_MESSAGE";
+import { ERROR_MESSAGE, READONLY_MESSAGE } from "../App/READONLY_MESSAGE";
 import { dev_log } from "../utils/dev";
 
 export const LoadingDialog = () => {
@@ -24,12 +30,18 @@ export const LoadingDialog = () => {
   const open = dialog === "Loading";
   dev_log("render LoadingDialog");
   useEffect(() => {
-    if (open && statusBar.type === "done") {
-      if (can_write()) {
-        // auto-close
-        close_menu_and_dialog();
-      } else {
-        setMessage(READONLY_MESSAGE);
+    if (open) {
+      if (statusBar.type === "done") {
+        if (can_write()) {
+          // auto-close
+          close_menu_and_dialog();
+        } else {
+          setMessage(READONLY_MESSAGE);
+          set_to_show_close_button(true);
+          set_is_loading(false);
+        }
+      } else if (statusBar.type === "no-connection") {
+        setMessage(ERROR_MESSAGE);
         set_to_show_close_button(true);
         set_is_loading(false);
       }
@@ -38,10 +50,12 @@ export const LoadingDialog = () => {
 
   const onClose = () => {
     close_menu_and_dialog();
-    // reset
-    setMessage(null);
-    set_is_loading(true);
-    set_to_show_close_button(false);
+    setTimeout(() => {
+      // reset
+      setMessage(null);
+      set_is_loading(true);
+      set_to_show_close_button(false);
+    }, 1000); // delay not to show in fade-out animation
   };
   let CloseButton = null;
   if (to_show_close_button) {
@@ -51,13 +65,20 @@ export const LoadingDialog = () => {
       </Button>
     );
   }
-
-  const title = is_loading ? "Loading..." : "Finished!";
-  const spinner = is_loading ? (
-    <FontAwesomeIcon icon={faSpinner} spin={true} size="10x" />
-  ) : (
-    <FontAwesomeIcon icon={faCheckCircle} size="10x" />
-  );
+  let title = null;
+  let spinner = null;
+  if (is_loading) {
+    title = "Loading...";
+    spinner = <FontAwesomeIcon icon={faSpinner} spin={true} size="10x" />;
+  } else {
+    if (statusBar.type === "done") {
+      title = "Finished!";
+      spinner = <FontAwesomeIcon icon={faCheckCircle} size="10x" />;
+    } else {
+      title = "Error!";
+      spinner = <FontAwesomeIcon icon={faExclamationTriangle} size="10x" />;
+    }
+  }
 
   return (
     <Dialog

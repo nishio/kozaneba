@@ -1,5 +1,6 @@
 import { getGlobal, setGlobal } from "reactn";
 import { fit_to_contents } from "../App/toggle_fit_to_contents";
+import { updateGlobal } from "../Global/updateGlobal";
 import { dev_log } from "../utils/dev";
 import { db, docdate_to_state, DocSnap } from "./FirestoreIO";
 import { set_status } from "./initial_save";
@@ -13,7 +14,13 @@ export const set_up_read_subscription = (ba: string) => {
     .onSnapshot((doc: DocSnap) => {
       const data = doc.data();
       if (data === undefined) {
-        throw new TypeError("doc.data() is undefined");
+        // throw new TypeError("doc.data() is undefined");
+        updateGlobal((g) => {
+          g.cloud_ba = "";
+          g.statusBar.type = "no-connection";
+          g.statusBar.text = "not found";
+        });
+        return;
       }
 
       console.log("new data from server");
@@ -28,9 +35,7 @@ export const set_up_read_subscription = (ba: string) => {
       } else {
         console.log("no need to update");
       }
-      dev_log("before done");
       set_status("done");
-      dev_log("done");
     });
   return unsubscribe;
 };

@@ -11,3 +11,13 @@ export const READONLY_MESSAGE = (
     </p>
   </div>
 );
+
+export const ERROR_MESSAGE = (
+  <div>
+    <p>Error occured. Maybe you missed a copy?</p>
+    <p>
+      Don't know how to use Kozaneba?
+      <button onClick={start_tutorial}>Watch the tutorial!</button>
+    </p>
+  </div>
+);
