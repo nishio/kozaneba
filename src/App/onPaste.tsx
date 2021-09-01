@@ -52,30 +52,25 @@ const try_to_import_json = (text: string) => {
     const items: ItemId[] = [];
 
     if (j.format === "Kozaneba" && j.version === 3) {
-      updateGlobal((g) => {
-        Object.entries(j.itemStore).forEach(([old_id, value]) => {
-          const id = create_new_itemid();
-          if (j.drawOrder.includes(old_id as ItemId)) {
-            // it is top level
-            items.push(id);
-          }
-          value.id = id;
-          g.itemStore[id] = value;
-        });
-      });
-
+      const visit = (old_id: string): ItemId => {
+        const id = create_new_itemid();
+        const item = j.itemStore[old_id]!;
+        const new_item = { ...item, id };
+        if (new_item.type === "group") {
+          new_item.items = new_item.items.map(visit);
+        }
+        add_item(new_item);
+        return id;
+      };
+      const new_items = j.drawOrder.map(visit);
       const group = new GroupItem();
-      group.items = items;
-      updateGlobal((g) => {
-        g.drawOrder.push(group.id);
-        g.itemStore[group.id] = group;
-      });
-
+      group.items = new_items;
+      add_item(group);
       normalize_group_position(group.id);
-      redraw();
       updateGlobal((g) => {
         g.itemStore[group.id]!.position = get_center_of_screen();
       });
+      redraw();
     } else {
       // from Regroup?
       throw new Error("not implemented yet");
