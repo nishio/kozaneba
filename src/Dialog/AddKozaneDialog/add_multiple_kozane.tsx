@@ -1,5 +1,6 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
+import { redraw } from "../../API/redraw";
 import { mark_local_changed } from "../../Cloud/mark_local_changed";
 import { TWorldCoord } from "../../dimension/world_to_screen";
 import { get_item } from "../../Event/get_item";
@@ -90,6 +91,7 @@ const finish = () => {
     g.dialog = "";
     g.add_kozane_text = "";
   });
+  redraw();
   mark_local_changed();
 };
 
