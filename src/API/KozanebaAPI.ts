@@ -15,6 +15,7 @@ import { show_dialog } from "./show_dialog";
 import { start_tutorial } from "./start_tutorial";
 import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
+import { add_multiple_kozane } from "../Dialog/AddKozaneDialog/add_multiple_kozane";
 
 export const kozaneba = {
   // simple values to modify
@@ -32,6 +33,7 @@ export const kozaneba = {
   fit_to_contents,
   reset_selection,
   add_kozane,
+  add_multiple_kozane,
 
   // getter
   get_global: getGlobal,

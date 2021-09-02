@@ -24,6 +24,7 @@
 // require('./commands')
 
 import { State } from "reactn/default";
+import { TKozaneba } from "../../src/API/KozanebaAPI";
 import { TWorldCoord } from "../../src/dimension/world_to_screen";
 import { TMovidea } from "../../src/Global/exposeGlobal";
 import { ItemId, TItem } from "../../src/Global/initializeGlobalState";
@@ -32,6 +33,7 @@ import { TGroupItem } from "../../src/Group/GroupItem";
 declare global {
   namespace Cypress {
     interface Chainable {
+      kozaneba(callback: (kozaneba: TKozaneba) => void): Chainable<Element>;
       movidea(callback: (movidea: TMovidea) => void): Chainable<Element>;
       testid(testid: string): Chainable<Element>;
       updateGlobal(callback: (g: State) => void): Chainable<Element>;
@@ -58,6 +60,15 @@ Cypress.Commands.add("movidea", (callback: (movidea: TMovidea) => void) => {
       } else {
         callback(m);
       }
+    });
+});
+
+Cypress.Commands.add("kozaneba", (callback: (kozaneba: TKozaneba) => void) => {
+  return cy
+    .window()
+    .its("kozaneba")
+    .then((k) => {
+      callback(k);
     });
 });
 
