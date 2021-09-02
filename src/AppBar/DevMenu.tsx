@@ -8,7 +8,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { initSentry } from "../initSentry";
 import { show_menu } from "../Menu/show_menu";
 import { close_menu_and_dialog } from "./close_menu";
-import { delete_ba } from "./delete_ba";
+import { delete_ba } from "../Cloud/delete_ba";
 import { GroupHeader } from "./GroupHeader";
 import { Info } from "./Info";
 import { onGoogleSignIn } from "./onGoogleSignIn";

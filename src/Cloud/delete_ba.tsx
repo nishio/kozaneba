@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
-import { close_menu_and_dialog } from "./close_menu";
-import { db } from "../Cloud/FirestoreIO";
+import { close_menu_and_dialog } from "../AppBar/close_menu";
+import { db } from "./FirestoreIO";
 
 export const delete_ba = () => {
   const g = getGlobal();
