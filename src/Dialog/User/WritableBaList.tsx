@@ -1,10 +1,13 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { List, ListItem, ListItemText, ListSubheader } from "@material-ui/core";
+import { Collapse, List, ListItem, ListItemText } from "@material-ui/core";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { useState } from "react";
 import { date_to_str } from "../../utils/date_to_str";
 import { Ba } from "./UserDialog";
 
 export const WritableBaList = (ba_list: Ba[] | null) => {
+  const [is_open, set_is_open] = useState(true);
   let items = [
     <span key="loading">
       Loading...
@@ -26,24 +29,41 @@ export const WritableBaList = (ba_list: Ba[] | null) => {
           key={x.id}
         >
           <ListItemText
-            primary={date_to_str(x.last_updated) + ": " + x.title}
+            primary={"\t" + date_to_str(x.last_updated) + ": " + x.title}
           />
         </ListItem>
       ));
     }
   }
+  // return (
+  //   <List
+  //     subheader={
+  //       <ListSubheader
+  //         component="div"
+  //         style={{ paddingLeft: "0px", lineHeight: "", paddingTop: "1em" }}
+  //       >
+  //         Writable Ba
+  //       </ListSubheader>
+  //     }
+  //   >
+  //     {items}
+  //   </List>
+  // );
+  const onClick = () => {
+    set_is_open(!is_open);
+  };
+
   return (
-    <List
-      subheader={
-        <ListSubheader
-          component="div"
-          style={{ paddingLeft: "0px", lineHeight: "", paddingTop: "1em" }}
-        >
-          Writable Ba
-        </ListSubheader>
-      }
-    >
-      {items}
-    </List>
+    <>
+      <ListItem button onClick={onClick} style={{ paddingLeft: 0 }}>
+        <ListItemText primary="Ba which you can write" />
+        {is_open ? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={is_open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {items}
+        </List>
+      </Collapse>
+    </>
   );
 };
