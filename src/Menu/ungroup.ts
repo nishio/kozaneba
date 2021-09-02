@@ -1,3 +1,4 @@
+import { getGlobal } from "reactn";
 import { redraw } from "../API/redraw";
 import { close_menu } from "../AppBar/close_menu";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
@@ -37,8 +38,13 @@ export function ungroup(gid: ItemId) {
       group.items = [];
       group.position = [boundingbox.left, boundingbox.top] as TWorldCoord;
     } else {
-      g.drawOrder = remove_item_from(g.drawOrder, gid);
-      delete g.itemStore[gid];
+      if (parent === null) {
+        g.drawOrder = remove_item_from(g.drawOrder, gid);
+        delete g.itemStore[gid];
+      } else {
+        const new_parent = get_group(g, parent);
+        new_parent.items = remove_item_from(new_parent.items, gid);
+      }
     }
     g.clicked_target = "";
   });

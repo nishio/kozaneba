@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 import { kozaneba } from "../../../src/API/KozanebaAPI";
-import { do_click, ready_nested_group } from "../../support";
+import { do_click, ready_nested_group, ready_one_kozane } from "../../support";
 import { make_get_group_func } from "../../utils";
 
 describe("test ungroup", () => {
@@ -29,5 +29,19 @@ describe("test ungroup", () => {
 
     do_click("1");
     cy.testid("group-ungroup").click();
+  });
+  it("no-title nested", () => {
+    cy.viewport(500, 500);
+    ready_one_kozane();
+    cy.movidea((m) => {
+      m.make_items_into_new_group(["1"], { id: "G1" });
+      m.make_items_into_new_group(["G1"], { id: "G2" });
+    });
+
+    do_click("G1");
+    cy.testid("group-ungroup").click();
+    cy.getGlobal((g) => {
+      return make_get_group_func("G2")(g).items;
+    }).should("eql", ["1"]);
   });
 });
