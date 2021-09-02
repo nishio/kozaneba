@@ -16,7 +16,7 @@ import { start_tutorial } from "./start_tutorial";
 import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
 import { add_multiple_kozane } from "../Dialog/AddKozaneDialog/add_multiple_kozane";
-
+import { copy_json } from "../Menu/copy_json";
 export const kozaneba = {
   // simple values to modify
   constants,
@@ -34,6 +34,7 @@ export const kozaneba = {
   reset_selection,
   add_kozane,
   add_multiple_kozane,
+  copy_json,
 
   // getter
   get_global: getGlobal,
