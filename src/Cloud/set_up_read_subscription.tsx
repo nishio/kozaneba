@@ -14,6 +14,7 @@ export const set_up_read_subscription = (ba: string) => {
       const data = doc.data();
       if (data === undefined) {
         // throw new TypeError("doc.data() is undefined");
+        console.log("doc.data() is undefined. disconnecting");
         updateGlobal((g) => {
           g.cloud_ba = "";
           g.statusBar.type = "no-connection";
