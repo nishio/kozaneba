@@ -1,10 +1,10 @@
 import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
-import { getGlobal, setGlobal, useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../../API/KozanebaAPI";
 import { UserMenuItem } from "../../API/UserMenuItem";
-import { can_write } from "../../App/can_write";
+import { can_write, is_cloud } from "../../App/can_write";
 import { initial_save } from "../../Cloud/initial_save";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { Sentry } from "../../initSentry";
@@ -99,6 +99,5 @@ const EnableCloudAutoSave = () => {
 };
 
 export const in_readonly_mode = () => {
-  const g = getGlobal();
-  return g.cloud_ba !== "" && !can_write();
+  return is_cloud() && !can_write();
 };

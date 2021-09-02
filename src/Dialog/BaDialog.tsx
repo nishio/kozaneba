@@ -11,8 +11,9 @@ import { useState } from "react";
 import { setGlobal, useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../AppBar/close_menu";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { can_write } from "../App/can_write";
+import { can_write, is_cloud } from "../App/can_write";
 import { make_copy } from "../App/make_copy";
+import { delete_ba } from "../Cloud/delete_ba";
 
 export type Ba = { title: string; id: string; last_updated: number };
 
@@ -38,6 +39,20 @@ export const BaDialog = () => {
       <DialogContent style={{ padding: "0px 24px" }}>
         <Title />
         <Share mode={mode} />
+        <div>
+          <MakeCopy />
+
+          <Button
+            color="primary"
+            onClick={delete_ba}
+            style={{
+              border: "1px solid",
+              visibility: is_cloud() && can_write() ? "visible" : "hidden",
+            }}
+          >
+            Delete
+          </Button>
+        </div>
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={onClose}>
@@ -115,13 +130,21 @@ const Share: React.FC<{ mode: string }> = ({ mode }) => {
           <MenuItem value="view">view</MenuItem>
         </Select>
       </div>
-      <div>
-        <MakeCopy />
-      </div>
     </div>
   );
 };
 
 const MakeCopy = () => {
-  return <button onClick={make_copy}>make copy</button>;
+  return (
+    <Button
+      color="primary"
+      onClick={make_copy}
+      style={{
+        border: "1px solid",
+        visibility: is_cloud() ? "visible" : "hidden",
+      }}
+    >
+      Make Copy
+    </Button>
+  );
 };
