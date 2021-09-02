@@ -39,7 +39,7 @@ export const ScrapboxMenu = () => {
       >
         <BigMenuItem id={id} />
         <SmallMenuItem id={id} />
-        <VisitMenuItem item={item} />
+        <VisitMenuItem url={item.url} />
         <MenuItem onClick={onExpand}>expand</MenuItem>
 
         {kozaneba.user_menus["Scrapbox"]!.map(UserMenuItem)}

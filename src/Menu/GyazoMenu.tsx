@@ -33,7 +33,7 @@ export const GyazoMenu = () => {
       >
         <BigMenuItem id={id} />
         <SmallMenuItem id={id} />
-        <VisitMenuItem item={item} />
+        <VisitMenuItem url={item.url} />
         {kozaneba.user_menus["Gyazo"]!.map(UserMenuItem)}
         <DeleteMenuItem id={id} />
       </Menu>
