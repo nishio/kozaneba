@@ -10,7 +10,7 @@ import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../Group/find_parent";
-import { remove_item_from } from "../utils/remove_item";
+import { remove_item } from "./remove_item";
 
 export function ungroup(gid: ItemId) {
   updateGlobal((g) => {
@@ -38,13 +38,7 @@ export function ungroup(gid: ItemId) {
       group.items = [];
       group.position = [boundingbox.left, boundingbox.top] as TWorldCoord;
     } else {
-      if (parent === null) {
-        g.drawOrder = remove_item_from(g.drawOrder, gid);
-        delete g.itemStore[gid];
-      } else {
-        const new_parent = get_group(g, parent);
-        new_parent.items = remove_item_from(new_parent.items, gid);
-      }
+      remove_item(g, gid);
     }
     g.clicked_target = "";
   });
