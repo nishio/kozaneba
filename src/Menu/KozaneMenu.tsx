@@ -12,6 +12,7 @@ import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "./close_context_menu";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { open_dialog } from "./open_dialog";
+import { VisitMenuItem } from "./VisitMenuItem";
 
 export const KozaneMenu = () => {
   const [menu] = useGlobal("menu");
@@ -21,6 +22,8 @@ export const KozaneMenu = () => {
   const g = getGlobal();
   const id = g.clicked_target;
   if (id === "") return null;
+  const item = get_item(g, id);
+  if (item.type !== "kozane") return null;
 
   const onSplit = () => {
     open_dialog("SplitKozane");
@@ -53,7 +56,7 @@ export const KozaneMenu = () => {
       <MenuItem onClick={onClone} data-testid="kozane-clone">
         clone
       </MenuItem>
-
+      <VisitMenuItem url={item.custom?.url} />
       {kozaneba.user_menus["Kozane"]!.map(UserMenuItem)}
       <DeleteMenuItem id={id} />
     </Menu>

@@ -11,7 +11,7 @@ export type TKozaneItem = {
   scale: number;
   custom?: {
     style?: CSSProperties;
-    is_link?: boolean;
+    url?: string;
   };
 };
 

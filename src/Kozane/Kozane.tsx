@@ -30,13 +30,22 @@ export const Kozane: React.FC<Props> = ({
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     onKozaneMouseDown(e, value);
   };
-  const link_mark =
-    value.custom?.is_link === true ? (
-      <FontAwesomeIcon
-        icon={faLink}
-        style={{ position: "absolute", fontSize: "20px", top: 0 }}
-      />
-    ) : null;
+  const link_mark = () => {
+    const url = value.custom?.url;
+    if (url !== "" && url !== undefined) {
+      return (
+        <FontAwesomeIcon
+          icon={faLink}
+          style={{
+            position: "absolute",
+            fontSize: 20 * value.scale + "px",
+            top: 0,
+          }}
+        />
+      );
+    }
+    return null;
+  };
   dev_log("style", style);
   return (
     <KozaneDiv
@@ -46,7 +55,7 @@ export const Kozane: React.FC<Props> = ({
       style={style}
       onMouseDown={onMouseDown}
     >
-      {link_mark}
+      {link_mark()}
       <KozaneDiv2>{value.text}</KozaneDiv2>
     </KozaneDiv>
   );
