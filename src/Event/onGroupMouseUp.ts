@@ -7,6 +7,7 @@ import { find_parent } from "../Group/find_parent";
 import { TGroupItem } from "../Group/GroupItem";
 import { move_front } from "../Menu/move_front";
 import { normalize_group_position } from "../Menu/normalize_group_position";
+import { remove_item } from "../Menu/remove_item";
 import { remove_item_from } from "../utils/remove_item";
 import { reset_target } from "./fast_drag_manager";
 import { get_group } from "./get_group";
@@ -67,6 +68,12 @@ export const onGroupMouseUp = (
         p.items = remove_item_from(p.items, target_id);
         group_draft.items.push(target_id);
         position = sub_v2w(add_v2w(position, p.position), group_draft.position);
+
+        if (p.items.length === 0 && p.text === "") {
+          remove_item(g, parent);
+        } else {
+          normalize_group_position(parent, g);
+        }
       } else {
         g.drawOrder = remove_item_from(g.drawOrder, target_id);
         group_draft.items.push(target_id);

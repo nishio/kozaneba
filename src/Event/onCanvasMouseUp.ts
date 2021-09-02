@@ -1,27 +1,28 @@
 import React from "react";
 import { getGlobal } from "reactn";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { convert_bounding_box_screen_to_world } from "../dimension/convert_bounding_box_screen_to_world";
-import { isOverlap } from "../dimension/isOverlap";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
-import { ItemId } from "../Global/initializeGlobalState";
+import { isOverlap } from "../dimension/isOverlap";
 import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
-import { updateGlobal } from "../Global/updateGlobal";
 import { add_v2w, sub_v2w } from "../dimension/V2";
-import { remove_item_from } from "../utils/remove_item";
-import { reset_target } from "./fast_drag_manager";
-import { get_client_pos } from "./get_client_pos";
 import {
   screen_to_world,
   TScreenCoord,
   world_to_screen,
 } from "../dimension/world_to_screen";
+import { ItemId } from "../Global/initializeGlobalState";
+import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../Group/find_parent";
-import { TGroupItem } from "../Group/GroupItem";
-import { handle_if_is_click } from "./handle_if_is_click";
-import { get_item } from "./get_item";
-import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { normalize_group_position } from "../Menu/normalize_group_position";
 import { move_front } from "../Menu/move_front";
+import { normalize_group_position } from "../Menu/normalize_group_position";
+import { remove_item } from "../Menu/remove_item";
+import { remove_item_from } from "../utils/remove_item";
+import { reset_target } from "./fast_drag_manager";
+import { get_client_pos } from "./get_client_pos";
+import { get_group } from "./get_group";
+import { get_item } from "./get_item";
+import { handle_if_is_click } from "./handle_if_is_click";
 
 export const get_delta = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -64,14 +65,19 @@ export const onCanvasMouseUp = (
     if (parent !== null) {
       console.log(`move target ${target_id} out from parent`);
       updateGlobal((g) => {
-        const p = g.itemStore[parent] as TGroupItem;
+        const p = get_group(g, parent);
         p.items = remove_item_from(p.items, target_id);
         g.drawOrder.push(target_id);
         const x = get_item(g, target_id);
         x.position = add_v2w(delta, p.position);
         g.drag_target = "";
+
+        if (p.items.length === 0 && p.text === "") {
+          remove_item(g, parent);
+        } else {
+          normalize_group_position(parent, g);
+        }
       });
-      normalize_group_position(parent);
     } else {
       console.log(`move target ${target_id} on top level`);
       move_front(target_id);
