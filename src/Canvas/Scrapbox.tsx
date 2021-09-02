@@ -1,3 +1,4 @@
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import styled from "styled-components";
 import { TOffset } from "../dimension/TOffset";
 import { add_v2w } from "../dimension/V2";
@@ -54,17 +55,12 @@ export const get_scrapbox_bounding_box = (item: TScrapboxItem) => {
 export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   let contents = null;
   if (value.image !== "") {
-    contents = (
-      <img
-        src={modify_image_url(value.image)}
-        alt=""
-        style={{
-          maxWidth: "100%",
-          position: "relative",
-        }}
-        draggable="false"
-      />
-    );
+    const src = modify_image_url(value.image);
+    const style: CSSProperties = {
+      maxWidth: "100%",
+      position: "relative",
+    };
+    contents = <img src={src} alt="" style={style} draggable="false" />;
   } else {
     contents = (
       <div style={{ padding: "10px 12px 0", position: "relative" }}>
