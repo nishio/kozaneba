@@ -1,5 +1,5 @@
 import { State } from "reactn/default";
-import { updateGlobal } from "../Global/updateGlobal";
+import { updateGlobal } from "./updateGlobal";
 
 export const update_global_with_optional_draft = (
   draft: State | undefined,

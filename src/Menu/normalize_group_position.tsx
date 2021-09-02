@@ -5,7 +5,7 @@ import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { get_gravity_point } from "./get_gravity_point";
-import { update_global_with_optional_draft } from "./update_global_with_optional_draft";
+import { update_global_with_optional_draft } from "../Global/update_global_with_optional_draft";
 
 export const normalize_group_position = (gid: ItemId, draft?: State) => {
   update_global_with_optional_draft(draft, (g) => {
