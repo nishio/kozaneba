@@ -27,6 +27,7 @@ export const BaDialog = () => {
     close_menu_and_dialog();
   };
 
+  const can_delete = false; // temporary toggle: is_cloud() && can_write()
   return (
     <Dialog
       open={open}
@@ -47,7 +48,7 @@ export const BaDialog = () => {
             onClick={delete_ba}
             style={{
               border: "1px solid",
-              visibility: is_cloud() && can_write() ? "visible" : "hidden",
+              visibility: can_delete ? "visible" : "hidden",
             }}
           >
             Delete
