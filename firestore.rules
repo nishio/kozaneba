@@ -15,10 +15,11 @@ service cloud.firestore {
 
   // rules for other prototype
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow write: if database != "ba";
-      allow get: if database != "ba";
-      // deny list
+    match /{collection}/{document=**} {
+      allow create, update: if collection != "ba";
+      allow delete: if false;
+      allow get: if collection != "ba";
+      allow list: if false;
     }
   }
 }
