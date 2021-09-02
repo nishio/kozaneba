@@ -19,15 +19,26 @@ export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
       bottom: y + bottom + PADDING,
     };
 
-    const MIN_SIZE = 200;
-    const width = bb.right - bb.left;
-    const w_padding = width < MIN_SIZE ? (MIN_SIZE - width) / 2 : 0;
-    bb.left -= w_padding;
-    bb.right += w_padding;
-    const height = bb.bottom - bb.top;
-    const h_padding = height < MIN_SIZE ? (MIN_SIZE - height) / 2 : 0;
-    bb.top -= h_padding;
-    bb.bottom += h_padding;
+    const width = right - left;
+    const height = bottom - top;
+    const box_area = width * height;
+    const contents_area = g.items.length * KOZANE_WIDTH * KOZANE_HEIGHT;
+    if (contents_area / box_area > 0.7) {
+      // too tight
+      const FORCED_PADDING = 25;
+      bb.left -= FORCED_PADDING;
+      bb.right += FORCED_PADDING;
+      bb.top -= FORCED_PADDING;
+      bb.bottom += FORCED_PADDING;
+    }
+
+    if (g.items.length === 0) {
+      const MIN_SIZE = 100;
+      bb.left -= MIN_SIZE / 2;
+      bb.right += MIN_SIZE / 2;
+      bb.top -= MIN_SIZE / 2;
+      bb.bottom += MIN_SIZE / 2;
+    }
 
     return bb;
   }
