@@ -1,18 +1,19 @@
 import { Button, makeStyles, Menu, MenuItem } from "@material-ui/core";
 import React from "react";
 import { useGlobal } from "reactn";
+import { initial_save } from "../Cloud/initial_save";
+import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
+import { toUseEmulator } from "../Global/exposeGlobal";
 import { updateGlobal } from "../Global/updateGlobal";
+import { initSentry } from "../initSentry";
 import { show_menu } from "../Menu/show_menu";
+import { close_menu_and_dialog } from "./close_menu";
+import { delete_ba } from "./delete_ba";
 import { GroupHeader } from "./GroupHeader";
 import { Info } from "./Info";
-import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
-import { UserInfo } from "./UserInfo";
 import { onGoogleSignIn } from "./onGoogleSignIn";
 import { signOut } from "./signOut";
-import { initial_save } from "../Cloud/initial_save";
-import { toUseEmulator } from "../Global/exposeGlobal";
-import { close_menu_and_dialog } from "./close_menu";
-import { initSentry } from "../initSentry";
+import { UserInfo } from "./UserInfo";
 
 export const useStyles = makeStyles({
   root: {
@@ -103,6 +104,8 @@ export const DevMenu = () => {
         >
           Force error
         </MenuItem>
+
+        <MenuItem onClick={delete_ba}>delete ba</MenuItem>
       </Menu>
     </>
   );
