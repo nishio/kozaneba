@@ -1,10 +1,8 @@
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { CSSProperties } from "react";
+import React, { CSSProperties } from "react";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
-import { dev_log } from "../utils/dev";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { TKozaneItem } from "./KozaneItem";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
@@ -46,7 +44,7 @@ export const Kozane: React.FC<Props> = ({
     }
     return null;
   };
-  dev_log("style", style);
+
   return (
     <KozaneDiv
       className="kozane"
