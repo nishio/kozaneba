@@ -4,11 +4,11 @@ import { TWorldCoord } from "../dimension/world_to_screen";
 import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
-import { updateGlobal } from "../Global/updateGlobal";
 import { get_gravity_point } from "./get_gravity_point";
+import { update_global_with_optional_draft } from "./update_global_with_optional_draft";
 
 export const normalize_group_position = (gid: ItemId, draft?: State) => {
-  const body = (g: State) => {
+  update_global_with_optional_draft(draft, (g) => {
     const group = get_group(g, gid);
     if (group.items.length === 0) return;
     const positions = group.items.map((id) => {
@@ -21,10 +21,5 @@ export const normalize_group_position = (gid: ItemId, draft?: State) => {
       item.position = sub_v2w(item.position, gravity_point);
     });
     group.position = add_v2w(group.position, gravity_point);
-  };
-  if (draft === undefined) {
-    updateGlobal(body);
-  } else {
-    body(draft);
-  }
+  });
 };
