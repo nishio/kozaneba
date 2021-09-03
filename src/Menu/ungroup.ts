@@ -1,4 +1,3 @@
-import { getGlobal } from "reactn";
 import { redraw } from "../API/redraw";
 import { close_menu } from "../AppBar/close_menu";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
