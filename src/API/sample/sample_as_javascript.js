@@ -1,5 +1,8 @@
 // you do not need to put this import in UserScript
-import { kozaneba } from "./KozanebaAPI";
+import { kozaneba } from "../KozanebaAPI";
+
+// Usage:
+// localStorage.setItem("onLoad", `...`)
 
 kozaneba.after_render_toppage = () => {
   kozaneba.show_dialog("User");
@@ -62,3 +65,5 @@ kozaneba.user_menus.Main.push({
   label: "🤔",
   onClick: () => kozaneba.add_kozane("🤔"),
 });
+
+kozaneba.constants.to_make_local_backup = true;
