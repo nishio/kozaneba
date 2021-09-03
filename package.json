@@ -7,6 +7,7 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@material-ui/core": "^4.12.1",
     "@material-ui/icons": "^4.11.2",
+    "@progfay/scrapbox-parser": "^7.1.0",
     "@sentry/react": "^6.11.0",
     "@sentry/tracing": "^6.11.0",
     "@testing-library/jest-dom": "^5.14.1",
