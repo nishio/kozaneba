@@ -33,7 +33,7 @@ export const BaDialog = () => {
       open={open}
       onClose={onClose}
       data-testid="ba-dialog"
-      keepMounted={true}
+      keepMounted={false}
       maxWidth="lg"
     >
       <DialogTitle id="form-dialog-title">Ba</DialogTitle>

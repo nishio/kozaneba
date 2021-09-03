@@ -40,7 +40,7 @@ export const UserDialog = () => {
       open={open}
       onClose={onClose}
       data-testid="user-dialog"
-      keepMounted={true}
+      keepMounted={false}
     >
       <DialogTitle id="form-dialog-title">User: {display_name}</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
