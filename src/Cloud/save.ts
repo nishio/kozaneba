@@ -1,4 +1,5 @@
 import { getGlobal } from "reactn";
+import { kozaneba } from "../API/KozanebaAPI";
 import { db, DocData, state_to_docdate } from "./FirestoreIO";
 import {
   if_not_in_writer_add_self,
@@ -25,9 +26,11 @@ export const save = () => {
 };
 
 const local_save = (ba: string, doc: DocData) => {
-  local_db.backup.add({
-    cloud_ba: ba,
-    last_updated: doc.last_updated,
-    json: JSON.stringify(doc),
-  });
+  if (kozaneba.constants.to_make_local_backup) {
+    local_db.backup.add({
+      cloud_ba: ba,
+      last_updated: doc.last_updated,
+      json: JSON.stringify(doc),
+    });
+  }
 };

@@ -2,6 +2,7 @@ import Dexie from "dexie";
 import { getGlobal } from "reactn";
 import { date_to_str } from "../utils/date_to_str";
 import { save_new } from "./initial_save";
+import { stop_current_subscription } from "./set_up_read_subscription";
 
 export interface IBackup {
   id?: number; // Primary key. Optional (autoincremented)
@@ -28,8 +29,7 @@ class MyAppDatabase extends Dexie {
   }
 }
 
-// @ts-ignore
-window.kozaneba.show_backup = () => {
+export const show_backup = () => {
   const g = getGlobal();
   local_db.backup
     .where("cloud_ba")
@@ -48,8 +48,8 @@ window.kozaneba.show_backup = () => {
     });
 };
 
-// @ts-ignore
-window.kozaneba.save_backup_as_new = (id: number, open = true) => {
+export const save_backup_as_new = (id: number, open = true) => {
+  stop_current_subscription();
   local_db.backup
     .where("id")
     .equals(id)

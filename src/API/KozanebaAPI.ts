@@ -17,6 +17,8 @@ import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
 import { add_multiple_kozane } from "../Dialog/AddKozaneDialog/add_multiple_kozane";
 import { copy_json } from "../Menu/copy_json";
+import { show_backup } from "../Cloud/LocalBackup";
+import { save_backup_as_new } from "../Cloud/LocalBackup";
 export const kozaneba = {
   // simple values to modify
   constants,
@@ -46,6 +48,10 @@ export const kozaneba = {
   after_render_toppage: start_tutorial,
   user_buttons,
   user_menus,
+
+  // experimental features
+  show_backup,
+  save_backup_as_new,
 };
 
 export type TKozaneba = typeof kozaneba;
