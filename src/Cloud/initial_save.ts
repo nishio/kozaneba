@@ -47,15 +47,13 @@ export const initial_save = () => {
   if (not_login_then_show_dialog()) return;
   close_menu();
   set_status("uploading");
-  save_new();
+  const g = getGlobal();
+  save_new({ ...g, writers: [get_user_id()], anyone_writable: true });
 };
 
-export const save_new = (state?: State) => {
-  if_not_in_writer_add_self();
+export const save_new = (state: State) => {
   const g = getGlobal();
-  if (state === undefined) {
-    state = g;
-  }
+
   const doc = state_to_docdate(state);
   let p;
   if (g.fix_ba_for_test === "") {
