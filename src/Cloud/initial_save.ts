@@ -1,10 +1,10 @@
 import { getGlobal } from "reactn";
-import { auth, db, DocRef, state_to_docdate } from "./FirestoreIO";
-import { updateGlobal } from "../Global/updateGlobal";
-import { set_up_read_subscription } from "./set_up_read_subscription";
+import { State } from "reactn/default";
 import { close_menu } from "../AppBar/close_menu";
 import { TStatusType } from "../Global/initializeGlobalState";
-import { State } from "reactn/default";
+import { updateGlobal } from "../Global/updateGlobal";
+import { auth, db, DocData, DocRef, state_to_docdate } from "./FirestoreIO";
+import { set_up_read_subscription } from "./set_up_read_subscription";
 
 export const get_user_id = (): string => {
   const uid = auth.currentUser?.uid;
@@ -48,13 +48,17 @@ export const initial_save = () => {
   close_menu();
   set_status("uploading");
   const g = getGlobal();
-  save_new({ ...g, writers: [get_user_id()], anyone_writable: true });
+  const docdata: State = {
+    ...g,
+    writers: [get_user_id()],
+    anyone_writable: true,
+  };
+  save_new(state_to_docdate(docdata));
 };
 
-export const save_new = (state: State) => {
+export const save_new = (doc: DocData) => {
   const g = getGlobal();
 
-  const doc = state_to_docdate(state);
   let p;
   if (g.fix_ba_for_test === "") {
     p = db.collection("ba").add(doc);
