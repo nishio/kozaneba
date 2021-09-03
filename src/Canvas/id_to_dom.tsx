@@ -4,7 +4,7 @@ import { Kozane } from "../Kozane/Kozane";
 import { Group } from "../Group/Group";
 import { get_item } from "../Event/get_item";
 import { Gyazo } from "./Gyazo";
-import { Scrapbox } from "./Scrapbox";
+import { Scrapbox } from "../Scrapbox/Scrapbox";
 
 export const id_to_dom = (id: string, offset: TOffset): JSX.Element | null => {
   // `key` required in this level, because it is item in a list

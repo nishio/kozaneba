@@ -1,6 +1,6 @@
 import React from "react";
 import { add_kozane } from "../API/add_kozane";
-import { add_scrapbox_item } from "../API/make_scrapbox_kozane";
+import { add_scrapbox_item } from "../Scrapbox/add_scrapbox_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { add_gyazo_item } from "./add_gyazo_item";
 import { is_some_dialog_open } from "./is_some_dialog_open";

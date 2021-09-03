@@ -1,86 +1,14 @@
-import { SCRAPBOX_SIZE } from "../Canvas/Scrapbox";
+import { SCRAPBOX_SIZE } from "./Scrapbox";
 import { set_status } from "../Cloud/initial_save";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { create_squared_position } from "../Dialog/AddKozaneDialog/add_multiple_kozane";
 import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
-import { TWorldCoord } from "../dimension/world_to_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { create_new_itemid } from "../Kozane/create_new_itemid";
-import { add_item } from "./add_item";
-
-type TScrapboxPage = {
-  title: string;
-  image: string | null;
-  descriptions: string[];
-};
-
-const make_scrapbox_kozane = (x: TScrapboxPage, url: string) => {
-  add_scrapbox_item_raw({
-    text: x.title,
-    url: url,
-    image: (x.image ?? "").replace("/raw", ""),
-    descriptions: x.descriptions,
-  });
-};
-
-const get_page_json = (url: string) => {
-  return fetch(
-    "https://us-central1-regroup-d4932.cloudfunctions.net/get_scrapbox_page",
-    {
-      method: "post",
-      body: JSON.stringify({ url }),
-    }
-  ).then((x) => x.json());
-};
-
-const add_scrapbox_item_raw = (props: {
-  text: string;
-  url?: string;
-  image?: string;
-  descriptions?: string[];
-  position?: TWorldCoord;
-}) => {
-  const { text, image, url, descriptions, position } = props;
-  const scrapbox: TScrapboxItem = {
-    id: create_new_itemid(),
-    type: "scrapbox",
-    text: text,
-    image: image ?? "",
-    url: url ?? "",
-    description: descriptions ?? [],
-
-    position: position ?? get_center_of_screen(),
-    scale: 1,
-  };
-  add_item(scrapbox);
-};
-
-export const add_scrapbox_item = (url: string) => {
-  const items = url.split("/");
-  if (items.length < 5 || items[4] === "") {
-    alert(`Pasted URL is not a scrapbox page, ignored: ${url}`);
-    return;
-  }
-
-  updateGlobal((g) => {
-    g.dialog = "Loading";
-    g.statusBar.type = "downloading";
-  });
-  get_page_json(url)
-    .then((x) => {
-      make_scrapbox_kozane(x, url);
-    })
-    .then(() => {
-      set_status("done");
-      mark_local_changed();
-    });
-};
-
-const make_url = (root: string, title: string) => {
-  return root + "/" + encodeURIComponent(title);
-};
+import { add_item } from "../API/add_item";
+import { get_page_json, TScrapboxPage, make_url } from "./make_scrapbox_kozane";
 
 export const add_scrapbox_links = (
   url: string,

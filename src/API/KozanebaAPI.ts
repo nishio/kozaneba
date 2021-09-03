@@ -9,7 +9,8 @@ import { constants } from "./constants";
 import { get_clicked_item } from "./get_clicked_item";
 import { get_selected_ids } from "./get_selected_ids";
 import { is_touchpad } from "./is_touchpad";
-import { add_scrapbox_item, add_scrapbox_links } from "./make_scrapbox_kozane";
+import { add_scrapbox_links } from "../Scrapbox/add_scrapbox_links";
+import { add_scrapbox_item } from "../Scrapbox/add_scrapbox_item";
 import { redraw } from "./redraw";
 import { show_dialog } from "./show_dialog";
 import { start_tutorial } from "./start_tutorial";
@@ -19,6 +20,8 @@ import { add_multiple_kozane } from "../Dialog/AddKozaneDialog/add_multiple_koza
 import { copy_json } from "../Menu/copy_json";
 import { show_backup } from "../Cloud/LocalBackup";
 import { save_backup_as_new } from "../Cloud/LocalBackup";
+import { fetch_api } from "../Scrapbox/make_scrapbox_kozane";
+import { parse_scrapbox } from "../Scrapbox/add_scrapbox_item";
 export const kozaneba = {
   // simple values to modify
   constants,
@@ -37,6 +40,8 @@ export const kozaneba = {
   add_kozane,
   add_multiple_kozane,
   copy_json,
+  fetch_api,
+  parse_scrapbox,
 
   // getter
   get_global: getGlobal,
