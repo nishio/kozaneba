@@ -1,21 +1,20 @@
-import { useGlobal } from "reactn";
-import { Center } from "./Center";
-import { Kozane } from "../Kozane/Kozane";
-import { kozaneToKozaneItem } from "../kozaneToKozaneItem";
-import { ids_to_dom } from "./ids_to_dom";
-import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
-import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
-import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
-import { SelectionView } from "../Selection/Selection";
-import { ItemId } from "../Global/initializeGlobalState";
 import { useEffect, useRef } from "react";
-import { onWheel } from "../Event/onWheel";
-import { dev_log, dev_time, dev_time_end } from "../utils/dev";
-import { add_v2, sub_v2, V2 } from "../dimension/V2";
-import { TRect } from "../dimension/TRect";
-import { add_kozane } from "../API/add_kozane";
+import { useGlobal } from "reactn";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { TBoundingBox } from "../dimension/TBoundingBox";
+import { TRect } from "../dimension/TRect";
+import { add_v2, sub_v2, V2 } from "../dimension/V2";
+import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
+import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
+import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
+import { onWheel } from "../Event/onWheel";
+import { ItemId } from "../Global/initializeGlobalState";
+import { Kozane } from "../Kozane/Kozane";
+import { kozaneToKozaneItem } from "../kozaneToKozaneItem";
+import { SelectionView } from "../Selection/Selection";
+import { dev_log, dev_time, dev_time_end } from "../utils/dev";
+import { Center } from "./Center";
+import { ids_to_dom } from "./ids_to_dom";
 
 export const ItemCanvas = () => {
   const [kozane] = useGlobal("kozane");
