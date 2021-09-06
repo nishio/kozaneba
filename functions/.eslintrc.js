@@ -24,5 +24,6 @@ module.exports = {
   rules: {
     quotes: ["error", "double"],
     camlcase: [0, { properties: "never" }],
+    noUncheckedIndexedAccess: false,
   },
 };
