@@ -5,6 +5,7 @@ import { TUser } from "../Cloud/FirestoreIO";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TDialog } from "./TDialog";
 import { CSSProperties } from "react";
+import { TAnnotation } from "./TAnnotation";
 
 export const INITIAL_GLOBAL_STATE = {
   kozane: [] as VKozane[], // for small tests
@@ -50,6 +51,8 @@ export const INITIAL_GLOBAL_STATE = {
   anyone_writable: true,
 
   disableHotKey: false,
+
+  annotations: [] as TAnnotation[],
 };
 
 type TDragTarget = "" | "selection" | ItemId;
