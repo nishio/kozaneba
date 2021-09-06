@@ -1,6 +1,7 @@
+import { TBoundingBox } from "./TBoundingBox";
 import { TRect } from "./TRect";
 
-export const selection_range_to_bounding_box = (sr: TRect) => {
+export const selection_range_to_bounding_box = (sr: TRect): TBoundingBox => {
   const bottom = sr.top + sr.height;
   const right = sr.left + sr.width;
   return {
