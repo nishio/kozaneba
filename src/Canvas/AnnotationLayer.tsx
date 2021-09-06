@@ -1,11 +1,16 @@
-import { useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "reactn";
+import { get_items_bounding_box } from "../dimension/get_group_bounding_box";
 import { TAnnotation } from "../Global/TAnnotation";
+import { bounding_box_to_rect } from "./bounding_box_to_rect";
 import { LineAnnot } from "./LineAnnot";
+
+const get_contents_bound = () => {
+  const g = getGlobal();
+  return get_items_bounding_box(g.drawOrder);
+};
 
 export const AnnotationLayer = () => {
   const [g] = useGlobal();
-  const WIDTH = document.body.clientWidth;
-  const HEIGHT = document.body.clientHeight;
 
   const annotElement = g.annotations.flatMap((a: TAnnotation) => {
     if (a.type === "line") {
@@ -13,20 +18,21 @@ export const AnnotationLayer = () => {
     }
     return [];
   });
-
+  const b = get_contents_bound();
+  const r = bounding_box_to_rect(b);
   return (
     <svg
       version="1.1"
-      width={WIDTH}
-      height={HEIGHT}
+      width={r.width}
+      height={r.height}
       xmlns="http://www.w3.org/2000/svg"
       style={{
         position: "absolute",
-        top: -HEIGHT / 2 + "px",
-        left: -WIDTH / 2 + "px",
+        top: r.top + "px",
+        left: r.left + "px",
         pointerEvents: "none", // paththrogh event on background
       }}
-      viewBox={`-${WIDTH / 2} -${HEIGHT / 2} ${WIDTH} ${HEIGHT}`}
+      viewBox={`${r.left} ${r.top} ${r.width} ${r.height}`}
     >
       {annotElement}
     </svg>
