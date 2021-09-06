@@ -3,7 +3,7 @@ import { useGlobal } from "reactn";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { TBoundingBox } from "../dimension/TBoundingBox";
 import { TRect } from "../dimension/TRect";
-import { add_v2, sub_v2, V2 } from "../dimension/V2";
+import { add_v2, mul_v2, normalize, rotate, sub_v2, V2 } from "../dimension/V2";
 import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
@@ -93,6 +93,9 @@ const bounding_box_to_rect = (bb: TBoundingBox): TRect => {
 };
 const SVGLayer = () => {
   const [g] = useGlobal();
+  if (g.itemStore["2"] === undefined) {
+    return null;
+  }
   const v1 = g.itemStore["1"]!.position;
   const v2 = g.itemStore["2"]!.position;
   const WIDTH = 500;
@@ -107,6 +110,12 @@ const SVGLayer = () => {
     v1,
     bounding_box_to_rect(get_item_bounding_box("2" as ItemId))
   );
+
+  // arrow head
+  const n = normalize(sub_v2([x2, y2], [x1, y1]));
+  const size = 30;
+  const [h1x, h1y] = sub_v2([x2, y2], mul_v2(size, rotate(n, 30)));
+  const [h2x, h2y] = sub_v2([x2, y2], mul_v2(size, rotate(n, -30)));
   return (
     <svg
       version="1.1"
@@ -130,8 +139,26 @@ const SVGLayer = () => {
         strokeWidth="10"
         strokeLinecap="round"
       />
+      <line
+        x1={h1x}
+        y1={h1y}
+        x2={x2}
+        y2={y2}
+        stroke="black"
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
+      <line
+        x1={h2x}
+        y1={h2y}
+        x2={x2}
+        y2={y2}
+        stroke="black"
+        strokeWidth="10"
+        strokeLinecap="round"
+      />
 
-      <text x="-100" y="-100" font-size="30" text-anchor="middle" fill="black">
+      {/* <text x="-100" y="-100" font-size="30" text-anchor="middle" fill="black">
         SVG
       </text>
       <text x="100" y="0" font-size="30" text-anchor="middle" fill="black">
@@ -139,7 +166,7 @@ const SVGLayer = () => {
       </text>
       <text x="0" y="100" font-size="30" text-anchor="middle" fill="black">
         0,100
-      </text>
+      </text> */}
     </svg>
   );
 };
