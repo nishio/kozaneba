@@ -1,6 +1,7 @@
 import { useGlobal } from "reactn";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { mul_v2, normalize, rotate, sub_v2, V2 } from "../dimension/V2";
+import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TAnnotation } from "../Global/TAnnotation";
 import { get_gravity_point } from "../Menu/get_gravity_point";
@@ -25,13 +26,13 @@ export const Line = (p1: V2, p2: V2) => {
 
 export const AnnotationLayer = () => {
   const [g] = useGlobal();
-  const WIDTH = 500;
-  const HEIGHT = 500;
+  const WIDTH = document.body.clientWidth;
+  const HEIGHT = document.body.clientHeight;
 
   const annotElement = g.annotations.flatMap((a: TAnnotation) => {
     const result = [];
     // currently ignore items[2~], and item deletion
-    const positions = a.items.map((i) => g.itemStore[i]!.position);
+    const positions = a.items.map((id) => get_item(g, id).position);
     const gp = get_gravity_point(positions);
 
     const get_rect = (id: ItemId) => {
@@ -41,8 +42,13 @@ export const AnnotationLayer = () => {
     const crosspoints = a.items.map((id, index) =>
       get_box_line_crosspoint(positions[index]!, gp, rects[index]!)
     );
-
-    result.push(Line(crosspoints[0]!, crosspoints[1]!));
+    if (a.items.length === 2) {
+      result.push(Line(crosspoints[0]!, crosspoints[1]!));
+    } else {
+      a.items.forEach((id, index) => {
+        result.push(Line(gp, crosspoints[index]!));
+      });
+    }
 
     a.heads.forEach((h, index) => {
       if (h === "arrow") {
