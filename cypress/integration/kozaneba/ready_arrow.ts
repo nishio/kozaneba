@@ -32,7 +32,7 @@ describe("ready two kozane", () => {
     add_kozane("Y", [0, 200]);
     add_kozane("X+Y", [200, 100]);
     add_kozane("X+1", [-200, 0]);
-    add_kozane("Y-1", [400, 100]);
+    add_kozane("Y-1", [400, 200]);
 
     add_arrow(["X", "Y", "X+Y"], ["none", "none", "arrow"]);
     add_arrow(["X", "X+1"], ["arrow", "none"]);
