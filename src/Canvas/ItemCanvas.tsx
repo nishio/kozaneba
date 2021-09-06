@@ -51,6 +51,8 @@ export const ItemCanvas = () => {
     const dom = ids_to_dom(drawOrder, offset);
     dev_time_end("ids_to_dom");
 
+    const WIDTH = 500;
+    const HEIGHT = 500;
     contents = (
       <>
         <Center opacity={1}>
@@ -58,6 +60,55 @@ export const ItemCanvas = () => {
             <Kozane value={kozaneToKozaneItem(k)} offset={offset} />
           ))}
           {dom}
+          <svg
+            version="1.1"
+            width={WIDTH}
+            height={HEIGHT}
+            xmlns="http://www.w3.org/2000/svg"
+            style={{
+              position: "absolute",
+              top: -HEIGHT / 2 + "px",
+              left: -WIDTH / 2 + "px",
+            }}
+            viewBox={`-${WIDTH / 2} -${HEIGHT / 2} ${WIDTH} ${HEIGHT}`}
+          >
+            <line
+              x1="-100"
+              y1="-100"
+              x2="0"
+              y2="0"
+              stroke="black"
+              strokeWidth="10"
+            />
+
+            <text
+              x="-100"
+              y="-100"
+              font-size="30"
+              text-anchor="middle"
+              fill="black"
+            >
+              SVG
+            </text>
+            <text
+              x="100"
+              y="0"
+              font-size="30"
+              text-anchor="middle"
+              fill="black"
+            >
+              100,0
+            </text>
+            <text
+              x="0"
+              y="100"
+              font-size="30"
+              text-anchor="middle"
+              fill="black"
+            >
+              0,100
+            </text>
+          </svg>
         </Center>
         <SelectionView />
       </>
