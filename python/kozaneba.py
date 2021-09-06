@@ -46,3 +46,38 @@ def small_sample():
     ba.add_kozane("2", [100, 0])
     ba.add_simple_arrow("1", "2")
     print(ba.to_json())
+
+
+def sample():
+    import os
+    import re
+    kozanes = set()
+    arrows = []
+    for path, dirs, files in os.walk("../src"):
+        for f in files:
+            fp = os.path.join(path, f)
+            frm = fp.replace("../src/", "")
+            frm = frm.replace(".tsx", "")
+            frm = frm.replace(".ts", "")
+            data = open(fp).read()
+            imports = re.findall(r'from "(\.[^"]*)"', data)
+            for f in imports:
+                fp = os.path.normpath(os.path.join(path, f))
+                to = fp.replace("../src/", "")
+                arrows.append((frm, to))
+                kozanes.add(to)
+            kozanes.add(frm)
+        if len(arrows) > 100:
+            break
+
+    import sys
+    print(len(kozanes), len(arrows), file=sys.stderr)
+    ba = Ba()
+    for i, k in enumerate(sorted(kozanes)):
+        ba.add_kozane(k, [200 * i, 0])
+    for frm, to in arrows:
+        ba.add_simple_arrow(frm, to)
+    print(ba.to_json())
+
+
+sample()
