@@ -11,6 +11,7 @@ import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { Line } from "./Line";
 
 const get_global_position = (id: ItemId, g: State): V2 => {
+  // potential time-consuming function
   let v: V2 = get_item(g, id).position;
   let p = find_parent(id);
   while (p !== null) {
