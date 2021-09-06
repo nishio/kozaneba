@@ -7,6 +7,22 @@ import { get_gravity_point } from "../Menu/get_gravity_point";
 import { bounding_box_to_rect } from "./bounding_box_to_rect";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 
+export const Line = (p1: V2, p2: V2) => {
+  const [x1, y1] = p1;
+  const [x2, y2] = p2;
+  return (
+    <line
+      x1={x1}
+      y1={y1}
+      x2={x2}
+      y2={y2}
+      stroke="black"
+      strokeWidth="10"
+      strokeLinecap="round"
+    />
+  );
+};
+
 export const AnnotationLayer = () => {
   const [g] = useGlobal();
   const WIDTH = 500;
@@ -25,51 +41,20 @@ export const AnnotationLayer = () => {
     const crosspoints = a.items.map((id, index) =>
       get_box_line_crosspoint(positions[index]!, gp, rects[index]!)
     );
-    const [x1, y1] = crosspoints[0]!;
-    const [x2, y2] = crosspoints[1]!;
 
-    result.push(
-      <line
-        x1={x1}
-        y1={y1}
-        x2={x2}
-        y2={y2}
-        stroke="black"
-        strokeWidth="10"
-        strokeLinecap="round"
-      />
-    );
+    result.push(Line(crosspoints[0]!, crosspoints[1]!));
+
     a.heads.forEach((h, index) => {
       if (h === "arrow") {
         const p = crosspoints[index]!;
         // arrow head
         const n = normalize(sub_v2(p, gp));
         const size = 30;
-        const [h1x, h1y] = sub_v2(p, mul_v2(size, rotate(n, 30)));
-        const [h2x, h2y] = sub_v2(p, mul_v2(size, rotate(n, -30)));
+        const h1 = sub_v2(p, mul_v2(size, rotate(n, 30)));
+        const h2 = sub_v2(p, mul_v2(size, rotate(n, -30)));
 
-        result.push(
-          <line
-            x1={h1x}
-            y1={h1y}
-            x2={x2}
-            y2={y2}
-            stroke="black"
-            strokeWidth="10"
-            strokeLinecap="round"
-          />
-        );
-        result.push(
-          <line
-            x1={h2x}
-            y1={h2y}
-            x2={x2}
-            y2={y2}
-            stroke="black"
-            strokeWidth="10"
-            strokeLinecap="round"
-          />
-        );
+        result.push(Line(h1, p));
+        result.push(Line(h2, p));
       }
     });
     return result;
