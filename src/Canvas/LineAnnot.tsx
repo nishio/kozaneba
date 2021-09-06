@@ -1,3 +1,4 @@
+import { State } from "reactn/default";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { mul_v2, normalize, rotate, sub_v2, V2 } from "../dimension/V2";
 import { get_item } from "../Event/get_item";
@@ -8,7 +9,7 @@ import { bounding_box_to_rect } from "./bounding_box_to_rect";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { Line } from "./Line";
 
-export const LineAnnot = (a: TLineAnnot) => {
+export const LineAnnot = (g: State, a: TLineAnnot) => {
   const lines = [] as [V2, V2][];
   // currently ignore items[2~], and item deletion
   const positions = a.items.map((id) => get_item(g, id).position);

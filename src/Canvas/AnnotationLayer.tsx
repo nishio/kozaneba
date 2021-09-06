@@ -9,7 +9,7 @@ export const AnnotationLayer = () => {
 
   const annotElement = g.annotations.flatMap((a: TAnnotation) => {
     if (a.type === "line") {
-      return LineAnnot(a);
+      return LineAnnot(g, a);
     }
     return [];
   });
