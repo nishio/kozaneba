@@ -1,25 +1,13 @@
 import { State } from "reactn/default";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
-import { add_v2, mul_v2, normalize, rotate, sub_v2, V2 } from "../dimension/V2";
-import { get_item } from "../Event/get_item";
+import { mul_v2, normalize, rotate, sub_v2, V2 } from "../dimension/V2";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TLineAnnot } from "../Global/TAnnotation";
-import { find_parent } from "../Group/find_parent";
 import { get_gravity_point } from "../Menu/get_gravity_point";
 import { bounding_box_to_rect } from "./bounding_box_to_rect";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
+import { get_global_position } from "./get_global_position";
 import { Line } from "./Line";
-
-const get_global_position = (id: ItemId, g: State): V2 => {
-  // potential time-consuming function
-  let v: V2 = get_item(g, id).position;
-  let p = find_parent(id);
-  while (p !== null) {
-    v = add_v2(v, get_item(g, p).position);
-    p = find_parent(p);
-  }
-  return v;
-};
 
 export const LineAnnot = (g: State, a: TLineAnnot) => {
   const lines = [] as [V2, V2][];
