@@ -1,6 +1,7 @@
 import { getGlobal } from "reactn";
 import { get_item } from "../Event/get_item";
 import { ItemId, TItem } from "../Global/initializeGlobalState";
+import { TAnnotation, TArrowHead } from "../Global/TAnnotation";
 
 type InType = "selection" | "all" | ItemId[];
 const out = { console: true, clipboard: true };
@@ -14,11 +15,14 @@ export const copy_json = (
   const drawOrder: ItemId[] = [];
   const itemStore: { [id: string]: TItem } = {};
 
-  const _add_item = (id: ItemId) => {
+  const items_to_copy: ItemId[] = [];
+
+  const add_item_recursively = (id: ItemId) => {
     const item = get_item(g, id);
+    items_to_copy.push(id);
     itemStore[id] = item;
     if (item.type === "group") {
-      item.items.forEach(_add_item);
+      item.items.forEach(add_item_recursively);
     }
   };
 
@@ -30,14 +34,34 @@ export const copy_json = (
   }
   target.forEach((id) => {
     drawOrder.push(id);
-    _add_item(id);
+    add_item_recursively(id);
+  });
+
+  const annotation: TAnnotation[] = [];
+  g.annotations.forEach((a) => {
+    if (a.type === "line") {
+      const new_heads: TArrowHead[] = [];
+      const new_items: ItemId[] = [];
+      a.items.forEach((id, index) => {
+        if (items_to_copy.includes(id)) {
+          new_items.push(id);
+          new_heads.push(a.heads[index]!);
+        }
+      });
+      if (new_items.length < 2) {
+        // ignore this
+      } else {
+        annotation.push({ ...a, items: new_items, heads: new_heads });
+      }
+    }
   });
 
   const json = JSON.stringify({
     drawOrder,
     itemStore,
+    annotation,
     format: "Kozaneba",
-    version: 3,
+    version: 4,
   });
 
   if (out_type.console) {
