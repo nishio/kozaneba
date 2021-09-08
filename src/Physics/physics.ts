@@ -11,6 +11,8 @@ import { LineSpring } from "./LineSpring";
 export type Gradient = { [id: string]: V2 };
 export type PhysicalLaw = (state: State) => Gradient; // return Negative Gradient(aka Power)
 
+export const pin: { [key: string]: V2 } = {};
+
 const square = (v: V2): V2 => {
   return [v[0] * v[0], v[1] * v[1]];
 };
@@ -111,6 +113,10 @@ export const step = () => {
   // console.log("delta", delta);
   updateGlobal((g) => {
     Object.entries(delta).forEach(([id, v]) => {
+      if (pin[id] !== undefined) {
+        // it is pinned, should not update position
+        return;
+      }
       const item = g.itemStore[id]!;
       item.position = add_v2(item.position, v) as TWorldCoord;
     });

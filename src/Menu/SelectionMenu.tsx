@@ -4,6 +4,7 @@ import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { pin } from "../Physics/physics";
 import { reset_selection } from "../Selection/reset_selection";
 import { copy_json } from "./copy_json";
 import { copy_text } from "./copy_text";
@@ -35,6 +36,12 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
+  const onUnpin = () => {
+    getGlobal().selected_items.forEach((id) => {
+      delete pin[id];
+    });
+    setMenu("");
+  };
   const onCopyText = () => {
     copy_text();
     setMenu("");
@@ -59,6 +66,7 @@ export const SelectionMenu = () => {
 
       {kozaneba.user_menus["Selection"]!.map(UserMenuItem)}
 
+      <MenuItem onClick={onUnpin}>unpin</MenuItem>
       <MenuItem onClick={onDelete}>delete items</MenuItem>
     </Menu>
   );

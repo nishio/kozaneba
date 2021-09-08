@@ -17,6 +17,7 @@ import { find_parent } from "../Group/find_parent";
 import { move_front } from "../Menu/move_front";
 import { normalize_group_position } from "../Menu/normalize_group_position";
 import { remove_item } from "../Menu/remove_item";
+import { pin } from "../Physics/physics";
 import { remove_item_from } from "../utils/remove_item";
 import { reset_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
@@ -47,6 +48,7 @@ export const onCanvasMouseUp = (
       g.selected_items.forEach((id) => {
         const x = get_item(g, id);
         x.position = add_v2w(x.position, delta);
+        pin[id] = x.position;
       });
       const sr = g.selectionRange;
       const [qx, qy] = world_to_screen(
@@ -70,6 +72,7 @@ export const onCanvasMouseUp = (
         g.drawOrder.push(target_id);
         const x = get_item(g, target_id);
         x.position = add_v2w(delta, p.position);
+        pin[target_id] = x.position;
         g.drag_target = "";
 
         if (p.items.length === 0 && p.text === "") {
@@ -84,6 +87,7 @@ export const onCanvasMouseUp = (
       updateGlobal((g) => {
         const x = get_item(g, target_id);
         x.position = delta;
+        pin[target_id] = x.position;
         g.drag_target = "";
       });
     }

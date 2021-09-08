@@ -8,6 +8,7 @@ import { TGroupItem } from "../Group/GroupItem";
 import { move_front } from "../Menu/move_front";
 import { normalize_group_position } from "../Menu/normalize_group_position";
 import { remove_item } from "../Menu/remove_item";
+import { pin } from "../Physics/physics";
 import { remove_item_from } from "../utils/remove_item";
 import { reset_target } from "./fast_drag_manager";
 import { get_group } from "./get_group";
@@ -42,6 +43,7 @@ export const onGroupMouseUp = (
       g.selected_items.forEach((id) => {
         const x = get_item(g, id);
         x.position = sub_v2w(add_v2w(x.position, delta), group_draft.position);
+        pin[id] = x.position;
         g.drawOrder = remove_item_from(g.drawOrder, id);
         group_draft.items.push(id);
       });
@@ -81,6 +83,7 @@ export const onGroupMouseUp = (
       }
       const target = get_item(g, target_id);
       target.position = position;
+      pin[target_id] = target.position;
       g.drag_target = "";
     });
     normalize_group_position(group_id);
