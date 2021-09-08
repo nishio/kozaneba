@@ -1,16 +1,15 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { redraw } from "../API/redraw";
-import { get_global_position } from "../dimension/get_global_position";
-import { add_v2, L2norm, mul_v2, normalize, sub_v2, V2 } from "../dimension/V2";
+import { add_v2, L2norm, mul_v2, normalize, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
-import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
-import { get_gravity_point } from "../dimension/get_gravity_point";
+import { ItemRepulse } from "./ItemRepulse";
+import { LineSpring } from "./LineSpring";
 
-type Gradient = { [id: string]: V2 };
-type PhysicalLaw = (state: State) => Gradient; // return Negative Gradient(aka Power)
+export type Gradient = { [id: string]: V2 };
+export type PhysicalLaw = (state: State) => Gradient; // return Negative Gradient(aka Power)
 
 const square = (v: V2): V2 => {
   return [v[0] * v[0], v[1] * v[1]];
@@ -87,49 +86,10 @@ class GradientDecent {
   }
 }
 
-const add = (grad: Gradient, id: ItemId, v: V2): void => {
+export const add = (grad: Gradient, id: ItemId, v: V2): void => {
   grad[id] = add_v2(grad[id] ?? [0, 0], v);
 };
 
-const LineSpring: PhysicalLaw = (g) => {
-  const NL = KOZANE_WIDTH; // natural length
-  const grad: Gradient = {};
-  g.annotations.forEach((a) => {
-    if (a.type !== "line") return grad;
-    const positions = a.items.map((id) => get_global_position(id, g));
-    const gp = get_gravity_point(positions);
-    a.items.forEach((id, index) => {
-      const v = sub_v2(gp, positions[index]!);
-      const n = L2norm(v);
-      // console.log("n", n);
-      if (n > NL) {
-        add(grad, id, mul_v2(n - NL, normalize(v)));
-      }
-    });
-  });
-  // console.log("LineSpring grad", grad);
-  return grad;
-};
-
-const ItemRepulse: PhysicalLaw = (g) => {
-  const RADIUS = Math.sqrt(KOZANE_WIDTH ** 2 + KOZANE_HEIGHT ** 2); // natural length
-  const grad: Gradient = {};
-  const positions = g.drawOrder.map((id) => get_global_position(id, g));
-  g.drawOrder.forEach((id1, i1) => {
-    g.drawOrder.forEach((id2, i2) => {
-      if (i1 >= i2) return;
-      const v = sub_v2(positions[i1]!, positions[i2]!);
-      const n = L2norm(v);
-      if (n < RADIUS) {
-        const nv = normalize(v);
-        const f = (RADIUS - n) / 2;
-        add(grad, id1, mul_v2(f, nv));
-        add(grad, id2, mul_v2(-f, nv));
-      }
-    });
-  });
-  return grad;
-};
 interface IGradientMethod {
   get_delta: (gradient: Gradient) => Gradient;
 }
