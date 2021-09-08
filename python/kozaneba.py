@@ -19,7 +19,7 @@ class Ba:
         while id in self.ba["itemStore"]:
             self.id += 1
             id = str(self.id)
-        print("id", id)
+        debug("id", id)
         return id
 
     # add_*: make item and add it on toplevel
@@ -68,6 +68,19 @@ class Ba:
         import json
         return json.dumps(self.ba, indent=2)
 
+    def align_square_all(self):
+        self.align_square_items(self.ba["drawOrder"])
+
+    def align_square_items(self, items, recursive=True):
+        from math import sqrt, ceil
+        W = ceil(sqrt(len(items)))
+        for i, k in enumerate(items):
+            item = self.ba["itemStore"][k]
+            item["position"] = [200 * (i % W), 200 * (i // W)]
+            if recursive:
+                if item["type"] == "group":
+                    self.align_square_items(item["items"])
+
 
 def sample1():
     import os
@@ -92,7 +105,7 @@ def sample1():
         #     break
 
     import sys
-    print(len(kozanes), len(arrows), file=sys.stderr)
+    debug(len(kozanes), len(arrows))
     ba = Ba()
     from math import sqrt
     W = int(sqrt(len(kozanes)))
@@ -114,39 +127,35 @@ def sample2():
 
     for path, dirs, files in os.walk("../src"):
         group_title = path.replace("../src/", "")
+        if group_title == "../src":
+            group_title = ""
         items = []
         for d in dirs:
             items.append(os.path.join(group_title, d))
 
-        group = ba.make_group(items, [0, 0], group_title)
-
         for f in files:
-            if not (".tsx" in f):
+            if not (".ts" in f):
                 continue
             fp = os.path.join(path, f)
             data = open(fp).read()
             frm = fp.replace("../src/", "")
             frm = frm.replace(".tsx", "")
             frm = frm.replace(".ts", "")
+            items.append(frm)
+            ba.make_kozane(frm, [0, 0])
+            debug(frm, msg=":frm")
+
             imports = re.findall(r'from "(\.[^"]*)"', data)
             for f in imports:
                 fp = os.path.normpath(os.path.join(path, f))
                 to = fp.replace("../src/", "")
-                arrows.append((frm, to))
-                kozanes.add(to)
-            kozanes.add(frm)
-            group.append(frm)
+                ba.add_simple_arrow(frm, to)
 
-        group[group_title] = group
+        ba.make_group(items, [0, 0], group_title)
 
-    ba = Ba()
-    from math import sqrt
-    W = int(sqrt(len(kozanes)))
-    for i, k in enumerate(sorted(kozanes)):
-        ba.add_kozane(k, [200 * (i % W), 200 * (i // W)])
-    for frm, to in arrows:
-        ba.add_simple_arrow(frm, to)
-    # print(ba.to_json())
+    ba.add_item_on_toplevel("0")
+    ba.align_square_all()
+    print(ba.to_json())
 
 
-# sample2()
+sample2()
