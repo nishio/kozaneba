@@ -1,5 +1,5 @@
 import { SCRAPBOX_SIZE } from "./Scrapbox";
-import { set_status } from "../Cloud/initial_save";
+import { set_status } from "../utils/set_status";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { create_squared_position } from "../dimension/create_squared_position";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";

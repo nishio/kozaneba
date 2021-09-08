@@ -1,11 +1,9 @@
 import { getGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { db, DocData, state_to_docdate } from "./FirestoreIO";
-import {
-  if_not_in_writer_add_self,
-  not_login_then_show_dialog,
-  set_status,
-} from "./initial_save";
+import { if_not_in_writer_add_self } from "./if_not_in_writer_add_self";
+import { not_login_then_show_dialog } from "./not_login_then_show_dialog";
+import { set_status } from "../utils/set_status";
 import { local_db } from "./LocalBackup";
 
 export const save = () => {

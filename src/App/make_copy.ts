@@ -2,7 +2,8 @@ import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { show_dialog } from "../API/show_dialog";
 import { state_to_docdate } from "../Cloud/FirestoreIO";
-import { save_new, set_status } from "../Cloud/initial_save";
+import { save_new } from "../Cloud/save_new";
+import { set_status } from "../utils/set_status";
 import { stop_current_subscription } from "../Cloud/set_up_read_subscription";
 
 export const make_copy = () => {

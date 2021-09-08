@@ -1,5 +1,5 @@
 import { parse } from "@progfay/scrapbox-parser";
-import { set_status } from "../Cloud/initial_save";
+import { set_status } from "../utils/set_status";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { updateGlobal } from "../Global/updateGlobal";
 import { get_page_json, make_scrapbox_kozane } from "./make_scrapbox_kozane";
