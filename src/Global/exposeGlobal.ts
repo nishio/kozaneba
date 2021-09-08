@@ -5,7 +5,7 @@ import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { updateGlobal } from "./updateGlobal";
 import { reset_selection } from "../Selection/reset_selection";
 import { db, auth } from "../Cloud/FirestoreIO";
-import { make_items_into_new_group } from "../Menu/make_items_into_new_group";
+import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { KozaneItem, TKozaneItem } from "../Kozane/KozaneItem";
 import { TKozaneba } from "../API/KozanebaAPI";
 import { toggle_physics, step } from "../Physics/physics";

@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
 import { can_write } from "../App/can_write";
 import { ERROR_MESSAGE, READONLY_MESSAGE } from "../App/READONLY_MESSAGE";
-import { close_menu_and_dialog } from "../AppBar/close_menu";
+import { close_menu_and_dialog } from "../utils/close_menu";
 import { dev_log } from "../utils/dev";
 
 export const LoadingDialog = () => {

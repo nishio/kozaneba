@@ -7,7 +7,7 @@ import { UserMenuItem } from "../API/UserMenuItem";
 import { get_item } from "../Event/get_item";
 import { TItem, TScrapboxItem } from "../Global/initializeGlobalState";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
-import { close_context_menu } from "./close_context_menu";
+import { close_context_menu } from "../utils/close_context_menu";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
 

@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
-import { close_menu } from "../AppBar/close_menu";
+import { close_menu } from "../utils/close_menu";
 import { TStatusType } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { auth, db, DocData, DocRef, state_to_docdate } from "./FirestoreIO";

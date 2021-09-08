@@ -3,8 +3,8 @@ import { redraw } from "../API/redraw";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem, TGroupItem } from "../Group/GroupItem";
-import { remove_item_from } from "../utils/remove_item";
-import { normalize_group_position } from "./normalize_group_position";
+import { remove_item_from } from "./remove_item";
+import { normalize_group_position } from "../Menu/normalize_group_position";
 
 export const make_items_into_new_group = (
   items: ItemId[],

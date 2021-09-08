@@ -8,8 +8,8 @@ import { pin } from "../Physics/pin";
 import { reset_selection } from "../Selection/reset_selection";
 import { copy_json } from "./copy_json";
 import { copy_text } from "./copy_text";
-import { delete_item_from_world } from "./delete_item_from_world";
-import { make_items_into_new_group } from "./make_items_into_new_group";
+import { delete_item_from_world } from "../utils/delete_item_from_world";
+import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 
 export const SelectionMenu = () => {
   const [menu, setMenu] = useGlobal("menu");

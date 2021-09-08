@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { useState } from "react";
 import { setGlobal, useGlobal } from "reactn";
-import { close_menu_and_dialog } from "../AppBar/close_menu";
+import { close_menu_and_dialog } from "../utils/close_menu";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { can_write, is_cloud } from "../App/can_write";
 import { make_copy } from "../App/make_copy";

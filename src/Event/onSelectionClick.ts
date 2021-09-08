@@ -1,6 +1,6 @@
 import React from "react";
 import { updateGlobal } from "../Global/updateGlobal";
-import { show_menu } from "../Menu/show_menu";
+import { show_menu } from "../utils/show_menu";
 import { reset_target } from "./fast_drag_manager";
 
 export const onSelectionClick = (event: React.MouseEvent<HTMLDivElement>) => {

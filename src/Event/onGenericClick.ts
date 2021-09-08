@@ -2,7 +2,7 @@ import React from "react";
 import { getGlobal } from "reactn";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
-import { show_menu } from "../Menu/show_menu";
+import { show_menu } from "../utils/show_menu";
 import { reset_target } from "./fast_drag_manager";
 import { get_item } from "./get_item";
 

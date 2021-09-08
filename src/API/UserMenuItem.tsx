@@ -1,6 +1,6 @@
 import { MenuItem } from "@material-ui/core";
 import React from "react";
-import { close_menu } from "../AppBar/close_menu";
+import { close_menu } from "../utils/close_menu";
 export type TUserMenu = {
   label: string;
   onClick: () => void;
