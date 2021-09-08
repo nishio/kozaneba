@@ -9,7 +9,6 @@ import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { KozaneItem } from "../Kozane/KozaneItem";
 import { TKozaneItem } from "./TKozaneItem";
 import { TKozaneba } from "../API/KozanebaAPI";
-import { toggle_physics, step } from "../Physics/physics";
 
 const tmpfunc = () => {
   console.log("write");
@@ -71,6 +70,4 @@ declare global {
 export const exposeGlobalForTest = () => {
   window.movidea = movidea;
   window.debug = debug;
-  window.debug.step = step;
-  window.debug.physics = toggle_physics;
 };
