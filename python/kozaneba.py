@@ -22,21 +22,21 @@ class Ba:
         print("id", id)
         return id
 
+    # add_*: make item and add it on toplevel
     def add_kozane(self, text, position):
-        self.add_item(self.make_kozane(text, position))
+        self.add_item_on_toplevel(self.make_kozane(text, position))
 
-    def add_item(self, item, on_toplevel=True):
-        id = item["id"]
-        self.ba["itemStore"][id] = item
-        if on_toplevel:
-            self.ba["drawOrder"].append(id)
+    def add_item_on_toplevel(self, id):
+        self.ba["drawOrder"].append(id)
         return id
 
+    # make_*: create item and put it in itemStore
     def make_kozane(self, text, position):
         id = self.make_id(text)
         item = {"type": "kozane", "position": position,
                 "id": id, "text": text, "scale": 1}
-        return item
+        self.ba["itemStore"][id] = item
+        return id
 
     def make_id(self, text):
         if text == "" or text in self.ba["itemStore"]:
@@ -44,18 +44,16 @@ class Ba:
         return text
 
     def make_group(self, items, position, text=""):
-        item_id = self.make_id(text)
-        item_ids = []
-        for x in items:
-            item_ids.append(self.add_item(x, on_toplevel=False))
+        id = self.make_id(text)
         item = {
             "type": "group", "position": position,
-            "items": item_ids, "isOpen": False,
-            "id": item_id, "text": text, "scale": 1}
-        return item
+            "items": items, "isOpen": False,
+            "id": id, "text": text, "scale": 1}
+        self.ba["itemStore"][id] = item
+        return id
 
     def add_group(self, items, position, text=""):
-        self.add_item(self.make_group(items, position, text))
+        self.add_item_on_toplevel(self.make_group(items, position, text))
 
     def add_arrow(self, items, heads):
         item = {"type": "line", "items": items, "heads": heads}
@@ -69,15 +67,6 @@ class Ba:
     def to_json(self):
         import json
         return json.dumps(self.ba, indent=2)
-
-
-def small_sample_group():
-    ba = Ba()
-    items = []
-    items.append(ba.make_kozane("1", [-100, 0]))
-    items.append(ba.make_kozane("2", [100, 0]))
-    ba.add_group(items, [0, 0], "G1")
-    print(ba.to_json())
 
 
 def sample1():
