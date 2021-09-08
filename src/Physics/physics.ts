@@ -29,6 +29,7 @@ const mul = (v1: V2, v2: V2): V2 => {
   return [v1[0] * v2[0], v1[1] * v2[1]];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 class AdaDelta {
   mean_squared_gradient: Gradient;
   mean_squared_delta: Gradient;
