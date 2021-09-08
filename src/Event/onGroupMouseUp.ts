@@ -8,7 +8,7 @@ import { TGroupItem } from "../Group/GroupItem";
 import { move_front } from "../Menu/move_front";
 import { normalize_group_position } from "../Menu/normalize_group_position";
 import { remove_item } from "../Menu/remove_item";
-import { pin } from "../Physics/physics";
+import { pin } from "../Physics/pin";
 import { remove_item_from } from "../utils/remove_item";
 import { reset_target } from "./fast_drag_manager";
 import { get_group } from "./get_group";

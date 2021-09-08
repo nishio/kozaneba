@@ -4,7 +4,7 @@ import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { pin } from "../Physics/physics";
+import { pin } from "../Physics/pin";
 import { reset_selection } from "../Selection/reset_selection";
 import { copy_json } from "./copy_json";
 import { copy_text } from "./copy_text";

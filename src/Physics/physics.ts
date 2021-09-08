@@ -7,11 +7,10 @@ import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { ItemRepulse } from "./ItemRepulse";
 import { LineSpring } from "./LineSpring";
+import { pin } from "./pin";
 
 export type Gradient = { [id: string]: V2 };
 export type PhysicalLaw = (state: State) => Gradient; // return Negative Gradient(aka Power)
-
-export const pin: { [key: string]: V2 } = {};
 
 const square = (v: V2): V2 => {
   return [v[0] * v[0], v[1] * v[1]];
