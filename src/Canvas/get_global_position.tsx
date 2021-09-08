@@ -18,5 +18,10 @@ export const get_global_position = (id: ItemId, g: State): V2 => {
     }
     p = find_parent(p);
   }
+  if (isNaN(v[0]) || v[0] === undefined || isNaN(v[1]) || v[1] === undefined) {
+    throw new Error(
+      `invalid V2 found: [${v[0]}, ${v[1]}] when get_global_position id:${id}`
+    );
+  }
   return v;
 };
