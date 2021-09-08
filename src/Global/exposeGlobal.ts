@@ -8,7 +8,7 @@ import { db, auth } from "../Cloud/FirestoreIO";
 import { make_items_into_new_group } from "../Menu/make_items_into_new_group";
 import { KozaneItem, TKozaneItem } from "../Kozane/KozaneItem";
 import { TKozaneba } from "../API/KozanebaAPI";
-import { physics, step } from "../Physics/physics";
+import { toggle_physics, step } from "../Physics/physics";
 
 const tmpfunc = () => {
   console.log("write");
@@ -71,5 +71,5 @@ export const exposeGlobalForTest = () => {
   window.movidea = movidea;
   window.debug = debug;
   window.debug.step = step;
-  window.debug.physics = physics;
+  window.debug.physics = toggle_physics;
 };

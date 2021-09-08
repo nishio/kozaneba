@@ -161,7 +161,7 @@ export const step = () => {
 };
 
 let timer: null | NodeJS.Timer = null;
-export const physics = () => {
+export const toggle_physics = () => {
   if (timer === null) {
     gradient_method = new GradientDecent();
     timer = setInterval(step, 100);
