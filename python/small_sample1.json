@@ -1,0 +1,43 @@
+{
+  "itemStore": {
+    "1": {
+      "type": "kozane",
+      "position": [
+        -100,
+        0
+      ],
+      "id": "1",
+      "text": "1",
+      "scale": 1
+    },
+    "2": {
+      "type": "kozane",
+      "position": [
+        100,
+        0
+      ],
+      "id": "2",
+      "text": "2",
+      "scale": 1
+    }
+  },
+  "drawOrder": [
+    "1",
+    "2"
+  ],
+  "annotation": [
+    {
+      "type": "line",
+      "items": [
+        "1",
+        "2"
+      ],
+      "heads": [
+        "none",
+        "arrow"
+      ]
+    }
+  ],
+  "format": "Kozaneba",
+  "version": 4
+}
