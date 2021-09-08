@@ -5,7 +5,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { add_v2w, sub_v2w } from "../dimension/V2";
-import { get_item } from "../Event/get_item";
+import { get_item } from "../utils/get_item";
 
 export const closeGroup = (id: ItemId) => {
   const g = getGlobal();

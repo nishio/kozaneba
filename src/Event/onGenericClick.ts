@@ -4,7 +4,7 @@ import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { show_menu } from "../utils/show_menu";
 import { reset_target } from "./fast_drag_manager";
-import { get_item } from "./get_item";
+import { get_item } from "../utils/get_item";
 
 export const onGenericClick = (
   event: React.MouseEvent<HTMLDivElement>,

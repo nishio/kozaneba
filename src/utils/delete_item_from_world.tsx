@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
-import { get_item } from "../Event/get_item";
+import { get_item } from "./get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TAnnotation } from "../Global/TAnnotation";
 import { updateGlobal } from "../Global/updateGlobal";

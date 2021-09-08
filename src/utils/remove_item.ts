@@ -1,5 +1,5 @@
 import { State } from "reactn/default";
-import { get_group } from "../Event/get_group";
+import { get_group } from "./get_group";
 import { ItemId } from "../Global/initializeGlobalState";
 import { find_parent } from "./find_parent";
 import { remove_item_from } from "./remove_item_from";

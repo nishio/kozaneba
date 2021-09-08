@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { L1norm, L2norm, V2 } from "../dimension/V2";
-import { get_item } from "../Event/get_item";
+import { get_item } from "../utils/get_item";
 import { ItemId, TItem } from "../Global/initializeGlobalState";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { remove_item_from } from "../utils/remove_item_from";

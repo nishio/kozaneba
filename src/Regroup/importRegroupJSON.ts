@@ -1,6 +1,6 @@
 import { State } from "reactn/default";
 import { TOffset } from "../dimension/TOffset";
-import { get_item } from "../Event/get_item";
+import { get_item } from "../utils/get_item";
 
 type TPiece = {
   type: "piece";

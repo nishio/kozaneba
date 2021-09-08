@@ -9,7 +9,7 @@ import {
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { finishButtons } from "../../App/hotKey";
-import { get_item } from "../../Event/get_item";
+import { get_item } from "../../utils/get_item";
 import {
   add_multiple_kozane,
   replace_multiple_kozane,

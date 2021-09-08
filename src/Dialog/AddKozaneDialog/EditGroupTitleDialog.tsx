@@ -11,7 +11,7 @@ import { getGlobal, useGlobal } from "reactn";
 import { finishButtons } from "../../App/hotKey";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { mark_local_changed } from "../../Cloud/mark_local_changed";
-import { get_item } from "../../Event/get_item";
+import { get_item } from "../../utils/get_item";
 import { ItemId } from "../../Global/initializeGlobalState";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { get_group_title } from "../../Group/Group";

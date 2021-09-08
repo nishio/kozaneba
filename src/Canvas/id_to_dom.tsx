@@ -2,7 +2,7 @@ import { getGlobal } from "reactn";
 import { TOffset } from "../dimension/TOffset";
 import { Kozane } from "../Kozane/Kozane";
 import { Group } from "../Group/Group";
-import { get_item } from "../Event/get_item";
+import { get_item } from "../utils/get_item";
 import { Gyazo } from "./Gyazo";
 import { Scrapbox } from "../Scrapbox/Scrapbox";
 

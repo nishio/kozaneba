@@ -3,7 +3,7 @@ import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
-import { get_item } from "../Event/get_item";
+import { get_item } from "../utils/get_item";
 import { TGyazoItem, TItem } from "../Global/initializeGlobalState";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "../utils/close_context_menu";

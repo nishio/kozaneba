@@ -4,7 +4,7 @@ import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { get_group } from "../Event/get_group";
+import { get_group } from "../utils/get_group";
 import { updateGlobal } from "../Global/updateGlobal";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "../utils/close_context_menu";

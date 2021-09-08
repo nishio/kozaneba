@@ -11,8 +11,8 @@ import { remove_item } from "../utils/remove_item";
 import { pin } from "../Physics/pin";
 import { remove_item_from } from "../utils/remove_item_from";
 import { reset_target } from "./fast_drag_manager";
-import { get_group } from "./get_group";
-import { get_item } from "./get_item";
+import { get_group } from "../utils/get_group";
+import { get_item } from "../utils/get_item";
 import { handle_if_is_click } from "./handle_if_is_click";
 import { finish_selecting, get_delta } from "./onCanvasMouseUp";
 
