@@ -82,41 +82,7 @@ class Ba:
                     self.align_square_items(item["items"])
 
 
-def sample1():
-    import os
-    import re
-    kozanes = set()
-    arrows = []
-    for path, dirs, files in os.walk("../src"):
-        for f in files:
-            fp = os.path.join(path, f)
-            frm = fp.replace("../src/", "")
-            frm = frm.replace(".tsx", "")
-            frm = frm.replace(".ts", "")
-            data = open(fp).read()
-            imports = re.findall(r'from "(\.[^"]*)"', data)
-            for f in imports:
-                fp = os.path.normpath(os.path.join(path, f))
-                to = fp.replace("../src/", "")
-                arrows.append((frm, to))
-                kozanes.add(to)
-            kozanes.add(frm)
-        # if len(arrows) > 100:
-        #     break
-
-    import sys
-    debug(len(kozanes), len(arrows))
-    ba = Ba()
-    from math import sqrt
-    W = int(sqrt(len(kozanes)))
-    for i, k in enumerate(sorted(kozanes)):
-        ba.add_kozane(k, [200 * (i % W), 200 * (i // W)])
-    for frm, to in arrows:
-        ba.add_simple_arrow(frm, to)
-    print(ba.to_json())
-
-
-def sample2():
+def sample_visualize_source_code():
     import os
     import re
     kozanes = set()
@@ -158,4 +124,5 @@ def sample2():
     print(ba.to_json())
 
 
-sample2()
+if __name__ == "__main__":
+    sample_visualize_source_code()
