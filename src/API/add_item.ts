@@ -1,4 +1,4 @@
-import { TItem } from "../Global/initializeGlobalState";
+import { TItem } from "../Global/TItem";
 import { updateGlobal } from "../Global/updateGlobal";
 
 export const add_item = (item: TItem) => {

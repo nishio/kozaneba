@@ -1,4 +1,4 @@
-import { TItem } from "../Global/initializeGlobalState";
+import { TItem } from "../Global/TItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { KozaneItem } from "../Kozane/KozaneItem";

@@ -5,11 +5,9 @@ import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import { State } from "reactn/default";
 import { setGlobal } from "reactn";
-import {
-  TGyazoItem,
-  TItem,
-  TScrapboxItem,
-} from "../Global/initializeGlobalState";
+import { TItem } from "../Global/TItem";
+import { TScrapboxItem } from "../Global/TScrapboxItem";
+import { TGyazoItem } from "../Global/TGyazoItem";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";

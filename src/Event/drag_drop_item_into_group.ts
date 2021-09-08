@@ -11,7 +11,7 @@ import { reset_target } from "./fast_drag_manager";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 
 export function drag_drop_item_into_group(
   group_id: ItemId,

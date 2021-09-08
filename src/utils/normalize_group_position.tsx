@@ -3,7 +3,7 @@ import { add_v2w, sub_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { get_group } from "./get_group";
 import { get_item } from "./get_item";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { get_gravity_point } from "../dimension/get_gravity_point";
 import { update_global_with_optional_draft } from "../Global/update_global_with_optional_draft";
 

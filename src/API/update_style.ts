@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
 import { mark_local_changed } from "../utils/mark_local_changed";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { move_front } from "../utils/move_front";
 

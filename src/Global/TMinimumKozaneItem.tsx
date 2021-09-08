@@ -1,5 +1,5 @@
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { NameplateId } from "./initializeGlobalState";
+import { NameplateId } from "./NameplateId";
 
 export type TMinimumKozaneItem = {
   text: string;

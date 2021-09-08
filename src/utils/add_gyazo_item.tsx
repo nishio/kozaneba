@@ -1,6 +1,6 @@
 import { add_item } from "../API/add_item";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";
-import { TGyazoItem } from "../Global/initializeGlobalState";
+import { TGyazoItem } from "../Global/TGyazoItem";
 import { create_new_itemid } from "./create_new_itemid";
 
 export const add_gyazo_item = (url: string) => {

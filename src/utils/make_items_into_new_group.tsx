@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { redraw } from "../API/redraw";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { TGroupItem } from "../Global/TGroupItem";

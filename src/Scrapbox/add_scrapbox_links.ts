@@ -3,7 +3,7 @@ import { set_status } from "../utils/set_status";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { create_squared_position } from "../dimension/create_squared_position";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";
-import { TScrapboxItem } from "../Global/initializeGlobalState";
+import { TScrapboxItem } from "../Global/TScrapboxItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { create_new_itemid } from "../utils/create_new_itemid";

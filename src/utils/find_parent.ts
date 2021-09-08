@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { get_item } from "./get_item";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 
 export const find_parent = (
   target: ItemId,

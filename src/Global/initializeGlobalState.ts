@@ -1,15 +1,13 @@
-import { VKozane } from "../VKozane";
-import { TKozaneItem } from "./TKozaneItem";
-import { TGroupItem } from "./TGroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TDialog } from "./TDialog";
-import { CSSProperties } from "react";
 import { TAnnotation } from "./TAnnotation";
+import { TItem } from "./TItem";
+import { ItemId } from "./ItemId";
+import { TMenu } from "./TMenu";
+import { TStatusType } from "./TStatusType";
 
 export const INITIAL_GLOBAL_STATE = {
-  kozane: [] as VKozane[], // for small tests
-
   drawOrder: [] as ItemId[],
   itemStore: {} as { [id: string]: TItem },
   scale: 1,
@@ -27,8 +25,6 @@ export const INITIAL_GLOBAL_STATE = {
   is_selected: false,
   mouseState: "" as TMouseState,
   clicked_target: "" as "" | ItemId,
-  // clicked_group: "" as "" | ItemId,
-  // clicked_kozane: "" as "" | ItemId,
 
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
@@ -57,57 +53,6 @@ export const INITIAL_GLOBAL_STATE = {
 
 type TDragTarget = "" | "selection" | ItemId;
 
-export type TGyazoItem = {
-  type: "gyazo";
-  text: string;
-  position: TWorldCoord;
-  id: ItemId;
-  scale: number;
-  url: string;
-  custom?: { style?: CSSProperties };
-};
-
-export type TScrapboxItem = {
-  type: "scrapbox";
-  text: string;
-  image: string;
-  url: string;
-  position: TWorldCoord;
-  id: ItemId;
-  scale: number;
-  description: string[];
-  custom?: { style?: CSSProperties };
-};
-
-export type TItem = TKozaneItem | TGroupItem | TGyazoItem | TScrapboxItem;
-enum ItemIdBrand {
-  _ = "",
-}
-export type ItemId = ItemIdBrand & string;
-enum NameplateIdBrand {
-  _ = "",
-}
-export type NameplateId = NameplateIdBrand & string;
-export type KozaneViewId = ItemId | NameplateId;
-
-export type TMenu =
-  | ""
-  | "Main"
-  | "Dev"
-  | "Kozane"
-  | "Selection"
-  | "Group"
-  | "Scrapbox"
-  | "Gyazo";
-
-export type TStatusType =
-  | "text"
-  | "no-connection"
-  | "loading"
-  | "done"
-  | "uploading"
-  | "downloading"
-  | "text";
 type TMenuAnchor = null | Element;
 type TMouseState = "" | "selecting";
 

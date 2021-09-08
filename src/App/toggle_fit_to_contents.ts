@@ -1,6 +1,6 @@
 import { getGlobal, setGlobal } from "reactn";
 import { get_items_bounding_box } from "../dimension/get_group_bounding_box";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 
 export const toggle_fit_to_contents = () => {
   const new_view = fit_to_contents(undefined, false);

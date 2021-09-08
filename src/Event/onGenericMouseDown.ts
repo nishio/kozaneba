@@ -1,7 +1,7 @@
 import React from "react";
 import { V2 } from "../dimension/V2";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { highlight_parent } from "../Group/highlight_group";
 import { reset_selection } from "../Selection/reset_selection";

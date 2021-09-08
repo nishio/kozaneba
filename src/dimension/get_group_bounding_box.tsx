@@ -1,5 +1,5 @@
 import { constants } from "../API/constants";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { TGroupItem } from "../Global/TGroupItem";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { get_item_bounding_box } from "./get_bounding_box";

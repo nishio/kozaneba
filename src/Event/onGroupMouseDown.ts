@@ -1,6 +1,6 @@
 import React from "react";
 import { V2 } from "../dimension/V2";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { onGenericMouseDown } from "./onGenericMouseDown";
 
 // almost same with onKozaneMouseDown

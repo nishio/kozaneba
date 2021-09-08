@@ -1,4 +1,4 @@
-import { ItemId } from "./initializeGlobalState";
+import { ItemId } from "./ItemId";
 
 export type TAnnotation = TLineAnnot;
 

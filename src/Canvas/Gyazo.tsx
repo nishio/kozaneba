@@ -6,7 +6,7 @@ import { TOffset } from "../dimension/TOffset";
 import { add_v2w, mul_v2, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { onGenericMouseDown } from "../Event/onGenericMouseDown";
-import { TGyazoItem } from "../Global/initializeGlobalState";
+import { TGyazoItem } from "../Global/TGyazoItem";
 import { position_to_left_top } from "../dimension/position_to_left_top";
 import { modify_image_url } from "../utils/modify_image_url";
 

@@ -4,7 +4,7 @@ import { getGlobal } from "reactn";
 import { close_menu } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { move_front } from "../utils/move_front";
 

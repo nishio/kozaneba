@@ -1,6 +1,7 @@
 import { getGlobal } from "reactn";
 import { get_item } from "../utils/get_item";
-import { ItemId, TItem } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
+import { TItem } from "../Global/TItem";
 import { TAnnotation, TArrowHead } from "../Global/TAnnotation";
 
 type InType = "selection" | "all" | ItemId[];

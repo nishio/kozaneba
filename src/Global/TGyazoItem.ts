@@ -1,15 +1,13 @@
-import { CSSProperties } from "react";
 import { TWorldCoord } from "../dimension/world_to_screen";
+import { CSSProperties } from "react";
 import { ItemId } from "./ItemId";
 
-export type TKozaneItem = {
-  type: "kozane";
+export type TGyazoItem = {
+  type: "gyazo";
   text: string;
   position: TWorldCoord;
   id: ItemId;
   scale: number;
-  custom?: {
-    style?: CSSProperties;
-    url?: string;
-  };
+  url: string;
+  custom?: { style?: CSSProperties };
 };

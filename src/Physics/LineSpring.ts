@@ -6,7 +6,7 @@ import { State } from "reactn/default";
 import { add_v2, V2 } from "../dimension/V2";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { find_parent } from "../utils/find_parent";
 
 const get_global_position = (id: ItemId, g: State): [ItemId, V2] => {

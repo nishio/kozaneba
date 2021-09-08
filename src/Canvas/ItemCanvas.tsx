@@ -4,9 +4,7 @@ import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
 import { onWheel } from "../Event/onWheel";
-import { ItemId } from "../Global/initializeGlobalState";
-import { Kozane } from "../Kozane/Kozane";
-import { kozaneToKozaneItem } from "../kozaneToKozaneItem";
+import { ItemId } from "../Global/ItemId";
 import { SelectionView } from "../Selection/Selection";
 import { dev_log, dev_time, dev_time_end } from "../utils/dev";
 import { AnnotationLayer } from "./Annotation/AnnotationLayer";
@@ -14,7 +12,6 @@ import { Center } from "./Center";
 import { ids_to_dom } from "./ids_to_dom";
 
 export const ItemCanvas = () => {
-  const [kozane] = useGlobal("kozane");
   const [drawOrder] = useGlobal("drawOrder");
   const [selected_items] = useGlobal("selected_items");
   const [is_selected] = useGlobal("is_selected");
@@ -55,9 +52,6 @@ export const ItemCanvas = () => {
     contents = (
       <>
         <Center opacity={1}>
-          {kozane.map((k) => (
-            <Kozane value={kozaneToKozaneItem(k)} offset={offset} />
-          ))}
           {dom}
           <AnnotationLayer />
         </Center>

@@ -1,5 +1,5 @@
 import { getGlobal } from "reactn";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 
 let last_timestamp = 0;
 export const create_new_itemid = () => {

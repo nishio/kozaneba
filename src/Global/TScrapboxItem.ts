@@ -1,14 +1,15 @@
-import { ItemId } from "./ItemId";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { CSSProperties } from "react";
+import { ItemId } from "./ItemId";
 
-export type TGroupItem = {
-  type: "group";
+export type TScrapboxItem = {
+  type: "scrapbox";
   text: string;
+  image: string;
+  url: string;
   position: TWorldCoord;
-  items: ItemId[];
   id: ItemId;
-  scale: number; // scale of Nameplate Kozane
-  isOpen: boolean;
+  scale: number;
+  description: string[];
   custom?: { style?: CSSProperties };
 };

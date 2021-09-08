@@ -4,7 +4,7 @@ import { TOffset } from "../dimension/TOffset";
 import { add_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { onGenericMouseDown } from "../Event/onGenericMouseDown";
-import { TScrapboxItem } from "../Global/initializeGlobalState";
+import { TScrapboxItem } from "../Global/TScrapboxItem";
 import { NoSelect } from "../Group/GroupDiv";
 import { position_to_left_top } from "../dimension/position_to_left_top";
 import { modify_image_url } from "../utils/modify_image_url";

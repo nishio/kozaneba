@@ -3,7 +3,7 @@ import { State } from "reactn/default";
 import { redraw } from "../API/redraw";
 import { add_v2, L2norm, mul_v2, normalize, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { ItemRepulse } from "./ItemRepulse";
 import { LineSpring } from "./LineSpring";

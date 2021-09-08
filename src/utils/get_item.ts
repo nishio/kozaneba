@@ -1,4 +1,4 @@
-import { TItem } from "../Global/initializeGlobalState";
+import { TItem } from "../Global/TItem";
 import { State } from "reactn/default";
 
 export const get_item = (g: State, id: string): TItem => {

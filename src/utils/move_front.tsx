@@ -1,4 +1,4 @@
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "./find_parent";
 import { TGroupItem } from "../Global/TGroupItem";

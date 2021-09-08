@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { get_item } from "./get_item";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { TAnnotation } from "../Global/TAnnotation";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "./find_parent";

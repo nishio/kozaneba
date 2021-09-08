@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { TMenu } from "../Global/initializeGlobalState";
+import { TMenu } from "../Global/TMenu";
 import { updateGlobal } from "../Global/updateGlobal";
 
 export const show_menu = (menu: TMenu, event: React.MouseEvent) => {

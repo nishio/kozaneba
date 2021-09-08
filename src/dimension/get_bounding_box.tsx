@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { get_kozane_bounding_box } from "./get_kozane_bounding_box";
 import { get_group_bounding_box } from "./get_group_bounding_box";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { get_item } from "../utils/get_item";
 import { get_scrapbox_bounding_box } from "../Scrapbox/Scrapbox";
 import { get_gyazo_bounding_box } from "../Canvas/Gyazo";

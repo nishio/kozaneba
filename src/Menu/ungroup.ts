@@ -6,7 +6,7 @@ import { add_v2w, sub_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../utils/find_parent";
 import { remove_item } from "../utils/remove_item";

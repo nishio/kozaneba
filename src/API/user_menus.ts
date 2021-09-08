@@ -1,4 +1,4 @@
-import { TMenu } from "../Global/initializeGlobalState";
+import { TMenu } from "../Global/TMenu";
 import { TUserMenu } from "./UserMenuItem";
 
 export const user_menus: Partial<

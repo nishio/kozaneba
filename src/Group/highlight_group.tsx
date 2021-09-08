@@ -2,7 +2,7 @@ import {
   GROUP_HIGHLIGHTED_BORDER_COLOR,
   GROUP_BORDER_COLOR,
 } from "../utils/group_constants";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { find_parent } from "../utils/find_parent";
 
 export const highlight_group = (gid: ItemId, on: boolean) => {

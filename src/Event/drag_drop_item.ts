@@ -1,6 +1,6 @@
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { add_v2w } from "../dimension/V2";
-import { ItemId } from "../Global/initializeGlobalState";
+import { ItemId } from "../Global/ItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../utils/find_parent";
 import { move_front } from "../utils/move_front";
