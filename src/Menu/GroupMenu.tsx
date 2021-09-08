@@ -20,16 +20,16 @@ export const GroupMenu = () => {
   if (!open) return null;
 
   const g = getGlobal();
-  const gid = g.clicked_target;
-  if (gid === "") return null;
-  const group = get_group(g, gid);
+  const id = g.clicked_target;
+  if (id === "" || g.itemStore[id] === undefined) return null;
+  const group = get_group(g, id);
 
   const onUngroup = () => {
-    ungroup(gid);
+    ungroup(id);
   };
 
   const onDelete = () => {
-    delete_item_from_world(gid);
+    delete_item_from_world(id);
     updateGlobal((g) => {
       g.clicked_target = "";
     });
@@ -40,10 +40,10 @@ export const GroupMenu = () => {
   const isOpenGroup = group !== null && group.isOpen;
   const labelOpenClose = isOpenGroup ? "close" : "open";
   const onOpenClose = () => {
-    normalize_group_position(gid);
-    move_front(gid);
+    normalize_group_position(id);
+    move_front(id);
     updateGlobal((g) => {
-      const group = get_group(g, gid);
+      const group = get_group(g, id);
       group.isOpen = !isOpenGroup;
       g.menu = "";
     });
@@ -66,8 +66,8 @@ export const GroupMenu = () => {
       <MenuItem onClick={onOpenClose} data-testid="group-open-close">
         {labelOpenClose}
       </MenuItem>
-      {!isOpenGroup ? <BigMenuItem id={gid} /> : null}
-      {!isOpenGroup ? <SmallMenuItem id={gid} /> : null}
+      {!isOpenGroup ? <BigMenuItem id={id} /> : null}
+      {!isOpenGroup ? <SmallMenuItem id={id} /> : null}
       <MenuItem onClick={onUngroup} data-testid="group-ungroup">
         ungroup
       </MenuItem>

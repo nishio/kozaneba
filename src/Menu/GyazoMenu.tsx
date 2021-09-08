@@ -18,10 +18,11 @@ export const GyazoMenu = () => {
   const [menu] = useGlobal("menu");
   const [anchor] = useGlobal("menu_anchor");
   const open = menu === "Gyazo";
+  if (!open) return null;
 
   const g = getGlobal();
   const id = g.clicked_target;
-  if (id === "") return null;
+  if (id === "" || g.itemStore[id] === undefined) return null;
   const item = get_item(g, id);
   if (isTGyazoItem(item)) {
     return (
