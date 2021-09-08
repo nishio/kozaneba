@@ -13,10 +13,10 @@ import {
 } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useGlobal } from "reactn";
-import { can_write } from "../App/can_write";
-import { ERROR_MESSAGE, READONLY_MESSAGE } from "../App/READONLY_MESSAGE";
+import { can_write } from "../utils/can_write";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { dev_log } from "../utils/dev";
+import { ERROR_MESSAGE, READONLY_MESSAGE } from "../utils/READONLY_MESSAGE";
 
 export const LoadingDialog = () => {
   const [dialog] = useGlobal("dialog");

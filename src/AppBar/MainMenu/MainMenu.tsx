@@ -4,12 +4,12 @@ import React from "react";
 import { setGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../../API/KozanebaAPI";
 import { UserMenuItem } from "../../API/UserMenuItem";
-import { can_write, is_cloud } from "../../App/can_write";
 import { initial_save } from "../../Cloud/initial_save";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { Sentry } from "../../initSentry";
 import { show_menu } from "../../utils/show_menu";
 import { close_menu_and_dialog } from "../../utils/close_menu";
+import { can_write, is_cloud } from "../../utils/can_write";
 // import { StartTutorial } from "./StartTutorial";
 
 export const MainMenu = () => {

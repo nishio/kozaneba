@@ -13,8 +13,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { updateGlobal } from "../Global/updateGlobal";
 import { dev_log } from "../utils/dev";
-import { addTooltip } from "./addTooltip";
 import { date_to_str } from "../utils/date_to_str";
+import { addTooltip } from "../utils/addTooltip";
 
 export const StatusBar = () => {
   const [statusBar] = useGlobal("statusBar");

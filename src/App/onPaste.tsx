@@ -1,9 +1,9 @@
 import React from "react";
 import { add_kozane } from "../API/add_kozane";
-import { add_scrapbox_item } from "../Scrapbox/add_scrapbox_item";
 import { updateGlobal } from "../Global/updateGlobal";
-import { add_gyazo_item } from "./add_gyazo_item";
-import { is_some_dialog_open } from "./is_some_dialog_open";
+import { add_scrapbox_item } from "../Scrapbox/add_scrapbox_item";
+import { add_gyazo_item } from "../utils/add_gyazo_item";
+import { is_some_dialog_open } from "../utils/is_some_dialog_open";
 import { try_to_import_json } from "./try_to_import_json";
 
 export const onPaste = (e: React.ClipboardEvent) => {
