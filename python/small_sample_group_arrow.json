@@ -1,0 +1,57 @@
+{
+  "itemStore": {
+    "1": {
+      "type": "kozane",
+      "position": [
+        -100,
+        0
+      ],
+      "id": "1",
+      "text": "1",
+      "scale": 1
+    },
+    "2": {
+      "type": "kozane",
+      "position": [
+        100,
+        0
+      ],
+      "id": "2",
+      "text": "2",
+      "scale": 1
+    },
+    "G1": {
+      "type": "group",
+      "position": [
+        0,
+        0
+      ],
+      "items": [
+        "1",
+        "2"
+      ],
+      "isOpen": false,
+      "id": "G1",
+      "text": "G1",
+      "scale": 1
+    }
+  },
+  "drawOrder": [
+    "G1"
+  ],
+  "annotation": [
+    {
+      "type": "line",
+      "items": [
+        "1",
+        "2"
+      ],
+      "heads": [
+        "none",
+        "arrow"
+      ]
+    }
+  ],
+  "format": "Kozaneba",
+  "version": 4
+}
