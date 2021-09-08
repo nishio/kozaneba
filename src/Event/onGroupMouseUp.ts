@@ -1,20 +1,12 @@
 import React from "react";
 import { getGlobal } from "reactn";
-import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { add_v2w, sub_v2w } from "../dimension/V2";
-import { updateGlobal } from "../Global/updateGlobal";
-import { find_parent } from "../utils/find_parent";
 import { TGroupItem } from "../Global/TGroupItem";
 import { move_front } from "../utils/move_front";
-import { normalize_group_position } from "../utils/normalize_group_position";
-import { remove_item } from "../utils/remove_item";
-import { pin } from "../Physics/pin";
-import { remove_item_from } from "../utils/remove_item_from";
-import { reset_target } from "./fast_drag_manager";
-import { get_group } from "../utils/get_group";
-import { get_item } from "../utils/get_item";
 import { handle_if_is_click } from "./handle_if_is_click";
-import { finish_selecting, get_delta } from "./onCanvasMouseUp";
+import { finish_selecting } from "./finish_selecting";
+import { get_delta } from "./get_delta";
+import { drag_drop_selection_into_group } from "./drag_drop_selection_into_group";
+import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
 
 export const onGroupMouseUp = (
   event: React.MouseEvent<HTMLDivElement>,
@@ -37,58 +29,9 @@ export const onGroupMouseUp = (
   const target_id = g.drag_target;
   const delta = get_delta(event);
   if (target_id === "selection") {
-    console.log("selection drop on group", group_id);
-    updateGlobal((g) => {
-      const group_draft = get_group(g, group_id);
-      g.selected_items.forEach((id) => {
-        const x = get_item(g, id);
-        x.position = sub_v2w(add_v2w(x.position, delta), group_draft.position);
-        pin[id] = x.position;
-        g.drawOrder = remove_item_from(g.drawOrder, id);
-        group_draft.items.push(id);
-      });
-      g.drag_target = "";
-
-      // reset selection
-      g.selected_items = [];
-      g.selectionRange = { top: 0, left: 0, width: 0, height: 0 };
-      g.is_selected = false;
-    });
-    normalize_group_position(group_id);
-    mark_local_changed();
+    drag_drop_selection_into_group(group_id, delta);
   } else if (target_id !== "") {
-    console.log("drop on group", group_id);
-
-    updateGlobal((g) => {
-      const group_draft = get_group(g, group_id);
-      let position = delta;
-
-      const parent = find_parent(target_id);
-      if (parent !== null) {
-        const p = g.itemStore[parent] as TGroupItem;
-        // `p` may equals to `group`, it's OK
-        p.items = remove_item_from(p.items, target_id);
-        group_draft.items.push(target_id);
-        position = sub_v2w(add_v2w(position, p.position), group_draft.position);
-
-        if (p.items.length === 0 && p.text === "") {
-          remove_item(g, parent);
-        } else {
-          normalize_group_position(parent, g);
-        }
-      } else {
-        g.drawOrder = remove_item_from(g.drawOrder, target_id);
-        group_draft.items.push(target_id);
-        position = sub_v2w(position, group_draft.position);
-      }
-      const target = get_item(g, target_id);
-      target.position = position;
-      pin[target_id] = target.position;
-      g.drag_target = "";
-    });
-    normalize_group_position(group_id);
-    mark_local_changed();
-    reset_target();
+    drag_drop_item_into_group(group_id, delta, target_id);
   } else {
     console.log("unexpected behavior", group_id);
 

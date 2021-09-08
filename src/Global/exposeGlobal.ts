@@ -6,7 +6,8 @@ import { updateGlobal } from "./updateGlobal";
 import { reset_selection } from "../Selection/reset_selection";
 import { db, auth } from "../Cloud/FirestoreIO";
 import { make_items_into_new_group } from "../utils/make_items_into_new_group";
-import { KozaneItem, TKozaneItem } from "../Kozane/KozaneItem";
+import { KozaneItem } from "../Kozane/KozaneItem";
+import { TKozaneItem } from "./TKozaneItem";
 import { TKozaneba } from "../API/KozanebaAPI";
 import { toggle_physics, step } from "../Physics/physics";
 

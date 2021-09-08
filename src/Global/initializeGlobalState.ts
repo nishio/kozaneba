@@ -1,5 +1,5 @@
 import { VKozane } from "../VKozane";
-import { TKozaneItem } from "../Kozane/KozaneItem";
+import { TKozaneItem } from "./TKozaneItem";
 import { TGroupItem } from "./TGroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
 import { TWorldCoord } from "../dimension/world_to_screen";

@@ -1,19 +1,6 @@
-import { CSSProperties } from "react";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";
 import { create_new_itemid } from "../utils/create_new_itemid";
-
-export type TKozaneItem = {
-  type: "kozane";
-  text: string;
-  position: TWorldCoord;
-  id: ItemId;
-  scale: number;
-  custom?: {
-    style?: CSSProperties;
-    url?: string;
-  };
-};
 
 export class KozaneItem {
   type: "kozane" = "kozane";

@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { redraw } from "../API/redraw";
-import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { mark_local_changed } from "./mark_local_changed";
 import { get_item } from "./get_item";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "./find_parent";

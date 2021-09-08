@@ -1,7 +1,7 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
-import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
+import { TMinimumKozaneItem } from "../Global/TMinimumKozaneItem";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { TOffset } from "../dimension/TOffset";
 import { TWorldCoord } from "../dimension/world_to_screen";

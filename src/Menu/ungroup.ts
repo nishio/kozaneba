@@ -1,6 +1,6 @@
 import { redraw } from "../API/redraw";
 import { close_menu } from "../utils/close_menu";
-import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { mark_local_changed } from "../utils/mark_local_changed";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 import { add_v2w, sub_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";

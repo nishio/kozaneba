@@ -7,8 +7,8 @@ import {
   KOZANE_BORDER,
 } from "../utils/kozane_constants";
 import { TOffset } from "../dimension/TOffset";
-import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
-import { TKozaneItem } from "./KozaneItem";
+import { TMinimumKozaneItem } from "../Global/TMinimumKozaneItem";
+import { TKozaneItem } from "../Global/TKozaneItem";
 import { position_to_left_top } from "../dimension/position_to_left_top";
 import { add_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";

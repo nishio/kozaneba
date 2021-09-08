@@ -10,7 +10,7 @@ import {
   TItem,
   TScrapboxItem,
 } from "../Global/initializeGlobalState";
-import { TKozaneItem } from "../Kozane/KozaneItem";
+import { TKozaneItem } from "../Global/TKozaneItem";
 import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
 

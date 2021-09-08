@@ -1,4 +1,4 @@
-import { TKozaneItem } from "../Kozane/KozaneItem";
+import { TKozaneItem } from "../Global/TKozaneItem";
 import {
   KOZANE_BORDER,
   KOZANE_HEIGHT,

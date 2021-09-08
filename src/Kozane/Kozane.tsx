@@ -4,7 +4,7 @@ import React, { CSSProperties } from "react";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
-import { TKozaneItem } from "./KozaneItem";
+import { TKozaneItem } from "../Global/TKozaneItem";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 
 type Props = {

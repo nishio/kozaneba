@@ -3,7 +3,7 @@ import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
-import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { mark_local_changed } from "../utils/mark_local_changed";
 import { pin } from "../Physics/pin";
 import { reset_selection } from "../Selection/reset_selection";
 import { copy_json } from "./copy_json";

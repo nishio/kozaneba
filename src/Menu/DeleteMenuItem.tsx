@@ -1,7 +1,7 @@
 import { MenuItem } from "@material-ui/core";
 import React from "react";
 import { close_menu } from "../utils/close_menu";
-import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { mark_local_changed } from "../utils/mark_local_changed";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { delete_item_from_world } from "../utils/delete_item_from_world";

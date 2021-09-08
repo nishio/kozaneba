@@ -1,6 +1,6 @@
 import { TWorldCoord } from "./dimension/world_to_screen";
 import { ItemId } from "./Global/initializeGlobalState";
-import { TKozaneItem } from "./Kozane/KozaneItem";
+import { TKozaneItem } from "./Global/TKozaneItem";
 import { VKozane } from "./VKozane";
 
 export const kozaneToKozaneItem = (x: VKozane): TKozaneItem => {
