@@ -1,5 +1,5 @@
-import { TRect } from "../dimension/TRect";
-import { add_v2, sub_v2, V2 } from "../dimension/V2";
+import { TRect } from "../../dimension/TRect";
+import { add_v2, sub_v2, V2 } from "../../dimension/V2";
 
 export const get_box_line_crosspoint = (start: V2, end: V2, box: TRect) => {
   // box is around the start point

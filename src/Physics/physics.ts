@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { redraw } from "../API/redraw";
-import { get_global_position } from "../Canvas/get_global_position";
+import { get_global_position } from "../dimension/get_global_position";
 import { add_v2, L2norm, mul_v2, normalize, sub_v2, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";

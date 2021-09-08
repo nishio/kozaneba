@@ -1,5 +1,5 @@
-import { TBoundingBox } from "../dimension/TBoundingBox";
-import { TRect } from "../dimension/TRect";
+import { TBoundingBox } from "./TBoundingBox";
+import { TRect } from "./TRect";
 
 export const bounding_box_to_rect = (bb: TBoundingBox): TRect => {
   const { left, top, right, bottom } = bb;

@@ -9,7 +9,7 @@ import { Kozane } from "../Kozane/Kozane";
 import { kozaneToKozaneItem } from "../kozaneToKozaneItem";
 import { SelectionView } from "../Selection/Selection";
 import { dev_log, dev_time, dev_time_end } from "../utils/dev";
-import { AnnotationLayer } from "./AnnotationLayer";
+import { AnnotationLayer } from "./Annotation/AnnotationLayer";
 import { Center } from "./Center";
 import { ids_to_dom } from "./ids_to_dom";
 

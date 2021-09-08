@@ -1,5 +1,5 @@
 import { State } from "reactn/default";
-import { get_item_bounding_box } from "../dimension/get_bounding_box";
+import { get_item_bounding_box } from "../../dimension/get_bounding_box";
 import {
   equal_v2,
   mul_v2,
@@ -7,13 +7,13 @@ import {
   rotate,
   sub_v2,
   V2,
-} from "../dimension/V2";
-import { ItemId } from "../Global/initializeGlobalState";
-import { TLineAnnot } from "../Global/TAnnotation";
-import { get_gravity_point } from "../dimension/get_gravity_point";
-import { bounding_box_to_rect } from "./bounding_box_to_rect";
+} from "../../dimension/V2";
+import { ItemId } from "../../Global/initializeGlobalState";
+import { TLineAnnot } from "../../Global/TAnnotation";
+import { get_gravity_point } from "../../dimension/get_gravity_point";
+import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
-import { get_global_position } from "./get_global_position";
+import { get_global_position } from "../../dimension/get_global_position";
 import { Line } from "./Line";
 
 export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {

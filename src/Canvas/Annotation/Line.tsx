@@ -1,4 +1,4 @@
-import { V2 } from "../dimension/V2";
+import { V2 } from "../../dimension/V2";
 
 export const Line = (p1: V2, p2: V2, onClick: () => void, key: string) => {
   const [x1, y1] = p1;

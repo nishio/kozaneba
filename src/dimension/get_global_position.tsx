@@ -1,5 +1,5 @@
 import { State } from "reactn/default";
-import { add_v2, V2 } from "../dimension/V2";
+import { add_v2, V2 } from "./V2";
 import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";

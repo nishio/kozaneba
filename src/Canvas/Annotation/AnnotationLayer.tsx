@@ -1,7 +1,7 @@
 import { getGlobal, useGlobal } from "reactn";
-import { get_items_bounding_box } from "../dimension/get_group_bounding_box";
-import { TAnnotation } from "../Global/TAnnotation";
-import { bounding_box_to_rect } from "./bounding_box_to_rect";
+import { get_items_bounding_box } from "../../dimension/get_group_bounding_box";
+import { TAnnotation } from "../../Global/TAnnotation";
+import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
 import { LineAnnot } from "./LineAnnot";
 
 const get_contents_bound = () => {

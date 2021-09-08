@@ -7,7 +7,7 @@ import { onGenericMouseDown } from "../Event/onGenericMouseDown";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { NoSelect } from "../Group/GroupDiv";
 import { position_to_left_top } from "../Kozane/position_to_left_top";
-import { modify_image_url } from "../Canvas/modify_image_url";
+import { modify_image_url } from "../utils/modify_image_url";
 
 type Props = {
   value: TScrapboxItem;

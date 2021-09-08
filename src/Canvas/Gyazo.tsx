@@ -8,7 +8,7 @@ import { TWorldCoord } from "../dimension/world_to_screen";
 import { onGenericMouseDown } from "../Event/onGenericMouseDown";
 import { TGyazoItem } from "../Global/initializeGlobalState";
 import { position_to_left_top } from "../Kozane/position_to_left_top";
-import { modify_image_url } from "./modify_image_url";
+import { modify_image_url } from "../utils/modify_image_url";
 
 const GYAZO_SIZE = 200;
 const GYAZO_BORDER = 1;
