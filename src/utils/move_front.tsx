@@ -1,8 +1,8 @@
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
-import { find_parent } from "../Group/find_parent";
-import { TGroupItem } from "../Group/GroupItem";
-import { remove_item_from } from "../utils/remove_item";
+import { find_parent } from "./find_parent";
+import { TGroupItem } from "../Global/TGroupItem";
+import { remove_item_from } from "./remove_item_from";
 
 export const move_front = (id: ItemId) => {
   let parent = null;

@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { ItemId } from "../Global/initializeGlobalState";
-import { TGroupItem } from "./GroupItem";
+import { TGroupItem } from "../Global/TGroupItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 import { TWorldCoord } from "../dimension/world_to_screen";

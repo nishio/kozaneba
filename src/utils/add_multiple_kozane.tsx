@@ -1,15 +1,15 @@
 import { getGlobal } from "reactn";
-import { redraw } from "../../API/redraw";
-import { mark_local_changed } from "../../Cloud/mark_local_changed";
-import { get_item } from "../../Event/get_item";
-import { updateGlobal } from "../../Global/updateGlobal";
-import { find_parent } from "../../Group/find_parent";
-import { move_front } from "../../Menu/move_front";
-import { remove_item_from } from "../../utils/remove_item";
-import { create_squared_group } from "../../dimension/create_squared_group";
-import { get_center_of_screen } from "../../dimension/get_center_of_screen";
-import { get_group } from "../../utils/get_group";
-import { multiline_to_lines } from "../../utils/multiline_to_lines";
+import { redraw } from "../API/redraw";
+import { mark_local_changed } from "../Cloud/mark_local_changed";
+import { get_item } from "../Event/get_item";
+import { updateGlobal } from "../Global/updateGlobal";
+import { find_parent } from "./find_parent";
+import { move_front } from "./move_front";
+import { remove_item_from } from "./remove_item_from";
+import { create_squared_group } from "../dimension/create_squared_group";
+import { get_center_of_screen } from "../dimension/get_center_of_screen";
+import { get_group } from "./get_group";
+import { multiline_to_lines } from "./multiline_to_lines";
 
 export const add_multiple_kozane = (multiline: string) => {
   const items = multiline_to_lines(multiline);

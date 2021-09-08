@@ -9,8 +9,8 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "../utils/close_context_menu";
 import { delete_item_from_world } from "../utils/delete_item_from_world";
-import { move_front } from "./move_front";
-import { normalize_group_position } from "./normalize_group_position";
+import { move_front } from "../utils/move_front";
+import { normalize_group_position } from "../utils/normalize_group_position";
 import { ungroup } from "./ungroup";
 
 export const GroupMenu = () => {

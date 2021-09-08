@@ -16,7 +16,7 @@ import { show_dialog } from "./show_dialog";
 import { start_tutorial } from "./start_tutorial";
 import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
-import { add_multiple_kozane } from "../Dialog/AddKozaneDialog/add_multiple_kozane";
+import { add_multiple_kozane } from "../utils/add_multiple_kozane";
 import { copy_json } from "../Menu/copy_json";
 import { show_backup } from "../Cloud/LocalBackup";
 import { save_backup_as_new } from "../Cloud/LocalBackup";

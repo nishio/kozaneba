@@ -1,5 +1,5 @@
 import { L2norm, mul_v2, normalize, sub_v2 } from "../dimension/V2";
-import { KOZANE_WIDTH } from "../Kozane/kozane_constants";
+import { KOZANE_WIDTH } from "../utils/kozane_constants";
 import { get_gravity_point } from "../dimension/get_gravity_point";
 import { PhysicalLaw, Gradient, add } from "./physics";
 import { State } from "reactn/default";
@@ -7,7 +7,7 @@ import { add_v2, V2 } from "../dimension/V2";
 import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
-import { find_parent } from "../Group/find_parent";
+import { find_parent } from "../utils/find_parent";
 
 const get_global_position = (id: ItemId, g: State): [ItemId, V2] => {
   // potential time-consuming function

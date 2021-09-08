@@ -8,8 +8,8 @@ import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
-import { find_parent } from "../Group/find_parent";
-import { remove_item } from "./remove_item";
+import { find_parent } from "../utils/find_parent";
+import { remove_item } from "../utils/remove_item";
 
 export function ungroup(gid: ItemId) {
   updateGlobal((g) => {

@@ -4,10 +4,10 @@ import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TAnnotation } from "../Global/TAnnotation";
 import { updateGlobal } from "../Global/updateGlobal";
-import { find_parent } from "../Group/find_parent";
-import { TGroupItem } from "../Group/GroupItem";
-import { remove_item_from } from "./remove_item";
-import { move_front } from "../Menu/move_front";
+import { find_parent } from "./find_parent";
+import { TGroupItem } from "../Global/TGroupItem";
+import { remove_item_from } from "./remove_item_from";
+import { move_front } from "./move_front";
 
 export const delete_item_from_world = (id: ItemId) => {
   let parent = null;

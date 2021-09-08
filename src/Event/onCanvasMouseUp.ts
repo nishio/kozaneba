@@ -13,12 +13,12 @@ import {
 } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
-import { find_parent } from "../Group/find_parent";
-import { move_front } from "../Menu/move_front";
-import { normalize_group_position } from "../Menu/normalize_group_position";
-import { remove_item } from "../Menu/remove_item";
+import { find_parent } from "../utils/find_parent";
+import { move_front } from "../utils/move_front";
+import { normalize_group_position } from "../utils/normalize_group_position";
+import { remove_item } from "../utils/remove_item";
 import { pin } from "../Physics/pin";
-import { remove_item_from } from "../utils/remove_item";
+import { remove_item_from } from "../utils/remove_item_from";
 import { reset_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
 import { get_group } from "./get_group";

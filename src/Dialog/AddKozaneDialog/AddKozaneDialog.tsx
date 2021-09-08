@@ -10,7 +10,7 @@ import React, { createRef } from "react";
 import { useGlobal } from "reactn";
 import { addTooltip } from "../../App/addTooltip";
 import { finishButtons } from "../../App/hotKey";
-import { add_multiple_kozane } from "./add_multiple_kozane";
+import { add_multiple_kozane } from "../../utils/add_multiple_kozane";
 
 export const AddKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");

@@ -1,5 +1,5 @@
 import { State } from "reactn/default";
-import { TGroupItem } from "../Group/GroupItem";
+import { TGroupItem } from "../Global/TGroupItem";
 
 export const get_group = (g: State, id: string): TGroupItem => {
   if (id === "") {

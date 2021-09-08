@@ -1,6 +1,6 @@
 import { useEffect, useGlobal } from "reactn";
 import { MyAppBar } from "../AppBar/MyAppBar";
-import { AdjustFontSize } from "../Canvas/AdjustFontSize";
+import { AdjustFontSize } from "../Kozane/AdjustFontSize";
 import { ItemCanvas } from "../Canvas/ItemCanvas";
 import { set_up_read_subscription } from "../Cloud/set_up_read_subscription";
 import { Menus } from "../Menu/Menus";

@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { CSSProperties } from "styled-components";
-import { adjustFontSize } from "../Canvas/AdjustFontSize";
-import { KOZANE_WIDTH, KOZANE_HEIGHT, KOZANE_BORDER } from "./kozane_constants";
+import { adjustFontSize } from "./AdjustFontSize";
+import {
+  KOZANE_WIDTH,
+  KOZANE_HEIGHT,
+  KOZANE_BORDER,
+} from "../utils/kozane_constants";
 import { TOffset } from "../dimension/TOffset";
 import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
 import { TKozaneItem } from "./KozaneItem";

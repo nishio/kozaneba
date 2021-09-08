@@ -13,7 +13,7 @@ import { get_item } from "../../Event/get_item";
 import {
   add_multiple_kozane,
   replace_multiple_kozane,
-} from "./add_multiple_kozane";
+} from "../../utils/add_multiple_kozane";
 
 export const SplitKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");

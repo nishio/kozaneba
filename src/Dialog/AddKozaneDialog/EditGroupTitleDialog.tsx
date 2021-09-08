@@ -16,7 +16,7 @@ import { ItemId } from "../../Global/initializeGlobalState";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { get_group_title } from "../../Group/Group";
 import { GroupItem } from "../../Group/GroupItem";
-import { move_front } from "../../Menu/move_front";
+import { move_front } from "../../utils/move_front";
 
 const is_item_id = (id: string): id is ItemId => {
   const g = getGlobal();

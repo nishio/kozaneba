@@ -6,7 +6,7 @@ import {
   KOZANE_BORDER,
   KOZANE_HEIGHT,
   KOZANE_WIDTH,
-} from "../Kozane/kozane_constants";
+} from "../utils/kozane_constants";
 import { create_squared_position } from "./create_squared_position";
 
 export const create_squared_group = (items: string[]) => {

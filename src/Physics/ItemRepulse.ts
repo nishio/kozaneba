@@ -1,6 +1,6 @@
 import { get_global_position } from "../dimension/get_global_position";
 import { L2norm, mul_v2, normalize, sub_v2 } from "../dimension/V2";
-import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
+import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { PhysicalLaw, Gradient, add } from "./physics";
 
 export const ItemRepulse: PhysicalLaw = (g) => {

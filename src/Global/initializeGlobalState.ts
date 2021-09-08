@@ -1,6 +1,6 @@
 import { VKozane } from "../VKozane";
 import { TKozaneItem } from "../Kozane/KozaneItem";
-import { TGroupItem } from "../Group/GroupItem";
+import { TGroupItem } from "./TGroupItem";
 import { TUser } from "../Cloud/FirestoreIO";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TDialog } from "./TDialog";

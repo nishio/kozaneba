@@ -3,7 +3,7 @@ import {
   KOZANE_BORDER,
   KOZANE_HEIGHT,
   KOZANE_WIDTH,
-} from "../Kozane/kozane_constants";
+} from "../utils/kozane_constants";
 
 export const get_kozane_bounding_box = (item: TKozaneItem) => {
   const [x, y] = item.position;

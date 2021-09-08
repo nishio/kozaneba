@@ -1,9 +1,9 @@
 import {
   GROUP_HIGHLIGHTED_BORDER_COLOR,
   GROUP_BORDER_COLOR,
-} from "./group_constants";
+} from "../utils/group_constants";
 import { ItemId } from "../Global/initializeGlobalState";
-import { find_parent } from "./find_parent";
+import { find_parent } from "../utils/find_parent";
 
 export const highlight_group = (gid: ItemId, on: boolean) => {
   const e = document.getElementById("group-" + gid) as HTMLDivElement;

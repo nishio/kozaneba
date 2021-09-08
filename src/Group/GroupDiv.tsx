@@ -4,7 +4,7 @@ import {
   GROUP_BACKGROUND_COLOR,
   GROUP_BORDER_COLOR,
   GROUP_TITLE_COLOR,
-} from "./group_constants";
+} from "../utils/group_constants";
 
 export const NoSelect = css`
   -webkit-touch-callout: none;

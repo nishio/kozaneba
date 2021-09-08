@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { KozaneDiv, KozaneDiv2 } from "../Kozane/KozaneDiv";
+import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 
 export const INITIAL = 128;
 export const cache = { "": INITIAL } as { [key: string]: number };

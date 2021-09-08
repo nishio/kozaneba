@@ -6,7 +6,7 @@ import { mark_local_changed } from "../Cloud/mark_local_changed";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
-import { move_front } from "./move_front";
+import { move_front } from "../utils/move_front";
 
 type PropsType = { id: ItemId };
 export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(

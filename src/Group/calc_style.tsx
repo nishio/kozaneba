@@ -1,7 +1,7 @@
 import { BORDER, TITLE_HEIGHT } from "../dimension/BORDER";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
 import { to_rounded_px } from "../dimension/to_rounded_px";
-import { TGroupItem } from "./GroupItem";
+import { TGroupItem } from "../Global/TGroupItem";
 
 export function calc_style(
   value: TGroupItem,

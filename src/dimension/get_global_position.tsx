@@ -3,7 +3,7 @@ import { add_v2, V2 } from "./V2";
 import { get_group } from "../Event/get_group";
 import { get_item } from "../Event/get_item";
 import { ItemId } from "../Global/initializeGlobalState";
-import { find_parent } from "../Group/find_parent";
+import { find_parent } from "../utils/find_parent";
 
 export const get_global_position = (id: ItemId, g: State): V2 => {
   // potential time-consuming function

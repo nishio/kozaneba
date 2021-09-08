@@ -10,8 +10,9 @@ import { NameplateKozane } from "../Kozane/NameplateKozane";
 import { calc_closed_style } from "./calc_closed_style";
 import { calc_style } from "./calc_style";
 import { GroupBack, GroupDiv, GroupTitle } from "./GroupDiv";
-import { GroupItem, TGroupItem } from "./GroupItem";
-import { GROUP_BORDER_COLOR } from "./group_constants";
+import { GroupItem } from "./GroupItem";
+import { TGroupItem } from "../Global/TGroupItem";
+import { GROUP_BORDER_COLOR } from "../utils/group_constants";
 import { highlight_group, highlight_parent } from "./highlight_group";
 
 export const Group: React.FC<Props> = ({ value, offset }) => {

@@ -5,7 +5,7 @@ import {
   KOZANE_HEIGHT,
   KOZANE_BORDER,
   OPACITY,
-} from "./kozane_constants";
+} from "../utils/kozane_constants";
 
 export const KozaneDiv = styled.div`
   background: #ffc;

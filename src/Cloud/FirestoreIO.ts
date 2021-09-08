@@ -11,7 +11,7 @@ import {
   TScrapboxItem,
 } from "../Global/initializeGlobalState";
 import { TKozaneItem } from "../Kozane/KozaneItem";
-import { TGroupItem } from "../Group/GroupItem";
+import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
 
 const config = {
