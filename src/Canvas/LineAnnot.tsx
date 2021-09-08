@@ -9,7 +9,7 @@ import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_global_position } from "./get_global_position";
 import { Line } from "./Line";
 
-export const LineAnnot = (g: State, a: TLineAnnot) => {
+export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const lines = [] as [V2, V2][];
   // currently ignore items[2~], and item deletion
   const positions = a.items.map((id) => get_global_position(id, g));
@@ -46,8 +46,8 @@ export const LineAnnot = (g: State, a: TLineAnnot) => {
   const onClick = () => {
     console.log("line clicked");
   };
-  const result = lines.map(([p1, p2]) => {
-    return Line(p1, p2, onClick);
+  const result = lines.map(([p1, p2], index) => {
+    return Line(p1, p2, onClick, `line-${annot_index}-${index}`);
   });
 
   return result;

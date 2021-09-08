@@ -1,6 +1,6 @@
 import { V2 } from "../dimension/V2";
 
-export const Line = (p1: V2, p2: V2, onClick: () => void) => {
+export const Line = (p1: V2, p2: V2, onClick: () => void, key: string) => {
   const [x1, y1] = p1;
   const [x2, y2] = p2;
   return (
@@ -16,6 +16,7 @@ export const Line = (p1: V2, p2: V2, onClick: () => void) => {
       style={{
         pointerEvents: "auto",
       }}
+      key={key}
     />
   );
 };

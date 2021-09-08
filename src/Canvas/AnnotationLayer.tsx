@@ -12,9 +12,9 @@ const get_contents_bound = () => {
 export const AnnotationLayer = () => {
   const [g] = useGlobal();
 
-  const annotElement = g.annotations.flatMap((a: TAnnotation) => {
+  const annotElement = g.annotations.flatMap((a: TAnnotation, index) => {
     if (a.type === "line") {
-      return LineAnnot(g, a);
+      return LineAnnot(g, a, index);
     }
     return [];
   });
