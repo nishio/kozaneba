@@ -10,7 +10,8 @@ export const Line = (p1: V2, p2: V2, onClick: () => void, key: string) => {
       x2={x2}
       y2={y2}
       stroke="black"
-      strokeWidth="10"
+      strokeWidth="1"
+      opacity="0.5"
       strokeLinecap="round"
       onClick={onClick}
       style={{
