@@ -1,6 +1,13 @@
 import { State } from "reactn/default";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
-import { mul_v2, normalize, rotate, sub_v2, V2 } from "../dimension/V2";
+import {
+  equal_v2,
+  mul_v2,
+  normalize,
+  rotate,
+  sub_v2,
+  V2,
+} from "../dimension/V2";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TLineAnnot } from "../Global/TAnnotation";
 import { get_gravity_point } from "../Menu/get_gravity_point";
@@ -14,6 +21,12 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   // currently ignore items[2~], and item deletion
   const positions = a.items.map((id) => get_global_position(id, g));
   const gp = get_gravity_point(positions);
+  if (a.items.length === 2) {
+    if (equal_v2(positions[0]!, positions[1]!)) {
+      // same point. e.g. in the same closed group
+      return [];
+    }
+  }
 
   const get_rect = (id: ItemId) => {
     return bounding_box_to_rect(get_item_bounding_box(id));
@@ -23,16 +36,23 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     get_box_line_crosspoint(positions[index]!, gp, rects[index]!)
   );
   if (a.items.length === 2) {
-    lines.push([crosspoints[0]!, crosspoints[1]!]);
+    if (!equal_v2(crosspoints[0]!, crosspoints[1]!)) {
+      lines.push([crosspoints[0]!, crosspoints[1]!]);
+    } else {
+      return [];
+    }
   } else {
-    a.items.forEach((id, index) => {
-      lines.push([gp, crosspoints[index]!]);
+    crosspoints.forEach((cp) => {
+      if (!equal_v2(gp, cp)) {
+        lines.push([gp, cp]);
+      }
     });
   }
 
   a.heads.forEach((h, index) => {
     if (h === "arrow") {
       const p = crosspoints[index]!;
+      if (equal_v2(gp, p)) return;
       // arrow head
       const n = normalize(sub_v2(p, gp));
       const size = 30;
