@@ -6,7 +6,7 @@ import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { get_item } from "../Event/get_item";
-import { create_new_itemid } from "../Kozane/create_new_itemid";
+import { create_new_itemid } from "../utils/create_new_itemid";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { close_context_menu } from "../utils/close_context_menu";
 import { DeleteMenuItem } from "./DeleteMenuItem";

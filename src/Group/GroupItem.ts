@@ -1,4 +1,4 @@
-import { create_new_itemid } from "../Kozane/create_new_itemid";
+import { create_new_itemid } from "../utils/create_new_itemid";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { CSSProperties } from "react";

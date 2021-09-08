@@ -6,7 +6,7 @@ import { ItemId, TItem } from "../Global/initializeGlobalState";
 import { TAnnotation } from "../Global/TAnnotation";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
-import { create_new_itemid } from "../Kozane/create_new_itemid";
+import { create_new_itemid } from "../utils/create_new_itemid";
 import { normalize_group_position } from "../Menu/normalize_group_position";
 
 const do_kozaneba_v3 = (j: JSON_KozanebaV3) => {

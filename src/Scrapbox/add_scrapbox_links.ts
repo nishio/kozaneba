@@ -6,7 +6,7 @@ import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
-import { create_new_itemid } from "../Kozane/create_new_itemid";
+import { create_new_itemid } from "../utils/create_new_itemid";
 import { add_item } from "../API/add_item";
 import { get_page_json, TScrapboxPage, make_url } from "./make_scrapbox_kozane";
 

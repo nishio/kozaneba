@@ -1,7 +1,7 @@
 import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
-import { create_new_itemid } from "../Kozane/create_new_itemid";
+import { create_new_itemid } from "../utils/create_new_itemid";
 import { add_item } from "../API/add_item";
 
 export type TScrapboxPage = {

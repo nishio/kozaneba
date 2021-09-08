@@ -1,4 +1,4 @@
-import { TWorldCoord } from "../dimension/world_to_screen";
+import { TWorldCoord } from "./world_to_screen";
 import { to_rounded_px } from "./to_rounded_px";
 
 export const position_to_left_top = (

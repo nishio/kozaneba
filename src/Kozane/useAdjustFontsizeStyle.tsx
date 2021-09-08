@@ -5,7 +5,7 @@ import { KOZANE_WIDTH, KOZANE_HEIGHT, KOZANE_BORDER } from "./kozane_constants";
 import { TOffset } from "../dimension/TOffset";
 import { TMinimumKozaneItem } from "./TMinimumKozaneItem";
 import { TKozaneItem } from "./KozaneItem";
-import { position_to_left_top } from "./position_to_left_top";
+import { position_to_left_top } from "../dimension/position_to_left_top";
 import { add_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 

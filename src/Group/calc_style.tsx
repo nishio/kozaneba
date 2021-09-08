@@ -1,6 +1,6 @@
 import { BORDER, TITLE_HEIGHT } from "../dimension/BORDER";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
-import { to_rounded_px } from "../Kozane/to_rounded_px";
+import { to_rounded_px } from "../dimension/to_rounded_px";
 import { TGroupItem } from "./GroupItem";
 
 export function calc_style(

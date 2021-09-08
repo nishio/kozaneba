@@ -4,7 +4,7 @@ import { TGroupItem } from "./GroupItem";
 import { CLOSED_GROUP_BORDER_COLOR } from "./group_constants";
 import { get_group_title } from "./Group";
 import { constants } from "../API/constants";
-import { to_rounded_px } from "../Kozane/to_rounded_px";
+import { to_rounded_px } from "../dimension/to_rounded_px";
 
 export function calc_closed_style(
   value: TGroupItem,

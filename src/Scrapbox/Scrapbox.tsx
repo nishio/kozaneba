@@ -6,7 +6,7 @@ import { TWorldCoord } from "../dimension/world_to_screen";
 import { onGenericMouseDown } from "../Event/onGenericMouseDown";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { NoSelect } from "../Group/GroupDiv";
-import { position_to_left_top } from "../Kozane/position_to_left_top";
+import { position_to_left_top } from "../dimension/position_to_left_top";
 import { modify_image_url } from "../utils/modify_image_url";
 
 type Props = {
