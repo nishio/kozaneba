@@ -7,7 +7,7 @@ import { TWorldCoord } from "../dimension/world_to_screen";
 import { ItemId } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../Kozane/kozane_constants";
-import { get_gravity_point } from "../Menu/get_gravity_point";
+import { get_gravity_point } from "../dimension/get_gravity_point";
 
 type Gradient = { [id: string]: V2 };
 type PhysicalLaw = (state: State) => Gradient; // return Negative Gradient(aka Power)

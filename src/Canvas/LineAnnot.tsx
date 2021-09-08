@@ -10,7 +10,7 @@ import {
 } from "../dimension/V2";
 import { ItemId } from "../Global/initializeGlobalState";
 import { TLineAnnot } from "../Global/TAnnotation";
-import { get_gravity_point } from "../Menu/get_gravity_point";
+import { get_gravity_point } from "../dimension/get_gravity_point";
 import { bounding_box_to_rect } from "./bounding_box_to_rect";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_global_position } from "./get_global_position";
