@@ -1,4 +1,4 @@
-import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
+import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { create_new_itemid } from "../Kozane/create_new_itemid";

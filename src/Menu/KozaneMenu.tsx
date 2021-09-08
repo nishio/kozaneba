@@ -4,7 +4,7 @@ import { getGlobal, useGlobal } from "reactn";
 import { add_item } from "../API/add_item";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
-import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
+import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { get_item } from "../Event/get_item";
 import { create_new_itemid } from "../Kozane/create_new_itemid";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";

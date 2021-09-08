@@ -135,3 +135,6 @@ export const toggle_physics = () => {
     timer = null;
   }
 };
+export const is_physics_on = () => {
+  return timer !== null;
+};

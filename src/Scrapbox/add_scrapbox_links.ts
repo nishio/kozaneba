@@ -1,8 +1,8 @@
 import { SCRAPBOX_SIZE } from "./Scrapbox";
 import { set_status } from "../Cloud/initial_save";
 import { mark_local_changed } from "../Cloud/mark_local_changed";
-import { create_squared_position } from "../Dialog/AddKozaneDialog/add_multiple_kozane";
-import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
+import { create_squared_position } from "../dimension/create_squared_position";
+import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { TScrapboxItem } from "../Global/initializeGlobalState";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";

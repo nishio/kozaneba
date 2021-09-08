@@ -1,4 +1,4 @@
-import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
+import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { KozaneItem, TKozaneItem } from "../Kozane/KozaneItem";
 import { add_item } from "./add_item";
 

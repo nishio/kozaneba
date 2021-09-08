@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { add_item } from "../API/add_item";
 import { redraw } from "../API/redraw";
-import { get_center_of_screen } from "../Dialog/AddKozaneDialog/get_center_of_screen";
+import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { ItemId, TItem } from "../Global/initializeGlobalState";
 import { TAnnotation } from "../Global/TAnnotation";
 import { updateGlobal } from "../Global/updateGlobal";
