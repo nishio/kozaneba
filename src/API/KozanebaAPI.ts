@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
-import { fit_to_contents } from "../App/toggle_fit_to_contents";
-import { try_to_import_json } from "../App/try_to_import_json";
+import { fit_to_contents } from "../utils/fit_to_contents";
+import { try_to_import_json } from "../utils/try_to_import_json";
 import { user_buttons } from "../AppBar/UserButtons";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { reset_selection } from "../Selection/reset_selection";

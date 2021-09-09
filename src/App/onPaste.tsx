@@ -4,7 +4,8 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { add_scrapbox_item } from "../Scrapbox/add_scrapbox_item";
 import { add_gyazo_item } from "../utils/add_gyazo_item";
 import { is_some_dialog_open } from "../utils/is_some_dialog_open";
-import { try_to_import_json } from "./try_to_import_json";
+import { try_to_import_json } from "../utils/try_to_import_json";
+import { url_to_text } from "../utils/url_to_text";
 
 export const onPaste = (e: React.ClipboardEvent) => {
   if (is_some_dialog_open()) return;
@@ -18,16 +19,6 @@ export const onPaste = (e: React.ClipboardEvent) => {
     return;
   }
   navigator.clipboard.readText().then(pasted);
-};
-
-const url_to_text = (url: string) => {
-  const u = new URL(url);
-  const items = u.pathname.split("/");
-  const last = items[items.length - 1] ?? items[items.length - 2];
-  if (last === undefined) {
-    return u.hostname;
-  }
-  return decodeURIComponent(last);
 };
 
 const pasted = (text: string) => {

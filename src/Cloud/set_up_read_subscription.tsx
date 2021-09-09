@@ -1,5 +1,5 @@
 import { getGlobal, setGlobal } from "reactn";
-import { fit_to_contents } from "../App/toggle_fit_to_contents";
+import { fit_to_contents } from "../utils/fit_to_contents";
 import { updateGlobal } from "../Global/updateGlobal";
 import { db, docdate_to_state, DocSnap } from "./FirestoreIO";
 import { set_status } from "../utils/set_status";
