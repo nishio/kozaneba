@@ -10,6 +10,7 @@ import { copy_json } from "./copy_json";
 import { copy_text } from "./copy_text";
 import { delete_item_from_world } from "../utils/delete_item_from_world";
 import { make_items_into_new_group } from "../utils/make_items_into_new_group";
+import { add_arrow } from "../utils/add_arrow";
 
 export const SelectionMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -52,6 +53,13 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
+  const onAddArrow = () => {
+    add_arrow(getGlobal().selected_items);
+    reset_selection();
+    mark_local_changed();
+    setMenu("");
+  };
+
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onMakeGroup} data-testid="make-group">
@@ -62,6 +70,9 @@ export const SelectionMenu = () => {
       </MenuItem>
       <MenuItem onClick={onCopyJSON} data-testid="copy-text">
         copy JSON
+      </MenuItem>
+      <MenuItem onClick={onAddArrow} data-testid="copy-text">
+        add arrow
       </MenuItem>
 
       {kozaneba.user_menus["Selection"]!.map(UserMenuItem)}
