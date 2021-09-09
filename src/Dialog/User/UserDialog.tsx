@@ -11,6 +11,7 @@ import { close_menu_and_dialog } from "../../utils/close_menu";
 import { get_display_name } from "../../AppBar/UserInfo";
 import { get_writable_ba } from "./get_writable_ba";
 import { WritableBaList } from "./WritableBaList";
+import { show_dialog } from "../../API/show_dialog";
 
 export type Ba = { title: string; id: string; last_updated: number };
 
@@ -35,12 +36,17 @@ export const UserDialog = () => {
     window.open("/#new", "_blank");
   };
 
+  const onEditUserScript = () => {
+    show_dialog("UserScript");
+  };
+
   return (
     <Dialog
       open={open}
       onClose={onClose}
       data-testid="user-dialog"
       keepMounted={false}
+      fullWidth={true}
     >
       <DialogTitle id="form-dialog-title">User: {display_name}</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
@@ -50,6 +56,13 @@ export const UserDialog = () => {
           style={{ border: "1px solid" }}
         >
           Create New Ba
+        </Button>
+        <Button
+          color="primary"
+          onClick={onEditUserScript}
+          style={{ border: "1px solid" }}
+        >
+          Edit UserScript
         </Button>
 
         {WritableBaList(ba_list)}

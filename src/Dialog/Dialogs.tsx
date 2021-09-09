@@ -9,6 +9,7 @@ import { HelpDialog } from "./Tutorial/HelpDialog";
 import { LoadingDialog } from "./LoadingDialog";
 import { BaDialog } from "./BaDialog";
 import { EditKozaneDialog } from "./AddKozaneDialog/EditKozaneDialog";
+import { UserScriptDialog } from "./User/UserScriptDialog";
 
 export const Dialogs = () => (
   <>
@@ -23,5 +24,6 @@ export const Dialogs = () => (
     <LoadingDialog />
     <BaDialog />
     <EditKozaneDialog />
+    <UserScriptDialog />
   </>
 );
