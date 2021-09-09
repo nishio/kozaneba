@@ -1,6 +1,3 @@
-import { ItemId } from "../../Global/ItemId";
-import { TItem } from "../../Global/TItem";
-import { TAnnotation } from "../../Global/TAnnotation";
 import { do_kozaneba_v3 } from "./do_kozaneba_v3";
 import { do_kozaneba_v4 } from "./do_kozaneba_v4";
 
@@ -16,6 +13,7 @@ export const try_to_import_json = (text: string) => {
       is_succeeded = do_kozaneba_v4(j);
     } else {
       // from Regroup?
+      console.error(`unknown format:${j.format} version:${j.version}`);
     }
     if (!is_succeeded) {
       alert(

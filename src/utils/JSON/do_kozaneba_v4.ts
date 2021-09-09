@@ -4,15 +4,34 @@ import { redraw } from "../../API/redraw";
 import { get_center_of_screen } from "../../dimension/get_center_of_screen";
 import { isTItem } from "../../Global/isTItem";
 import { ItemId } from "../../Global/ItemId";
-import { TAnnotation } from "../../Global/TAnnotation";
+import { isTAnnotation, TAnnotation } from "../../Global/TAnnotation";
 import { TItem } from "../../Global/TItem";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { GroupItem } from "../../Group/GroupItem";
-import { add } from "../../Physics/physics";
 import { create_new_itemid } from "../create_new_itemid";
 import { normalize_group_position } from "../normalize_group_position";
+import { check_all_items } from "./check_all_items";
+import { isString } from "../is_string";
 
 export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
+  if (!Array.isArray(j.drawOrder)) {
+    console.error("drawOrder should be an Array", j.drawOrder);
+    return false;
+  }
+  if (
+    !check_all_items(
+      j.drawOrder,
+      isString,
+      "an item of drawOrder should be string"
+    )
+  ) {
+    return false;
+  }
+  if (typeof j.itemStore !== "object") {
+    console.error("itemStore should be an Object", typeof j.itemStore);
+    return false;
+  }
+
   const id_map: { [old_id: string]: ItemId } = {};
   const current = getGlobal();
   const to_add: TItem[] = [];
@@ -35,15 +54,7 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
   const new_items = j.drawOrder.map(visit);
 
   // veryfy
-  if (
-    to_add.some((item) => {
-      if (!isTItem(item)) {
-        console.error("invalid item:", item);
-        return true;
-      }
-      return false;
-    })
-  ) {
+  if (!check_all_items(to_add, isTItem, "invalid item:")) {
     return false; // not succeeded
   }
 
@@ -54,6 +65,17 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
     });
   });
 
+  if (j.annotation !== undefined) {
+    if (!Array.isArray(j.annotation)) {
+      console.error("annotation should be an Array", j.annotation);
+      return false;
+    }
+    if (!check_all_items(j.annotation, isTAnnotation, "invalid annotation:")) {
+      return false; // not succeeded
+    }
+  } else {
+    j.annotation = [];
+  }
   const annotation = j.annotation.map((a) => {
     return {
       ...a,
