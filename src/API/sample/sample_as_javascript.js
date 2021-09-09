@@ -67,3 +67,10 @@ kozaneba.user_menus.Main.push({
 });
 
 kozaneba.constants.to_make_local_backup = true;
+
+kozaneba.user_buttons.push({
+  label: "Phy",
+  onClick: () => {
+    kozaneba.toggle_physics();
+  },
+});
