@@ -49,25 +49,41 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     });
   }
 
+  const arrow_head_size = a.custom?.arrow_head_size ?? 10;
   a.heads.forEach((h, index) => {
     if (h === "arrow") {
       const p = crosspoints[index]!;
       if (equal_v2(gp, p)) return;
       // arrow head
       const n = normalize(sub_v2(p, gp));
-      const size = 30;
-      const h1 = sub_v2(p, mul_v2(size, rotate(n, 30)));
-      const h2 = sub_v2(p, mul_v2(size, rotate(n, -30)));
+      const h1 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, 30)));
+      const h2 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, -30)));
 
       lines.push([h1, p]);
       lines.push([h2, p]);
     }
   });
-  const onClick = () => {
-    console.log("line clicked");
-  };
+  const is_clickable = a.custom?.is_clickable ?? false;
+  let onClick: (() => void) | undefined = undefined;
+  if (is_clickable) {
+    onClick = () => {
+      console.log("line clicked");
+    };
+  }
+
+  const stroke_width = a.custom?.stroke_width ?? 1;
+  const opacity = a.custom?.opacity ?? 0.2;
+
   const result = lines.map(([p1, p2], index) => {
-    return Line(p1, p2, onClick, `line-${annot_index}-${index}`);
+    return Line(
+      p1,
+      p2,
+      onClick,
+      `line-${annot_index}-${index}`,
+      stroke_width,
+      opacity,
+      is_clickable
+    );
   });
 
   return result;

@@ -6,6 +6,12 @@ export type TLineAnnot = {
   type: "line";
   items: ItemId[];
   heads: TArrowHead[];
+  custom?: {
+    arrow_head_size?: number;
+    is_clickable?: boolean;
+    stroke_width?: number;
+    opacity?: number;
+  };
 };
 
 export type TArrowHead = "none" | "arrow";

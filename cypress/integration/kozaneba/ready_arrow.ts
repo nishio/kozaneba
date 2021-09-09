@@ -15,12 +15,13 @@ const add_kozane = (label: string, position: V2) => {
   );
 };
 
-const add_arrow = (items: string[], heads: TArrowHead[]) => {
+const add_arrow = (items: string[], heads: TArrowHead[], custom = {}) => {
   cy.updateGlobal((g) => {
     g.annotations.push({
       type: "line",
       items: items as ItemId[],
       heads,
+      custom,
     });
   });
 };
@@ -34,7 +35,12 @@ describe("ready two kozane", () => {
     add_kozane("X+1", [-200, 0]);
     add_kozane("Y-1", [400, 200]);
 
-    add_arrow(["X", "Y", "X+Y"], ["none", "none", "arrow"]);
+    add_arrow(["X", "Y", "X+Y"], ["none", "none", "arrow"], {
+      stroke_width: 10,
+      arrow_head_size: 30,
+      opacity: 1,
+      is_clickable: true,
+    });
     add_arrow(["X", "X+1"], ["arrow", "none"]);
     add_arrow(["Y", "Y-1"], ["none", "arrow"]);
   });
