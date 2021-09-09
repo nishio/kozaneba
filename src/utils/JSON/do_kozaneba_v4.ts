@@ -2,11 +2,13 @@ import { getGlobal } from "reactn";
 import { add_item } from "../../API/add_item";
 import { redraw } from "../../API/redraw";
 import { get_center_of_screen } from "../../dimension/get_center_of_screen";
+import { isTItem } from "../../Global/isTItem";
 import { ItemId } from "../../Global/ItemId";
 import { TAnnotation } from "../../Global/TAnnotation";
 import { TItem } from "../../Global/TItem";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { GroupItem } from "../../Group/GroupItem";
+import { add } from "../../Physics/physics";
 import { create_new_itemid } from "../create_new_itemid";
 import { normalize_group_position } from "../normalize_group_position";
 
@@ -32,6 +34,20 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
   };
   const new_items = j.drawOrder.map(visit);
 
+  // veryfy
+  if (
+    to_add.some((item) => {
+      if (!isTItem(item)) {
+        console.error("invalid item:", item);
+        return true;
+      }
+      return false;
+    })
+  ) {
+    return false; // not succeeded
+  }
+
+  // update
   updateGlobal((g) => {
     to_add.forEach((item) => {
       g.itemStore[item.id] = item;
@@ -53,6 +69,7 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
     g.annotations.push(...annotation);
   });
   redraw();
+  return true;
 };
 
 type JSON_KozanebaV4 = {
