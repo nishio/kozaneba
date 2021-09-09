@@ -10,6 +10,7 @@ import { create_squared_group } from "../dimension/create_squared_group";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { get_group } from "./get_group";
 import { multiline_to_lines } from "./multiline_to_lines";
+import { update_annotation_after_deletion } from "./update_annotation_after_deletion";
 
 export const add_multiple_kozane = (multiline: string) => {
   const items = multiline_to_lines(multiline);
@@ -75,6 +76,8 @@ export const replace_multiple_kozane = (multiline: string) => {
       parent.items = remove_item_from(parent.items, target_id);
       parent.items.push(group.id);
     }
+    update_annotation_after_deletion(g, target_id);
   });
+
   finish();
 };
