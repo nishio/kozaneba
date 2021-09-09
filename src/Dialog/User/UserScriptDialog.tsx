@@ -17,7 +17,6 @@ export const UserScriptDialog = () => {
   const [code] = useState(localStorage.getItem("onLoad") ?? "");
   const ref = useRef<HTMLTextAreaElement>(null);
 
-  console.log(code);
   const open = dialog === "UserScript";
   const onClose = () => {
     close_menu_and_dialog();
@@ -25,14 +24,17 @@ export const UserScriptDialog = () => {
 
   const onRun = () => {
     try {
+      console.log("Run UserScript");
       // eslint-disable-next-line no-eval
       eval(ref.current!.value);
+      console.log("OK");
     } catch (error) {
       console.error(error);
     }
   };
   const onSave = () => {
     localStorage.setItem("onLoad", ref.current!.value);
+    console.log("Saved");
   };
   const onSample = () => {
     window.open(
