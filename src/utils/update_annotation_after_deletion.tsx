@@ -2,7 +2,6 @@ import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { ItemId } from "../Global/ItemId";
 import { TAnnotation } from "../Global/TAnnotation";
-import { remove_item_from } from "./remove_item_from";
 
 export const update_annotation_after_deletion = (g: State, id: ItemId) => {
   const new_annotation: TAnnotation[] = [];
