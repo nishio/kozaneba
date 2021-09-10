@@ -11,7 +11,7 @@ export const add_arrow = (targets: ItemId[]) => {
   const positions = targets.map((id) => get_item(g, id).position);
   const gp = get_gravity_point(positions);
   const heads: TArrowHead[] = positions.map((v) => {
-    if (v[0] + v[1] > gp[0] + gp[1]) {
+    if (v[0] > gp[0]) {
       return "arrow";
     }
     return "none";
