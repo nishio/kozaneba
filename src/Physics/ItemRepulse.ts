@@ -4,7 +4,7 @@ import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { PhysicalLaw, Gradient, add } from "./physics";
 
 export const ItemRepulse: PhysicalLaw = (g) => {
-  const RADIUS = Math.sqrt(KOZANE_WIDTH ** 2 + KOZANE_HEIGHT ** 2); // natural length
+  const RADIUS = Math.sqrt(KOZANE_WIDTH ** 2 + KOZANE_HEIGHT ** 2);
   const grad: Gradient = {};
   const positions = g.drawOrder.map((id) => get_global_position(id, g));
   g.drawOrder.forEach((id1, i1) => {
