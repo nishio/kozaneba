@@ -23,6 +23,7 @@ import { save_backup_as_new } from "../Cloud/LocalBackup";
 import { fetch_api } from "../Scrapbox/make_scrapbox_kozane";
 import { parse_scrapbox } from "../Scrapbox/add_scrapbox_item";
 import { toggle_physics, step as step_physics } from "../Physics/physics";
+import { unpin } from "./unpin";
 
 export const kozaneba = {
   // simple values to modify
@@ -46,6 +47,7 @@ export const kozaneba = {
   parse_scrapbox,
   toggle_physics,
   step_physics,
+  unpin,
 
   // getter
   get_global: getGlobal,

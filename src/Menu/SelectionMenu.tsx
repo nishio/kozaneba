@@ -3,14 +3,13 @@ import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
-import { mark_local_changed } from "../utils/mark_local_changed";
-import { pin } from "../Physics/pin";
 import { reset_selection } from "../Selection/reset_selection";
-import { copy_json } from "./copy_json";
-import { copy_text } from "./copy_text";
+import { add_arrow } from "../utils/add_arrow";
 import { delete_item_from_world } from "../utils/delete_item_from_world";
 import { make_items_into_new_group } from "../utils/make_items_into_new_group";
-import { add_arrow } from "../utils/add_arrow";
+import { mark_local_changed } from "../utils/mark_local_changed";
+import { copy_json } from "./copy_json";
+import { copy_text } from "./copy_text";
 
 export const SelectionMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -37,12 +36,6 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
-  const onUnpin = () => {
-    getGlobal().selected_items.forEach((id) => {
-      delete pin[id];
-    });
-    setMenu("");
-  };
   const onCopyText = () => {
     copy_text();
     setMenu("");
@@ -77,7 +70,6 @@ export const SelectionMenu = () => {
 
       {kozaneba.user_menus["Selection"]!.map(UserMenuItem)}
 
-      <MenuItem onClick={onUnpin}>unpin</MenuItem>
       <MenuItem onClick={onDelete}>delete items</MenuItem>
     </Menu>
   );

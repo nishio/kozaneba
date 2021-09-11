@@ -74,3 +74,10 @@ kozaneba.user_buttons.push({
     kozaneba.toggle_physics();
   },
 });
+
+kozaneba.user_menus.Selection.push({
+  label: "unpin",
+  onClick: () => {
+    kozaneba.unpin(kozaneba.get_selected_ids());
+  },
+});
