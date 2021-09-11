@@ -99,29 +99,28 @@ let gradient_method: IGradientMethod = new GradientDecent();
 
 export const step = () => {
   console.time("Physics step");
-  const g = getGlobal();
-  // const grad = LineSpring(g);
-  const grad = {};
-  const laws = [LineSpring, ItemRepulse];
-  laws.forEach((law) => {
-    const _grad = law(g);
-    Object.entries(_grad).forEach(([key, v]) => {
-      add(grad, key as ItemId, v);
+  [1, 2].forEach(() => {
+    const g = getGlobal();
+    const grad = {};
+    const laws = [LineSpring, ItemRepulse];
+    laws.forEach((law) => {
+      const _grad = law(g);
+      Object.entries(_grad).forEach(([key, v]) => {
+        add(grad, key as ItemId, v);
+      });
+    });
+    const delta = gradient_method.get_delta(grad);
+    updateGlobal((g) => {
+      Object.entries(delta).forEach(([id, v]) => {
+        if (pin[id] !== undefined) {
+          // it is pinned, should not update position
+          return;
+        }
+        const item = g.itemStore[id]!;
+        item.position = add_v2(item.position, v) as TWorldCoord;
+      });
     });
   });
-  const delta = gradient_method.get_delta(grad);
-  // console.log("delta", delta);
-  updateGlobal((g) => {
-    Object.entries(delta).forEach(([id, v]) => {
-      if (pin[id] !== undefined) {
-        // it is pinned, should not update position
-        return;
-      }
-      const item = g.itemStore[id]!;
-      item.position = add_v2(item.position, v) as TWorldCoord;
-    });
-  });
-  // console.log("itemStore", getGlobal().itemStore);
   console.timeEnd("Physics step");
   redraw();
 };
