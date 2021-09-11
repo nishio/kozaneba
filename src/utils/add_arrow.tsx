@@ -1,9 +1,9 @@
 import { getGlobal } from "reactn";
-import { get_item } from "./get_item";
+import { kozaneba } from "../API/KozanebaAPI";
 import { get_gravity_point } from "../dimension/get_gravity_point";
-import { TArrowHead } from "../Global/TAnnotation";
-import { updateGlobal } from "../Global/updateGlobal";
 import { ItemId } from "../Global/ItemId";
+import { TArrowHead } from "../Global/TAnnotation";
+import { get_item } from "./get_item";
 
 export const add_arrow = (targets: ItemId[]) => {
   if (targets.length < 2) return;
@@ -16,17 +16,5 @@ export const add_arrow = (targets: ItemId[]) => {
     }
     return "none";
   });
-  updateGlobal((g) => {
-    g.annotations.push({
-      type: "line",
-      items: g.selected_items,
-      heads,
-      custom: {
-        stroke_width: 10,
-        arrow_head_size: 30,
-        opacity: 1,
-        is_clickable: true,
-      },
-    });
-  });
+  kozaneba.add_arrow(g.selected_items, heads);
 };
