@@ -1,30 +1,33 @@
 import { getGlobal } from "reactn";
+import { user_buttons } from "../AppBar/UserButtons";
+import { save_backup_as_new, show_backup } from "../Cloud/LocalBackup";
+import { get_center_of_screen } from "../dimension/get_center_of_screen";
+import { get_gravity_point } from "../dimension/get_gravity_point";
+import { copy_json } from "../Menu/copy_json";
+import { step as step_physics, toggle_physics } from "../Physics/physics";
+import {
+  add_scrapbox_item,
+  parse_scrapbox,
+} from "../Scrapbox/add_scrapbox_item";
+import { add_scrapbox_links } from "../Scrapbox/add_scrapbox_links";
+import { fetch_api } from "../Scrapbox/make_scrapbox_kozane";
+import { reset_selection } from "../Selection/reset_selection";
+import { add_multiple_kozane } from "../utils/add_multiple_kozane";
 import { fit_to_contents } from "../utils/fit_to_contents";
 import { try_to_import_json } from "../utils/JSON/try_to_import_json";
-import { user_buttons } from "../AppBar/UserButtons";
-import { get_center_of_screen } from "../dimension/get_center_of_screen";
-import { reset_selection } from "../Selection/reset_selection";
 import { add_kozane } from "./add_kozane";
 import { constants } from "./constants";
 import { get_clicked_item } from "./get_clicked_item";
+import { get_item } from "./get_item";
 import { get_selected_ids } from "./get_selected_ids";
 import { is_touchpad } from "./is_touchpad";
-import { add_scrapbox_links } from "../Scrapbox/add_scrapbox_links";
-import { add_scrapbox_item } from "../Scrapbox/add_scrapbox_item";
 import { redraw } from "./redraw";
 import { show_dialog } from "./show_dialog";
 import { start_tutorial } from "./start_tutorial";
+import { unpin } from "./unpin";
 import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
-import { add_multiple_kozane } from "../utils/add_multiple_kozane";
-import { copy_json } from "../Menu/copy_json";
-import { show_backup } from "../Cloud/LocalBackup";
-import { save_backup_as_new } from "../Cloud/LocalBackup";
-import { fetch_api } from "../Scrapbox/make_scrapbox_kozane";
-import { parse_scrapbox } from "../Scrapbox/add_scrapbox_item";
-import { toggle_physics, step as step_physics } from "../Physics/physics";
-import { unpin } from "./unpin";
-
+import { add_arrow } from "./add_arrow";
 export const kozaneba = {
   // simple values to modify
   constants,
@@ -48,12 +51,15 @@ export const kozaneba = {
   toggle_physics,
   step_physics,
   unpin,
+  add_arrow,
 
   // getter
   get_global: getGlobal,
   get_center_of_screen,
   get_clicked_item,
   get_selected_ids,
+  get_gravity_point,
+  get_item,
 
   // complex values
   after_render_toppage: start_tutorial,
