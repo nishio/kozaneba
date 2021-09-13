@@ -2,20 +2,10 @@ import { TItem } from "../Global/TItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { KozaneItem } from "../Kozane/KozaneItem";
-import {
-  KOZANE_BORDER,
-  KOZANE_HEIGHT,
-  KOZANE_WIDTH,
-} from "../utils/kozane_constants";
 import { create_squared_position } from "./create_squared_position";
 
 export const create_squared_group = (texts: string[]) => {
-  const positions = create_squared_position(
-    texts,
-    KOZANE_WIDTH + KOZANE_BORDER,
-    KOZANE_HEIGHT + KOZANE_BORDER,
-    -KOZANE_BORDER
-  );
+  const positions = create_squared_position(texts);
   const group = new GroupItem();
   const kozane_list = [] as TItem[];
   texts.forEach((line, index) => {
