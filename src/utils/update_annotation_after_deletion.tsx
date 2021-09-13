@@ -19,7 +19,5 @@ export const update_annotation_after_deletion = (g: State, id: ItemId) => {
     }
     new_annotation.push(a);
   });
-  console.log(getGlobal().annotations);
   g.annotations = new_annotation;
-  console.log(new_annotation);
 };
