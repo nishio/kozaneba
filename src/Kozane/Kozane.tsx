@@ -1,10 +1,10 @@
-import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { CSSProperties } from "react";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
-import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { TKozaneItem } from "../Global/TKozaneItem";
+import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { useAdjustFontsizeStyle } from "./useAdjustFontsizeStyle";
 
 type Props = {
@@ -33,11 +33,13 @@ export const Kozane: React.FC<Props> = ({
     if (url !== "" && url !== undefined) {
       return (
         <FontAwesomeIcon
-          icon={faLink}
+          icon={faExternalLinkAlt}
           style={{
             position: "absolute",
-            fontSize: 20 * value.scale + "px",
-            top: 0,
+            fontSize: 15 * value.scale + "px",
+            right: 0,
+            bottom: 0,
+            opacity: 0.5,
           }}
         />
       );
