@@ -9,16 +9,16 @@ import {
 } from "../utils/kozane_constants";
 import { create_squared_position } from "./create_squared_position";
 
-export const create_squared_group = (items: string[]) => {
+export const create_squared_group = (texts: string[]) => {
   const positions = create_squared_position(
-    items,
+    texts,
     KOZANE_WIDTH + KOZANE_BORDER,
     KOZANE_HEIGHT + KOZANE_BORDER,
     -KOZANE_BORDER
   );
   const group = new GroupItem();
   const kozane_list = [] as TItem[];
-  items.forEach((line, index) => {
+  texts.forEach((line, index) => {
     if (line === "") return;
     const kozane = new KozaneItem();
     kozane.text = line;
