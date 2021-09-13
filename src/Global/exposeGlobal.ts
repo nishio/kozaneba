@@ -1,14 +1,15 @@
 import { getGlobal, setGlobal } from "reactn";
-import { closeGroup } from "../Group/closeGroup";
-import { importRegroupJSON } from "../Regroup/importRegroupJSON";
-import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
-import { updateGlobal } from "./updateGlobal";
-import { reset_selection } from "../Selection/reset_selection";
-import { db, auth } from "../Cloud/FirestoreIO";
-import { make_items_into_new_group } from "../utils/make_items_into_new_group";
-import { KozaneItem } from "../Kozane/KozaneItem";
-import { TKozaneItem } from "./TKozaneItem";
 import { TKozaneba } from "../API/KozanebaAPI";
+import { auth, db } from "../Cloud/FirestoreIO";
+import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
+import { closeGroup } from "../Group/closeGroup";
+import { KozaneItem } from "../Kozane/KozaneItem";
+import { importRegroupJSON } from "../Regroup/importRegroupJSON";
+import { reset_selection } from "../Selection/reset_selection";
+import { make_items_into_new_group } from "../utils/make_items_into_new_group";
+import { kintone_demo } from "./kintone_demo";
+import { TKozaneItem } from "./TKozaneItem";
+import { updateGlobal } from "./updateGlobal";
 
 const tmpfunc = () => {
   console.log("write");
@@ -57,7 +58,7 @@ const movidea = {
 
 export type TMovidea = typeof movidea;
 
-const debug = {};
+const debug: any = {};
 
 declare global {
   interface Window {
@@ -70,4 +71,5 @@ declare global {
 export const exposeGlobalForTest = () => {
   window.movidea = movidea;
   window.debug = debug;
+  debug.kintone_demo = kintone_demo;
 };
