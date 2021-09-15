@@ -1,6 +1,7 @@
 import { getGlobal } from "reactn";
 import { updateGlobal } from "../Global/updateGlobal";
-import { db, DocData, DocRef } from "./FirestoreIO";
+import { db } from "./FirestoreIO";
+import { DocData, DocRef } from "./FirebaseShortTypename";
 import { set_up_read_subscription } from "./set_up_read_subscription";
 
 export const save_new = (doc: DocData) => {

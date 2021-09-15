@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { close_menu } from "../utils/close_menu";
-import { state_to_docdate } from "./FirestoreIO";
+import { state_to_docdate } from "./state_to_docdate";
 import { set_status } from "../utils/set_status";
 import { save_new } from "./save_new";
 import { not_login_then_show_dialog } from "./not_login_then_show_dialog";
