@@ -52,6 +52,12 @@ export const SelectionMenu = () => {
     mark_local_changed();
     setMenu("");
   };
+  const onAddArrowAllHeads = () => {
+    add_arrow(getGlobal().selected_items, true);
+    reset_selection();
+    mark_local_changed();
+    setMenu("");
+  };
 
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
@@ -65,7 +71,10 @@ export const SelectionMenu = () => {
         copy JSON
       </MenuItem>
       <MenuItem onClick={onAddArrow} data-testid="copy-text">
-        add arrow
+        add arrow(head:left)
+      </MenuItem>
+      <MenuItem onClick={onAddArrowAllHeads} data-testid="copy-text">
+        add arrow(head:all)
       </MenuItem>
 
       {kozaneba.user_menus["Selection"]!.map(UserMenuItem)}
