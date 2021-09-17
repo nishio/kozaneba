@@ -1,4 +1,3 @@
-import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { ItemId } from "../Global/ItemId";
 import { TAnnotation } from "../Global/TAnnotation";
