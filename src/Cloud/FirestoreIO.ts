@@ -22,6 +22,8 @@ const config = {
 firebase.initializeApp(config);
 
 export const db = firebase.firestore();
+db.settings({ ignoreUndefinedProperties: true });
+
 export const auth = firebase.auth();
 export type TUser = firebase.User | null;
 auth.onAuthStateChanged((user) => {
