@@ -10,6 +10,7 @@ import {
 import { RTWorldCoord } from "../dimension/world_to_screen";
 import { RTItemId } from "./TItemId";
 
+export const RT_CSSProperties = Dictionary(String.Or(Number));
 export const RTKozaneItem = Record({
   type: Literal("kozane"),
   text: String,
@@ -18,7 +19,7 @@ export const RTKozaneItem = Record({
   scale: Number,
   custom: Optional(
     Record({
-      style: Dictionary(String.Or(Number)).optional(),
+      style: RT_CSSProperties.optional(),
       url: String.optional(),
     })
   ),

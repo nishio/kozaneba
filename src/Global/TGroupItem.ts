@@ -1,28 +1,26 @@
-import { CSSProperties } from "react";
-import { TWorldCoord } from "../dimension/world_to_screen";
-import { isV2 } from "./isV2";
-import { TItemId } from "./TItemId";
+import {
+  Array,
+  Boolean,
+  Literal,
+  Number,
+  Record,
+  Static,
+  String,
+} from "runtypes";
+import { RTWorldCoord } from "../dimension/world_to_screen";
+import { RTItemId } from "./TItemId";
+import { RT_CSSProperties } from "./TKozaneItem";
 
-export type TGroupItem = {
-  type: "group";
-  text: string;
-  position: TWorldCoord;
-  items: TItemId[];
-  id: TItemId;
-  scale: number; // scale of Nameplate Kozane
-  isOpen: boolean;
-  custom?: { style?: CSSProperties };
-};
-
-export function isTGroupItem(x: any): x is TGroupItem {
-  return (
-    x.type === "group" &&
-    typeof x.text === "string" &&
-    isV2(x.position) &&
-    Array.isArray(x.items) &&
-    x.items.every((y: any) => typeof y === "string") &&
-    typeof x.id === "string" &&
-    typeof x.scale === "number" &&
-    typeof x.isOpen === "boolean"
-  );
-}
+export const RTGroupItem = Record({
+  type: Literal("group"),
+  text: String,
+  position: RTWorldCoord,
+  items: Array(RTItemId),
+  id: RTItemId,
+  scale: Number,
+  isOpen: Boolean,
+  custom: Record({
+    style: RT_CSSProperties.optional(),
+  }).optional(),
+});
+export type TGroupItem = Static<typeof RTGroupItem>;
