@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 
-export const get_selected_ids = (): ItemId[] => {
+export const get_selected_ids = (): TItemId[] => {
   return getGlobal().selected_items;
 };

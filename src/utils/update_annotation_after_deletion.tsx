@@ -1,8 +1,8 @@
 import { State } from "reactn/default";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TAnnotation } from "../Global/TAnnotation";
 
-export const update_annotation_after_deletion = (g: State, id: ItemId) => {
+export const update_annotation_after_deletion = (g: State, id: TItemId) => {
   const new_annotation: TAnnotation[] = [];
   g.annotations.forEach((a) => {
     if (a.type === "line") {

@@ -1,6 +1,6 @@
 import React from "react";
 import { getGlobal } from "reactn";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { show_menu } from "../utils/show_menu";
 import { reset_target } from "./fast_drag_manager";
@@ -8,7 +8,7 @@ import { get_item } from "../utils/get_item";
 
 export const onGenericClick = (
   event: React.MouseEvent<HTMLDivElement>,
-  id: ItemId
+  id: TItemId
 ) => {
   const target = get_item(getGlobal(), id);
   updateGlobal((g) => {

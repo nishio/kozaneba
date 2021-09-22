@@ -1,5 +1,5 @@
 import { getGlobal } from "reactn";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TGroupItem } from "../Global/TGroupItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
@@ -7,7 +7,7 @@ import { TWorldCoord } from "../dimension/world_to_screen";
 import { add_v2w, sub_v2w } from "../dimension/V2";
 import { get_item } from "../utils/get_item";
 
-export const closeGroup = (id: ItemId) => {
+export const closeGroup = (id: TItemId) => {
   const g = getGlobal();
   const target = g.itemStore[id];
   if (target === undefined) {

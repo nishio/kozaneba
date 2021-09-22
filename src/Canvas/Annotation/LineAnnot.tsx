@@ -8,7 +8,7 @@ import {
   sub_v2,
   V2,
 } from "../../dimension/V2";
-import { ItemId } from "../../Global/ItemId";
+import { TItemId } from "../../Global/TItemId";
 import { TLineAnnot } from "../../Global/TAnnotation";
 import { get_gravity_point } from "../../dimension/get_gravity_point";
 import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
@@ -28,7 +28,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     }
   }
 
-  const get_rect = (id: ItemId) => {
+  const get_rect = (id: TItemId) => {
     return bounding_box_to_rect(get_item_bounding_box(id));
   };
   const rects = a.items.map(get_rect);

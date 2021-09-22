@@ -1,6 +1,6 @@
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { CSSProperties } from "react";
-import { ItemId } from "./ItemId";
+import { TItemId } from "./TItemId";
 import { isV2 } from "./isV2";
 
 export type TScrapboxItem = {
@@ -9,7 +9,7 @@ export type TScrapboxItem = {
   image: string; // url to the thumbnail image, or ""
   url: string; // url to the page
   position: TWorldCoord;
-  id: ItemId;
+  id: TItemId;
   scale: number;
   description: string[];
   custom?: { style?: CSSProperties };

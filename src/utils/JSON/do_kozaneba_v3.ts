@@ -1,7 +1,7 @@
 import { add_item } from "../../API/add_item";
 import { redraw } from "../../API/redraw";
 import { get_center_of_screen } from "../../dimension/get_center_of_screen";
-import { ItemId } from "../../Global/ItemId";
+import { TItemId } from "../../Global/TItemId";
 import { TItem } from "../../Global/TItem";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { GroupItem } from "../../Group/GroupItem";
@@ -10,7 +10,7 @@ import { normalize_group_position } from "../normalize_group_position";
 
 export const do_kozaneba_v3 = (j: JSON_KozanebaV3) => {
   const to_add: TItem[] = [];
-  const visit = (old_id: string): ItemId => {
+  const visit = (old_id: string): TItemId => {
     const id = create_new_itemid();
     const item = j.itemStore[old_id]!;
     const new_item = { ...item, id };
@@ -40,5 +40,5 @@ type JSON_KozanebaV3 = {
   format: string;
   version: 3;
   itemStore: { [key: string]: TItem };
-  drawOrder: ItemId[];
+  drawOrder: TItemId[];
 };

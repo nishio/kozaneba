@@ -1,6 +1,6 @@
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { add_v2w } from "../dimension/V2";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../utils/find_parent";
 import { move_front } from "../utils/move_front";
@@ -17,7 +17,7 @@ import { State } from "reactn/default";
 export function drag_drop_item(
   g: State,
   delta: TWorldCoord,
-  target_id: ItemId
+  target_id: TItemId
 ) {
   const parent = find_parent(target_id);
   if (parent !== null) {

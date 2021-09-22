@@ -11,12 +11,12 @@ import { reset_target } from "./fast_drag_manager";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 
 export function drag_drop_item_into_group(
-  group_id: ItemId,
+  group_id: TItemId,
   delta: TWorldCoord,
-  target_id: never
+  target_id: TItemId
 ) {
   console.log("drop on group", group_id);
 

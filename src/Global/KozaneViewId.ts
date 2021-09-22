@@ -1,4 +1,4 @@
-import { ItemId } from "./ItemId";
+import { TItemId } from "./TItemId";
 import { NameplateId } from "./NameplateId";
 
-export type KozaneViewId = ItemId | NameplateId;
+export type KozaneViewId = TItemId | NameplateId;

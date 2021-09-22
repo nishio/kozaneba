@@ -1,11 +1,11 @@
 import { CSSProperties } from "react";
 import { mark_local_changed } from "../utils/mark_local_changed";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { move_front } from "../utils/move_front";
 
 export const update_style = (
-  id: ItemId,
+  id: TItemId,
   callback: (style: CSSProperties) => CSSProperties
 ) => {
   updateGlobal((g) => {

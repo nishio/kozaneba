@@ -1,11 +1,11 @@
 import { getGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { get_gravity_point } from "../dimension/get_gravity_point";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TArrowHead } from "../Global/TAnnotation";
 import { get_item } from "./get_item";
 
-export const add_arrow = (targets: ItemId[], all_heads = false) => {
+export const add_arrow = (targets: TItemId[], all_heads = false) => {
   if (targets.length < 2) return;
   const g = getGlobal();
   const positions = targets.map((id) => get_item(g, id).position);

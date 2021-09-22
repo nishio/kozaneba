@@ -1,7 +1,7 @@
-import { ItemId } from "../../Global/ItemId";
+import { TItemId } from "../../Global/TItemId";
 import { kozaneba } from "../KozanebaAPI";
 
-export const add_bipartite = (targets: ItemId[]) => {
+export const add_bipartite = (targets: TItemId[]) => {
   if (targets.length < 2) return;
   const positions = targets.map((id) => kozaneba.get_item(id).position);
   const gp = kozaneba.get_gravity_point(positions);

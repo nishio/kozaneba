@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { redraw } from "../API/redraw";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { TGroupItem } from "../Global/TGroupItem";
@@ -8,9 +8,9 @@ import { remove_item_from } from "./remove_item_from";
 import { normalize_group_position } from "./normalize_group_position";
 
 export const make_items_into_new_group = (
-  items: ItemId[],
+  items: TItemId[],
   value: Partial<TGroupItem>
-): ItemId => {
+): TItemId => {
   const g = getGlobal();
   const group = new GroupItem(value?.id);
   group.items = [...items];

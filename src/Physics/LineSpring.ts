@@ -6,10 +6,10 @@ import { State } from "reactn/default";
 import { add_v2, V2 } from "../dimension/V2";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { find_parent } from "../utils/find_parent";
 
-const get_global_position = (id: ItemId, g: State): [ItemId, V2] => {
+const get_global_position = (id: TItemId, g: State): [TItemId, V2] => {
   // potential time-consuming function
   let target_id = id;
   let v: V2 = get_item(g, id).position;
@@ -39,7 +39,7 @@ export const LineSpring: PhysicalLaw = (g) => {
     if (a.type !== "line") return;
 
     const positions: V2[] = [];
-    const targets: ItemId[] = [];
+    const targets: TItemId[] = [];
     a.items.forEach((id) => {
       const [target, v] = get_global_position(id, g);
       positions.push(v);

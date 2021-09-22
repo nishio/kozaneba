@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { get_item } from "./get_item";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "./find_parent";
 import { TGroupItem } from "../Global/TGroupItem";
@@ -8,7 +8,7 @@ import { remove_item_from } from "./remove_item_from";
 import { move_front } from "./move_front";
 import { update_annotation_after_deletion } from "./update_annotation_after_deletion";
 
-export const delete_item_from_world = (id: ItemId) => {
+export const delete_item_from_world = (id: TItemId) => {
   let parent = null;
   const item = get_item(getGlobal(), id);
   if (item.type === "group") {

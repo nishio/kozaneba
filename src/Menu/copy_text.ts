@@ -1,12 +1,12 @@
 import { getGlobal } from "reactn";
 import { L1norm, L2norm, V2 } from "../dimension/V2";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TItem } from "../Global/TItem";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { remove_item_from } from "../utils/remove_item_from";
 
-const split_head = (items: ItemId[]): [ItemId, ItemId[]] => {
+const split_head = (items: TItemId[]): [TItemId, TItemId[]] => {
   const car = items[0];
   if (car === undefined) {
     throw new Error("");
@@ -14,10 +14,10 @@ const split_head = (items: ItemId[]): [ItemId, ItemId[]] => {
   return [car, items.slice(1)];
 };
 
-const get_left_top = (items: ItemId[]): ItemId => {
+const get_left_top = (items: TItemId[]): TItemId => {
   let [result, cdr] = split_head(items);
   const g = getGlobal();
-  const score = (id: ItemId) => {
+  const score = (id: TItemId) => {
     return -L1norm(get_item(g, id).position);
   };
   cdr.forEach((x) => {
@@ -43,10 +43,10 @@ const get_left_top = (items: ItemId[]): ItemId => {
 // };
 
 const bound = 1.5; // slightly larger than sqrt(2)
-const get_neighbors = ([px, py]: V2, items: ItemId[]): ItemId[] => {
+const get_neighbors = ([px, py]: V2, items: TItemId[]): TItemId[] => {
   const g = getGlobal();
-  const result = [] as ItemId[];
-  const distance = (id: ItemId) => {
+  const result = [] as TItemId[];
+  const distance = (id: TItemId) => {
     const [x, y] = get_item(g, id).position;
     const dx = x - px;
     const dy = y - py;
@@ -63,10 +63,10 @@ const get_neighbors = ([px, py]: V2, items: ItemId[]): ItemId[] => {
   return result;
 };
 
-const get_nearest_neighbors = ([px, py]: V2, items: ItemId[]): ItemId => {
+const get_nearest_neighbors = ([px, py]: V2, items: TItemId[]): TItemId => {
   const g = getGlobal();
   let [result, cdr] = split_head(items);
-  const score = (id: ItemId) => {
+  const score = (id: TItemId) => {
     const [x, y] = get_item(g, id).position;
     const dx = Math.abs(px - x) - KOZANE_WIDTH;
     const dy = Math.abs(py - y) - KOZANE_HEIGHT;
@@ -142,11 +142,11 @@ const push = (item: TItem, out: Buffer) => {
   }
 };
 
-const get_chain = (items: ItemId[], out: Buffer): [ItemId[], ItemId[]] => {
+const get_chain = (items: TItemId[], out: Buffer): [TItemId[], TItemId[]] => {
   const g = getGlobal();
-  const result = [] as ItemId[];
+  const result = [] as TItemId[];
   let cur = get_left_top(items);
-  let side_chain = new Set() as Set<ItemId>;
+  let side_chain = new Set() as Set<TItemId>;
   while (1) {
     items = remove_item_from(items, cur);
     side_chain.delete(cur);
@@ -185,7 +185,7 @@ export const copy_text = () => {
   navigator.clipboard.writeText(out.concat());
 };
 
-const serialize = (items: ItemId[], out: Buffer) => {
+const serialize = (items: TItemId[], out: Buffer) => {
   if (items.length === 0) {
     return "";
   }

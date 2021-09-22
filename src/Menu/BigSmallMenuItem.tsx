@@ -4,11 +4,11 @@ import { getGlobal } from "reactn";
 import { close_menu } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { move_front } from "../utils/move_front";
 
-type PropsType = { id: ItemId };
+type PropsType = { id: TItemId };
 export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
   ({ id }, ref) => {
     const onBig = () => {
@@ -29,7 +29,7 @@ export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
   }
 );
 
-export const SmallMenuItem: React.FC<{ id: ItemId }> = ({ id }) => {
+export const SmallMenuItem: React.FC<{ id: TItemId }> = ({ id }) => {
   const g = getGlobal();
   const target = get_item(g, id);
   const onSmall = () => {

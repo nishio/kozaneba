@@ -1,14 +1,14 @@
 import { CSSProperties } from "react";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { isV2 } from "./isV2";
-import { ItemId } from "./ItemId";
+import { TItemId } from "./TItemId";
 
 export type TGroupItem = {
   type: "group";
   text: string;
   position: TWorldCoord;
-  items: ItemId[];
-  id: ItemId;
+  items: TItemId[];
+  id: TItemId;
   scale: number; // scale of Nameplate Kozane
   isOpen: boolean;
   custom?: { style?: CSSProperties };

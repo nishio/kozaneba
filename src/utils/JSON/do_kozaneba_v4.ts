@@ -3,7 +3,7 @@ import { add_item } from "../../API/add_item";
 import { redraw } from "../../API/redraw";
 import { get_center_of_screen } from "../../dimension/get_center_of_screen";
 import { isTItem } from "../../Global/isTItem";
-import { ItemId } from "../../Global/ItemId";
+import { TItemId } from "../../Global/TItemId";
 import { isTAnnotation, TAnnotation } from "../../Global/TAnnotation";
 import { TItem } from "../../Global/TItem";
 import { updateGlobal } from "../../Global/updateGlobal";
@@ -32,15 +32,15 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
     return false;
   }
 
-  const id_map: { [old_id: string]: ItemId } = {};
+  const id_map: { [old_id: string]: TItemId } = {};
   const current = getGlobal();
   const to_add: TItem[] = [];
-  const visit = (old_id: string): ItemId => {
-    let id: ItemId;
+  const visit = (old_id: string): TItemId => {
+    let id: TItemId;
     if (current.itemStore[old_id] !== undefined) {
       id = create_new_itemid();
     } else {
-      id = old_id as ItemId;
+      id = old_id as TItemId;
     }
     id_map[old_id] = id;
     const item = j.itemStore[old_id]!;
@@ -98,6 +98,6 @@ type JSON_KozanebaV4 = {
   format: string;
   version: 4;
   itemStore: { [key: string]: TItem };
-  drawOrder: ItemId[];
+  drawOrder: TItemId[];
   annotation: TAnnotation[];
 };

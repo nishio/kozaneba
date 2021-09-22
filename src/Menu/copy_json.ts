@@ -1,10 +1,10 @@
 import { getGlobal } from "reactn";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TItem } from "../Global/TItem";
 import { TAnnotation, TArrowHead } from "../Global/TAnnotation";
 
-type InType = "selection" | "all" | ItemId[];
+type InType = "selection" | "all" | TItemId[];
 const out = { console: true, clipboard: true };
 type OutType = typeof out;
 
@@ -13,12 +13,12 @@ export const copy_json = (
   out_type: OutType = out
 ): string => {
   const g = getGlobal();
-  const drawOrder: ItemId[] = [];
+  const drawOrder: TItemId[] = [];
   const itemStore: { [id: string]: TItem } = {};
 
-  const items_to_copy: ItemId[] = [];
+  const items_to_copy: TItemId[] = [];
 
-  const add_item_recursively = (id: ItemId) => {
+  const add_item_recursively = (id: TItemId) => {
     const item = get_item(g, id);
     items_to_copy.push(id);
     itemStore[id] = item;
@@ -42,7 +42,7 @@ export const copy_json = (
   g.annotations.forEach((a) => {
     if (a.type === "line") {
       const new_heads: TArrowHead[] = [];
-      const new_items: ItemId[] = [];
+      const new_items: TItemId[] = [];
       a.items.forEach((id, index) => {
         if (items_to_copy.includes(id)) {
           new_items.push(id);

@@ -3,11 +3,11 @@ import { add_v2w, sub_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { get_group } from "./get_group";
 import { get_item } from "./get_item";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { get_gravity_point } from "../dimension/get_gravity_point";
 import { update_global_with_optional_draft } from "../Global/update_global_with_optional_draft";
 
-export const normalize_group_position = (gid: ItemId, draft?: State) => {
+export const normalize_group_position = (gid: TItemId, draft?: State) => {
   update_global_with_optional_draft(draft, (g) => {
     const group = get_group(g, gid);
     if (group.items.length === 0) return;

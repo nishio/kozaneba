@@ -1,10 +1,10 @@
-import { ItemId } from "./ItemId";
+import { TItemId } from "./TItemId";
 
 export type TAnnotation = TLineAnnot;
 
 export type TLineAnnot = {
   type: "line";
-  items: ItemId[];
+  items: TItemId[];
   heads: TArrowHead[];
   custom?: {
     arrow_head_size?: number;

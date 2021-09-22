@@ -1,5 +1,5 @@
 import { constants } from "../API/constants";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TGroupItem } from "../Global/TGroupItem";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { get_item_bounding_box } from "./get_bounding_box";
@@ -54,7 +54,7 @@ export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
   };
 };
 
-export const get_items_bounding_box = (items: ItemId[]): TBoundingBox => {
+export const get_items_bounding_box = (items: TItemId[]): TBoundingBox => {
   if (items.length === 0) {
     return {
       left: 0,

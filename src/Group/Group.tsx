@@ -6,7 +6,7 @@ import { get_item } from "../utils/get_item";
 import { onGroupMouseUp } from "../Event/onGroupMouseUp";
 import { onGroupMouseDown } from "../Event/onGroupMouseDown";
 import { NameplateId } from "../Global/NameplateId";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TItem } from "../Global/TItem";
 import { NameplateKozane } from "../Kozane/NameplateKozane";
 import { calc_closed_style } from "./calc_closed_style";
@@ -89,7 +89,7 @@ export type Props = {
   offset: { x: number; y: number };
 };
 
-const get_nameplate_id = (kozaneId: ItemId): NameplateId => {
+const get_nameplate_id = (kozaneId: TItemId): NameplateId => {
   return ("nameplate-" + kozaneId) as NameplateId;
 };
 

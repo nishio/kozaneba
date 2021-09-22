@@ -1,4 +1,4 @@
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { TArrowHead } from "../Global/TAnnotation";
 import { updateGlobal } from "../Global/updateGlobal";
 import { mark_local_changed } from "../utils/mark_local_changed";
@@ -10,7 +10,7 @@ const THICK_ARROW = {
   is_clickable: true,
 };
 
-export const add_arrow = (ids: ItemId[], heads: TArrowHead[], custom = {}) => {
+export const add_arrow = (ids: TItemId[], heads: TArrowHead[], custom = {}) => {
   updateGlobal((g) => {
     g.annotations.push({
       type: "line",

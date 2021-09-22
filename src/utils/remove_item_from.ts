@@ -1,5 +1,5 @@
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 
-export const remove_item_from = (items: ItemId[], target: ItemId) => {
+export const remove_item_from = (items: TItemId[], target: TItemId) => {
   return items.filter((id) => id !== target);
 };

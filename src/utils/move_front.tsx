@@ -1,10 +1,10 @@
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "./find_parent";
 import { TGroupItem } from "../Global/TGroupItem";
 import { remove_item_from } from "./remove_item_from";
 
-export const move_front = (id: ItemId) => {
+export const move_front = (id: TItemId) => {
   let parent = null;
   updateGlobal((g) => {
     parent = find_parent(id);

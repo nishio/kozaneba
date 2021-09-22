@@ -4,7 +4,7 @@ import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
 import { onWheel } from "../Event/onWheel";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { SelectionView } from "../Selection/Selection";
 import { dev_log, dev_time, dev_time_end } from "../utils/dev";
 import { AnnotationLayer } from "./Annotation/AnnotationLayer";
@@ -18,7 +18,7 @@ export const ItemCanvas = () => {
 
   const ref = useRef<HTMLDivElement>(null);
   const offset = { x: 0, y: 0 };
-  const not_selected_items = [] as ItemId[];
+  const not_selected_items = [] as TItemId[];
   let contents: JSX.Element;
 
   dev_log("render ItemCanvas");

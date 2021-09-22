@@ -12,13 +12,13 @@ import { finishButtons } from "../../App/hotKey";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { mark_local_changed } from "../../utils/mark_local_changed";
 import { get_item } from "../../utils/get_item";
-import { ItemId } from "../../Global/ItemId";
+import { TItemId } from "../../Global/TItemId";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { get_group_title } from "../../Group/Group";
 import { GroupItem } from "../../Group/GroupItem";
 import { move_front } from "../../utils/move_front";
 
-const is_item_id = (id: string): id is ItemId => {
+const is_item_id = (id: string): id is TItemId => {
   const g = getGlobal();
   return id in g.itemStore;
 };

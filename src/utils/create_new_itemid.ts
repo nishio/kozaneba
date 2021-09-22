@@ -1,5 +1,5 @@
 import { getGlobal } from "reactn";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 
 let last_timestamp = 0;
 export const create_new_itemid = () => {
@@ -12,5 +12,5 @@ export const create_new_itemid = () => {
     timestamp = last_timestamp + 1;
   }
   last_timestamp = timestamp;
-  return timestamp.toString() as ItemId;
+  return timestamp.toString() as TItemId;
 };

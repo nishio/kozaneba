@@ -1,7 +1,7 @@
 import React from "react";
 import { V2 } from "../dimension/V2";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { highlight_parent } from "../Group/highlight_group";
 import { reset_selection } from "../Selection/reset_selection";
@@ -10,7 +10,7 @@ import { get_client_pos } from "./get_client_pos";
 
 export const onGenericMouseDown = (
   event: React.MouseEvent<HTMLDivElement>,
-  value: { id: ItemId; position: V2 }
+  value: { id: TItemId; position: V2 }
 ) => {
   console.log(`onGenericMouseDown type:${value.id} id:${value.id}`);
   reset_selection();

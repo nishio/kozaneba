@@ -2,10 +2,10 @@ import { State } from "reactn/default";
 import { add_v2, V2 } from "./V2";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
-import { ItemId } from "../Global/ItemId";
+import { TItemId } from "../Global/TItemId";
 import { find_parent } from "../utils/find_parent";
 
-export const get_global_position = (id: ItemId, g: State): V2 => {
+export const get_global_position = (id: TItemId, g: State): V2 => {
   // potential time-consuming function
   let v: V2 = get_item(g, id).position;
   let p = find_parent(id);
