@@ -1,6 +1,9 @@
+import { Number, Static, Tuple } from "runtypes";
 import { TScreenCoord, TWorldCoord } from "./world_to_screen";
 
-export type V2 = [number, number];
+export const RT_V2 = Tuple(Number, Number);
+export type V2 = Static<typeof RT_V2>;
+
 export const add_v2 = (v1: V2, v2: V2): V2 => {
   return [v1[0] + v2[0], v1[1] + v2[1]];
 };
