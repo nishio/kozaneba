@@ -8,7 +8,6 @@ import {
   String,
 } from "runtypes";
 import { RTWorldCoord } from "../dimension/world_to_screen";
-import { isV2 } from "./isV2";
 import { RTItemId } from "./TItemId";
 
 export const RTKozaneItem = Record({
@@ -26,13 +25,3 @@ export const RTKozaneItem = Record({
 });
 
 export type TKozaneItem = Static<typeof RTKozaneItem>;
-
-export function isTKozaneItem(x: any): x is TKozaneItem {
-  return (
-    x.type === "kozane" &&
-    typeof x.text === "string" &&
-    isV2(x.position) &&
-    typeof x.id === "string" &&
-    typeof x.scale === "number"
-  );
-}
