@@ -1,8 +1,8 @@
 import { CSSProperties } from "react";
 import { mark_local_changed } from "../utils/mark_local_changed";
-import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { move_front } from "../utils/move_front";
+import { TItemId } from "../Global/TItemId";
 
 export const update_style = (
   id: TItemId,

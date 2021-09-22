@@ -1,6 +1,13 @@
-import { TKozaneItem } from "./TKozaneItem";
-import { TGroupItem } from "./TGroupItem";
-import { TGyazoItem } from "./TGyazoItem";
-import { TScrapboxItem } from "./TScrapboxItem";
+import { Static, Union } from "runtypes";
+import { RTGroupItem } from "./TGroupItem";
+import { RTGyazoItem } from "./TGyazoItem";
+import { RTKozaneItem } from "./TKozaneItem";
+import { RTScrapboxItem } from "./TScrapboxItem";
 
-export type TItem = TKozaneItem | TGroupItem | TGyazoItem | TScrapboxItem;
+export const RTItem = Union(
+  RTKozaneItem,
+  RTGroupItem,
+  RTScrapboxItem,
+  RTGyazoItem
+);
+export type TItem = Static<typeof RTItem>;

@@ -1,16 +1,8 @@
-import {
-  Dictionary,
-  Literal,
-  Number,
-  Optional,
-  Record,
-  Static,
-  String,
-} from "runtypes";
+import { Literal, Number, Optional, Record, Static, String } from "runtypes";
 import { RTWorldCoord } from "../dimension/world_to_screen";
+import { RT_CSSProperties } from "./RT_CSSProperties";
 import { RTItemId } from "./TItemId";
 
-export const RT_CSSProperties = Dictionary(String.Or(Number));
 export const RTKozaneItem = Record({
   type: Literal("kozane"),
   text: String,

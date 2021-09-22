@@ -9,7 +9,7 @@ import {
 } from "runtypes";
 import { RTWorldCoord } from "../dimension/world_to_screen";
 import { RTItemId } from "./TItemId";
-import { RT_CSSProperties } from "./TKozaneItem";
+import { RT_CSSProperties } from "./RT_CSSProperties";
 
 export const RTGroupItem = Record({
   type: Literal("group"),

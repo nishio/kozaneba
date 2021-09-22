@@ -2,16 +2,15 @@ import { getGlobal } from "reactn";
 import { add_item } from "../../API/add_item";
 import { redraw } from "../../API/redraw";
 import { get_center_of_screen } from "../../dimension/get_center_of_screen";
-import { isTItem } from "../../Global/isTItem";
-import { TItemId } from "../../Global/TItemId";
 import { isTAnnotation, TAnnotation } from "../../Global/TAnnotation";
-import { TItem } from "../../Global/TItem";
+import { RTItem, TItem } from "../../Global/TItem";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { GroupItem } from "../../Group/GroupItem";
 import { create_new_itemid } from "../create_new_itemid";
 import { normalize_group_position } from "../normalize_group_position";
 import { check_all_items } from "./check_all_items";
 import { isString } from "../is_string";
+import { TItemId } from "../../Global/TItemId";
 
 export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
   if (!Array.isArray(j.drawOrder)) {
@@ -54,7 +53,7 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
   const new_items = j.drawOrder.map(visit);
 
   // veryfy
-  if (!check_all_items(to_add, isTItem, "invalid item:")) {
+  if (!check_all_items(to_add, RTItem.guard, "invalid item:")) {
     return false; // not succeeded
   }
 
