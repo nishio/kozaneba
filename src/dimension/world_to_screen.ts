@@ -1,14 +1,11 @@
 import { getGlobal } from "reactn";
-import { V2 } from "./V2";
+import { Static } from "runtypes";
+import { RT_V2 } from "./V2";
 
-enum WorldBrand {
-  _ = "",
-}
-enum ScreenBrand {
-  _ = "",
-}
-export type TScreenCoord = ScreenBrand & V2;
-export type TWorldCoord = WorldBrand & V2;
+export const RTScreenCoord = RT_V2.withBrand("Screen");
+export type TScreenCoord = Static<typeof RTScreenCoord>;
+export const RTWorldCoord = RT_V2.withBrand("World");
+export type TWorldCoord = Static<typeof RTWorldCoord>;
 
 export const world_to_screen = ([x, y]: TWorldCoord): TScreenCoord => {
   const g = getGlobal();
