@@ -1,6 +1,12 @@
 /// <reference types="cypress" />
 
-import { TGroupItem } from "../../../src/Group/GroupItem";
+import { TGroupItem } from "../../../src/Global/TGroupItem";
+import {
+  KOZANE_BORDER,
+  KOZANE_WIDTH,
+} from "../../../src/utils/kozane_constants";
+import { GROUP_FORCED_PADDING } from "../../../src/dimension/get_group_bounding_box";
+
 import {
   do_drag,
   ready_nested_group,
@@ -8,6 +14,8 @@ import {
   ready_one_kozane,
   ready_two_groups,
 } from "../../support";
+import { TITLE_HEIGHT } from "../../../src/dimension/BORDER";
+import { constants } from "../../../src/API/constants";
 
 describe("drag", () => {
   beforeEach(() => {
@@ -97,15 +105,22 @@ describe("drag", () => {
     cy.updateGlobal((g) => {
       (g.itemStore["G1"] as TGroupItem).isOpen = false;
     });
-    cy.testid("G1").should("hasPosition", [155, 170]);
-    cy.testid("G2").should("hasPosition", [130, 120]);
+
+    cy.testid("G1").should("hasPosition", [
+      250 - KOZANE_WIDTH / 2 - GROUP_FORCED_PADDING - KOZANE_BORDER - 30,
+      170 - GROUP_FORCED_PADDING - KOZANE_BORDER - TITLE_HEIGHT,
+    ]); // 155, 170 => 129, 119
+    cy.testid("G2").should("hasPosition", [104, 69]);
   });
 
   it("drag inside", () => {
     ready_one_group();
     cy.testid("1").should("hasPosition", [184, 199]);
     do_drag("1", "G1", 0, 0);
-    cy.testid("1").should("hasPosition", [154, 144]);
+    cy.testid("1").should("hasPosition", [
+      154 - GROUP_FORCED_PADDING,
+      199 - TITLE_HEIGHT - constants.group_padding - 30,
+    ]);
   });
 
   it("should not move when click", () => {

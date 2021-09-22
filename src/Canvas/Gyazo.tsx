@@ -9,28 +9,15 @@ import { onGenericMouseDown } from "../Event/onGenericMouseDown";
 import { TGyazoItem } from "../Global/TGyazoItem";
 import { position_to_left_top } from "../dimension/position_to_left_top";
 import { modify_image_url } from "../utils/modify_image_url";
+import {
+  base_size_cache,
+  GYAZO_BORDER,
+  GYAZO_SIZE,
+} from "./get_gyazo_bounding_box";
 
-const GYAZO_SIZE = 200;
-const GYAZO_BORDER = 1;
 type Props = {
   value: TGyazoItem;
   offset: TOffset;
-};
-
-export const get_gyazo_bounding_box = (item: TGyazoItem) => {
-  const [x, y] = item.position;
-  const scale = item.scale;
-  if (!(item.url in base_size_cache)) {
-    return { top: y, left: x, bottom: y, right: x };
-  }
-  const [w, h] = base_size_cache[item.url]!;
-  const b = {
-    top: y - (h / 2) * scale,
-    left: x - (w / 2) * scale,
-    bottom: y + (h / 2) * scale,
-    right: x + (w / 2) * scale,
-  };
-  return b;
 };
 
 export const GyazoImg = styled.img`
@@ -39,8 +26,6 @@ export const GyazoImg = styled.img`
   top: ${(props) => props.style?.top ?? "0px"};
   left: ${(props) => props.style?.left ?? "0px"};
 `;
-
-const base_size_cache: { [url: string]: [number, number] } = {};
 
 export const Gyazo: React.FC<Props> = ({ value, offset }) => {
   const [base_size, set_base_size] = useState([0, 0] as V2);

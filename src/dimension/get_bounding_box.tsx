@@ -3,8 +3,8 @@ import { get_kozane_bounding_box } from "./get_kozane_bounding_box";
 import { get_group_bounding_box } from "./get_group_bounding_box";
 import { ItemId } from "../Global/ItemId";
 import { get_item } from "../utils/get_item";
-import { get_scrapbox_bounding_box } from "../Scrapbox/Scrapbox";
-import { get_gyazo_bounding_box } from "../Canvas/Gyazo";
+import { get_scrapbox_bounding_box } from "../Scrapbox/get_scrapbox_bounding_box";
+import { get_gyazo_bounding_box } from "../Canvas/get_gyazo_bounding_box";
 
 export const get_item_bounding_box = (id: ItemId) => {
   const g = getGlobal();

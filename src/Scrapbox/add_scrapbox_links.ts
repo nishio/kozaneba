@@ -1,4 +1,3 @@
-import { SCRAPBOX_SIZE } from "./Scrapbox";
 import { set_status } from "../utils/set_status";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { create_squared_position } from "../dimension/create_squared_position";
@@ -9,6 +8,7 @@ import { GroupItem } from "../Group/GroupItem";
 import { create_new_itemid } from "../utils/create_new_itemid";
 import { add_item } from "../API/add_item";
 import { get_page_json, TScrapboxPage, make_url } from "./make_scrapbox_kozane";
+import { SCRAPBOX_SIZE } from "./get_scrapbox_bounding_box";
 
 export const add_scrapbox_links = (
   url: string,

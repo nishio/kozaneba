@@ -6,6 +6,9 @@ import { get_item_bounding_box } from "./get_bounding_box";
 import { TITLE_HEIGHT } from "./BORDER";
 import { TBoundingBox } from "./TBoundingBox";
 
+export const MINIMUM_GROUP_SIZE = 100;
+export const GROUP_FORCED_PADDING = 25;
+
 export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
   const [x, y] = g.position;
   const PADDING = constants.group_padding;
@@ -25,19 +28,17 @@ export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
     const contents_area = g.items.length * KOZANE_WIDTH * KOZANE_HEIGHT;
     if (contents_area / box_area > 0.7) {
       // too tight
-      const FORCED_PADDING = 25;
-      bb.left -= FORCED_PADDING;
-      bb.right += FORCED_PADDING;
-      bb.top -= FORCED_PADDING;
-      bb.bottom += FORCED_PADDING;
+      bb.left -= GROUP_FORCED_PADDING;
+      bb.right += GROUP_FORCED_PADDING;
+      bb.top -= GROUP_FORCED_PADDING;
+      bb.bottom += GROUP_FORCED_PADDING;
     }
 
     if (g.items.length === 0) {
-      const MIN_SIZE = 100;
-      bb.left -= MIN_SIZE / 2;
-      bb.right += MIN_SIZE / 2;
-      bb.top -= MIN_SIZE / 2;
-      bb.bottom += MIN_SIZE / 2;
+      bb.left -= MINIMUM_GROUP_SIZE / 2;
+      bb.right += MINIMUM_GROUP_SIZE / 2;
+      bb.top -= MINIMUM_GROUP_SIZE / 2;
+      bb.bottom += MINIMUM_GROUP_SIZE / 2;
     }
 
     return bb;

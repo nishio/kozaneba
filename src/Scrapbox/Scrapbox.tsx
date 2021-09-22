@@ -8,6 +8,7 @@ import { TScrapboxItem } from "../Global/TScrapboxItem";
 import { NoSelect } from "../Group/GroupDiv";
 import { position_to_left_top } from "../dimension/position_to_left_top";
 import { modify_image_url } from "../utils/modify_image_url";
+import { get_scrapbox_bounding_box } from "./get_scrapbox_bounding_box";
 
 type Props = {
   value: TScrapboxItem;
@@ -17,7 +18,6 @@ const ScrapboxLine = styled.p`
   margin: 0;
 `;
 
-export const SCRAPBOX_SIZE = 400;
 export const ScrapboxDiv = styled.div`
   color: #000;
   word-wrap: break-word;
@@ -39,18 +39,6 @@ const ScrapboxBack = styled.div`
   top: -1px;
   left: -1px;
 `;
-
-export const get_scrapbox_bounding_box = (item: TScrapboxItem) => {
-  const [x, y] = item.position;
-  const scale = item.scale;
-  const b = {
-    top: y - (SCRAPBOX_SIZE / 2) * scale,
-    left: x - (SCRAPBOX_SIZE / 2) * scale,
-    bottom: y + (SCRAPBOX_SIZE / 2) * scale,
-    right: x + (SCRAPBOX_SIZE / 2) * scale,
-  };
-  return b;
-};
 
 export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   let contents = null;
