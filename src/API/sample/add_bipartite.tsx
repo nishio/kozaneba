@@ -14,11 +14,13 @@ export const add_bipartite = (targets: TItemId[]) => {
   });
 };
 
-kozaneba.user_menus.Selection!.push({
-  label: "add bipartite graph",
-  onClick: () => {
-    add_bipartite(kozaneba.get_selected_ids());
-    kozaneba.reset_selection();
-    kozaneba.redraw();
-  },
-});
+// This user menu changed to an official menu
+
+// kozaneba.user_menus.Selection!.push({
+//   label: "add bipartite graph",
+//   onClick: () => {
+//     add_bipartite(kozaneba.get_selected_ids());
+//     kozaneba.reset_selection();
+//     kozaneba.redraw();
+//   },
+// });
