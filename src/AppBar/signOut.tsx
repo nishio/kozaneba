@@ -1,6 +1,5 @@
-import firebase from "firebase";
+import { auth } from "../Cloud/init_firebase";
 
 export const signOut = () => {
-  console.log("sign out");
-  return firebase.auth().signOut();
+  return auth.signOut();
 };

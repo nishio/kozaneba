@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { updateGlobal } from "../Global/updateGlobal";
-import { db } from "./FirestoreIO";
+import { db } from "./init_firebase";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { set_up_read_subscription } from "./set_up_read_subscription";
 

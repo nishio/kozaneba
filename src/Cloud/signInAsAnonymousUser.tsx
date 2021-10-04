@@ -1,11 +1,8 @@
-import firebase from "firebase";
+import { auth } from "./init_firebase";
 
 export const signInAsAnonymousUser = () => {
   console.log("signInAsAnonymousUser");
-  return firebase
-    .auth()
-    .signInAnonymously()
-    .then(() => {
-      console.log("done");
-    });
+  return auth.signInAnonymously().then(() => {
+    console.log("done");
+  });
 };

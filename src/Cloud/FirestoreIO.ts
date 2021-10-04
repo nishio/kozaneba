@@ -1,7 +1,4 @@
 // Initialize Firebase
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import { State } from "reactn/default";
 import { setGlobal } from "reactn";
@@ -12,20 +9,8 @@ import { TKozaneItem } from "../Global/TKozaneItem";
 import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
 import { DocData, DocRef } from "./FirebaseShortTypename";
+import { auth, db } from "./init_firebase";
 
-const config = {
-  apiKey: "AIzaSyB0wAxxeLeHr4udunpln5jCYpGpFGn7D00",
-  authDomain: "regroup-d4932.firebaseapp.com",
-  projectId: "regroup-d4932",
-};
-
-firebase.initializeApp(config);
-
-export const db = firebase.firestore();
-db.settings({ ignoreUndefinedProperties: true });
-
-export const auth = firebase.auth();
-export type TUser = firebase.User | null;
 auth.onAuthStateChanged((user) => {
   setGlobal({ user });
   if (user?.uid === "X4csZggYy1dAhcilL1FyNfjBJj12") {

@@ -6,8 +6,8 @@ import {
   DialogContent,
   DialogTitle,
 } from "@material-ui/core";
-import firebase from "firebase";
 import { authui } from "../Cloud/FirestoreIO";
+import { GoogleAuthProvider } from "../Cloud/init_firebase";
 
 export const SignDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -18,7 +18,7 @@ export const SignDialog = () => {
 
   if (open) {
     authui.start("#firebaseui-auth-container", {
-      signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
+      signInOptions: [GoogleAuthProvider.PROVIDER_ID],
       tosUrl: undefined,
       privacyPolicyUrl: undefined,
       signInFlow: "popup",

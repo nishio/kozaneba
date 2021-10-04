@@ -1,6 +1,6 @@
 import { getGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
-import { db } from "./FirestoreIO";
+import { db } from "./init_firebase";
 import { DocData } from "./FirebaseShortTypename";
 import { state_to_docdate } from "./state_to_docdate";
 import { if_not_in_writer_add_self } from "./if_not_in_writer_add_self";

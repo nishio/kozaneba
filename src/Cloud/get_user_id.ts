@@ -1,4 +1,4 @@
-import { auth } from "./FirestoreIO";
+import { auth } from "./init_firebase";
 
 export const get_user_id = (): string => {
   const uid = auth.currentUser?.uid;

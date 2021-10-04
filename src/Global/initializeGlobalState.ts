@@ -1,4 +1,4 @@
-import { TUser } from "../Cloud/FirestoreIO";
+import { TUser } from "../Cloud/init_firebase";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TDialog } from "./TDialog";
 import { TAnnotation } from "./TAnnotation";

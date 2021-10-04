@@ -1,5 +1,5 @@
 import { updateGlobal } from "../Global/updateGlobal";
-import { auth } from "./FirestoreIO";
+import { auth } from "./init_firebase";
 
 export const not_login_then_show_dialog = () => {
   if (auth.currentUser === null) {

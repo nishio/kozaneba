@@ -1,6 +1,6 @@
 import { getGlobal, setGlobal } from "reactn";
 import { TKozaneba } from "../API/KozanebaAPI";
-import { auth, db } from "../Cloud/FirestoreIO";
+import { auth, db } from "../Cloud/init_firebase";
 import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { closeGroup } from "../Group/closeGroup";
 import { KozaneItem } from "../Kozane/KozaneItem";
