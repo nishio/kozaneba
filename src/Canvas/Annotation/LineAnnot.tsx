@@ -33,18 +33,26 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     return bounding_box_to_rect(get_item_bounding_box(id));
   };
   const rects = a.items.map(get_rect);
-  const crosspoints = a.items.map((id, index) =>
-    get_box_line_crosspoint(positions[index]!, center, rects[index]!)
-  );
+  const crosspoints = a.items.map((id, index) => {
+    const p = positions[index]!;
+    if (!equal_v2(p, center)) {
+      return get_box_line_crosspoint(p, center, rects[index]!);
+    } else {
+      return undefined;
+    }
+  });
+
   if (a.items.length === 2) {
-    if (!equal_v2(crosspoints[0]!, crosspoints[1]!)) {
-      lines.push([crosspoints[0]!, crosspoints[1]!]);
+    const cp0 = crosspoints[0];
+    const cp1 = crosspoints[1];
+    if (cp0 !== undefined && cp1 !== undefined && !equal_v2(cp0, cp1)) {
+      lines.push([cp0, cp1]);
     } else {
       return [];
     }
   } else {
     crosspoints.forEach((cp) => {
-      if (!equal_v2(center, cp)) {
+      if (cp !== undefined && !equal_v2(center, cp)) {
         lines.push([center, cp]);
       }
     });
@@ -53,8 +61,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const arrow_head_size = a.custom?.arrow_head_size ?? 10;
   a.heads.forEach((h, index) => {
     if (h === "arrow") {
-      const p = crosspoints[index]!;
-      if (equal_v2(center, p)) return;
+      const p = crosspoints[index];
+      if (p === undefined || equal_v2(center, p)) return;
       // arrow head
       const n = normalize(sub_v2(p, center));
       const h1 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, 30)));
