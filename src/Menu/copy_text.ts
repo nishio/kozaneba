@@ -1,8 +1,7 @@
-import { consoleSandbox } from "@sentry/utils";
 import { getGlobal } from "reactn";
 import { bounding_box_to_rect } from "../dimension/bounding_box_to_rect";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
-import { L2norm, sub_v2, V2 } from "../dimension/V2";
+import { L2norm, sub_v2 } from "../dimension/V2";
 import { TItemId } from "../Global/TItemId";
 import { get_item } from "../utils/get_item";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
