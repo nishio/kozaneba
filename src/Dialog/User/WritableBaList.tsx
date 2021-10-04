@@ -9,7 +9,7 @@ import { Ba } from "./UserDialog";
 export const WritableBaList = (ba_list: Ba[] | null) => {
   const [is_open, set_is_open] = useState(true);
   let items = [
-    <div style={{ height: "100vh" }}>
+    <div style={{ height: "100vh" }} key="loading">
       <span key="loading">
         Loading...
         <FontAwesomeIcon icon={faSpinner} spin={true} />
