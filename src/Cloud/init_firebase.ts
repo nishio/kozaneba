@@ -10,7 +10,7 @@ const config = {
 firebase.initializeApp(config);
 
 export const db = firebase.firestore();
-db.settings({ ignoreUndefinedProperties: true });
+db.settings({ ignoreUndefinedProperties: true, merge: true });
 
 export const auth = firebase.auth();
 export const GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
