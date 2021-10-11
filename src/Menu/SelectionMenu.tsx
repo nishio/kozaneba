@@ -47,20 +47,15 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
-  const onAddArrow = () => {
-    add_arrow(getGlobal().selected_items);
+  const onAddArrow = (all_heads: boolean, is_doubled = false) => {
+    add_arrow(getGlobal().selected_items, all_heads, is_doubled);
     reset_selection();
     mark_local_changed();
     setMenu("");
   };
-  const onAddArrowAllHeads = () => {
-    add_arrow(getGlobal().selected_items, true);
-    reset_selection();
-    mark_local_changed();
-    setMenu("");
-  };
-  const onAddBipartite = () => {
-    add_bipartite(getGlobal().selected_items);
+
+  const onAddBipartite = (is_doubled = false) => {
+    add_bipartite(getGlobal().selected_items, is_doubled);
     reset_selection();
     mark_local_changed();
     setMenu("");
@@ -91,17 +86,20 @@ export const SelectionMenu = () => {
         style={{
           display: "flex",
           padding: "6px 16px",
-          borderBottom: "solid 1px #eee",
         }}
       >
-        <MenuItem onClick={onAddArrow} dense={true} disableGutters={true}>
+        <MenuItem
+          onClick={() => onAddArrow(false, false)}
+          dense={true}
+          disableGutters={true}
+        >
           <img
             src="https://gyazo.com/75a5ad73d5d4b768de7bf1f3ea7864c2/thumb/50"
             alt="add arrow(head:left)"
           />
         </MenuItem>
         <MenuItem
-          onClick={onAddArrowAllHeads}
+          onClick={() => onAddArrow(true, false)}
           dense={true}
           disableGutters={true}
         >
@@ -110,10 +108,52 @@ export const SelectionMenu = () => {
             alt="add arrow(head:all)"
           />
         </MenuItem>
-        <MenuItem onClick={onAddBipartite} dense={true} disableGutters={true}>
+        <MenuItem
+          onClick={() => onAddBipartite(false)}
+          dense={true}
+          disableGutters={true}
+        >
           <img
             src="https://gyazo.com/f95bb0b29f554dc5cff8f50562c26e67/thumb/50"
             alt="add arrow(bipartite)"
+          />
+        </MenuItem>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          padding: "6px 16px",
+          borderBottom: "solid 1px #eee",
+        }}
+      >
+        <MenuItem
+          onClick={() => onAddArrow(false, true)}
+          dense={true}
+          disableGutters={true}
+        >
+          <img
+            src="https://gyazo.com/b7969f22b5d5466c1b635bea836e1bf1/thumb/50"
+            alt="add arrow(head:left, doubled)"
+          />
+        </MenuItem>
+        <MenuItem
+          onClick={() => onAddArrow(true, true)}
+          dense={true}
+          disableGutters={true}
+        >
+          <img
+            src="https://gyazo.com/e31fec4c894b227e7b13c230b9e046af/thumb/50"
+            alt="add arrow(head:all, doubled)"
+          />
+        </MenuItem>
+        <MenuItem
+          onClick={() => onAddBipartite(true)}
+          dense={true}
+          disableGutters={true}
+        >
+          <img
+            src="https://gyazo.com/9d58339c0d47868f6f76f72885ff2783/thumb/50"
+            alt="add arrow(bipartite, doubled)"
           />
         </MenuItem>
       </div>

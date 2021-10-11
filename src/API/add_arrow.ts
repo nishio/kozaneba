@@ -10,13 +10,19 @@ const THICK_ARROW = {
   is_clickable: true,
 };
 
-export const add_arrow = (ids: TItemId[], heads: TArrowHead[], custom = {}) => {
+export const add_arrow = (
+  ids: TItemId[],
+  heads: TArrowHead[],
+  is_doubled = false,
+  custom = THICK_ARROW
+) => {
   updateGlobal((g) => {
     g.annotations.push({
       type: "line",
       items: ids,
-      heads: heads,
-      custom: THICK_ARROW,
+      heads,
+      is_doubled,
+      custom,
     });
   });
   mark_local_changed();
