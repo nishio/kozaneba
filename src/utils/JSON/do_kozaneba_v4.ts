@@ -2,7 +2,7 @@ import { getGlobal } from "reactn";
 import { add_item } from "../../API/add_item";
 import { redraw } from "../../API/redraw";
 import { get_center_of_screen } from "../../dimension/get_center_of_screen";
-import { isTAnnotation, TAnnotation } from "../../Global/TAnnotation";
+import { RTAnnotation, TAnnotation } from "../../Global/TAnnotation";
 import { RTItem, TItem } from "../../Global/TItem";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { GroupItem } from "../../Group/GroupItem";
@@ -69,7 +69,9 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
       console.error("annotation should be an Array", j.annotation);
       return false;
     }
-    if (!check_all_items(j.annotation, isTAnnotation, "invalid annotation:")) {
+    if (
+      !check_all_items(j.annotation, RTAnnotation.guard, "invalid annotation:")
+    ) {
       return false; // not succeeded
     }
   } else {
