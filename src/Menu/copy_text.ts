@@ -144,9 +144,9 @@ export const items_to_lines = (items: TItemId[]): string[] => {
   const result = [] as string[];
   const g = getGlobal();
   find_clusters(items).forEach((cluster) => {
-    result.push("** start cluster");
+    // result.push("** start cluster");
     cluster_to_chain(cluster).forEach((chain) => {
-      result.push("* start chain");
+      // result.push("* start chain");
       chain.forEach((id) => {
         const item = get_item(g, id);
         if (item.type === "kozane") {
