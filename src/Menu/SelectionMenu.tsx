@@ -5,7 +5,7 @@ import { kozaneba } from "../API/KozanebaAPI";
 import { add_bipartite } from "../API/sample/add_bipartite";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { reset_selection } from "../Selection/reset_selection";
-import { add_arrow } from "../utils/add_arrow";
+import { add_arrow, THeadsOption } from "../utils/add_arrow";
 import { delete_item_from_world } from "../utils/delete_item_from_world";
 import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { mark_local_changed } from "../utils/mark_local_changed";
@@ -47,8 +47,8 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
-  const onAddArrow = (all_heads: boolean, is_doubled = false) => {
-    add_arrow(getGlobal().selected_items, all_heads, is_doubled);
+  const onAddArrow = (heads_option: THeadsOption, is_doubled = false) => {
+    add_arrow(getGlobal().selected_items, heads_option, is_doubled);
     reset_selection();
     mark_local_changed();
     setMenu("");
@@ -80,7 +80,7 @@ export const SelectionMenu = () => {
           borderTop: "solid 1px #eee",
         }}
       >
-        Add Arrow
+        Add Line/Arrow
       </li>
       <div
         style={{
@@ -89,17 +89,28 @@ export const SelectionMenu = () => {
         }}
       >
         <MenuItem
-          onClick={() => onAddArrow(false, false)}
+          onClick={() => onAddArrow("none", false)}
+          dense={true}
+          disableGutters={true}
+        >
+          <img
+            src="https://gyazo.com/ed558892471712dc893b30bd257fa521/thumb/50"
+            alt="add arrow(head:none)"
+          />
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => onAddArrow("right", false)}
           dense={true}
           disableGutters={true}
         >
           <img
             src="https://gyazo.com/75a5ad73d5d4b768de7bf1f3ea7864c2/thumb/50"
-            alt="add arrow(head:left)"
+            alt="add arrow(head:right)"
           />
         </MenuItem>
         <MenuItem
-          onClick={() => onAddArrow(true, false)}
+          onClick={() => onAddArrow("all", false)}
           dense={true}
           disableGutters={true}
         >
@@ -127,17 +138,28 @@ export const SelectionMenu = () => {
         }}
       >
         <MenuItem
-          onClick={() => onAddArrow(false, true)}
+          onClick={() => onAddArrow("none", true)}
+          dense={true}
+          disableGutters={true}
+        >
+          <img
+            src="https://gyazo.com/f8112925940d458c77d37b53ad62974b/thumb/50"
+            alt="add arrow(head:none, doubled)"
+          />
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => onAddArrow("right", true)}
           dense={true}
           disableGutters={true}
         >
           <img
             src="https://gyazo.com/b7969f22b5d5466c1b635bea836e1bf1/thumb/50"
-            alt="add arrow(head:left, doubled)"
+            alt="add arrow(head:right, doubled)"
           />
         </MenuItem>
         <MenuItem
-          onClick={() => onAddArrow(true, true)}
+          onClick={() => onAddArrow("all", true)}
           dense={true}
           disableGutters={true}
         >
