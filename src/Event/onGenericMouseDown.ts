@@ -5,6 +5,7 @@ import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { highlight_parent } from "../Group/highlight_group";
 import { reset_selection } from "../Selection/reset_selection";
+import { dev_log } from "../utils/dev";
 import { set_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
 
@@ -20,6 +21,7 @@ export const onGenericMouseDown = (
     const [cx, cy] = screen_to_world(get_client_pos(event));
     g.dragstart_position = [cx - x, cy - y] as TWorldCoord;
     g.drag_target = value.id;
+    dev_log("drag_target", value.id);
   });
 
   highlight_parent(value.id, true);

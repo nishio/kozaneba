@@ -6,6 +6,7 @@ import {
   TScreenCoord,
   TWorldCoord,
 } from "../dimension/world_to_screen";
+import { dev_log } from "../utils/dev";
 import { get_client_pos } from "./get_client_pos";
 
 let _target: HTMLDivElement | null;
@@ -15,7 +16,9 @@ let _is_mousemoved = false;
 let _is_dragging = false;
 
 export const set_target = (event: React.MouseEvent<HTMLDivElement>) => {
+  dev_log("set_target", event);
   _target = event.currentTarget;
+  dev_log("_target", _target);
   _mouse_down_point = get_client_pos(event);
   const style = window.getComputedStyle(_target);
   _first_element_position = [

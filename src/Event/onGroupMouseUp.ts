@@ -7,18 +7,20 @@ import { finish_selecting } from "./finish_selecting";
 import { get_delta } from "./get_delta";
 import { drag_drop_selection_into_group } from "./drag_drop_selection_into_group";
 import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
+import { dev_log } from "../utils/dev";
 
 export const onGroupMouseUp = (
   event: React.MouseEvent<HTMLDivElement>,
   group: TGroupItem
 ) => {
-  console.log("onGroupMouseUp");
+  dev_log("onGroupMouseUp");
   event.preventDefault();
   event.stopPropagation();
   if (handle_if_is_click(event)) return;
   const g = getGlobal();
 
   if (g.mouseState === "selecting") {
+    dev_log(`g.mouseState === "selecting"`);
     finish_selecting(event);
     return;
   }
@@ -29,8 +31,10 @@ export const onGroupMouseUp = (
   const target_id = g.drag_target;
   const delta = get_delta(event);
   if (target_id === "selection") {
+    dev_log(`target_id === "selection"`);
     drag_drop_selection_into_group(group_id, delta);
   } else if (target_id !== "") {
+    dev_log(`target_id === ${target_id}`);
     drag_drop_item_into_group(group_id, delta, target_id);
   } else {
     console.log("unexpected behavior", group_id);
