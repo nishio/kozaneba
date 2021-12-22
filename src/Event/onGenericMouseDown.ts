@@ -1,4 +1,5 @@
 import React from "react";
+import { getGlobal } from "reactn";
 import { V2 } from "../dimension/V2";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
 import { TItemId } from "../Global/TItemId";
@@ -14,7 +15,12 @@ export const onGenericMouseDown = (
   value: { id: TItemId; position: V2 }
 ) => {
   console.log(`onGenericMouseDown type:${value.id} id:${value.id}`);
-  reset_selection();
+  if (getGlobal().is_selected) {
+    reset_selection();
+    // if is_selected is true, then we should not start dragging
+    // because reset_selection trigger rerendering and it breaks fast_drag_manager
+    return;
+  }
   set_target(event);
   updateGlobal((g) => {
     const [x, y] = value.position;
