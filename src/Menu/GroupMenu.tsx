@@ -12,6 +12,7 @@ import { delete_item_from_world } from "../utils/delete_item_from_world";
 import { move_front } from "../utils/move_front";
 import { normalize_group_position } from "../utils/normalize_group_position";
 import { ungroup } from "./ungroup";
+import { get_item } from "../utils/get_item";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -45,6 +46,10 @@ export const GroupMenu = () => {
     updateGlobal((g) => {
       const group = get_group(g, id);
       group.isOpen = !isOpenGroup;
+      group.scale = Math.max(
+        group.scale,
+        ...group.items.map((id) => get_item(g, id).scale)
+      );
       g.menu = "";
     });
   };
