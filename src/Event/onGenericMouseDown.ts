@@ -14,7 +14,7 @@ export const onGenericMouseDown = (
   event: React.MouseEvent<HTMLDivElement>,
   value: { id: TItemId; position: V2 }
 ) => {
-  console.log(`onGenericMouseDown type:${value.id} id:${value.id}`);
+  dev_log(`onGenericMouseDown type:${value.id} id:${value.id}`);
   if (getGlobal().is_selected) {
     reset_selection();
     // if is_selected is true, then we should not start dragging
