@@ -31,5 +31,9 @@ export function finish_selecting(
     g.selected_items = selected_items;
     g.mouseState = "";
     g.is_selected = true;
+    if (selected_items.length === 0) {
+      g.is_selected = false;
+      g.selectionRange = { top: 0, left: 0, width: 0, height: 0 };
+    }
   });
 }
