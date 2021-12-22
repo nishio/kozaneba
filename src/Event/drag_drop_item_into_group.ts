@@ -12,13 +12,22 @@ import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TItemId } from "../Global/TItemId";
+import { dev_log } from "../utils/dev";
+import { Sentry } from "../initSentry";
+import { drag_drop_item } from "./drag_drop_item";
+import { getGlobal } from "reactn";
 
 export function drag_drop_item_into_group(
   group_id: TItemId,
   delta: TWorldCoord,
   target_id: TItemId
 ) {
-  console.log("drop on group", group_id);
+  dev_log(`drop item:${target_id} into group:${group_id}`);
+  if (target_id === group_id) {
+    Sentry.captureMessage("drag_drop_item_into_group: target_id === group_id");
+    drag_drop_item(getGlobal() /* not used */, delta, target_id);
+    return;
+  }
 
   updateGlobal((g) => {
     const group_draft = get_group(g, group_id);
