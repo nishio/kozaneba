@@ -23,7 +23,7 @@ const arrow_tan = Math.tan((arrow_angle / 180) * Math.PI);
 const arrow_sin = Math.sin((arrow_angle / 180) * Math.PI);
 
 export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
-  const lines = [] as [V2, V2][];
+  const lines = [] as [V2, V2, number][];
   // currently ignore items[2~], and item deletion
   const positions = a.items.map((id) => get_global_position(id, g));
   const center = get_middle_point(positions);
@@ -57,8 +57,19 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     if (cp0 === undefined || cp1 === undefined || equal_v2(cp0, cp1)) {
       return [];
     }
+    const v = sub_v2(cp1, cp0);
+    const length = L2norm(v);
+    const opacity_from_length = (length: number): number => {
+      const threshold = 400;
+      if (length < threshold) {
+        return 1;
+      }
+      const x = threshold / length;
+      return Math.max(0.1, x);
+    };
+    const opacity = opacity_from_length(length);
     if (!is_doubled) {
-      lines.push([cp0, cp1]);
+      lines.push([cp0, cp1, opacity]);
     } else {
       // doubled line, if has head, shorten the line
 
@@ -67,8 +78,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       const shorten = mul_v2(20, n);
       const p0 = a.heads[0] === "arrow" ? sub_v2(cp0, shorten) : cp0;
       const p1 = a.heads[1] === "arrow" ? add_v2(cp1, shorten) : cp1;
-      lines.push([add_v2(p1, d), add_v2(p0, d)]);
-      lines.push([sub_v2(p1, d), sub_v2(p0, d)]);
+      lines.push([add_v2(p1, d), add_v2(p0, d), opacity]);
+      lines.push([sub_v2(p1, d), sub_v2(p0, d), opacity]);
     }
   } else {
     const angles = crosspoints.flatMap((cp) => {
@@ -82,7 +93,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     crosspoints.forEach((cp, index) => {
       if (cp !== undefined && !equal_v2(center, cp)) {
         if (!is_doubled) {
-          lines.push([center, cp]);
+          lines.push([center, cp, 1]);
         } else {
           // double lines
           const d = sub_v2(center, cp);
@@ -110,8 +121,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
 
           const p1n = sub_v2(center, mul_v2(shorten_next, n));
           const p1p = sub_v2(center, mul_v2(shorten_prev, n));
-          lines.push([add_v2(p1p, side), add_v2(p0, side)]);
-          lines.push([sub_v2(p1n, side), sub_v2(p0, side)]);
+          lines.push([add_v2(p1p, side), add_v2(p0, side), 1]);
+          lines.push([sub_v2(p1n, side), sub_v2(p0, side), 1]);
         }
       }
     });
@@ -129,8 +140,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       const h1 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, arrow_angle)));
       const h2 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, -arrow_angle)));
 
-      lines.push([h1, p]);
-      lines.push([h2, p]);
+      lines.push([h1, p, 1]);
+      lines.push([h2, p, 1]);
     }
   });
   const is_clickable = a.custom?.is_clickable ?? false;
@@ -143,14 +154,14 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
 
   const opacity = a.custom?.opacity ?? 0.2;
 
-  const result = lines.map(([p1, p2], index) => {
+  const result = lines.map(([p1, p2, op], index) => {
     return Line(
       p1,
       p2,
       onClick,
       `line-${annot_index}-${index}`,
       stroke_width,
-      opacity,
+      opacity * op,
       is_clickable
     );
   });
