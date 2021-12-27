@@ -16,6 +16,7 @@ import { dev_log } from "../utils/dev";
 import { Sentry } from "../initSentry";
 import { drag_drop_item } from "./drag_drop_item";
 import { getGlobal } from "reactn";
+import { get_total_offset_of_parents } from "./get_total_offset_of_parents";
 
 export function drag_drop_item_into_group(
   group_id: TItemId,
@@ -23,6 +24,7 @@ export function drag_drop_item_into_group(
   target_id: TItemId
 ) {
   dev_log(`drop item:${target_id} into group:${group_id}`);
+
   if (target_id === group_id) {
     Sentry.captureMessage("drag_drop_item_into_group: target_id === group_id");
     drag_drop_item(getGlobal() /* not used */, delta, target_id);
@@ -39,7 +41,10 @@ export function drag_drop_item_into_group(
       // `p` may equals to `group`, it's OK
       p.items = remove_item_from(p.items, target_id);
       group_draft.items.push(target_id);
-      position = sub_v2w(add_v2w(position, p.position), group_draft.position);
+      const parents_offset = get_total_offset_of_parents(previous_parent, g);
+
+      position = add_v2w(position, parents_offset);
+      position = sub_v2w(position, group_draft.position);
 
       if (p.items.length === 0 && p.text === "") {
         remove_item(g, previous_parent);
