@@ -6,6 +6,7 @@ import { get_item } from "./get_item";
 import { TItemId } from "../Global/TItemId";
 import { update_global_with_optional_draft } from "../Global/update_global_with_optional_draft";
 import { get_middle_point } from "../Canvas/Annotation/get_middle_point";
+import { find_parent } from "./find_parent";
 
 export const normalize_group_position = (gid: TItemId, draft?: State) => {
   update_global_with_optional_draft(draft, (g) => {
@@ -21,5 +22,10 @@ export const normalize_group_position = (gid: TItemId, draft?: State) => {
       item.position = sub_v2w(item.position, middle_point);
     });
     group.position = add_v2w(group.position, middle_point);
+
+    const parent = find_parent(gid, g);
+    if (parent !== null) {
+      normalize_group_position(parent, draft);
+    }
   });
 };
