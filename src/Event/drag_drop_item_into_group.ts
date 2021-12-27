@@ -41,10 +41,11 @@ export function drag_drop_item_into_group(
       // `p` may equals to `group`, it's OK
       p.items = remove_item_from(p.items, target_id);
       group_draft.items.push(target_id);
-      const parents_offset = get_total_offset_of_parents(previous_parent, g);
+      const perv_offset = get_total_offset_of_parents(previous_parent, g);
+      const new_offset = get_total_offset_of_parents(group_id, g);
 
-      position = add_v2w(position, parents_offset);
-      position = sub_v2w(position, group_draft.position);
+      position = add_v2w(position, perv_offset);
+      position = sub_v2w(position, new_offset);
 
       if (p.items.length === 0 && p.text === "") {
         remove_item(g, previous_parent);
