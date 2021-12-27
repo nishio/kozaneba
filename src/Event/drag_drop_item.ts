@@ -14,21 +14,7 @@ import { get_item } from "../utils/get_item";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { State } from "reactn/default";
 import { dev_log } from "../utils/dev";
-
-const get_total_offset_of_parents = (parent_id: TItemId, g: State) => {
-  let offset = [0, 0] as TWorldCoord;
-  let current_parent = parent_id;
-  while (current_parent) {
-    const parent = get_item(g, current_parent);
-    offset = add_v2w(offset, parent.position);
-    const next_parent = find_parent(current_parent);
-    if (!next_parent) {
-      break;
-    }
-    current_parent = next_parent;
-  }
-  return offset;
-};
+import { get_total_offset_of_parents } from "./get_total_offset_of_parents";
 
 export function drag_drop_item(
   g: State,
@@ -44,8 +30,8 @@ export function drag_drop_item(
       p.items = remove_item_from(p.items, target_id);
       g.drawOrder.push(target_id);
       const x = get_item(g, target_id);
-      // x.position = add_v2w(delta, p.position);
-      x.position = add_v2w(delta, get_total_offset_of_parents(parent, g));
+      const parents_offset = get_total_offset_of_parents(parent, g);
+      x.position = add_v2w(delta, parents_offset);
 
       pin[target_id] = x.position;
       g.drag_target = "";
