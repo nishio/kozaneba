@@ -136,4 +136,32 @@ describe("drag", () => {
         });
     });
   });
+
+  it("bug fix: drag out from nested groups(drag G1 in/out)", () => {
+    ready_nested_group();
+    cy.testid("1").should("hasPosition", [184, 199]);
+
+    do_drag("G1", "ba", 0, 0);
+    do_drag("G1", "G2", 0, 0);
+    cy.testid("1").should("hasPosition", [225, 225]);
+
+    do_drag("1", "ba", 100, 100);
+
+    let pos = [100, 100];
+    // was: pos = [59, 74];
+    cy.testid("1").should("hasPosition", pos);
+  });
+
+  it("bug fix: drag out from nested groups(drag G2)", () => {
+    ready_nested_group();
+    cy.testid("1").should("hasPosition", [184, 199]);
+
+    do_drag("G2", "ba", 100, 100);
+    cy.testid("1").should("hasPosition", [180, 230]);
+    do_drag("1", "ba", 100, 100);
+
+    let pos = [100, 100];
+    // was: pos = [104, 69];
+    cy.testid("1").should("hasPosition", pos);
+  });
 });
