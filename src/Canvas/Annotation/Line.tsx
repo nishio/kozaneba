@@ -16,6 +16,8 @@ export const Line = (
   const style: CSSProperties = {};
   if (is_clickable) {
     style.pointerEvents = "auto";
+  } else {
+    style.pointerEvents = "none";
   }
   return (
     <line

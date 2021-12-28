@@ -145,7 +145,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       lines.push([h2, p, 1]);
     }
   });
-  const is_clickable = a.custom?.is_clickable ?? false;
+  // const is_clickable = a.custom?.is_clickable ?? false;
+  const is_clickable = false;
   let onClick: (() => void) | undefined = undefined;
   if (is_clickable) {
     onClick = () => {
