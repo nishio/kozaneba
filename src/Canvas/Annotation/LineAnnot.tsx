@@ -60,12 +60,13 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     const v = sub_v2(cp1, cp0);
     const length = L2norm(v);
     const opacity_from_length = (length: number): number => {
-      const threshold = 400;
+      const threshold = 130;
       if (length < threshold) {
         return 1;
+      } else if (length < threshold) {
+        return 0.3;
       }
-      const x = threshold / length;
-      return Math.max(0.1, x);
+      return 0.1;
     };
     const opacity = opacity_from_length(length);
     if (!is_doubled) {
