@@ -1,25 +1,41 @@
 import React from "react";
 import { getGlobal } from "reactn";
 import { updateGlobal } from "../Global/updateGlobal";
+import { dev_log } from "../utils/dev";
 import { onCanvasMouseUp } from "./onCanvasMouseUp";
 
 export const onCanvasMouseDown = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
-  console.log("onCanvasMouseDown");
+  dev_log("onCanvasMouseDown");
   if (getGlobal().drag_target !== "") {
-    console.log("previous mouseUp was not handled");
+    dev_log("previous mouseUp was not handled");
     onCanvasMouseUp(event);
   }
 
-  updateGlobal((g) => {
-    if (g.selected_items.length > 0) {
-      g.selected_items = [];
-    }
-    g.selectionRange.left = event.pageX;
-    g.selectionRange.top = event.pageY;
-    g.selectionRange.width = 0;
-    g.selectionRange.height = 0;
-    g.mouseState = "selecting";
-  });
+  dev_log("onCanvasMouseDown", event.button);
+  if (event.button === 1 /* middle mouse button */) {
+    updateGlobal((g) => {
+      dev_log("middle mouse button");
+      if (g.selected_items.length > 0) {
+        g.selected_items = [];
+      }
+      g.selectionRange.left = event.pageX;
+      g.selectionRange.top = event.pageY;
+      g.selectionRange.width = 0;
+      g.selectionRange.height = 0;
+      g.mouseState = "middle_dragging";
+    });
+  } else {
+    updateGlobal((g) => {
+      if (g.selected_items.length > 0) {
+        g.selected_items = [];
+      }
+      g.selectionRange.left = event.pageX;
+      g.selectionRange.top = event.pageY;
+      g.selectionRange.width = 0;
+      g.selectionRange.height = 0;
+      g.mouseState = "selecting";
+    });
+  }
 };

@@ -5,6 +5,8 @@ import { get_delta } from "./get_delta";
 import { finish_selecting } from "./finish_selecting";
 import { drag_drop_selection } from "./drag_drop_selection";
 import { drag_drop_item } from "./drag_drop_item";
+import { moveCenter } from "../utils/moveCenter";
+import { world_to_screen } from "../dimension/world_to_screen";
 
 export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -17,6 +19,9 @@ export const onCanvasMouseUp = (
 
   if (g.mouseState === "selecting") {
     finish_selecting(event);
+  } else if (g.mouseState === "middle_dragging") {
+    const screen_delta = world_to_screen(delta);
+    moveCenter(screen_delta[0], screen_delta[1]);
   } else if (g.drag_target === "selection") {
     drag_drop_selection(delta);
   } else if (g.drag_target !== "") {

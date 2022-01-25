@@ -54,7 +54,7 @@ export const INITIAL_GLOBAL_STATE = {
 type TDragTarget = "" | "selection" | TItemId;
 
 type TMenuAnchor = null | Element;
-type TMouseState = "" | "selecting";
+type TMouseState = "" | "selecting" | "middle_dragging";
 
 type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;
 
