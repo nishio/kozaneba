@@ -76,7 +76,7 @@ export const StatusBar = () => {
         <FontAwesomeIcon icon={faCloud} />
         {usingFirestoreEmulator ? "E" : ""}
       </span>,
-      "saveing to the cloud",
+      "saving to the cloud",
       "cloud-status"
     );
   }
