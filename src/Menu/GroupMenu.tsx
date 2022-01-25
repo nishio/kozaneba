@@ -13,6 +13,7 @@ import { move_front } from "../utils/move_front";
 import { normalize_group_position } from "../utils/normalize_group_position";
 import { ungroup } from "./ungroup";
 import { get_item } from "../utils/get_item";
+import { update_annotation_after_deletion } from "../utils/update_annotation_after_deletion";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -60,6 +61,12 @@ export const GroupMenu = () => {
     });
   };
 
+  const onLeaveFromLines = () => {
+    updateGlobal((g) => {
+      update_annotation_after_deletion(g, id);
+    });
+    close_context_menu();
+  };
   return (
     <Menu
       anchorEl={anchor}
@@ -77,6 +84,7 @@ export const GroupMenu = () => {
         ungroup
       </MenuItem>
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
+      <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
 
       {kozaneba.user_menus["Group"]!.map(UserMenuItem)}
       <MenuItem onClick={onDelete} data-testid="group-delete">

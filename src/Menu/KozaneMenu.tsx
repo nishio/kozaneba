@@ -12,6 +12,8 @@ import { close_context_menu } from "../utils/close_context_menu";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { open_dialog } from "../utils/open_dialog";
 import { VisitMenuItem } from "./VisitMenuItem";
+import { updateGlobal } from "../Global/updateGlobal";
+import { update_annotation_after_deletion } from "../utils/update_annotation_after_deletion";
 
 export const KozaneMenu = () => {
   const [menu] = useGlobal("menu");
@@ -38,6 +40,13 @@ export const KozaneMenu = () => {
     add_item(new_kozane);
     close_context_menu();
   };
+  const onLeaveFromLines = () => {
+    updateGlobal((g) => {
+      update_annotation_after_deletion(g, id);
+    });
+    close_context_menu();
+  };
+
   return (
     <Menu
       anchorEl={anchor}
@@ -56,6 +65,8 @@ export const KozaneMenu = () => {
       <MenuItem onClick={onClone} data-testid="kozane-clone">
         clone
       </MenuItem>
+      <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
+
       <VisitMenuItem url={item.custom?.url} />
       {kozaneba.user_menus["Kozane"]!.map(UserMenuItem)}
       <DeleteMenuItem id={id} />
