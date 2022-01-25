@@ -1,8 +1,8 @@
 import { getGlobal } from "reactn";
 import { zoom_around_pointer } from "../Event/onWheel";
-import { updateGlobal } from "../Global/updateGlobal";
 import { constants } from "../API/constants";
 import { toggle_fit_to_contents } from "./toggle_fit_to_contents";
+import { moveCenter } from "../utils/moveCenter";
 
 export const hotKey = (e: KeyboardEvent) => {
   const g = getGlobal();
@@ -44,13 +44,6 @@ export const hotKey = (e: KeyboardEvent) => {
     console.log(e);
   }
 };
-const moveCenter = (dx: number, dy: number) => {
-  updateGlobal((g) => {
-    g.trans_x += dx;
-    g.trans_y += dy;
-  });
-};
-
 export const finishButtons = {} as { [dialogName: string]: () => void };
 const finishDialog = () => {
   Object.entries(finishButtons).forEach(([dialogName, onClick]) => {
