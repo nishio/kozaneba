@@ -63,7 +63,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       const threshold = 130;
       if (length < threshold) {
         return 1;
-      } else if (length < threshold) {
+      } else if (length < threshold * 3) {
         return 0.3;
       }
       return 0.1;
