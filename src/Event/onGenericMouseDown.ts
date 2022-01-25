@@ -14,6 +14,11 @@ export const onGenericMouseDown = (
   event: React.MouseEvent<HTMLDivElement>,
   value: { id: TItemId; position: V2 }
 ) => {
+  if (event.button === 1 /* middle mouse button */) {
+    // ignore
+    return;
+  }
+
   dev_log(`onGenericMouseDown type:${value.id} id:${value.id}`);
   if (getGlobal().is_selected) {
     reset_selection();

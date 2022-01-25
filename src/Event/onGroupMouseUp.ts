@@ -8,6 +8,7 @@ import { get_delta } from "./get_delta";
 import { drag_drop_selection_into_group } from "./drag_drop_selection_into_group";
 import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
 import { dev_log } from "../utils/dev";
+import { moveCenter } from "../utils/moveCenter";
 
 export const onGroupMouseUp = (
   event: React.MouseEvent<HTMLDivElement>,
@@ -33,6 +34,8 @@ export const onGroupMouseUp = (
   if (target_id === "selection") {
     dev_log(`target_id === "selection"`);
     drag_drop_selection_into_group(group_id, delta);
+  } else if (g.mouseState === "middle_dragging") {
+    moveCenter(delta[0], delta[1]);
   } else if (target_id !== "") {
     dev_log(`target_id === ${target_id}`);
     drag_drop_item_into_group(group_id, delta, target_id);

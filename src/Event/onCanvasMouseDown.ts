@@ -1,5 +1,6 @@
 import React from "react";
 import { getGlobal } from "reactn";
+import { screen_to_world, TScreenCoord } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
 import { dev_log } from "../utils/dev";
 import { onCanvasMouseUp } from "./onCanvasMouseUp";
@@ -25,6 +26,10 @@ export const onCanvasMouseDown = (
       g.selectionRange.width = 0;
       g.selectionRange.height = 0;
       g.mouseState = "middle_dragging";
+      g.dragstart_position = screen_to_world([
+        event.pageX,
+        event.pageY,
+      ] as TScreenCoord);
     });
   } else {
     updateGlobal((g) => {
