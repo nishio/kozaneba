@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import React, { createRef } from "react";
 import { useGlobal } from "reactn";
+import { constants } from "../../API/constants";
 import { finishButtons } from "../../App/hotKey";
 import { addTooltip } from "../../utils/addTooltip";
 import { add_multiple_kozane } from "../../utils/add_multiple_kozane";
@@ -33,10 +34,11 @@ export const AddKozaneDialog = () => {
   };
   finishButtons["AddKozaneDialog"] = onAddKozane;
 
-  const fullScreen = false;
+  const fullScreen = constants.add_kozane_dialog_is_fullscreen;
   // It was true, good for edit large contents
   // Now it is false, good for tutorial player understand it is a dialog
-  // It might better to be changeable in future.
+  // It might better to be changeable in future. -> Done
+  const fontSize = constants.fontsize_of_add_kozane_dialog;
   return (
     <Dialog
       open={open}
@@ -58,6 +60,7 @@ export const AddKozaneDialog = () => {
                 width: "calc(100% - 10px)",
                 backgroundColor: "#eee",
                 border: "none",
+                fontSize,
               }}
               minRows={30}
               data-testid="textarea"

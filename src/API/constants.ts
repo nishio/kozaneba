@@ -5,4 +5,6 @@ export const constants = {
   touchpad_scale_speed: 100,
   group_padding: 25,
   to_make_local_backup: false,
+  add_kozane_dialog_is_fullscreen: false,
+  fontsize_of_add_kozane_dialog: "16px",
 };
