@@ -81,3 +81,6 @@ kozaneba.user_menus.Selection.push({
     kozaneba.unpin(kozaneba.get_selected_ids());
   },
 });
+
+kozaneba.constants.add_kozane_dialog_is_fullscreen = true;
+kozaneba.constants.fontsize_of_add_kozane_dialog = "24px";
