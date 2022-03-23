@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties } from "styled-components";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { updateGlobal } from "../Global/updateGlobal";
 import { move_front } from "../utils/move_front";
