@@ -5,7 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import { authui } from "../Cloud/FirestoreIO";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { close_menu_and_dialog } from "../utils/close_menu";

@@ -1,5 +1,5 @@
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+import { IconButton, Menu, MenuItem } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
 import { setGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../../API/KozanebaAPI";

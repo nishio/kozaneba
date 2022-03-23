@@ -1,4 +1,4 @@
-import { MenuItem } from "@material-ui/core";
+import { MenuItem } from "@mui/material";
 import React from "react";
 import { close_menu } from "../utils/close_menu";
 export type TUserMenu = {

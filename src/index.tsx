@@ -12,6 +12,7 @@ import { initGoogleAnalytics } from "./initGoogleAnalytics";
 import addReactNDevTools from "reactn-devtools";
 import { run_user_script } from "./API/run_user_script";
 import { expose_kozaneba_api } from "./API/KozanebaAPI";
+import { ThemeProvider } from "@mui/material";
 
 const initProduction = () => {
   initSentry();
@@ -38,7 +39,9 @@ run_user_script();
 
 ReactDOM.render(
   //  <React.StrictMode>  // Material-UI is not support it
-  <App />,
+  <ThemeProvider theme="">
+    <App />
+  </ThemeProvider>,
   //  </React.StrictMode>
   document.getElementById("root")
 );

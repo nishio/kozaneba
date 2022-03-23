@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   TextareaAutosize,
-} from "@material-ui/core";
+} from "@mui/material";
 import React, { createRef } from "react";
 import { useGlobal } from "reactn";
 import { constants } from "../../API/constants";

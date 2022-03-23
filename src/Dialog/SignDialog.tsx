@@ -5,7 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import { authui } from "../Cloud/FirestoreIO";
 import { GoogleAuthProvider } from "../Cloud/init_firebase";
 

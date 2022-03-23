@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-} from "@material-ui/core";
+} from "@mui/material";
 import { setGlobal, useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { help_pages } from "./help_pages";

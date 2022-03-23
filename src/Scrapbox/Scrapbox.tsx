@@ -1,4 +1,4 @@
-import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import { CSSProperties } from "@mui/material/styles/withStyles";
 import styled from "styled-components";
 import { TOffset } from "../dimension/TOffset";
 import { add_v2w } from "../dimension/V2";

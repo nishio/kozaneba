@@ -6,7 +6,8 @@ import {
   DialogTitle,
   MenuItem,
   Select,
-} from "@material-ui/core";
+  SelectChangeEvent,
+} from "@mui/material";
 import { useState } from "react";
 import { setGlobal, useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../utils/close_menu";
@@ -90,12 +91,7 @@ const Share: React.FC<{ mode: string }> = ({ mode }) => {
   }
 
   const share_url = `https://kozaneba.netlify.app/#${mode}=${cloud_ba}`;
-  const onChange = (
-    e: React.ChangeEvent<{
-      name?: string | undefined;
-      value: unknown;
-    }>
-  ) => {
+  const onChange = (e: SelectChangeEvent<string>) => {
     const value = e.target.value;
     const anyone_writable = value === "edit";
     setGlobal({ anyone_writable });

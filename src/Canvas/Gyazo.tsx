@@ -1,7 +1,6 @@
-import { CSSProperties } from "@material-ui/core/styles/withStyles";
 import React from "react";
 import { useRef, useState } from "reactn";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 import { TOffset } from "../dimension/TOffset";
 import { add_v2w, mul_v2, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";

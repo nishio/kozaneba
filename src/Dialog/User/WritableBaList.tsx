@@ -1,6 +1,6 @@
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Collapse, List, ListItem, ListItemText } from "@material-ui/core";
+import { Collapse, List, ListItem, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import { useState } from "react";
 import { date_to_str } from "../../utils/date_to_str";

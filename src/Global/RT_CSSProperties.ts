@@ -1,5 +1,5 @@
-import { CSSProperties } from "react";
 import { Unknown } from "runtypes";
+import { CSSProperties } from "styled-components";
 
 export const RT_CSSProperties = Unknown.withGuard(
   (x): x is CSSProperties => {
