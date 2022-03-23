@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { useStyles } from "./DevMenu";
 
 export const UserButtons = () => {
-  const classess = useStyles();
+  // const classess = useStyles();
 
   return (
     <>
@@ -10,7 +10,7 @@ export const UserButtons = () => {
         <Button
           color="inherit"
           onClick={x.onClick}
-          className={classess.root}
+          // className={classess.root}
           key={x.label}
         >
           {x.label}
