@@ -70,6 +70,6 @@ html {
 
 #dev-menu,
 .user-menu {
-  border: "solid 3px";
-  border-radius: 8px;
+  border: solid 3px #fff;
+  border-radius: 10px;
 }
