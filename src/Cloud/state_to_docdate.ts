@@ -15,6 +15,7 @@ export const state_to_docdate = (state: State): DocData => {
     title = "",
     writers = [],
     annotations,
+    scrapbox,
   } = state;
   return {
     version: 3,
@@ -25,5 +26,6 @@ export const state_to_docdate = (state: State): DocData => {
     title,
     writers,
     annotations,
+    scrapbox,
   };
 };
