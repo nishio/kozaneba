@@ -9,7 +9,7 @@
     "@mui/base": "^5.0.0-alpha.73",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.2",
-    "@progfay/scrapbox-parser": "^7.1.0",
+    "@progfay/scrapbox-parser": "^7.2.0",
     "@sentry/react": "^6.11.0",
     "@sentry/tracing": "^6.11.0",
     "@testing-library/jest-dom": "^5.14.1",
