@@ -1,9 +1,6 @@
 import { Button } from "@mui/material";
-import { useStyles } from "./DevMenu";
 
 export const UserButtons = () => {
-  // const classess = useStyles();
-
   return (
     <>
       {user_buttons.map((x) => (
@@ -12,6 +9,7 @@ export const UserButtons = () => {
           onClick={x.onClick}
           // className={classess.root}
           key={x.label}
+          className="user-button"
         >
           {x.label}
         </Button>

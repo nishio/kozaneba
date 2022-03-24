@@ -67,3 +67,9 @@ html {
     transform: rotate(360deg);
   }
 }
+
+#dev-menu,
+.user-menu {
+  border: "solid 3px";
+  border-radius: 8px;
+}
