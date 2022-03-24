@@ -7,7 +7,6 @@ export const UserButtons = () => {
         <Button
           color="inherit"
           onClick={x.onClick}
-          // className={classess.root}
           key={x.label}
           className="user-button"
         >
