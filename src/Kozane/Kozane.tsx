@@ -77,21 +77,21 @@ const build_content = (value: TKozaneItem) => {
       } else if (node.type === "icon") {
         if (node.pathType === "relative") {
           const src = `https://scrapbox.io/api/pages/${proj}/${node.path}/icon`;
-          return <img src={src} style={{ height: "1em" }} />;
+          return <img src={src} style={{ height: "1em" }} alt={node.path} />;
         } else if (node.pathType === "root") {
           const src = `https://scrapbox.io/api/pages/${node.path}/icon`;
-          return <img src={src} style={{ height: "1em" }} />;
+          return <img src={src} style={{ height: "1em" }} alt={node.path} />;
         } else {
           console.log(node);
         }
       } else if (node.type === "link") {
         console.log(node);
         if (node.pathType === "relative") {
-          const src = `https://scrapbox.io/${proj}/${node.href}`;
+          // const src = `https://scrapbox.io/${proj}/${node.href}`;
           // return <a href={src}> {node.raw} </a>;
           return <span style={{ color: "blue" }}>{node.raw}</span>;
         } else if (node.pathType === "root") {
-          const src = `https://scrapbox.io/api/pages/${node.href}`;
+          // const src = `https://scrapbox.io/api/pages/${node.href}`;
           // return <a href={src}> {node.raw} </a>;
           return <span style={{ color: "blue" }}>{node.raw}</span>;
         } else {
@@ -102,6 +102,7 @@ const build_content = (value: TKozaneItem) => {
         console.log(node);
         return node.raw;
       }
+      return null;
     });
   }
 };
