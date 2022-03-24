@@ -41,6 +41,8 @@ export const BaDialog = () => {
       <DialogContent style={{ padding: "0px 24px" }}>
         <Title />
         <Share mode={mode} />
+        <Scrapbox />
+
         <div>
           <MakeCopy />
 
@@ -82,6 +84,23 @@ const Title = () => {
   );
 };
 
+const Scrapbox = () => {
+  const [scrapbox, setScarpbox] = useGlobal("scrapbox");
+  const onClick = () => {
+    const x = prompt(`Enter scrapbox project:`, scrapbox);
+    if (x !== null) {
+      setScarpbox(x);
+      mark_local_changed();
+    }
+  };
+  const button = can_write() ? <button onClick={onClick}>change</button> : null;
+  return (
+    <p>
+      Scarpbox Project(Experimental): {scrapbox} {button}
+    </p>
+  );
+};
+
 const Share: React.FC<{ mode: string }> = ({ mode }) => {
   const [copy_done, set_copy_done] = useState("");
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -93,7 +112,9 @@ const Share: React.FC<{ mode: string }> = ({ mode }) => {
   const share_url = `https://kozaneba.netlify.app/#${mode}=${cloud_ba}`;
   const onChange = (e: SelectChangeEvent<string>) => {
     const value = e.target.value;
+    console.log(e);
     const anyone_writable = value === "edit";
+    console.log(anyone_writable);
     setGlobal({ anyone_writable });
     mark_local_changed();
   };

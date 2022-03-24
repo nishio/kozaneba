@@ -49,6 +49,8 @@ export const INITIAL_GLOBAL_STATE = {
   disableHotKey: false,
 
   annotations: [] as TAnnotation[],
+
+  scrapbox: "" as string,
 };
 
 type TDragTarget = "" | "selection" | TItemId;
