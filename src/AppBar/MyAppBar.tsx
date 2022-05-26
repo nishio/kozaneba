@@ -3,6 +3,7 @@ import { MainMenu } from "./MainMenu/MainMenu";
 import { DevMenu } from "./DevMenu";
 import { UserButtons } from "./UserButtons";
 import { dev_log } from "../utils/dev";
+import { HelpButton } from "./HelpButton";
 
 export const MyAppBar = () => {
   const APP_BAR_BGCOLOR = "#000080"; // original "3f51b5";
@@ -18,6 +19,7 @@ export const MyAppBar = () => {
         <Typography variant="h6">Kozaneba</Typography>
         <UserButtons />
         <DevMenu />
+        <HelpButton />
       </Toolbar>
     </AppBar>
   );
