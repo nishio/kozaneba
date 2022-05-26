@@ -68,8 +68,9 @@ html {
   }
 }
 
-#dev-menu,
-.user-menu {
+.MuiToolbar-root #dev-menu,
+.MuiToolbar-root .user-menu {
   border: solid 3px #fff;
   border-radius: 10px;
+  margin-left: 3px;
 }
