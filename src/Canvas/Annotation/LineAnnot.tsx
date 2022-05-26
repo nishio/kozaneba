@@ -123,17 +123,17 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     crosspoints.forEach((cp, index) => {
       if (cp !== undefined && !equal_v2(center, cp)) {
         draw_arrowhead(a.heads[index], index);
+        const d = sub_v2(center, cp);
+        const length = L2norm(d);
+        group_opacity = Math.min(
+          opacity_from_length(length) * 2,
+          group_opacity
+        );
+
         if (!is_doubled) {
           lines.push([center, cp, 1]);
-          const d = sub_v2(center, cp);
-          const length = L2norm(d);
-          group_opacity = Math.min(opacity_from_length(length), group_opacity);
         } else {
           // double lines
-          const d = sub_v2(center, cp);
-          const length = L2norm(d);
-          group_opacity = Math.min(opacity_from_length(length), group_opacity);
-
           const n = normalize(d);
           const side = mul_v2(stroke_width, rotate(n, 90));
           const shorten = mul_v2(stroke_width / arrow_tan, n);
