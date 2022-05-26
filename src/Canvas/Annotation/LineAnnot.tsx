@@ -31,6 +31,30 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const is_doubled = a.is_doubled;
   const stroke_width = a.custom?.stroke_width ?? 1;
 
+  const arrow_head_size =
+    (a.custom?.arrow_head_size ?? 10) +
+    (is_doubled ? stroke_width / arrow_sin : 0);
+
+  const draw_arrowhead = (
+    h: "none" | "arrow" | undefined,
+    index: number,
+    opacity = 1
+  ): void => {
+    if (h === "arrow") {
+      const p = crosspoints[index];
+      if (p === undefined || equal_v2(center, p)) return;
+      // arrow head
+      const n = normalize(sub_v2(p, center));
+      const h1 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, arrow_angle)));
+      const h2 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, -arrow_angle)));
+
+      // lines.push([h1, p, 1]);
+      // lines.push([h2, p, 1]);
+      lines.push([h1, p, opacity]);
+      lines.push([h2, p, opacity]);
+    }
+  };
+
   if (a.items.length === 2) {
     if (equal_v2(positions[0]!, positions[1]!)) {
       // same point. e.g. in the same closed group
@@ -82,6 +106,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       lines.push([add_v2(p1, d), add_v2(p0, d), opacity]);
       lines.push([sub_v2(p1, d), sub_v2(p0, d), opacity]);
     }
+    draw_arrowhead(a.heads[0], 0, opacity);
+    draw_arrowhead(a.heads[1], 1, opacity);
   } else {
     const angles = crosspoints.flatMap((cp) => {
       if (cp === undefined) return [];
@@ -93,6 +119,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
 
     crosspoints.forEach((cp, index) => {
       if (cp !== undefined && !equal_v2(center, cp)) {
+        draw_arrowhead(a.heads[index], index);
         if (!is_doubled) {
           lines.push([center, cp, 1]);
         } else {
@@ -129,22 +156,6 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     });
   }
 
-  const arrow_head_size =
-    (a.custom?.arrow_head_size ?? 10) +
-    (is_doubled ? stroke_width / arrow_sin : 0);
-  a.heads.forEach((h, index) => {
-    if (h === "arrow") {
-      const p = crosspoints[index];
-      if (p === undefined || equal_v2(center, p)) return;
-      // arrow head
-      const n = normalize(sub_v2(p, center));
-      const h1 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, arrow_angle)));
-      const h2 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, -arrow_angle)));
-
-      lines.push([h1, p, 1]);
-      lines.push([h2, p, 1]);
-    }
-  });
   // const is_clickable = a.custom?.is_clickable ?? false;
   const is_clickable = false;
   let onClick: (() => void) | undefined = undefined;
