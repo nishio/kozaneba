@@ -11,12 +11,31 @@ describe("ready one group with one kozane", () => {
     ready_one_group();
   });
 
-  it("arrow", () => {
+  it("arrow1", () => {
     cy.movidea((m) =>
       m.make_one_kozane({
         id: "A" as TItemId,
         text: "A",
         position: [-200, 0] as TWorldCoord,
+      })
+    );
+    cy.updateGlobal((g) => {
+      g.annotations.push({
+        type: "line",
+        items: ["G1", "A"] as TItemId[],
+        heads: ["arrow", "arrow"],
+        custom: {},
+        is_doubled: false,
+      });
+    });
+  });
+
+  it("arrow2", () => {
+    cy.movidea((m) =>
+      m.make_one_kozane({
+        id: "A" as TItemId,
+        text: "A",
+        position: [0, 200] as TWorldCoord,
       })
     );
     cy.updateGlobal((g) => {

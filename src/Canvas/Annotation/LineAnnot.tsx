@@ -84,7 +84,6 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       return undefined;
     }
   });
-  console.log({ positions, crosspoints });
 
   if (a.items.length === 2) {
     const cp0 = crosspoints[0];
