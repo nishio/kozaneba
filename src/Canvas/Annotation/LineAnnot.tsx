@@ -49,18 +49,19 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
 
   const draw_arrowhead = (
     h: "none" | "arrow" | undefined,
+    head: V2,
+    tail: V2,
     index: number
   ): void => {
     if (h === "arrow") {
-      const p = crosspoints[index];
-      if (p === undefined || equal_v2(center, p)) return;
+      if (head === undefined || equal_v2(head, tail)) return;
       // arrow head
-      const n = normalize(sub_v2(p, center));
-      const h1 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, arrow_angle)));
-      const h2 = sub_v2(p, mul_v2(arrow_head_size, rotate(n, -arrow_angle)));
+      const n = normalize(sub_v2(head, tail));
+      const h1 = sub_v2(head, mul_v2(arrow_head_size, rotate(n, arrow_angle)));
+      const h2 = sub_v2(head, mul_v2(arrow_head_size, rotate(n, -arrow_angle)));
 
-      lines.push([h1, p, 1]);
-      lines.push([h2, p, 1]);
+      lines.push([h1, head, 1]);
+      lines.push([h2, head, 1]);
     }
   };
 
@@ -83,6 +84,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       return undefined;
     }
   });
+  console.log({ positions, crosspoints });
 
   if (a.items.length === 2) {
     const cp0 = crosspoints[0];
@@ -107,8 +109,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       lines.push([add_v2(p1, d), add_v2(p0, d), opacity]);
       lines.push([sub_v2(p1, d), sub_v2(p0, d), opacity]);
     }
-    draw_arrowhead(a.heads[0], 0);
-    draw_arrowhead(a.heads[1], 1);
+    draw_arrowhead(a.heads[0], cp0, cp1, 0);
+    draw_arrowhead(a.heads[1], cp1, cp0, 1);
     // end of (a.items.length === 2)
   } else {
     // a.items.length !== 2
@@ -122,7 +124,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
 
     crosspoints.forEach((cp, index) => {
       if (cp !== undefined && !equal_v2(center, cp)) {
-        draw_arrowhead(a.heads[index], index);
+        draw_arrowhead(a.heads[index], cp, center, index);
         const d = sub_v2(center, cp);
         const length = L2norm(d);
         group_opacity = Math.min(

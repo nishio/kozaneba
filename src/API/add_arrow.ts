@@ -3,7 +3,7 @@ import { TArrowHead } from "../Global/TAnnotation";
 import { updateGlobal } from "../Global/updateGlobal";
 import { mark_local_changed } from "../utils/mark_local_changed";
 
-const THICK_ARROW = {
+export const THICK_ARROW = {
   stroke_width: 10,
   arrow_head_size: 30,
   opacity: 1,

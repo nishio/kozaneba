@@ -2,13 +2,13 @@
 
 import { V2 } from "../../../src/dimension/V2";
 import { TWorldCoord } from "../../../src/dimension/world_to_screen";
-import { ItemId } from "../../../src/Global/initializeGlobalState";
 import { TArrowHead } from "../../../src/Global/TAnnotation";
+import { TItemId } from "../../../src/Global/TItemId";
 
 const add_kozane = (label: string, position: V2) => {
   cy.movidea((m) =>
     m.make_one_kozane({
-      id: label as ItemId,
+      id: label as TItemId,
       text: label,
       position: position as TWorldCoord,
     })
@@ -19,9 +19,10 @@ const add_arrow = (items: string[], heads: TArrowHead[], custom = {}) => {
   cy.updateGlobal((g) => {
     g.annotations.push({
       type: "line",
-      items: items as ItemId[],
+      items: items as TItemId[],
       heads,
       custom,
+      is_doubled: false,
     });
   });
 };
