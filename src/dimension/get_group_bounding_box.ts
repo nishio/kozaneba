@@ -3,7 +3,7 @@ import { TItemId } from "../Global/TItemId";
 import { TGroupItem } from "../Global/TGroupItem";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { get_item_bounding_box } from "./get_bounding_box";
-import { TITLE_HEIGHT } from "./BORDER";
+import { BORDER, TITLE_HEIGHT } from "./BORDER";
 import { TBoundingBox } from "./TBoundingBox";
 
 export const MINIMUM_GROUP_SIZE = 100;
@@ -16,10 +16,10 @@ export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
     const { left, top, right, bottom } = get_items_bounding_box(g.items);
     const title_height = g.text.length !== 0 ? TITLE_HEIGHT : 0;
     const bb = {
-      left: x + left - PADDING,
-      top: y + top - PADDING - title_height,
-      right: x + right + PADDING,
-      bottom: y + bottom + PADDING,
+      left: x + left - PADDING - BORDER,
+      top: y + top - PADDING - title_height - BORDER,
+      right: x + right + PADDING + BORDER,
+      bottom: y + bottom + PADDING + BORDER,
     };
 
     const width = right - left;
@@ -43,6 +43,7 @@ export const get_group_bounding_box = (g: TGroupItem): TBoundingBox => {
 
     return bb;
   }
+  // if closed
   const width = KOZANE_WIDTH * g.scale + PADDING * 2;
   const height = KOZANE_HEIGHT * g.scale + PADDING * 2;
 

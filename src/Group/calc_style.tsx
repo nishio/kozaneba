@@ -17,14 +17,14 @@ export function calc_style(
   const height = b.bottom - b.top;
   const relative_x = value.position[0];
   const relative_y = value.position[1];
-  const top = to_rounded_px(offset.y + b.top - BORDER);
-  const left = to_rounded_px(offset.x + b.left - BORDER);
+  const top = to_rounded_px(offset.y + b.top);
+  const left = to_rounded_px(offset.x + b.left);
 
   const custom = value.custom?.style ?? {};
   const style = { top, left, height, width, ...custom };
   const new_offset = {
-    x: width / 2 - center_shift_x / 2 + relative_x,
-    y: height / 2 - center_shift_y / 2 + relative_y,
+    x: width / 2 - center_shift_x / 2 + relative_x - BORDER,
+    y: height / 2 - center_shift_y / 2 + relative_y - BORDER,
   };
   return { style, title_height, title, new_offset };
 }
