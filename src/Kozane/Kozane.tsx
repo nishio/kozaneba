@@ -34,16 +34,21 @@ export const Kozane: React.FC<Props> = ({
     const url = value.custom?.url;
     if (url !== "" && url !== undefined) {
       return (
-        <FontAwesomeIcon
-          icon={faExternalLinkAlt}
+        <div
           style={{
             position: "absolute",
             fontSize: 15 * value.scale + "px",
             right: 0,
             bottom: 0,
-            opacity: 0.5,
           }}
-        />
+        >
+          <FontAwesomeIcon icon={faExternalLinkAlt} color="#888" />
+          <img
+            src={`https://s2.googleusercontent.com/s2/favicons?domain=${url}`}
+            alt="favicon"
+            style={{ verticalAlign: "text-bottom", marginLeft: "1px" }}
+          ></img>
+        </div>
       );
     }
     return null;
