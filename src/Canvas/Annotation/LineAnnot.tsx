@@ -189,6 +189,9 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     );
   });
 
-  // return result;
-  return <g opacity={custom_opacity * group_opacity}>{result}</g>;
+  return (
+    <g opacity={custom_opacity * group_opacity} key={`line-${annot_index}`}>
+      {result}
+    </g>
+  );
 };
