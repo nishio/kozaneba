@@ -59,12 +59,12 @@ export const tutorial_pages: HelpPage[] = [
         title: "Kozanebaへようこそ!",
         body: (
           <div>
-            <p>Kozaneba is digital stationery to organize your thought.</p>
+            <p>Kozanebaは、あなたの思考を整理するためのデジタル文房具です。</p>
             <p>
-              You are currently in the tutorial mode. If you do not need
-              tutorial, you can {finishTutorialButton} now.
+              現在はチュートリアルモードになっています。もしチュートリアルが必要ない場合は
+              {finishTutorialButton}をクリックしてください。
             </p>
-            <p>Please click `Next` button...</p>
+            <p>`Next`ボタンをクリックしてください...。</p>
           </div>
         ),
       },
@@ -90,6 +90,25 @@ export const tutorial_pages: HelpPage[] = [
         <p>Please click `Next` button...</p>
       </div>
     ),
+    translate: {
+      ja: {
+        title: "Kozanebaは、あなたの思考を整理するためのデジタル文房具です",
+        body: (
+          <div>
+            <p>
+              思考を整理するために、私たちは「こざね」（小札、小さな札）と「場」（大きな空間）を使います。
+            </p>
+            <p>
+              付箋やホワイトボードを使う、似たような手法を見たことがあるかもしれませんね。これらの手法は付箋が発明されるより前に生まれました。
+            </p>
+            <p>
+              Kozanebaは、デジタルこざねとサイズ無制限の場を使った新しい手法です。
+            </p>
+            <WidthCheck />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "You can open the tutorial",
@@ -106,6 +125,24 @@ export const tutorial_pages: HelpPage[] = [
         <p>Let's close and open this dialog.</p>
       </div>
     ),
+    translate: {
+      ja: {
+        title: "チュートリアルを開く",
+        body: (
+          <div>
+            <p>
+              右下の<b>ステータスバー</b>のアイコンをクリックすると、この
+              <b>チュートリアルダイアログ</b>を開くことができます。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/afe024068b9f42f1aa04b1fe404daa5d"
+              key="statusbar"
+            />
+            <p>このダイアログを閉じたり開いたりしてみましょう。</p>
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's add some Kozane!",
@@ -126,6 +163,30 @@ export const tutorial_pages: HelpPage[] = [
         <p>Now let's close the tutorial and try to add some kozane!</p>
       </div>
     ),
+    translate: {
+      ja: {
+        title: "こざねの追加をしよう!",
+        body: (
+          <div>
+            <p>
+              左上の三本線のボタンは、メインメニューです。ここでは、「Add
+              Kozane」ダイアログを表示します。
+            </p>
+            <p>
+              ADD
+              KOZANEボタンをクリックすると、各行を1つのこざねにして、新しく追加されたこざねをグループにまとめます。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/cbf3d0f3c616fc2a5575d7d648db6883"
+              key="add_kozane"
+            />
+            <p>
+              それでは、チュートリアルを終了して、実際にこざねを追加してみましょう。
+            </p>
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's move Kozane!",
@@ -141,6 +202,22 @@ export const tutorial_pages: HelpPage[] = [
         />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "こざねを動かしてみよう",
+        body: (
+          <div>
+            <p>
+              グループをドラッグすると移動できます。こざねを所属するグループから別のグループに移動させることができます。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/030902caab04818679b6db3e510e570b"
+              key="move_kozane"
+            />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's scroll and zoom the Ba",
@@ -167,6 +244,33 @@ export const tutorial_pages: HelpPage[] = [
         </p>
       </div>
     ),
+    translate: {
+      ja: {
+        title: "Baのスクロールとズームをしよう",
+        body: (
+          <div>
+            <p>
+              二本指のジェスチャーで、Baをスクロールしたり、ズームしたりできます。
+            </p>
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/FvZvZ1jVKrk"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <p>
+              タッチパッドがない場合は、ホイールで縦移動、shift+ホイールで横移動、ctrl+ホイールでズームすることができます。
+            </p>
+            <p>
+              ホイールがない場合は、矢印キーやWASDキーで移動することができます。また、Spaceキーでコンテンツ全体を表示し、Bキーでズームインすることができます。
+            </p>
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's click to show context menu",
@@ -182,6 +286,22 @@ export const tutorial_pages: HelpPage[] = [
         />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "クリックしてコンテキストメニューを表示しよう",
+        body: (
+          <div>
+            <p>
+              オブジェクトをクリックすると、そのオブジェクトを扱うためのメニューが表示されます。クリックしたオブジェクトを削除したり、重要なオブジェクトを大きくしたりすることができます。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/ded56b27aab3057542d576d46239b559"
+              key="object menu"
+            />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Automatic font size adjustment",
@@ -208,6 +328,32 @@ export const tutorial_pages: HelpPage[] = [
         />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "フォントサイズの自動調整",
+        body: (
+          <div>
+            <p>
+              単語や短いフレーズ、長い文章を、こざねに変換することができます。文字の大きさは、長さに応じて自動的に調整されます。
+            </p>
+            <p>思っていることを短く簡潔に表現するのがおすすめです。</p>
+            <p>
+              <button
+                onClick={openPrefilledDialog}
+                data-testid="tutorial-open-prefilled-dialog"
+              >
+                これをクリック
+              </button>
+              すると、あらかじめ用意された「こざねの追加」ダイアログが表示されます。さらなる説明のために、たくさんのこざねを作ります。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"
+              key="adjust_size"
+            />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's ungroup the group!",
@@ -220,6 +366,20 @@ export const tutorial_pages: HelpPage[] = [
         />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "グループを解除しよう!",
+        body: (
+          <div>
+            <p>グループを個別のこざねに変換することができます。</p>
+            <Gyazo
+              url="https://gyazo.com/17b9d7a64afb62d61cfcd0f355cda15a"
+              key="ungroup"
+            />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's select objects and make them into a group!",
@@ -232,6 +392,22 @@ export const tutorial_pages: HelpPage[] = [
         />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "オブジェクトを選択してグループにしてみよう!",
+        body: (
+          <div>
+            <p>
+              複数のオブジェクトを選択して、新しいグループにすることができます。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/43fe6d98037a2d91a94618ca3a736978"
+              key="select objects"
+            />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's close and open a group!",
@@ -248,6 +424,20 @@ export const tutorial_pages: HelpPage[] = [
         <Gyazo url="https://gyazo.com/e7bd72693b5259a03de28de403eb992d" />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "グループを閉じたり開いたりしよう",
+        body: (
+          <div>
+            <p>グループを閉じることができます。</p>
+            <p>
+              考えを整理する過程で、それほど重要ではないこざねが出てくることがよくあります。今は画面に表示する必要はないけれど、後で使うかもしれないから消したくない、というものです。そんなときは、グループを閉じることで、一時的にコザネを見えなくすることができます。
+            </p>
+            <Gyazo url="https://gyazo.com/e7bd72693b5259a03de28de403eb992d" />
+          </div>
+        ),
+      },
+    },
   },
 
   {
@@ -263,6 +453,21 @@ export const tutorial_pages: HelpPage[] = [
         <Gyazo url="https://gyazo.com/aba547cf9ebab645e0cda2eed939fb89" />
       </div>
     ),
+
+    translate: {
+      ja: {
+        title: "グループのタイトルを編集しよう",
+        body: (
+          <div>
+            <p>閉じたグループにタイトルをつけることができます。</p>
+            <p>
+              表札がない場合は、閉じたグループの内容をすべて表札として使用します。表札はグループが開いているときはグループタイトルとして表示されます。グループが解除されると新しいコザネになります。
+            </p>
+            <Gyazo url="https://gyazo.com/aba547cf9ebab645e0cda2eed939fb89" />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "It's not saved yet!",
@@ -285,6 +490,28 @@ export const tutorial_pages: HelpPage[] = [
         ) : null}
       </div>
     ),
+    translate: {
+      ja: {
+        title: "まだ保存されていない！？",
+        body: (
+          <div>
+            <p>
+              気づいたら、Baがまだ保存されていない!
+              一般的な使用例では、Kozanebaは自動的にBaをクラウドに保存します。次のページでは、自動保存を有効にする方法を見てみましょう。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/6f34fd9f2cda800a56ab77429323d39c"
+              key="not saved"
+            />
+            {in_readonly_mode() ? (
+              <p>
+                読み取り専用モード。自動保存を有効にすると、コザネバは編集可能なコピーを作成します。
+              </p>
+            ) : null}
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's enable auto-save!",
@@ -300,6 +527,23 @@ export const tutorial_pages: HelpPage[] = [
         />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "自動保存を有効にしよう",
+        body: (
+          <div>
+            <p>
+              自動保存を有効にするには、ユーザーアカウントを作成する必要があります。
+              Googleインテグレーションを使ってサインインするか、匿名のアカウントを作成することができます。
+            </p>
+            <Gyazo
+              url="https://gyazo.com/57c3ed5edc084a00522b447352d98980"
+              key="enable autosave"
+            />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Saved?",
@@ -314,6 +558,21 @@ export const tutorial_pages: HelpPage[] = [
         <Gyazo url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584" />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "保存できましたか？",
+        body: (
+          <div>
+            <p>
+              自動保存を有効にすると、ステータスバーのクラウド状態のアイコンとユーザー状態のアイコンが変化しているのがわかります。
+              ステータスバーの「チェックマーク」は、ローカルの変更がすべて保存されたことを示しています。
+            </p>
+            <p></p>
+            <Gyazo url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584" />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Let's open the saved Ba",
@@ -331,6 +590,23 @@ export const tutorial_pages: HelpPage[] = [
         <Gyazo url="https://gyazo.com/d05e3effdf4935a29d5107386b3758ff" />
       </div>
     ),
+    translate: {
+      ja: {
+        title: "保存されたBaを開いてみましょう。",
+        body: (
+          <div>
+            <p>
+              URLが「/#edit=XXX」のように変更されているのがわかると思います。そのURLで保存したBaを開くことができます。
+              URLには書き込み権限が付与されています。現在のところ、読み取り専用の共有方法はありませんが、近日公開予定です。
+            </p>
+            <p>
+              Userダイアログでは，自分が書き込み権限を持っているすべてのBaを見ることができます。
+            </p>
+            <Gyazo url="https://gyazo.com/d05e3effdf4935a29d5107386b3758ff" />
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Tutorial Finished🎉",
@@ -351,6 +627,30 @@ export const tutorial_pages: HelpPage[] = [
         </p>
       </div>
     ),
+    translate: {
+      ja: {
+        title: "以上でチュートリアルは終了です🎉",
+        body: (
+          <div>
+            <p>
+              これで、Kozanebaの使い方がわかりましたね。おめでとうございます。
+            </p>
+            <p>
+              ご質問やご意見があれば、"Send Feedback
+              "メニューからお寄せください。自動的にBaデータが添付されます。
+              また、
+              <a href="https://scrapbox.io/kozaneba-forum-jp/" target="blank">
+                フォーラム
+              </a>
+              に参加して話すこともできます。
+            </p>
+            <p>
+              次に、チュートリアルの最後のページでは、いくつかの練習方法を紹介しています。
+            </p>
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "We need the practice to use stationery effectively",
@@ -397,5 +697,47 @@ export const tutorial_pages: HelpPage[] = [
         </p>
       </div>
     ),
+    translate: {
+      ja: {
+        title: "文房具を効果的に使うための練習が必要です",
+        body: (
+          <div>
+            <p>
+              あなたは鉛筆やキーボードを使うことができます。その文房具を使う能力は、生まれつきではありません。
+              文房具は、それを使わずに考えるよりも、人間の知性を高めてくれます。
+              しかし、それを効果的に使うためには、練習が必要です。
+            </p>
+            <p>
+              スキルは、教科書を読んで身につくものではありません。
+              そのスキルを実際に使うことで身につくのです。ここでは、いくつかの練習方法を紹介します。
+            </p>
+            <p></p>
+            <p>
+              <b>練習方法A: </b>
+              前回のチュートリアルでは、チュートリアルの内容を「こざね」にしました。
+              あなたの考えを、いくつかのこざねとして加えてください。そして、それらを再整理してください。
+            </p>
+            <p>
+              <b>練習方法B: </b>
+              別の記事を読み、そこからこざねを作ります。機械の取扱説明書ではなく、著者の意見が書かれた記事であること。
+              自分の意見をコザネとして加える。そして、こざね全体を整理する。
+            </p>
+            <p>
+              <b>練習方法C: </b>
+              自分が楽しいと思ったこと、面白いと思ったことを100個のこざねにして、それを整理します。
+            </p>
+            <p>
+              人によっては、練習Bよりも練習Cの方が簡単だと感じるでしょう。自分の考えを表現することにすでに慣れているからです。
+              それはもう一つの重要なスキルです。中には、練習Cで挫折しそうになる人もいます。AやBで自分の考えを加えるのが難しいと感じる人もいます。
+              そのような場合には、練習Dを試してみてください。
+            </p>
+            <p>
+              <b>練習方法 D: </b>
+              3つの記事を読み、その記事からこざねを作ります。そして、こざね全体を整理する。同じ著者の記事を選ぶのは、異なる著者の記事よりも簡単です。
+            </p>
+          </div>
+        ),
+      },
+    },
   },
 ];
