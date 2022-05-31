@@ -54,6 +54,21 @@ export const tutorial_pages: HelpPage[] = [
         <p>Please click `Next` button...</p>
       </div>
     ),
+    translate: {
+      ja: {
+        title: "Kozanebaへようこそ!",
+        body: (
+          <div>
+            <p>Kozaneba is digital stationery to organize your thought.</p>
+            <p>
+              You are currently in the tutorial mode. If you do not need
+              tutorial, you can {finishTutorialButton} now.
+            </p>
+            <p>Please click `Next` button...</p>
+          </div>
+        ),
+      },
+    },
   },
   {
     title: "Kozaneba is digital stationery to organize your thought",

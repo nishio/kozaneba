@@ -9,10 +9,14 @@ import {
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { tutorial_pages } from "./tutorial_pages";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 
 export const TutorialDialog = () => {
   const [dialog] = useGlobal("dialog");
   const [p, setPage] = useGlobal("tutorial_page");
+  const [lang] = useGlobal("language");
+
   const open = dialog === "Tutorial";
   const onClose = () => {
     if (getGlobal().in_tutorial === false) {
@@ -24,7 +28,11 @@ export const TutorialDialog = () => {
     console.log(`Tutorial Page: ${p} open: ${open}`);
   }, [p, open]);
 
-  const page = tutorial_pages[p];
+  let page = tutorial_pages[p]!;
+  if (page.translate && page.translate[lang]) {
+    page = page.translate[lang]!;
+  }
+  // const page = tutorial_pages[p]!.translate[lang] ?? tutorial_pages[p];
   useEffect(() => {
     if (open && page?.title === "Tutorial Finished🎉") {
       setGlobal({ in_tutorial: false });
@@ -82,6 +90,7 @@ export const TutorialDialog = () => {
         {/* <hr /> */}
       </DialogContent>
       <DialogActions>
+        <FontAwesomeIcon icon={faGlobe} />
         {Prev}
         {Next}
         <Button color="primary" onClick={onClose} data-testid="tutorial-close">

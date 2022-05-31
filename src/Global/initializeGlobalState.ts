@@ -51,6 +51,7 @@ export const INITIAL_GLOBAL_STATE = {
   annotations: [] as TAnnotation[],
 
   scrapbox: "" as string,
+  language: window.navigator.language,
 };
 
 type TDragTarget = "" | "selection" | TItemId;

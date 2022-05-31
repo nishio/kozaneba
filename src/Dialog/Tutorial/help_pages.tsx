@@ -3,7 +3,12 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import { setGlobal, useState } from "reactn";
 import { tutorial_pages } from "./tutorial_pages";
 
-export type HelpPage = { title: string; body: JSX.Element; page_no?: number };
+export type HelpPage = {
+  title: string;
+  body: JSX.Element;
+  page_no?: number;
+  translate?: { [lang: string]: { title: string; body: JSX.Element } };
+};
 
 const other_pages: HelpPage[] = [
   {
