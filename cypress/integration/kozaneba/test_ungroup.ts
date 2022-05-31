@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 
-import { kozaneba } from "../../../src/API/KozanebaAPI";
 import { do_click, ready_nested_group, ready_one_kozane } from "../../support";
 import { make_get_group_func } from "../../utils";
 

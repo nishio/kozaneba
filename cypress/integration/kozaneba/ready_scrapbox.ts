@@ -3,7 +3,6 @@
 import { TWorldCoord } from "../../../src/dimension/world_to_screen";
 import {
   ItemId,
-  TGyazoItem,
   TScrapboxItem,
 } from "../../../src/Global/initializeGlobalState";
 import { add_item } from "../../support";

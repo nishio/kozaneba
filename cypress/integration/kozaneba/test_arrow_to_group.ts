@@ -1,5 +1,4 @@
 /// <reference types="cypress" />
-import { THICK_ARROW } from "../../../src/API/add_arrow";
 import { TWorldCoord } from "../../../src/dimension/world_to_screen";
 import { TItemId } from "../../../src/Global/TItemId";
 import { ready_one_group } from "../../support";
