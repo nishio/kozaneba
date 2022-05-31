@@ -9,8 +9,8 @@ import {
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { tutorial_pages } from "./tutorial_pages";
 import { useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGlobe, faLanguage } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faLanguage } from "@fortawesome/free-solid-svg-icons";
 
 export const TutorialDialog = () => {
   const [dialog] = useGlobal("dialog");
