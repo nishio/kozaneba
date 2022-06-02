@@ -148,13 +148,18 @@ export const tutorial_pages: HelpPage[] = [
         body: (
           <div>
             <p>
-              右下の<b>ステータスバー</b>のアイコンをクリックすると、この
+              右上のはてなアイコンをクリックすると、この
               <b>チュートリアルダイアログ</b>を開くことができます。
             </p>
-            <Gyazo
+            {/* <Gyazo
               url="https://gyazo.com/afe024068b9f42f1aa04b1fe404daa5d"
               key="statusbar"
+            /> */}
+            <img
+              src="https://scrapbox.io/files/629866ee168a10001d644885.png"
+              alt=""
             />
+
             <p>このダイアログを閉じたり開いたりしてみましょう。</p>
           </div>
         ),
