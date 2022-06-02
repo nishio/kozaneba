@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { updateGlobal } from "../Global/updateGlobal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
@@ -11,9 +11,18 @@ export const HelpButton = () => {
   };
   return (
     <>
-      <Button color="inherit" onClick={onButtonClick}>
+      <IconButton
+        edge="end"
+        color="inherit"
+        aria-label="menu"
+        onClick={onButtonClick}
+        data-testid="main-menu"
+        style={{
+          marginLeft: "auto",
+        }}
+      >
         <FontAwesomeIcon size="lg" icon={faQuestionCircle} />
-      </Button>
+      </IconButton>
     </>
   );
 };

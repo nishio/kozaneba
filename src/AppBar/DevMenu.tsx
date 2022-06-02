@@ -57,10 +57,6 @@ export const DevMenu = () => {
       <Button
         color="inherit"
         onClick={onButtonClick}
-        style={{
-          marginLeft: "auto",
-        }}
-        // className={classess.root}
         data-testid="dev-menu"
         id="dev-menu"
       >
