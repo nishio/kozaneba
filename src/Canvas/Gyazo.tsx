@@ -74,6 +74,7 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
         onLoad={onLoad}
         style={style}
         onMouseDown={onMouseDown}
+        draggable={false}
       />
       {loaded ? null : <img src="spinner.gif" alt="" />}
     </>
