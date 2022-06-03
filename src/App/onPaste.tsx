@@ -26,6 +26,8 @@ const pasted = (text: string) => {
     add_scrapbox_item(text);
   } else if (text.startsWith("https://gyazo.com/")) {
     add_gyazo_item(text);
+  } else if (text.endsWith(".png")) {
+    add_gyazo_item(text);
   } else if (text.startsWith("https://") || text.startsWith("http://")) {
     add_kozane(url_to_text(text), { custom: { url: text } });
   } else if (try_to_import_json(text)) {
@@ -34,6 +36,7 @@ const pasted = (text: string) => {
     updateGlobal((g) => {
       g.dialog = "AddKozane";
       g.add_kozane_text = text;
+      // related code in create_squared_group.tsx
     });
   }
 };
