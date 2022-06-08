@@ -1,10 +1,8 @@
 /// <reference types="cypress" />
 
 import { TWorldCoord } from "../../../src/dimension/world_to_screen";
-import {
-  ItemId,
-  TScrapboxItem,
-} from "../../../src/Global/initializeGlobalState";
+import { TItemId } from "../../../src/Global/TItemId";
+import { TScrapboxItem } from "../../../src/Global/TScrapboxItem";
 import { add_item } from "../../support";
 
 describe("ready one kozane", () => {
@@ -12,7 +10,7 @@ describe("ready one kozane", () => {
     cy.visit("/#blank");
 
     const scrapbox1: TScrapboxItem = {
-      id: "scrapbox1" as ItemId,
+      id: "scrapbox1" as TItemId,
       type: "scrapbox",
       text: "2021-08-27Kozaneba開発日記",
       image: "https://gyazo.com/872f3897132974239c3ad539a6a8df69/thumb/400",
@@ -24,7 +22,7 @@ describe("ready one kozane", () => {
     add_item(scrapbox1);
 
     const scrapbox2: TScrapboxItem = {
-      id: "scrapbox2" as ItemId,
+      id: "scrapbox2" as TItemId,
       type: "scrapbox",
       text: "Wikiは辞書ではない",
       image: "",

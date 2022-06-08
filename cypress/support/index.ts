@@ -27,8 +27,9 @@ import { State } from "reactn/default";
 import { TKozaneba } from "../../src/API/KozanebaAPI";
 import { TWorldCoord } from "../../src/dimension/world_to_screen";
 import { TMovidea } from "../../src/Global/exposeGlobal";
-import { ItemId, TItem } from "../../src/Global/initializeGlobalState";
-import { TGroupItem } from "../../src/Group/GroupItem";
+import { TGroupItem } from "../../src/Global/TGroupItem";
+import { TItem } from "../../src/Global/TItem";
+import { TItemId } from "../../src/Global/TItemId";
 
 declare global {
   namespace Cypress {
@@ -47,6 +48,7 @@ declare global {
   }
 }
 
+// @ts-ignore
 Cypress.Commands.add("movidea", (callback: (movidea: TMovidea) => void) => {
   const to_async = false;
   return cy
@@ -63,6 +65,7 @@ Cypress.Commands.add("movidea", (callback: (movidea: TMovidea) => void) => {
     });
 });
 
+// @ts-ignore
 Cypress.Commands.add("kozaneba", (callback: (kozaneba: TKozaneba) => void) => {
   return cy
     .window()
@@ -72,6 +75,7 @@ Cypress.Commands.add("kozaneba", (callback: (kozaneba: TKozaneba) => void) => {
     });
 });
 
+// @ts-ignore
 Cypress.Commands.add("testid", (testid: string) => {
   return cy.get(`*[data-testid='${testid}']`);
 });
@@ -129,25 +133,25 @@ chai.use((_chai, utils) => {
 
 export const ready_one_group = () => {
   cy.movidea((m) => {
-    m.make_one_kozane({ id: "1" as ItemId, text: "1" });
+    m.make_one_kozane({ id: "1" as TItemId, text: "1" });
     m.make_items_into_new_group(["1"], { id: "G1", text: "G1" });
   });
 };
 
 export const ready_one_kozane = () => {
-  cy.movidea((m) => m.make_one_kozane({ id: "1" as ItemId, text: "1" }));
+  cy.movidea((m) => m.make_one_kozane({ id: "1" as TItemId, text: "1" }));
 };
 
 export const ready_two_groups = () => {
   cy.movidea((m) => {
     m.make_one_kozane({
-      id: "1" as ItemId,
+      id: "1" as TItemId,
       text: "1",
       position: [-100, 0] as TWorldCoord,
     });
     m.make_items_into_new_group(["1"], { id: "G1", text: "G1" });
     m.make_one_kozane({
-      id: "2" as ItemId,
+      id: "2" as TItemId,
       text: "2",
       position: [100, 0] as TWorldCoord,
     });
@@ -158,7 +162,7 @@ export const ready_two_groups = () => {
 export const ready_nested_group = () => {
   cy.movidea((m) => {
     m.make_one_kozane({
-      id: "1" as ItemId,
+      id: "1" as TItemId,
       text: "1",
       position: [0, 0] as TWorldCoord,
     });
