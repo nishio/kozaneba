@@ -12,8 +12,10 @@ import {
   sub_v2,
   V2,
 } from "../../dimension/V2";
+import { get_total_offset_of_parents } from "../../Event/get_total_offset_of_parents";
 import { TLineAnnot } from "../../Global/TAnnotation";
 import { TItemId } from "../../Global/TItemId";
+import { find_parent } from "../../utils/find_parent";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_middle_point } from "./get_middle_point";
 import { Line } from "./Line";
@@ -73,7 +75,17 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   }
 
   const get_rect = (id: TItemId) => {
-    return bounding_box_to_rect(get_item_bounding_box(id));
+    const parent = find_parent(id, g);
+    if (parent === null) {
+      return bounding_box_to_rect(get_item_bounding_box(id));
+    }
+    const offset = get_total_offset_of_parents(parent, g);
+    console.log({ offset });
+    const { top, left, width, height } = bounding_box_to_rect(
+      get_item_bounding_box(id)
+    );
+    const [left2, top2] = add_v2([left, top], offset);
+    return { top: top2, left: left2, width, height };
   };
   const rects = a.items.map(get_rect);
   const crosspoints = a.items.map((id, index) => {
