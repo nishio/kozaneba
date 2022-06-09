@@ -14,6 +14,7 @@ import { open_dialog } from "../utils/open_dialog";
 import { VisitMenuItem } from "./VisitMenuItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { update_annotation_after_deletion } from "../utils/update_annotation_after_deletion";
+import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
 
 export const KozaneMenu = () => {
   const [menu] = useGlobal("menu");
@@ -47,6 +48,14 @@ export const KozaneMenu = () => {
     close_context_menu();
   };
 
+  const onExpandScrapboxLinks = () => {
+    get_scarpbox_links(item);
+  };
+  const ExpandScrapboxLinks =
+    g.scrapbox === "" ? null : (
+      <MenuItem onClick={onExpandScrapboxLinks}>expand scrapbox links</MenuItem>
+    );
+
   return (
     <Menu
       anchorEl={anchor}
@@ -66,6 +75,7 @@ export const KozaneMenu = () => {
         clone
       </MenuItem>
       <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
+      {ExpandScrapboxLinks}
 
       <VisitMenuItem url={item.custom?.url} />
       {kozaneba.user_menus["Kozane"]!.map(UserMenuItem)}
