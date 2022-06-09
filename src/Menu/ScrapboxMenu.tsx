@@ -31,23 +31,20 @@ export const ScrapboxMenu = () => {
   const onExpand = () => {
     add_scrapbox_links(item.url, false, true);
   };
-  if (isTScrapboxItem(item)) {
-    return (
-      <Menu
-        anchorEl={anchor}
-        keepMounted
-        open={open}
-        onClose={close_context_menu}
-      >
-        <BigMenuItem id={id} />
-        <SmallMenuItem id={id} />
-        <VisitMenuItem url={item.url} />
-        <MenuItem onClick={onExpand}>expand</MenuItem>
+  return (
+    <Menu
+      anchorEl={anchor}
+      keepMounted
+      open={open}
+      onClose={close_context_menu}
+    >
+      <BigMenuItem id={id} />
+      <SmallMenuItem id={id} />
+      <VisitMenuItem url={item.url} />
+      <MenuItem onClick={onExpand}>expand</MenuItem>
 
-        {kozaneba.user_menus["Scrapbox"]!.map(UserMenuItem)}
-        <DeleteMenuItem id={id} />
-      </Menu>
-    );
-  }
-  return null;
+      {kozaneba.user_menus["Scrapbox"]!.map(UserMenuItem)}
+      <DeleteMenuItem id={id} />
+    </Menu>
+  );
 };
