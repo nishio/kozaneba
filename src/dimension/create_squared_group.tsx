@@ -54,7 +54,7 @@ export const create_squared_group = (texts: string[]) => {
     } else if (text.endsWith(".png")) {
       kozane = create_gyazo_item(text);
     } else if (text.startsWith("https://") || text.startsWith("http://")) {
-      kozane = create_kozane(url_to_text(text), { custom: { url: text } });
+      kozane = create_kozane(url_to_text(text), { custom: { url: text } }); // [External Kozane]
     } else {
       kozane = create_kozane(text);
     }
