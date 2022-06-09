@@ -14,6 +14,8 @@ import { normalize_group_position } from "../utils/normalize_group_position";
 import { ungroup } from "./ungroup";
 import { get_item } from "../utils/get_item";
 import { update_annotation_after_deletion } from "../utils/update_annotation_after_deletion";
+import { add_urls } from "../Scrapbox/add_scrapbox_links";
+import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -67,6 +69,25 @@ export const GroupMenu = () => {
     });
     close_context_menu();
   };
+
+  const onExpandScrapboxLinks = () => {
+    add_urls(
+      group.items.flatMap((id) => {
+        const item = get_item(g, id);
+        if (item.type === "kozane") {
+          return get_scarpbox_links(item);
+        } else {
+          return [];
+        }
+      })
+    );
+    close_context_menu();
+  };
+  const ExpandScrapboxLinks =
+    g.scrapbox === "" ? null : (
+      <MenuItem onClick={onExpandScrapboxLinks}>expand scrapbox links</MenuItem>
+    );
+
   return (
     <Menu
       anchorEl={anchor}
@@ -85,6 +106,7 @@ export const GroupMenu = () => {
       </MenuItem>
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
       <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
+      {ExpandScrapboxLinks}
 
       {kozaneba.user_menus["Group"]!.map(UserMenuItem)}
       <MenuItem onClick={onDelete} data-testid="group-delete">
