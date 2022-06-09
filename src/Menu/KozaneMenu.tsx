@@ -15,6 +15,7 @@ import { VisitMenuItem } from "./VisitMenuItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { update_annotation_after_deletion } from "../utils/update_annotation_after_deletion";
 import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
+import { add_urls } from "../Scrapbox/add_scrapbox_links";
 
 export const KozaneMenu = () => {
   const [menu] = useGlobal("menu");
@@ -49,7 +50,8 @@ export const KozaneMenu = () => {
   };
 
   const onExpandScrapboxLinks = () => {
-    get_scarpbox_links(item);
+    add_urls(get_scarpbox_links(item));
+    close_context_menu();
   };
   const ExpandScrapboxLinks =
     g.scrapbox === "" ? null : (

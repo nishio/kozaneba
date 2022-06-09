@@ -2,6 +2,7 @@ import { Line, parse } from "@progfay/scrapbox-parser";
 import React from "react";
 import { getGlobal } from "reactn";
 import { TKozaneItem } from "../Global/TKozaneItem";
+import { make_scrapbox_url } from "../Scrapbox/make_scrapbox_kozane";
 
 export const build_content = (value: TKozaneItem) => {
   const g = getGlobal();
@@ -63,7 +64,10 @@ export const get_scarpbox_links = (value: TKozaneItem) => {
       if (node.type === "link") {
         console.log(node);
         if (node.pathType === "relative") {
-          const url = `https://scrapbox.io/${proj}/${node.href}`;
+          const url = make_scrapbox_url(
+            `https://scrapbox.io/${proj}`,
+            node.href
+          );
 
           links.push(url);
         } else if (node.pathType === "root") {
@@ -76,5 +80,5 @@ export const get_scarpbox_links = (value: TKozaneItem) => {
       }
     });
   }
-  console.log(links);
+  return links;
 };

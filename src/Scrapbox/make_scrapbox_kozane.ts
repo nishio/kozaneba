@@ -55,6 +55,6 @@ const add_scrapbox_item_raw = (props: {
   add_item(scrapbox);
 };
 
-export const make_url = (root: string, title: string) => {
+export const make_scrapbox_url = (root: string, title: string) => {
   return root + "/" + encodeURIComponent(title);
 };
