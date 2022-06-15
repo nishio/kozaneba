@@ -31,7 +31,7 @@ export const adjustFontSize = (
   testHiddenKozane?: HTMLDivElement
 ): number => {
   const in_cache = cache[text];
-  if (in_cache !== undefined && testHiddenKozane !== undefined) {
+  if (in_cache !== undefined) {
     return in_cache;
   }
   const x = getHiddenKozane(testHiddenKozane);
