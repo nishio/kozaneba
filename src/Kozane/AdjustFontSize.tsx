@@ -1,5 +1,4 @@
 import React from "react";
-import { setGlobal } from "reactn";
 import styled from "styled-components";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 
@@ -26,13 +25,6 @@ const getHiddenKozane = (hiddenKozane?: HTMLDivElement) => {
   }
   return hiddenKozane;
 };
-
-window.matchMedia("print").addEventListener("change", (e) => {
-  console.log(e);
-  setGlobal({
-    print_mode: e.matches,
-  });
-});
 
 export const adjustFontSize = (
   text: string,

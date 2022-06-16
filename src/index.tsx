@@ -35,6 +35,13 @@ if (process.env.NODE_ENV !== "production") {
 expose_kozaneba_api();
 run_user_script();
 
+window.matchMedia("print").addEventListener("change", (e) => {
+  console.log(e);
+  setGlobal({
+    print_mode: e.matches,
+  });
+});
+
 ReactDOM.render(
   //  <React.StrictMode>  // Material-UI is not support it
   // <ThemeProvider theme="normal">
