@@ -31,9 +31,6 @@ export const useAdjustFontsizeStyle = (
     setFontSize(adjustFontSize(text) * scale * shrink_on_print);
   }, [text, scale, shrink_on_print]);
 
-  if (text === "自分から生まれた付箋") {
-    console.log(text, fontSize);
-  }
   const style: CSSProperties = {
     fontSize,
     ...left_top,
