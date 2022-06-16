@@ -15,7 +15,8 @@ import { TWorldCoord } from "../dimension/world_to_screen";
 
 export const useAdjustFontsizeStyle = (
   value: TMinimumKozaneItem | TKozaneItem,
-  offset: TOffset
+  offset: TOffset,
+  is_print_mode: boolean
 ) => {
   let [fontSize, setFontSize] = useState(1);
   const { text, scale } = value;
@@ -24,10 +25,15 @@ export const useAdjustFontsizeStyle = (
     offset.y - (scale * KOZANE_HEIGHT) / 2 - KOZANE_BORDER,
   ] as TWorldCoord;
   const left_top = position_to_left_top(add_v2w(value.position, o));
-  useEffect(() => {
-    setFontSize(adjustFontSize(text) * scale);
-  }, [text, scale]);
 
+  const shrink_on_print = is_print_mode ? 0.8 : 1.0;
+  useEffect(() => {
+    setFontSize(adjustFontSize(text) * scale * shrink_on_print);
+  }, [text, scale, shrink_on_print]);
+
+  if (text === "自分から生まれた付箋") {
+    console.log(text, fontSize);
+  }
   const style: CSSProperties = {
     fontSize,
     ...left_top,

@@ -1,6 +1,7 @@
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { CSSProperties } from "react";
+import { useGlobal } from "reactn";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { TKozaneItem } from "../Global/TKozaneItem";
@@ -19,9 +20,10 @@ export const Kozane: React.FC<Props> = ({
   offset,
   custom_style = {},
 }) => {
+  const [print_mode] = useGlobal("print_mode");
   const custom = value.custom?.style ?? {};
   const style = {
-    ...useAdjustFontsizeStyle(value, offset),
+    ...useAdjustFontsizeStyle(value, offset, print_mode),
     ...custom_style,
     ...custom,
   };
