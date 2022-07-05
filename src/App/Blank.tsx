@@ -11,6 +11,8 @@ import { LocalChangeWatcher } from "./LocalChangeWatcher";
 import { StatusBar } from "./StatusBar";
 import { onPaste } from "./onPaste";
 import { dev_log } from "../utils/dev";
+import { Alert, Snackbar } from "@mui/material";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -33,6 +35,38 @@ export const Blank = () => {
       <KeyboardShortcut />
       <Dialogs />
       <Menus />
+      <OverCapacityAlert />
     </div>
   );
+};
+
+const OverCapacityAlert = () => {
+  const [itemStore] = useGlobal("itemStore");
+  const [did_warn_over_capacity] = useGlobal("did_warn_over_capacity");
+  const num = Object.keys(itemStore).length;
+  if (num > 2000) {
+    return (
+      <Snackbar open={true}>
+        <Alert variant="filled" severity="error">
+          Objects on the Ba is over 2000. The Ba will not be saved.
+        </Alert>
+      </Snackbar>
+    );
+  }
+  if (num > 1000) {
+    const onClose = () => {
+      updateGlobal((g) => {
+        g.did_warn_over_capacity = true;
+      });
+    };
+    return (
+      <Snackbar open={!did_warn_over_capacity}>
+        <Alert variant="filled" severity="info" onClose={onClose}>
+          Objects on the Ba is over 1000. If it is over 2000, the Ba will not be
+          saved.
+        </Alert>
+      </Snackbar>
+    );
+  }
+  return null;
 };

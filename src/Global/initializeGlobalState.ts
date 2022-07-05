@@ -53,6 +53,7 @@ export const INITIAL_GLOBAL_STATE = {
   scrapbox: "" as string,
   language: window.navigator.language,
   print_mode: false,
+  did_warn_over_capacity: false,
 };
 
 type TDragTarget = "" | "selection" | TItemId;
