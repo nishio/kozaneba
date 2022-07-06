@@ -34,7 +34,7 @@ export const GroupBack = styled.div`
 export const GroupTitle = styled.span`
   background: ${GROUP_TITLE_COLOR};
   position: absolute;
-  font-size: 21px;
+  font-size: ${TITLE_HEIGHT * 0.8 + 1}px;
   width: calc(100% + 2px);
   overflow: hidden;
   white-space: nowrap;

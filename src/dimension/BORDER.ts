@@ -1,2 +1,2 @@
 export const BORDER = 5;
-export const TITLE_HEIGHT = 25;
+export const TITLE_HEIGHT = 125;
