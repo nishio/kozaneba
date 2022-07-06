@@ -11,6 +11,8 @@ import { move_front } from "../utils/move_front";
 type PropsType = { id: TItemId };
 export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
   ({ id }, ref) => {
+    const g = getGlobal();
+    const target = get_item(g, id);
     const onBig = () => {
       updateGlobal((g) => {
         const item = get_item(g, id);
@@ -21,10 +23,27 @@ export const BigMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
       mark_local_changed();
     };
 
+    const onDouble = () => {
+      updateGlobal((g) => {
+        const item = get_item(g, id);
+        item.scale *= 2;
+      });
+      move_front(id);
+      close_menu();
+      mark_local_changed();
+    };
+    const Double =
+      target.scale >= 2 ? (
+        <MenuItem onClick={onDouble}>double size</MenuItem>
+      ) : null;
+
     return (
-      <MenuItem onClick={onBig} ref={ref} data-testid="big">
-        big
-      </MenuItem>
+      <>
+        <MenuItem onClick={onBig} ref={ref} data-testid="big">
+          big
+        </MenuItem>
+        {Double}
+      </>
     );
   }
 );
@@ -41,6 +60,15 @@ export const SmallMenuItem: React.FC<{ id: TItemId }> = ({ id }) => {
     close_menu();
     mark_local_changed();
   };
+  const onHalf = () => {
+    updateGlobal((g) => {
+      const item = get_item(g, id);
+      item.scale = Math.floor(item.scale / 2);
+    });
+    move_front(id);
+    close_menu();
+    mark_local_changed();
+  };
   const Small =
     target.scale > 1 ? (
       <MenuItem onClick={onSmall} data-testid="small">
@@ -48,5 +76,13 @@ export const SmallMenuItem: React.FC<{ id: TItemId }> = ({ id }) => {
       </MenuItem>
     ) : null;
 
-  return Small;
+  const Half =
+    target.scale >= 4 ? <MenuItem onClick={onHalf}>half</MenuItem> : null;
+
+  return (
+    <>
+      {Small}
+      {Half}
+    </>
+  );
 };
