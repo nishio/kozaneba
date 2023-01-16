@@ -11,6 +11,7 @@ import {
   get_page_json,
   TScrapboxPage,
   make_scrapbox_url,
+  TScrapboxPageJSON,
 } from "./make_scrapbox_kozane";
 import { SCRAPBOX_SIZE } from "./get_scrapbox_bounding_box";
 import { create_kozane } from "../API/add_kozane";
@@ -83,6 +84,10 @@ export const add_scrapbox_links = (
     g.menu = "";
   });
   get_page_json(url).then((x) => {
+    if ("message" in x) {
+      // page not found, not worth to expand links
+      return;
+    }
     const urls: string[] = [];
     const pages: TScrapboxPage[] = [];
     if (include_self) {
@@ -125,20 +130,37 @@ export const add_scrapbox_links = (
   });
 };
 
-const page_to_scrapbox_item = (page: TScrapboxPage, url: string) => {
-  const text = page.title;
-  const image = (page.image ?? "").replace("/raw", "");
-  const descriptions = page.descriptions ?? [];
-  const scrapbox: TScrapboxItem = {
-    id: create_new_itemid(),
-    type: "scrapbox",
-    text,
-    image,
-    url,
-    description: descriptions,
+const page_to_scrapbox_item = (page: TScrapboxPageJSON, url: string): TScrapboxItem => {
+  if ("message" in page) {
+    const text = decodeURIComponent(url.split("/").slice(-1)[0]!)
+    const scrapbox: TScrapboxItem = {
+      id: create_new_itemid(),
+      type: "scrapbox",
+      text,
+      image: "",
+      url,
+      description: [page.message],
 
-    position: [0, 0] as TWorldCoord, // DUMMY
-    scale: 1,
-  };
-  return scrapbox;
+      position: [0, 0] as TWorldCoord, // DUMMY
+      scale: 1,
+    };
+    return scrapbox;
+
+  } else {
+    const text = page.title;
+    const image = (page.image ?? "").replace("/raw", "");
+    const descriptions = page.descriptions ?? [];
+    const scrapbox: TScrapboxItem = {
+      id: create_new_itemid(),
+      type: "scrapbox",
+      text,
+      image,
+      url,
+      description: descriptions,
+
+      position: [0, 0] as TWorldCoord, // DUMMY
+      scale: 1,
+    };
+    return scrapbox;
+  }
 };
