@@ -139,7 +139,7 @@ const page_to_scrapbox_item = (page: TScrapboxPageJSON, url: string): TScrapboxI
       text,
       image: "",
       url,
-      description: [page.message],
+      description: [page.message, "", url],
 
       position: [0, 0] as TWorldCoord, // DUMMY
       scale: 1,

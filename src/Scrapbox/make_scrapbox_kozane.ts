@@ -14,26 +14,31 @@ export type TScrapboxPage = {
     links2hop: TScrapboxPage[]
   };
 }
-export type TScrapboxPageJSON = TScrapboxPage | {
+export type TScrapboxErrorPage = {
   name: string,
   message: string
-};
+}
+export type TScrapboxPageJSON = TScrapboxPage | TScrapboxErrorPage;
 
 export const make_scrapbox_kozane = (x: TScrapboxPageJSON, url: string) => {
   if ("message" in x) {
-    add_scrapbox_item_raw({
-      text: x.message,
+    const text = decodeURIComponent(url.split("/").slice(-1)[0]!)
+
+    const props = {
+      text,
       url: url,
       image: "",
-      descriptions: [],
-    });
+      descriptions: [x.message, "", url],
+    }
+    add_scrapbox_item_raw(props);
   } else {
-    add_scrapbox_item_raw({
+    const props = {
       text: x.title,
       url: url,
       image: (x.image ?? "").replace("/raw", ""),
       descriptions: x.descriptions,
-    });
+    }
+    add_scrapbox_item_raw(props);
   }
 };
 
