@@ -128,7 +128,7 @@ export const add_scrapbox_links = (
 const page_to_scrapbox_item = (page: TScrapboxPage, url: string) => {
   const text = page.title;
   const image = (page.image ?? "").replace("/raw", "");
-  const descriptions = page.descriptions;
+  const descriptions = page.descriptions ?? [];
   const scrapbox: TScrapboxItem = {
     id: create_new_itemid(),
     type: "scrapbox",
