@@ -56,10 +56,11 @@ export const INITIAL_GLOBAL_STATE = {
   did_warn_over_capacity: false,
 };
 
+// Implicit Mouse Mode
 type TDragTarget = "" | "selection" | TItemId;
+type TMouseState = "" | "selecting" | "middle_dragging";
 
 type TMenuAnchor = null | Element;
-type TMouseState = "" | "selecting" | "middle_dragging";
 
 type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;
 

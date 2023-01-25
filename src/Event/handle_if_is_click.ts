@@ -6,6 +6,7 @@ import { onGenericClick } from "./onGenericClick";
 import { onSelectionClick } from "./onSelectionClick";
 
 export const handle_if_is_click = (event: React.MouseEvent<HTMLDivElement>) => {
+  // if the event is click, return true to prevent drag handling
   const g = getGlobal();
   if (!is_dragged()) {
     // is click
