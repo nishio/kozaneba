@@ -82,7 +82,7 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
             />
           </MenuItem>
         </div>
-        {/* <MenuItem onClick={() => onAddLine("delete")}>delete</MenuItem> */}
+        <MenuItem onClick={() => onAddLine("delete")}>delete one line</MenuItem>
       </div>
     );
   }

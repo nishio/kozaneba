@@ -7,6 +7,8 @@ import { reset_target } from "./fast_drag_manager";
 import { get_item } from "../utils/get_item";
 import { dev_log } from "../utils/dev";
 import { kozaneba } from "../API/KozanebaAPI";
+import { TAnnotation } from "../Global/TAnnotation";
+import { mark_local_changed } from "../utils/mark_local_changed";
 
 export const onGenericClick = (
   event: React.MouseEvent<HTMLDivElement>,
@@ -38,6 +40,23 @@ export const onGenericClick = (
         case "double_lines":
           kozaneba.add_arrow([g.line_start, id], ["none", "none"], true);
           break;
+        case "delete":
+          const start = g.line_start,
+            end = id;
+          const new_annot = g.annotations.filter((a: TAnnotation) => {
+            if (a.items.length != 2) {
+              return true;
+            }
+            const [v1, v2] = a.items;
+            if ((v1 === start && v2 === end) || (v2 === start && v1 === end)) {
+              return false;
+            }
+            return true;
+          });
+          updateGlobal((g) => {
+            g.annotations = new_annot;
+          });
+          mark_local_changed();
       }
     }
     return;
