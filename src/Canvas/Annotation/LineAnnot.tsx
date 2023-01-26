@@ -1,4 +1,5 @@
 import { State } from "reactn/default";
+import { kozaneba } from "../../API/KozanebaAPI";
 import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
 import { get_item_bounding_box } from "../../dimension/get_bounding_box";
 import { get_global_position } from "../../dimension/get_global_position";
@@ -16,6 +17,7 @@ import { get_total_offset_of_parents } from "../../Event/get_total_offset_of_par
 import { TLineAnnot } from "../../Global/TAnnotation";
 import { TItemId } from "../../Global/TItemId";
 import { find_parent } from "../../utils/find_parent";
+import { KOZANE_WIDTH } from "../../utils/kozane_constants";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_middle_point } from "./get_middle_point";
 import { Line } from "./Line";
@@ -39,7 +41,10 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
 
   let group_opacity = 1.0;
   const opacity_from_length = (length: number): number => {
-    const threshold = 130;
+    const threshold = KOZANE_WIDTH;
+    if (!kozaneba.constants.to_adjust_opacity_of_lines_by_length) {
+      return 1;
+    }
     if (length < threshold) {
       return 1;
     } else if (length < threshold * 3) {
