@@ -28,25 +28,7 @@ import { unpin } from "./unpin";
 import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
 import { add_arrow } from "./add_arrow";
-import { TItemId } from "../Global/TItemId";
 
-const get_num_visible_object = () => {
-  const g = getGlobal();
-  let count: { [key: string]: number } = { total: 0 };
-  const visit = (id: TItemId) => {
-    count.total++;
-    const item = g.itemStore[id]!;
-    count[item.type] = (count[item.type] ?? 0) + 1;
-    if (item.type === "group") {
-      if (item.isOpen) {
-        item.items.forEach(visit);
-      }
-    }
-  };
-  g.drawOrder.forEach(visit);
-  count["annotations"] = g.annotations.length;
-  return count;
-};
 export const kozaneba = {
   // simple values to modify
   constants,
@@ -79,6 +61,7 @@ export const kozaneba = {
   get_selected_ids,
   get_gravity_point,
   get_item,
+  get_num_visible_object,
 
   // complex values
   after_render_toppage: start_tutorial,
@@ -88,7 +71,6 @@ export const kozaneba = {
   // experimental features
   show_backup,
   save_backup_as_new,
-  get_num_visible_object,
 };
 
 export type TKozaneba = typeof kozaneba;
