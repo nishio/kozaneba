@@ -3,6 +3,7 @@ import { zoom_around_pointer } from "../Event/onWheel";
 import { constants } from "../API/constants";
 import { toggle_fit_to_contents } from "./toggle_fit_to_contents";
 import { moveCenter } from "../utils/moveCenter";
+import { open_dialog } from "../utils/open_dialog";
 
 export const hotKey = (e: KeyboardEvent) => {
   const g = getGlobal();
@@ -13,6 +14,9 @@ export const hotKey = (e: KeyboardEvent) => {
   }
 
   if (g.dialog !== "") {
+    return;
+  }
+  if (g.menu !== "") {
     return;
   }
 
@@ -33,6 +37,9 @@ export const hotKey = (e: KeyboardEvent) => {
     e.preventDefault();
   } else if (e.code === "Space") {
     toggle_fit_to_contents();
+    e.preventDefault();
+  } else if (e.code === "Enter") {
+    open_dialog("AddKozane");
     e.preventDefault();
   } else if (e.key === "b") {
     zoom_in_pointer();
