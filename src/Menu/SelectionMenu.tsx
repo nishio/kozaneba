@@ -5,7 +5,10 @@ import { kozaneba } from "../API/KozanebaAPI";
 import { add_bipartite } from "../API/sample/add_bipartite";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { reset_selection } from "../Selection/reset_selection";
-import { add_arrow, THeadsOption } from "../utils/add_arrow";
+import {
+  add_arrow_among_selected_items,
+  THeadsOption,
+} from "../utils/add_arrow";
 import { delete_item_from_world } from "../utils/delete_item_from_world";
 import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { mark_local_changed } from "../utils/mark_local_changed";
@@ -48,7 +51,11 @@ export const SelectionMenu = () => {
   };
 
   const onAddArrow = (heads_option: THeadsOption, is_doubled = false) => {
-    add_arrow(getGlobal().selected_items, heads_option, is_doubled);
+    add_arrow_among_selected_items(
+      getGlobal().selected_items,
+      heads_option,
+      is_doubled
+    );
     reset_selection();
     mark_local_changed();
     setMenu("");

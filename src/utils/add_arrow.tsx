@@ -7,7 +7,7 @@ import { get_item } from "./get_item";
 
 export type THeadsOption = "all" | "none" | "right";
 
-export const add_arrow = (
+export const add_arrow_among_selected_items = (
   targets: TItemId[],
   heads_option: TArrowHead[] | THeadsOption,
   is_doubled = false
