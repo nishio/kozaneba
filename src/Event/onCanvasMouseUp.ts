@@ -6,6 +6,7 @@ import { finish_selecting } from "./finish_selecting";
 import { drag_drop_selection } from "./drag_drop_selection";
 import { drag_drop_item } from "./drag_drop_item";
 import { moveCenter } from "../utils/moveCenter";
+import { updateGlobal } from "../Global/updateGlobal";
 
 export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -20,6 +21,11 @@ export const onCanvasMouseUp = (
     finish_selecting(event);
   } else if (g.mouseState === "middle_dragging") {
     moveCenter(delta[0], delta[1]);
+  } else if (g.mouseState === "making_line") {
+    // when clicked on nothing, cancel making line
+    updateGlobal((g) => {
+      g.mouseState = "";
+    });
   } else if (g.drag_target === "selection") {
     drag_drop_selection(delta);
   } else if (g.drag_target !== "") {

@@ -54,11 +54,13 @@ export const INITIAL_GLOBAL_STATE = {
   language: window.navigator.language,
   print_mode: false,
   did_warn_over_capacity: false,
+
+  line_start: "" as "" | TItemId,
 };
 
 // Implicit Mouse Mode
 type TDragTarget = "" | "selection" | TItemId;
-type TMouseState = "" | "selecting" | "middle_dragging";
+type TMouseState = "" | "selecting" | "middle_dragging" | "making_line";
 
 type TMenuAnchor = null | Element;
 

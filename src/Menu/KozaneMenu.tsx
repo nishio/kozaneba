@@ -16,6 +16,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { update_annotation_after_deletion } from "../utils/update_annotation_after_deletion";
 import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
 import { add_urls } from "../Scrapbox/add_scrapbox_links";
+import { AddLineMenuItem } from "./AddLineMenuItem";
 
 export const KozaneMenu = () => {
   const [menu] = useGlobal("menu");
@@ -76,6 +77,8 @@ export const KozaneMenu = () => {
       <MenuItem onClick={onClone} data-testid="kozane-clone">
         clone
       </MenuItem>
+
+      <AddLineMenuItem id={id} />
       <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
       {ExpandScrapboxLinks}
 

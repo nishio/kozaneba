@@ -16,6 +16,7 @@ import { get_item } from "../utils/get_item";
 import { update_annotation_after_deletion } from "../utils/update_annotation_after_deletion";
 import { add_urls } from "../Scrapbox/add_scrapbox_links";
 import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
+import { AddLineMenuItem } from "./AddLineMenuItem";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -107,6 +108,7 @@ export const GroupMenu = () => {
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
       <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
       {ExpandScrapboxLinks}
+      <AddLineMenuItem id={id} />
 
       {kozaneba.user_menus["Group"]!.map(UserMenuItem)}
       <MenuItem onClick={onDelete} data-testid="group-delete">

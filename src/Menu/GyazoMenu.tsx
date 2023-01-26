@@ -1,13 +1,13 @@
 import { Menu } from "@mui/material";
-import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
-import { get_item } from "../utils/get_item";
-import { TItem } from "../Global/TItem";
 import { TGyazoItem } from "../Global/TGyazoItem";
-import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
+import { TItem } from "../Global/TItem";
 import { close_context_menu } from "../utils/close_context_menu";
+import { get_item } from "../utils/get_item";
+import { AddLineMenuItem } from "./AddLineMenuItem";
+import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
 
@@ -25,6 +25,7 @@ export const GyazoMenu = () => {
   const id = g.clicked_target;
   if (id === "" || g.itemStore[id] === undefined) return null;
   const item = get_item(g, id);
+
   if (isTGyazoItem(item)) {
     return (
       <Menu
@@ -36,6 +37,8 @@ export const GyazoMenu = () => {
         <BigMenuItem id={id} />
         <SmallMenuItem id={id} />
         <VisitMenuItem url={item.url} />
+        <AddLineMenuItem id={id} />
+
         {kozaneba.user_menus["Gyazo"]!.map(UserMenuItem)}
         <DeleteMenuItem id={id} />
       </Menu>

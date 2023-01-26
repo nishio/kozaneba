@@ -1,14 +1,14 @@
 import { Menu, MenuItem } from "@mui/material";
-import React from "react";
 import { getGlobal, useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
-import { add_scrapbox_links } from "../Scrapbox/add_scrapbox_links";
 import { UserMenuItem } from "../API/UserMenuItem";
-import { get_item } from "../utils/get_item";
 import { TItem } from "../Global/TItem";
 import { TScrapboxItem } from "../Global/TScrapboxItem";
-import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
+import { add_scrapbox_links } from "../Scrapbox/add_scrapbox_links";
 import { close_context_menu } from "../utils/close_context_menu";
+import { get_item } from "../utils/get_item";
+import { AddLineMenuItem } from "./AddLineMenuItem";
+import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
 
@@ -31,6 +31,7 @@ export const ScrapboxMenu = () => {
   const onExpand = () => {
     add_scrapbox_links(item.url, false, true);
   };
+
   return (
     <Menu
       anchorEl={anchor}
@@ -42,6 +43,7 @@ export const ScrapboxMenu = () => {
       <SmallMenuItem id={id} />
       <VisitMenuItem url={item.url} />
       <MenuItem onClick={onExpand}>expand</MenuItem>
+      <AddLineMenuItem id={id} />
 
       {kozaneba.user_menus["Scrapbox"]!.map(UserMenuItem)}
       <DeleteMenuItem id={id} />
