@@ -62,7 +62,12 @@ export const INITIAL_GLOBAL_STATE = {
 // Implicit Mouse Mode
 type TDragTarget = "" | "selection" | TItemId;
 type TMouseState = "" | "selecting" | "middle_dragging" | "making_line";
-export type TLineType = "line" | "arrow" | "double_heads" | "double_lines";
+export type TLineType =
+  | "line"
+  | "arrow"
+  | "double_heads"
+  | "double_lines"
+  | "delete";
 
 type TMenuAnchor = null | Element;
 

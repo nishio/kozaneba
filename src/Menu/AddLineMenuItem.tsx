@@ -18,21 +18,26 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
     };
 
     return (
-      <>
+      <div
+        style={{
+          borderBottom: "solid 1px #eee",
+        }}
+      >
         <li
           style={{
-            paddingLeft: "16px",
+            paddingLeft: "6px",
             paddingTop: "6px",
             borderTop: "solid 1px #eee",
+            color: "#888",
           }}
         >
-          Add Line/Arrow
+          One Line/Arrow
         </li>
+
         <div
           style={{
             display: "flex",
             padding: "6px 16px",
-            borderBottom: "solid 1px #eee",
           }}
         >
           <MenuItem
@@ -77,7 +82,8 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
             />
           </MenuItem>
         </div>
-      </>
+        {/* <MenuItem onClick={() => onAddLine("delete")}>delete</MenuItem> */}
+      </div>
     );
   }
 );
