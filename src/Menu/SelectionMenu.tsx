@@ -87,7 +87,7 @@ export const SelectionMenu = () => {
           borderTop: "solid 1px #eee",
         }}
       >
-        Add Line/Arrow
+        Add Lines/Arrows
       </li>
       <div
         style={{

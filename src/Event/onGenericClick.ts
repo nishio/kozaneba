@@ -23,9 +23,22 @@ export const onGenericClick = (
     updateGlobal((g) => {
       g.mouseState = "";
     });
-    dev_log("add line", g.line_start, id);
+    dev_log("add line", g.line_start, id, g.line_type);
     if (g.line_start !== "" && g.line_start !== id) {
-      kozaneba.add_arrow([g.line_start, id], ["none", "arrow"]);
+      switch (g.line_type) {
+        case "line":
+          kozaneba.add_arrow([g.line_start, id], ["none", "none"]);
+          break;
+        case "arrow":
+          kozaneba.add_arrow([g.line_start, id], ["none", "arrow"]);
+          break;
+        case "double_heads":
+          kozaneba.add_arrow([g.line_start, id], ["arrow", "arrow"]);
+          break;
+        case "double_lines":
+          kozaneba.add_arrow([g.line_start, id], ["none", "none"], true);
+          break;
+      }
     }
     return;
   }

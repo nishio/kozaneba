@@ -56,11 +56,13 @@ export const INITIAL_GLOBAL_STATE = {
   did_warn_over_capacity: false,
 
   line_start: "" as "" | TItemId,
+  line_type: "line" as TLineType,
 };
 
 // Implicit Mouse Mode
 type TDragTarget = "" | "selection" | TItemId;
 type TMouseState = "" | "selecting" | "middle_dragging" | "making_line";
+export type TLineType = "line" | "arrow" | "double_heads" | "double_lines";
 
 type TMenuAnchor = null | Element;
 
