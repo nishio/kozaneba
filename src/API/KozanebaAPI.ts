@@ -28,6 +28,7 @@ import { unpin } from "./unpin";
 import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
 import { add_arrow } from "./add_arrow";
+import { get_num_visible_object } from "./get_num_visible_object";
 
 export const kozaneba = {
   // simple values to modify

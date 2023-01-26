@@ -1,7 +1,7 @@
 import { getGlobal } from "reactn";
 import { TItemId } from "../Global/TItemId";
 
-const get_num_visible_object = () => {
+export const get_num_visible_object = () => {
   const g = getGlobal();
   let count: { [key: string]: number } = { total: 0 };
   const visit = (id: TItemId) => {
