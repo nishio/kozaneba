@@ -30,7 +30,7 @@ export const handle_making_line = (id: TItemId) => {
         const start = g.line_start,
           end = id;
         const new_annot = g.annotations.filter((a: TAnnotation) => {
-          if (a.items.length != 2) {
+          if (a.items.length !== 2) {
             return true;
           }
           const [v1, v2] = a.items;
