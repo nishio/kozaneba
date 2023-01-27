@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
+import { TGroupItem } from "../../../src/Global/TGroupItem";
 import {
   KOZANE_OFFSET_X,
   KOZANE_OFFSET_Y,
-} from "../../../src/Kozane/kozane_constants";
-import { TGroupItem } from "../../../src/Group/GroupItem";
+} from "../../../src/utils/kozane_constants";
 import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("drag in/out", () => {

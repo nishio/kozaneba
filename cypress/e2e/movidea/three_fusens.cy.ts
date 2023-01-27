@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { ItemId } from "../../../src/Global/initializeGlobalState";
+import { TItemId } from "../../../src/Global/TItemId";
 import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("three fusens", () => {
@@ -22,7 +22,7 @@ describe("three fusens", () => {
     cy.testid("selection-view").click("topRight");
     cy.contains("make group").click();
 
-    cy.getGlobal((g) => g.drawOrder.slice(-1)[0]).then((id: ItemId) =>
+    cy.getGlobal((g) => g.drawOrder.slice(-1)[0]).then((id: TItemId) =>
       cy.testid(id).click()
     );
     cy.contains("ungroup").click();

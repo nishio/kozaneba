@@ -1,11 +1,12 @@
 /// <reference types="cypress" />
 
+import { TWorldCoord } from "../../../src/dimension/world_to_screen";
+import { TMovidea } from "../../../src/Global/exposeGlobal";
 import {
   KOZANE_BORDER,
   KOZANE_HEIGHT,
   KOZANE_WIDTH,
-} from "../../../src/Kozane/kozane_constants";
-import { TMovidea } from "../../../src/Global/exposeGlobal";
+} from "../../../src/utils/kozane_constants";
 
 let movidea: TMovidea;
 describe("dimension", () => {
@@ -70,25 +71,31 @@ describe("dimension", () => {
     {
       const [x, y] = [0, 0];
       cy.updateGlobal((g) => {
-        g.itemStore["2"].position = [x, y];
+        g.itemStore["2"].position = [x, y] as TWorldCoord;
       });
       const [top, left] = topLeft([x, y]);
       cy.testid("2").then((el) => {
         return cy
           .wrap(el)
-          .should("hasPosition", movidea.world_to_screen([top, left]));
+          .should(
+            "hasPosition",
+            movidea.world_to_screen([top, left] as TWorldCoord)
+          );
       });
     }
     {
       const [x, y] = [-123, 45];
       cy.updateGlobal((g) => {
-        g.itemStore["2"].position = [x, y];
+        g.itemStore["2"].position = [x, y] as TWorldCoord;
       });
       const [top, left] = topLeft([x, y]);
       cy.testid("2").then((el) => {
         return cy
           .wrap(el)
-          .should("hasPosition", movidea.world_to_screen([top, left]));
+          .should(
+            "hasPosition",
+            movidea.world_to_screen([top, left] as TWorldCoord)
+          );
       });
     }
 
@@ -97,13 +104,16 @@ describe("dimension", () => {
       cy.updateGlobal((g) => {
         g.trans_x = 67;
         g.trans_y = 89;
-        g.itemStore["2"].position = [x, y];
+        g.itemStore["2"].position = [x, y] as TWorldCoord;
       });
       const [top, left] = topLeft([x, y]);
       cy.testid("2").then((el) => {
         return cy
           .wrap(el)
-          .should("hasPosition", movidea.world_to_screen([top, left]));
+          .should(
+            "hasPosition",
+            movidea.world_to_screen([top, left] as TWorldCoord)
+          );
       });
     }
 
@@ -113,13 +123,16 @@ describe("dimension", () => {
         g.trans_x = 67;
         g.trans_y = 89;
         g.scale = 2;
-        g.itemStore["2"].position = [x, y];
+        g.itemStore["2"].position = [x, y] as TWorldCoord;
       });
       const [top, left] = topLeft([x, y]);
       cy.testid("2").then((el) => {
         return cy
           .wrap(el)
-          .should("hasPosition", movidea.world_to_screen([top, left]));
+          .should(
+            "hasPosition",
+            movidea.world_to_screen([top, left] as TWorldCoord)
+          );
       });
     }
   });

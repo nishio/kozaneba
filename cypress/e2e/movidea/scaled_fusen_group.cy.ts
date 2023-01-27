@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { piece_to_kozane, upgrade } from "../../../src/utils/piece_to_kozane";
+import { upgrade } from "../../../src/utils/piece_to_kozane";
 
 describe("scaled fusen group", () => {
   beforeEach(() => {

@@ -4,7 +4,7 @@ import {
   KOZANE_BORDER,
   KOZANE_HEIGHT,
   KOZANE_WIDTH,
-} from "../../../src/Kozane/kozane_constants";
+} from "../../../src/utils/kozane_constants";
 import { piece_to_kozane } from "../../../src/utils/piece_to_kozane";
 
 describe("drag in/out of nested group", () => {
