@@ -1,20 +1,18 @@
 /// <reference types="cypress" />
 
 import { TWorldCoord } from "../../../src/dimension/world_to_screen";
-import {
-  ItemId,
-  TGyazoItem,
-  TScrapboxItem,
-} from "../../../src/Global/initializeGlobalState";
-import { KozaneItem, TKozaneItem } from "../../../src/Kozane/KozaneItem";
-import { add_item } from "../../support";
+import { TItemId } from "../../../src/Global/TItemId";
+import { TKozaneItem } from "../../../src/Global/TKozaneItem";
+import { TScrapboxItem } from "../../../src/Global/TScrapboxItem";
+import { KozaneItem } from "../../../src/Kozane/KozaneItem";
+import { add_item } from "../../support/e2e";
 
 describe("ready one kozane", () => {
   beforeEach(() => {
     cy.visit("/#blank");
 
     const scrapbox1: TScrapboxItem = {
-      id: "scrapbox1" as ItemId,
+      id: "scrapbox1" as TItemId,
       type: "scrapbox",
       text: "常滑市が音楽フェス主催者側へ抗議文送付へ 感染対策不徹底で｜NHK 東海のニュース",
       image: "https://www3.nhk.or.jp/news/img/fb_futa_600px.png",
@@ -26,7 +24,7 @@ describe("ready one kozane", () => {
     add_item(scrapbox1);
 
     const scrapbox3: TScrapboxItem = {
-      id: "scrapbox3" as ItemId,
+      id: "scrapbox3" as TItemId,
       type: "scrapbox",
       text: "2021-08-27Kozaneba開発日記",
       image: "https://gyazo.com/872f3897132974239c3ad539a6a8df69/thumb/400",
@@ -38,7 +36,7 @@ describe("ready one kozane", () => {
     add_item(scrapbox3);
 
     const scrapbox2: TScrapboxItem = {
-      id: "scrapbox2" as ItemId,
+      id: "scrapbox2" as TItemId,
       type: "scrapbox",
       text: "Develop. Preview. Ship. For the best frontend teams – Vercel",
       image: "",
@@ -52,7 +50,7 @@ describe("ready one kozane", () => {
     };
     add_item(scrapbox2);
     const scrapbox4: TScrapboxItem = {
-      id: "scrapbox4" as ItemId,
+      id: "scrapbox4" as TItemId,
       type: "scrapbox",
       text: "Model–view–viewmodel - Wikipedia",
       image: "https://en.wikipedia.org//static/favicon/wikipedia.ico",

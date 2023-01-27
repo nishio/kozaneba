@@ -6,7 +6,7 @@ import {
   TGyazoItem,
   TScrapboxItem,
 } from "../../../src/Global/initializeGlobalState";
-import { add_item } from "../../support";
+import { add_item } from "../../support/e2e";
 
 describe("ready one kozane", () => {
   beforeEach(() => {

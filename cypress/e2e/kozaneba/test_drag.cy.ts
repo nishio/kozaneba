@@ -13,7 +13,7 @@ import {
   ready_one_group,
   ready_one_kozane,
   ready_two_groups,
-} from "../../support";
+} from "../../support/e2e";
 import { TITLE_HEIGHT } from "../../../src/dimension/BORDER";
 import { constants } from "../../../src/API/constants";
 

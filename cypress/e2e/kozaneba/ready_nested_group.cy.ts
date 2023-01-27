@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { ready_nested_group } from "../../support";
+import { ready_nested_group } from "../../support/e2e";
 
 describe("ready nested groups", () => {
   beforeEach(() => {

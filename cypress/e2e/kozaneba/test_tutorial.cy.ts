@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import firebase from "firebase/app";
 import "firebase/auth";
-import { do_click, do_drag } from "../../support";
+import { do_click, do_drag } from "../../support/e2e";
 
 describe("tutorial", () => {
   beforeEach(() => {

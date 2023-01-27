@@ -1,13 +1,12 @@
 /// <reference types="cypress" />
 
-import { ready_one_group } from "../../support";
+import { ready_two_groups } from "../../support/e2e";
 
-describe("ready one group with one kozane", () => {
+describe("ready two groups", () => {
   beforeEach(() => {
     cy.visit("/#blank");
     cy.viewport(500, 500);
-    ready_one_group();
+    ready_two_groups();
   });
-
   it("do nothing", () => {});
 });

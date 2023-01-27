@@ -1,6 +1,10 @@
 /// <reference types="cypress" />
 
-import { do_click, ready_nested_group, ready_one_kozane } from "../../support";
+import {
+  do_click,
+  ready_nested_group,
+  ready_one_kozane,
+} from "../../support/e2e";
 import { make_get_group_func } from "../../utils";
 
 describe("test ungroup", () => {

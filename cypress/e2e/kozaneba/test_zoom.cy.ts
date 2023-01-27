@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { ready_one_kozane } from "../../support";
+import { ready_one_kozane } from "../../support/e2e";
 
 describe("zoom", () => {
   beforeEach(() => {

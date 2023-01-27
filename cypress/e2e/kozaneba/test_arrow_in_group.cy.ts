@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 import { TWorldCoord } from "../../../src/dimension/world_to_screen";
 import { TItemId } from "../../../src/Global/TItemId";
-import { do_drag } from "../../support";
+import { do_drag } from "../../support/e2e";
 
 describe("ready one group with one kozane", () => {
   beforeEach(() => {

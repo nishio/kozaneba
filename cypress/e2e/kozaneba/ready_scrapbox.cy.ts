@@ -3,7 +3,7 @@
 import { TWorldCoord } from "../../../src/dimension/world_to_screen";
 import { TItemId } from "../../../src/Global/TItemId";
 import { TScrapboxItem } from "../../../src/Global/TScrapboxItem";
-import { add_item } from "../../support";
+import { add_item } from "../../support/e2e";
 
 describe("ready one kozane", () => {
   beforeEach(() => {
