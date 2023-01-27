@@ -16,7 +16,8 @@
     "noEmit": true,
     "noUncheckedIndexedAccess": true,
     "jsx": "react-jsx",
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "types": ["node"]
   },
   "include": ["src"]
 }
