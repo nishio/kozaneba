@@ -16,7 +16,7 @@ export const HelpButton = () => {
         color="inherit"
         aria-label="menu"
         onClick={onButtonClick}
-        data-testid="main-menu"
+        data-testid="help-icon-button"
         style={{
           marginLeft: "auto",
         }}

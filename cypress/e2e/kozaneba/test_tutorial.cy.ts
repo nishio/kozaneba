@@ -11,6 +11,9 @@ describe("tutorial", () => {
 
   it("main", () => {
     cy.testid("sign-out").click({ force: true });
+    cy.updateGlobal((g) => {
+      g.language = "en";
+    });
 
     cy.getGlobal((g) => g.dialog).should("eql", "Tutorial");
     cy.testid("tutorial-title").contains("Welcome to Kozaneba!");
@@ -109,7 +112,7 @@ describe("tutorial", () => {
     cy.testid("tutorial-title").contains("Let's close and open a group!");
     cy.testid("tutorial-next").click();
 
-    cy.testid("tutorial-title").contains("Let's edit group title!");
+    cy.testid("tutorial-title").contains("Let's edit group nameplate!");
     cy.testid("tutorial-next").click();
 
     cy.testid("tutorial-title").contains("It's not saved yet!");
