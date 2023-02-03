@@ -8,4 +8,7 @@ export const constants = {
   add_kozane_dialog_is_fullscreen: false,
   fontsize_of_add_kozane_dialog: "16px",
   to_adjust_opacity_of_lines_by_length: true,
+
+  // 実験的機能のためのフィーチャートグル、消える可能性が高い
+  exp_no_adjust: false,
 };

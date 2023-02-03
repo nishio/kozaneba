@@ -2,6 +2,7 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { CSSProperties } from "react";
 import { useGlobal } from "reactn";
+import { kozaneba } from "../API/KozanebaAPI";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
 import { TKozaneItem } from "../Global/TKozaneItem";
@@ -27,10 +28,23 @@ export const Kozane: React.FC<Props> = ({
     ...custom_style,
     ...custom,
   };
+  let content = build_content(value);
+
+  if (kozaneba.constants.exp_no_adjust && value.text.startsWith("#")) {
+    style.fontSize = 100 * value.scale;
+    style.width = "unset";
+    style.height = "unset";
+    style.wordWrap = "unset";
+    style.overflow = "visible";
+    content = [
+      <span style={{ whiteSpace: "nowrap" }}>{value.text.substring(1)}</span>,
+    ];
+  }
 
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     onKozaneMouseDown(e, value);
   };
+
   const link_mark = () => {
     const url = value.custom?.url;
     if (url !== "" && url !== undefined) {
@@ -64,7 +78,7 @@ export const Kozane: React.FC<Props> = ({
       onMouseDown={onMouseDown}
     >
       {link_mark()}
-      <KozaneDiv2>{build_content(value)}</KozaneDiv2>
+      <KozaneDiv2>{content}</KozaneDiv2>
     </KozaneDiv>
   );
 };
