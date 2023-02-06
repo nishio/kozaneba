@@ -29,6 +29,7 @@ import { update_style } from "./update_style";
 import { user_menus } from "./user_menus";
 import { add_arrow } from "./add_arrow";
 import { get_num_visible_object } from "./get_num_visible_object";
+import { get_middle_point } from "../Canvas/Annotation/get_middle_point";
 
 export const kozaneba = {
   // simple values to modify
@@ -61,6 +62,7 @@ export const kozaneba = {
   get_clicked_item,
   get_selected_ids,
   get_gravity_point,
+  get_middle_point,
   get_item,
   get_num_visible_object,
 

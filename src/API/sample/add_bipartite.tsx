@@ -8,7 +8,7 @@ export const add_bipartite = (
 ) => {
   if (targets.length < 2) return;
   const positions = targets.map((id) => kozaneba.get_item(id).position);
-  const gp = kozaneba.get_gravity_point(positions);
+  const gp = kozaneba.get_middle_point(positions);
   const lefts = targets.filter((_, index) => positions[index]![0] <= gp[0]);
   const rights = targets.filter((_, index) => positions[index]![0] > gp[0]);
   const head = is_arrow ? "arrow" : "none";
