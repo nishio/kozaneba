@@ -61,8 +61,8 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
-  const onAddBipartite = (is_doubled = false) => {
-    add_bipartite(getGlobal().selected_items, is_doubled);
+  const onAddBipartite = (is_doubled = false, is_arrow = true) => {
+    add_bipartite(getGlobal().selected_items, is_doubled, is_arrow);
     reset_selection();
     mark_local_changed();
     setMenu("");
@@ -97,6 +97,17 @@ export const SelectionMenu = () => {
         }}
       >
         <MenuItem
+          onClick={() => onAddBipartite(false, false)}
+          dense={true}
+          disableGutters={true}
+        >
+          <img
+            src="https://gyazo.com/b0759506d00aabdd7a2443b7ab32ac70/thumb/50"
+            alt="add lines(bipartite, single)"
+          />
+        </MenuItem>
+
+        <MenuItem
           onClick={() => onAddArrow("none", false)}
           dense={true}
           disableGutters={true}
@@ -127,6 +138,14 @@ export const SelectionMenu = () => {
             alt="add arrow(head:all)"
           />
         </MenuItem>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          padding: "6px 16px",
+          borderBottom: "solid 1px #eee",
+        }}
+      >
         <MenuItem
           onClick={() => onAddBipartite(false)}
           dense={true}
@@ -137,14 +156,6 @@ export const SelectionMenu = () => {
             alt="add arrow(bipartite)"
           />
         </MenuItem>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          padding: "6px 16px",
-          borderBottom: "solid 1px #eee",
-        }}
-      >
         <MenuItem
           onClick={() => onAddArrow("none", true)}
           dense={true}
@@ -156,16 +167,6 @@ export const SelectionMenu = () => {
           />
         </MenuItem>
 
-        <MenuItem
-          onClick={() => onAddArrow("right", true)}
-          dense={true}
-          disableGutters={true}
-        >
-          <img
-            src="https://gyazo.com/b7969f22b5d5466c1b635bea836e1bf1/thumb/50"
-            alt="add arrow(head:right, doubled)"
-          />
-        </MenuItem>
         <MenuItem
           onClick={() => onAddArrow("all", true)}
           dense={true}

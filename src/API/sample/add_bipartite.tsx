@@ -1,15 +1,20 @@
 import { TItemId } from "../../Global/TItemId";
 import { kozaneba } from "../KozanebaAPI";
 
-export const add_bipartite = (targets: TItemId[], is_doubled = false) => {
+export const add_bipartite = (
+  targets: TItemId[],
+  is_doubled = false,
+  is_arrow = true
+) => {
   if (targets.length < 2) return;
   const positions = targets.map((id) => kozaneba.get_item(id).position);
   const gp = kozaneba.get_gravity_point(positions);
   const lefts = targets.filter((_, index) => positions[index]![0] <= gp[0]);
   const rights = targets.filter((_, index) => positions[index]![0] > gp[0]);
+  const head = is_arrow ? "arrow" : "none";
   lefts.forEach((left) => {
     rights.forEach((right) => {
-      kozaneba.add_arrow([left, right], ["none", "arrow"], is_doubled);
+      kozaneba.add_arrow([left, right], ["none", head], is_doubled);
     });
   });
 };
