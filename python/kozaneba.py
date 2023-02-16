@@ -191,12 +191,8 @@ def sample_visualize_scrapbox():
     for [v1, v2] in edges:
         id1 = title_to_id[v1]
         id2 = title_to_id.get(v2)
-        if not id2:
-            id2 = ba.make_kozane(v2)
-            ba.make_visible(id2)
-            title_to_id[v2] = id2
-        # debug(v1, v2, id1, id2)
-        # ba.add_simple_arrow(id1, id2)
+        if id2:
+            ba.add_simple_arrow(id1, id2)
 
     # import pdb
     # pdb.set_trace()
