@@ -30,6 +30,11 @@ class Ba:
         self.ba["drawOrder"].append(id)
         return id
 
+    def make_id(self, text):
+        if text == "" or text in self.ba["itemStore"]:
+            return self.create_new_itemid()
+        return text
+
     # make_*: create item and put it in itemStore
     def make_kozane(self, text, position):
         id = self.make_id(text)
@@ -37,11 +42,6 @@ class Ba:
                 "id": id, "text": text, "scale": 1}
         self.ba["itemStore"][id] = item
         return id
-
-    def make_id(self, text):
-        if text == "" or text in self.ba["itemStore"]:
-            return self.create_new_itemid()
-        return text
 
     def make_group(self, items, position, text=""):
         id = self.make_id(text)
@@ -124,5 +124,23 @@ def sample_visualize_source_code():
     print(ba.to_json())
 
 
+def sample_visualize_scrapbox_0():
+    import json
+    from datetime import datetime
+    scb = json.load(open("sample_unnamed-project.json"))
+    name = scb['name']
+    exported = datetime.fromtimestamp(scb['exported'])
+    print(f"{name}-{exported.strftime('%Y%m%d')}")
+
+    # ba = Ba()
+
+    pass
+
+
+def sample_visualize_scrapbox():
+    import requests
+
+
 if __name__ == "__main__":
-    sample_visualize_source_code()
+    # sample_visualize_source_code()
+    sample_visualize_scrapbox()
