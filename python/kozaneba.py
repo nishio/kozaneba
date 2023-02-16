@@ -80,7 +80,12 @@ class Ba:
         "add simple arrow from `frm` to `to"
         item = {
             "type": "line", "items": [frm, to], "heads": ["none", "arrow"],
-            "is_doubled": True, "custom": {}
+            "is_doubled": False,
+            "custom": {
+                "stroke_width": 10,
+                "arrow_head_size": 30,
+                "opacity": 1,
+            }
         }
         self.ba["annotation"].append(item)
 
