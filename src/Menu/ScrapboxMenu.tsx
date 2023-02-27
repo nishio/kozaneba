@@ -10,6 +10,7 @@ import { get_item } from "../utils/get_item";
 import { AddLineMenuItem } from "./AddLineMenuItem";
 import { BigMenuItem, SmallMenuItem } from "./BigSmallMenuItem";
 import { DeleteMenuItem } from "./DeleteMenuItem";
+import { TearMenuItem } from "./TearMenuItem";
 import { VisitMenuItem } from "./VisitMenuItem";
 
 const isTScrapboxItem = (x: TItem): x is TScrapboxItem => {
@@ -43,8 +44,8 @@ export const ScrapboxMenu = () => {
       <SmallMenuItem id={id} />
       <VisitMenuItem url={item.url} />
       <MenuItem onClick={onExpand}>expand</MenuItem>
+      <TearMenuItem id={id} />
       <AddLineMenuItem id={id} />
-
       {kozaneba.user_menus["Scrapbox"]!.map(UserMenuItem)}
       <DeleteMenuItem id={id} />
     </Menu>
