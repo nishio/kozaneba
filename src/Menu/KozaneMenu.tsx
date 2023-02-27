@@ -30,9 +30,6 @@ export const KozaneMenu = () => {
   const item = get_item(g, id);
   if (item.type !== "kozane") return null;
 
-  const onSplit = () => {
-    open_dialog("SplitKozane");
-  };
   const onEdit = () => {
     open_dialog("EditKozane");
   };
@@ -68,9 +65,6 @@ export const KozaneMenu = () => {
     >
       <BigMenuItem id={id} />
       <SmallMenuItem id={id} />
-      <MenuItem onClick={onSplit} data-testid="kozane-split">
-        split
-      </MenuItem>
       <MenuItem onClick={onEdit} data-testid="kozane-edit">
         edit
       </MenuItem>

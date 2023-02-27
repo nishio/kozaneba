@@ -5,7 +5,6 @@ export type TDialog =
   | "Sign"
   | "CloudSave"
   | "EditGroupTitle"
-  | "SplitKozane"
   | "User"
   | "Help"
   | "Loading"

@@ -3,7 +3,6 @@ import { TutorialDialog } from "./Tutorial/TutorialDialog";
 import { SignDialog } from "./SignDialog";
 import { CloudSaveDialog } from "./CloudSaveDialog";
 import { EditGroupTitleDialog } from "./AddKozaneDialog/EditGroupTitleDialog";
-import { SplitKozaneDialog } from "./AddKozaneDialog/SplitKozaneDialog";
 import { UserDialog } from "./User/UserDialog";
 import { HelpDialog } from "./Tutorial/HelpDialog";
 import { LoadingDialog } from "./LoadingDialog";
@@ -18,7 +17,6 @@ export const Dialogs = () => (
     <SignDialog />
     <CloudSaveDialog />
     <EditGroupTitleDialog />
-    <SplitKozaneDialog />
     <UserDialog />
     <HelpDialog />
     <LoadingDialog />
