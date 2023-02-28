@@ -17,6 +17,9 @@ import { update_annotation_after_deletion } from "../utils/update_annotation_aft
 import { add_urls } from "../Scrapbox/add_scrapbox_links";
 import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
 import { AddLineMenuItem } from "./AddLineMenuItem";
+import { TWorldCoord } from "../dimension/world_to_screen";
+import { redraw } from "../API/redraw";
+import { mul_v2w } from "../dimension/V2";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -89,6 +92,30 @@ export const GroupMenu = () => {
       <MenuItem onClick={onExpandScrapboxLinks}>expand scrapbox links</MenuItem>
     );
 
+  const onSpread = () => {
+    updateGlobal((draft) => {
+      group.items.forEach((id) => {
+        const item = get_item(draft, id);
+        const [x, y] = item.position;
+        item.position = [2 * x, 2 * y] as TWorldCoord;
+      });
+    });
+    close_context_menu();
+    redraw();
+  };
+
+  const onRotate = () => {
+    updateGlobal((draft) => {
+      group.items.forEach((id) => {
+        const item = get_item(draft, id);
+        const [x, y] = item.position;
+        item.position = [y, -x] as TWorldCoord;
+      });
+    });
+    close_context_menu();
+    redraw();
+  };
+
   return (
     <Menu
       anchorEl={anchor}
@@ -106,6 +133,9 @@ export const GroupMenu = () => {
         ungroup
       </MenuItem>
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
+      <MenuItem onClick={onRotate}>rotate</MenuItem>
+      <MenuItem onClick={onSpread}>spread</MenuItem>
+
       <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
       {ExpandScrapboxLinks}
       <AddLineMenuItem id={id} />
