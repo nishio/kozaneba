@@ -19,7 +19,11 @@ import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
 import { AddLineMenuItem } from "./AddLineMenuItem";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { redraw } from "../API/redraw";
-import { mul_v2w } from "../dimension/V2";
+import {
+  faArrowsUpDownLeftRight,
+  faRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const GroupMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -133,8 +137,14 @@ export const GroupMenu = () => {
         ungroup
       </MenuItem>
       <MenuItem onClick={onEditGroupTitle}>edit group title</MenuItem>
-      <MenuItem onClick={onRotate}>rotate</MenuItem>
-      <MenuItem onClick={onSpread}>spread</MenuItem>
+      <MenuItem onClick={onRotate}>
+        <FontAwesomeIcon icon={faRotateLeft} />
+        rotate
+      </MenuItem>
+      <MenuItem onClick={onSpread}>
+        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+        spread
+      </MenuItem>
 
       <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
       {ExpandScrapboxLinks}
