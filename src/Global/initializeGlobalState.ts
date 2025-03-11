@@ -71,8 +71,9 @@ export type TLineType =
 
 type TMenuAnchor = null | Element;
 
-type TYPE_GLOBAL_STATE = typeof INITIAL_GLOBAL_STATE;
+export type State = typeof INITIAL_GLOBAL_STATE;
 
+// For backward compatibility with reactn
 declare module "reactn/default" {
-  export interface State extends TYPE_GLOBAL_STATE {}
+  export interface State extends State {}
 }
