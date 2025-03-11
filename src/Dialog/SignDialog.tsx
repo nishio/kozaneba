@@ -6,8 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { authui } from "../Cloud/firebaseui-bypass";
-import { googleAuthProvider } from "../Cloud/init_firebase";
+import { SimpleAuthUI } from "../Cloud/SimpleAuthUI";
 
 export const SignDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -16,20 +15,9 @@ export const SignDialog = () => {
     setDialog("");
   };
 
-  if (open) {
-    authui.start("#firebaseui-auth-container", {
-      signInOptions: [googleAuthProvider.providerId],
-      tosUrl: undefined,
-      privacyPolicyUrl: undefined,
-      signInFlow: "popup",
-      callbacks: {
-        signInSuccessWithAuthResult: () => {
-          setDialog("");
-          return false; // mean: no redirect
-        },
-      },
-    });
-  }
+  const handleAuthSuccess = () => {
+    setDialog("");
+  };
   return (
     <Dialog
       open={open}
@@ -40,7 +28,7 @@ export const SignDialog = () => {
       <DialogTitle id="form-dialog-title">Sign in</DialogTitle>
       <DialogContent style={{ padding: "0px 24px" }}>
         You need to sign in before you create a Ba on cloud.
-        <div id="firebaseui-auth-container"></div>
+        <SimpleAuthUI onSuccess={handleAuthSuccess} />
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={onClose}>
