@@ -1,13 +1,14 @@
-import React from "react";
-import { useGlobal } from "reactn";
+import React, { ReactNode } from "react";
+import { useGlobal } from "../Global/ReactnCompat";
 import { HolderDiv } from "./HolderDiv";
 
-export const SelectedItemsHolder: React.FC<{ top: number; left: number }> = ({
+export const SelectedItemsHolder: React.FC<{ top: number; left: number; children?: ReactNode }> = ({
   top,
   left,
   children,
 }) => {
-  const [g] = useGlobal();
+  // Get global state directly
+  const g = useGlobalState();
 
   const style = {
     top,

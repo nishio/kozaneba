@@ -1,5 +1,5 @@
-import React from "react";
-import { useGlobal } from "reactn";
+import React, { ReactNode } from "react";
+import { useGlobal } from "../Global/ReactnCompat";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { onSelectionMouseDown } from "../Event/mouseEventMamager";
 import { normalize_rect } from "../dimension/normalize_rect";
@@ -7,9 +7,11 @@ import { SelectedItemsHolder } from "./SelectedItemsHolder";
 import { SelectionDiv } from "./SelectionDiv";
 import { SelectionViewDiv } from "./SelectionViewDiv";
 
-export const SelectionView: React.FC<{}> = ({ children }) => {
-  const [selectionRange] = useGlobal("selectionRange");
-  const [selected_items] = useGlobal("selected_items");
+export const SelectionView: React.FC<{ children?: ReactNode }> = ({ children }) => {
+  // Get global state directly
+  const g = useGlobalState();
+  const selectionRange = g.selectionRange;
+  const selected_items = g.selected_items;
   const rect = normalize_rect(selectionRange);
   const top = document.body.clientHeight / 2 - rect.top;
   const left = document.body.clientWidth / 2 - rect.left;
