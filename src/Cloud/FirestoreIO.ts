@@ -10,10 +10,10 @@ import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { auth, db, googleAuthProvider } from "./init_firebase";
-import { collection, addDoc, onAuthStateChanged } from "firebase/firestore";
-import { onAuthStateChanged as authStateChanged } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
-authStateChanged(auth, (user) => {
+onAuthStateChanged(auth, (user) => {
   setGlobal({ user });
   if (user?.uid === "X4csZggYy1dAhcilL1FyNfjBJj12") {
     // user is NISHIO Hirokazu
