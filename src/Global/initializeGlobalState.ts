@@ -74,6 +74,7 @@ type TMenuAnchor = null | Element;
 export type State = typeof INITIAL_GLOBAL_STATE;
 
 // For backward compatibility with reactn
-declare module "reactn/default" {
-  export interface State extends State {}
-}
+// Commented out to avoid circular reference
+// declare module "reactn/default" {
+//   export interface State extends State {}
+// }

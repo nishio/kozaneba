@@ -1,4 +1,4 @@
-import { GlobalState } from "../Global/ReactnCompat";
+import { GlobalState } from "../Global/GlobalContext";
 import { add_v2, V2 } from "./V2";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
