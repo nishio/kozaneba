@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { useGlobal } from "../Global/ReactnCompat";
+import { useGlobal, useGlobalState } from "../Global/ReactnCompat";
 import { HolderDiv } from "./HolderDiv";
 
 export const SelectedItemsHolder: React.FC<{ top: number; left: number; children?: ReactNode }> = ({

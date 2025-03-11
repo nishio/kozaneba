@@ -22,8 +22,8 @@ let globalStateRef: GlobalState = { ...INITIAL_GLOBAL_STATE };
 let globalDispatchRef: React.Dispatch<any> | null = null;
 
 // GlobalStateManager component to keep the ref updated
-// Export GlobalProvider from the module
-export { GlobalProvider } from './GlobalContext';
+// Export GlobalProvider and hooks from the module
+export { GlobalProvider, useGlobalState, useGlobalDispatch } from './GlobalContext';
 
 export const GlobalStateManager: React.FC = () => {
   const state = useGlobalState();

@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { useGlobal } from "../Global/ReactnCompat";
+import { useGlobal, useGlobalState } from "../Global/ReactnCompat";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { onSelectionMouseDown } from "../Event/mouseEventMamager";
 import { normalize_rect } from "../dimension/normalize_rect";
