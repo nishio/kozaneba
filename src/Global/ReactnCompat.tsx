@@ -52,14 +52,26 @@ export const withGlobal = <P extends object>(
 // Compatibility with reactn's useGlobal hook
 export function useGlobal<K extends keyof GlobalState>(
   key?: K
-): K extends undefined ? GlobalState : GlobalState[K] {
+): [K extends undefined ? GlobalState : GlobalState[K], (value: any) => void] {
   const state = useGlobalState();
+  const dispatch = useGlobalDispatch();
+  
+  const setValue = (value: any) => {
+    if (key !== undefined) {
+      dispatch({ 
+        type: 'SET_GLOBAL', 
+        payload: { [key as string]: value } 
+      });
+    } else {
+      dispatch({ type: 'SET_GLOBAL', payload: value });
+    }
+  };
   
   if (key !== undefined) {
-    return state[key] as any;
+    return [state[key] as any, setValue];
   }
   
-  return state as any;
+  return [state as any, setValue];
 }
 
 // Compatibility with reactn's getGlobal function
