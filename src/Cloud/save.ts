@@ -16,10 +16,10 @@ export const save = () => {
   if_not_in_writer_add_self();
 
   const ba = getGlobal().cloud_ba;
-  const doc = state_to_docdate(getGlobal());
-  local_save(ba, doc);
+  const docData = state_to_docdate(getGlobal());
+  local_save(ba, docData);
   const docRef = doc(collection(db, "ba"), ba);
-  setDoc(docRef, doc)
+  setDoc(docRef, docData)
     .then(() => {
       set_status("done");
     });

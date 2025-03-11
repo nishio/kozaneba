@@ -5,15 +5,15 @@ import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { set_up_read_subscription } from "./set_up_read_subscription";
 
-export const save_new = (doc: DocData) => {
+export const save_new = (docData: DocData) => {
   const g = getGlobal();
 
   let p;
   if (g.fix_ba_for_test === "") {
-    p = addDoc(collection(db, "ba"), doc);
+    p = addDoc(collection(db, "ba"), docData);
   } else {
     const docRef = doc(collection(db, "ba"), g.fix_ba_for_test);
-    p = setDoc(docRef, doc).then(() => docRef);
+    p = setDoc(docRef, docData).then(() => docRef);
   }
 
   p.then((docRef: DocRef) => {

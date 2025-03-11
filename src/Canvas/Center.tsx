@@ -10,7 +10,7 @@ export const CenterDiv = styled.div`
   overflow: visible;
 `;
 
-export const Center: React.FC<{ opacity: number }> = ({
+export const Center: React.FC<{ opacity: number; children?: React.ReactNode }> = ({
   children,
   opacity,
 }) => {
