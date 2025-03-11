@@ -17,6 +17,9 @@ import { INITIAL_GLOBAL_STATE } from './initializeGlobalState';
 type GlobalState = typeof INITIAL_GLOBAL_STATE;
 type Reducer<S, A> = (prevState: S, action: A) => S;
 
+// Export State type for backward compatibility
+export type { State } from './initializeGlobalState';
+
 // Global state reference for non-hook contexts
 let globalStateRef: GlobalState = { ...INITIAL_GLOBAL_STATE };
 let globalDispatchRef: React.Dispatch<any> | null = null;
