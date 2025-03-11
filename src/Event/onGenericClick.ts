@@ -1,5 +1,5 @@
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
 import { show_menu } from "../utils/show_menu";

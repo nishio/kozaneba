@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { getGlobal, useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "../Global/ReactnCompat";
 
 export const UserInfo = () => {
   const [user] = useGlobal("user");

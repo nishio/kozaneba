@@ -1,6 +1,6 @@
-import { auth, GoogleAuthProvider } from "../Cloud/init_firebase";
+import { auth, googleAuthProvider } from "../Cloud/init_firebase";
+import { signInWithPopup } from "firebase/auth";
 
 export const onGoogleSignIn = () => {
-  const provider = new GoogleAuthProvider();
-  return auth.signInWithPopup(provider);
+  return signInWithPopup(auth, googleAuthProvider);
 };

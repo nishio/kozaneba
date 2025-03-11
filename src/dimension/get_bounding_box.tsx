@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { get_kozane_bounding_box } from "./get_kozane_bounding_box";
 import { get_group_bounding_box } from "./get_group_bounding_box";
 import { TItemId } from "../Global/TItemId";

@@ -7,7 +7,7 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import React, { createRef } from "react";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../../Global/ReactnCompat";
 import { constants } from "../../API/constants";
 import { finishButtons } from "../../App/hotKey";
 import { addTooltip } from "../../utils/addTooltip";

@@ -5,7 +5,7 @@ import { TMinimumKozaneItem } from "../Global/TMinimumKozaneItem";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { TOffset } from "../dimension/TOffset";
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../Global/ReactnCompat";
 
 export const NameplateKozane: React.FC<Props> = ({
   value,

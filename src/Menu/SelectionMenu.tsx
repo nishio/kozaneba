@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from "@mui/material";
 import React from "react";
-import { getGlobal, useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "../Global/ReactnCompat";
 import { add_kozane } from "../API/add_kozane";
 import { kozaneba } from "../API/KozanebaAPI";
 import { add_bipartite } from "../API/sample/add_bipartite";

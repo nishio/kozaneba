@@ -1,4 +1,4 @@
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { TOffset } from "../dimension/TOffset";
 import { get_item } from "../utils/get_item";
 

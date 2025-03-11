@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { get_item } from "../utils/get_item";
 import { TItemId } from "../Global/TItemId";
 import { TItem } from "../Global/TItem";

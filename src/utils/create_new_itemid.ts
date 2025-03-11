@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { TItemId } from "../Global/TItemId";
 
 let last_timestamp = 0;

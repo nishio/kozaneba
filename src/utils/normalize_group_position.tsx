@@ -1,4 +1,4 @@
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { add_v2w, sub_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { get_group } from "./get_group";

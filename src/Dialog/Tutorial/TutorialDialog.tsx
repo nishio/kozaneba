@@ -1,4 +1,4 @@
-import { getGlobal, setGlobal, useGlobal } from "reactn";
+import { getGlobal, setGlobal, useGlobal } from "../../Global/ReactnCompat";
 import {
   Button,
   Dialog,

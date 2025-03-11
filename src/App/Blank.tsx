@@ -1,4 +1,5 @@
-import { useEffect, useGlobal } from "reactn";
+import { useEffect } from "react";
+import { useGlobal } from "../Global/ReactnCompat";
 import { MyAppBar } from "../AppBar/MyAppBar";
 import { AdjustFontSize } from "../Kozane/AdjustFontSize";
 import { ItemCanvas } from "../Canvas/ItemCanvas";

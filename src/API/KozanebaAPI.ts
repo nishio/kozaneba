@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { user_buttons } from "../AppBar/UserButtons";
 import { save_backup_as_new, show_backup } from "../Cloud/LocalBackup";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";

@@ -9,7 +9,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { useState } from "react";
-import { setGlobal, useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "../Global/ReactnCompat";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { delete_ba } from "../Cloud/delete_ba";

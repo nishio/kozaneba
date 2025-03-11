@@ -1,4 +1,4 @@
-import { getGlobal, setGlobal } from "reactn";
+import { getGlobal, setGlobal } from "../Global/ReactnCompat";
 
 export const redraw = () => {
   const g = getGlobal();

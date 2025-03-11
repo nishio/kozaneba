@@ -1,5 +1,5 @@
-import { getGlobal } from "reactn";
-import { State } from "reactn/default";
+import { getGlobal } from "../Global/ReactnCompat";
+import { State } from "../Global/initializeGlobalState";
 import { redraw } from "../API/redraw";
 import { add_v2, L2norm, mul_v2, normalize, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";

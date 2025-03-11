@@ -2,7 +2,7 @@ import { L2norm, mul_v2, normalize, sub_v2 } from "../dimension/V2";
 import { KOZANE_WIDTH } from "../utils/kozane_constants";
 import { get_gravity_point } from "../dimension/get_gravity_point";
 import { PhysicalLaw, Gradient, add } from "./physics";
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { add_v2, V2 } from "../dimension/V2";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";

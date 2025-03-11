@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { is_user_in_writers } from "./is_user_in_writers";
 
 export const can_write = () => {

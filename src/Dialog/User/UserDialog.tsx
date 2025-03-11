@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../../Global/ReactnCompat";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { get_display_name } from "../../AppBar/UserInfo";
 import { get_writable_ba } from "./get_writable_ba";

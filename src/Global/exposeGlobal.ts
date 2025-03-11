@@ -1,6 +1,8 @@
-import { getGlobal, setGlobal } from "reactn";
+// Import from our compatibility layer instead of reactn
+import { getGlobal, setGlobal } from "./ReactnCompat";
 import { TKozaneba } from "../API/KozanebaAPI";
 import { auth, db } from "../Cloud/init_firebase";
+import { doc, setDoc, collection, connectFirestoreEmulator } from "firebase/firestore";
 import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { closeGroup } from "../Group/closeGroup";
 import { KozaneItem } from "../Kozane/KozaneItem";
@@ -13,19 +15,19 @@ import { updateGlobal } from "./updateGlobal";
 
 const tmpfunc = () => {
   console.log("write");
-  db.collection("ba")
-    .doc("foo")
-    .set({ x: "hello" })
+  // Updated to use Firebase v11 modular API
+  const docRef = doc(collection(db, "ba"), "foo");
+  setDoc(docRef, { x: "hello" })
     .then(() => {
       console.log("OK");
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       console.log(err);
     });
 };
 export const toUseEmulator = () => {
-  db.settings({ experimentalForceLongPolling: true });
-  db.useEmulator("localhost", 8080);
+  // Updated to use Firebase v11 modular API
+  connectFirestoreEmulator(db, "localhost", 8080);
   updateGlobal((g) => {
     g.usingFirestoreEmulator = true;
   });

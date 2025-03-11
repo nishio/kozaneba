@@ -1,5 +1,5 @@
-import { getGlobal } from "reactn";
-import { State } from "reactn/default";
+import { getGlobal } from "../Global/ReactnCompat";
+import { State } from "../Global/initializeGlobalState";
 import { close_menu } from "../utils/close_menu";
 import { state_to_docdate } from "./state_to_docdate";
 import { set_status } from "../utils/set_status";

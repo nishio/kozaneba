@@ -1,6 +1,7 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { kozaneba } from "../API/KozanebaAPI";
 import { db } from "./init_firebase";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { DocData } from "./FirebaseShortTypename";
 import { state_to_docdate } from "./state_to_docdate";
 import { if_not_in_writer_add_self } from "./if_not_in_writer_add_self";
@@ -15,11 +16,10 @@ export const save = () => {
   if_not_in_writer_add_self();
 
   const ba = getGlobal().cloud_ba;
-  const doc = state_to_docdate(getGlobal());
-  local_save(ba, doc);
-  db.collection("ba")
-    .doc(ba)
-    .set(doc)
+  const docData = state_to_docdate(getGlobal());
+  local_save(ba, docData);
+  const docRef = doc(collection(db, "ba"), ba);
+  setDoc(docRef, docData)
     .then(() => {
       set_status("done");
     });

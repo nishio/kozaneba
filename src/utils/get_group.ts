@@ -1,7 +1,7 @@
-import { State } from "reactn/default";
+import { GlobalState } from "../Global/GlobalContext";
 import { TGroupItem } from "../Global/TGroupItem";
 
-export const get_group = (g: State, id: string): TGroupItem => {
+export const get_group = (g: GlobalState, id: string): TGroupItem => {
   if (id === "") {
     throw new Error(`tried get_item {id: ""}`);
   }

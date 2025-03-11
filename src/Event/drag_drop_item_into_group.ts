@@ -15,7 +15,7 @@ import { TItemId } from "../Global/TItemId";
 import { dev_log } from "../utils/dev";
 import { Sentry } from "../initSentry";
 import { drag_drop_item } from "./drag_drop_item";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { get_total_offset_of_parents } from "./get_total_offset_of_parents";
 
 export function drag_drop_item_into_group(

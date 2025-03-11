@@ -1,5 +1,5 @@
 import { Menu } from "@mui/material";
-import { getGlobal, useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "../Global/ReactnCompat";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { TGyazoItem } from "../Global/TGyazoItem";

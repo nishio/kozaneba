@@ -1,6 +1,6 @@
 import { MenuItem } from "@mui/material";
 import React from "react";
-import { setGlobal, useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "../../Global/ReactnCompat";
 
 export const StartTutorial = () => {
   const [in_tutorial] = useGlobal("in_tutorial");

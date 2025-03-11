@@ -1,5 +1,5 @@
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { V2 } from "../dimension/V2";
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
 import { TItemId } from "../Global/TItemId";

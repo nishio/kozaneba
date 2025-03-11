@@ -22,7 +22,7 @@ export const WritableBaList = (ba_list: Ba[] | null) => {
     } else {
       items = ba_list.map((x) => (
         <ListItem
-          button
+          component="button"
           onClick={() => {
             window.open("/#edit=" + x.id, "_blank");
           }}
@@ -57,7 +57,7 @@ export const WritableBaList = (ba_list: Ba[] | null) => {
 
   return (
     <>
-      <ListItem button onClick={onClick} style={{ paddingLeft: 0 }}>
+      <ListItem component="button" onClick={onClick} style={{ paddingLeft: 0 }}>
         <ListItemText primary="Ba which you can write" />
         {is_open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>

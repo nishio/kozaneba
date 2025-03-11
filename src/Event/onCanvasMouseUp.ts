@@ -1,5 +1,5 @@
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { handle_if_is_click } from "./handle_if_is_click";
 import { get_delta } from "./get_delta";
 import { finish_selecting } from "./finish_selecting";

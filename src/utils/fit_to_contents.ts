@@ -1,4 +1,4 @@
-import { getGlobal, setGlobal } from "reactn";
+import { getGlobal, setGlobal } from "../Global/ReactnCompat";
 import { get_items_bounding_box } from "../dimension/get_group_bounding_box";
 import { TItemId } from "../Global/TItemId";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { Sentry } from "../initSentry";
 import { is_dragged } from "./fast_drag_manager";
 import { onGenericClick } from "./onGenericClick";

@@ -1,4 +1,4 @@
-import { setGlobal, useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "../../Global/ReactnCompat";
 import { in_readonly_mode } from "../../AppBar/MainMenu/MainMenu";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { HelpPage } from "./help_pages";

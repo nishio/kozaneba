@@ -1,9 +1,11 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { db } from "./init_firebase";
+import { collection, doc, deleteDoc } from "firebase/firestore";
 
 export const delete_ba = () => {
   const g = getGlobal();
-  db.collection("ba").doc(g.cloud_ba).delete();
+  const docRef = doc(collection(db, "ba"), g.cloud_ba);
+  deleteDoc(docRef);
   close_menu_and_dialog();
 };

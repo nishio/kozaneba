@@ -1,6 +1,6 @@
 import { Line, parse } from "@progfay/scrapbox-parser";
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { make_scrapbox_url } from "../Scrapbox/make_scrapbox_kozane";
 

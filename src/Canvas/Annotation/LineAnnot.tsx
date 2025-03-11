@@ -1,4 +1,4 @@
-import { State } from "reactn/default";
+import { State } from "../../Global/ReactnCompat";
 import { kozaneba } from "../../API/KozanebaAPI";
 import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
 import { get_item_bounding_box } from "../../dimension/get_bounding_box";
