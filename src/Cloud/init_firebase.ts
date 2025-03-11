@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, connectFirestoreEmulator, setLogLevel, Settings } from "firebase/firestore";
+import { getFirestore, connectFirestoreEmulator, setLogLevel } from "firebase/firestore";
 import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
 import type { User } from "firebase/auth";
 
@@ -13,10 +13,7 @@ const app = initializeApp(config);
 
 export const db = getFirestore(app);
 
-// Configure Firestore settings
-const settings: Settings = { 
-  ignoreUndefinedProperties: true 
-};
+// Configure Firestore settings - ignoreUndefinedProperties is no longer needed in v11
 
 // Check if using emulator
 const usingEmulator = window.location.hostname === "localhost";
