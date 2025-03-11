@@ -1,6 +1,7 @@
 import { Collapse, List, ListItem, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { setGlobal, useState } from "../../Global/ReactnCompat";
+import { setGlobal } from "../../Global/ReactnCompat";
+import { useState } from "react";
 import { tutorial_pages } from "./tutorial_pages";
 
 export type HelpPage = {
@@ -60,7 +61,7 @@ const TOC = () => {
   };
   const make_LI = (x: HelpPage) => (
     <ListItem
-      button
+      component="button"
       style={{
         paddingLeft: "2em",
         paddingTop: 0,
@@ -79,7 +80,7 @@ const TOC = () => {
   const other_items = other_pages.map(make_LI);
   return (
     <div>
-      <ListItem button onClick={onOpenTutorial}>
+      <ListItem component="button" onClick={onOpenTutorial}>
         <ListItemText primary="Section 1: Tutorial" />
         {isOpenTutorial ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
@@ -88,7 +89,7 @@ const TOC = () => {
           {tutorial_items}
         </List>
       </Collapse>
-      <ListItem button onClick={onOpenTutorial}>
+      <ListItem component="button" onClick={onOpenTutorial}>
         <ListItemText primary="Section 2:" />
       </ListItem>
       {other_items}
