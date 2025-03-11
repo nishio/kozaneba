@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { authui } from "../Cloud/FirestoreIO";
+import { authui } from "../Cloud/firebaseui-compat";
 import { googleAuthProvider } from "../Cloud/init_firebase";
 
 export const SignDialog = () => {
