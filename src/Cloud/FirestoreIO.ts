@@ -1,108 +1,42 @@
-// Initialize Firebase
-import * as firebaseui from "firebaseui";
-import { State } from "../Global/initializeGlobalState";
-import { setGlobal } from "../Global/ReactnCompat";
-import { TItem } from "../Global/TItem";
-import { TScrapboxItem } from "../Global/TScrapboxItem";
-import { TGyazoItem } from "../Global/TGyazoItem";
-import { TKozaneItem } from "../Global/TKozaneItem";
-import { TGroupItem } from "../Global/TGroupItem";
-import { upgrade } from "../utils/piece_to_kozane";
-import { DocData, DocRef } from "./FirebaseShortTypename";
-import { auth, db, googleAuthProvider } from "./init_firebase";
-import { collection, addDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "firebase/auth";
+import { getGlobal, setGlobal } from "../Global/ReactnCompat";
+import { auth, db } from "./init_firebase";
+import { DocData, DocSnap } from "./FirebaseShortTypename";
+import { state_to_docdate } from "./state_to_docdate";
+import { set_status } from "../utils/set_status";
+import { collection, doc, getDoc, DocumentSnapshot, DocumentData } from "firebase/firestore";
+import { docdate_to_state } from "./docdate_to_state";
 
-onAuthStateChanged(auth, (user) => {
-  setGlobal({ user });
-  if (user?.uid === "X4csZggYy1dAhcilL1FyNfjBJj12") {
-    // user is NISHIO Hirokazu
-    setGlobal({ show_devmenu: true });
-  }
-});
-
-// Firebase UI needs to be updated to work with Firebase v11
-// For now, we'll keep this but it will need to be updated
-export const authui = new firebaseui.auth.AuthUI(auth);
-
-export const showCurrentUser = () => {
-  // Updated to use Firebase v11 API
-  console.log(auth.currentUser);
+// Export a compatibility interface for the old authui
+// This is now handled by SimpleAuthUI component
+export const authui = {
+  start: (containerId: string, config: any): void => {
+    console.log('Firebase UI is now handled by SimpleAuthUI component');
+  },
+  reset: (): void => {}
 };
 
-// Import Firebase utility functions
-import { getDocument, addDocument, updateDocument } from "./firebase-utils";
-
-export const load_from_server = (data: DocData): void => {
-  // Updated to use Firebase v11 API via utility functions
-  // Implementation would depend on specific requirements
-};
-
-export const save_to_server = (state: State): void => {
-  // Updated to use Firebase v11 API via utility functions
-  // Implementation would depend on specific requirements
-};
-
-interface IHasType {
-  type: string;
-}
-function hasType(x: object): x is IHasType {
-  return "type" in x;
-}
-
-interface IHasItems {
-  items: string[];
-}
-function hasItems(x: object): x is IHasItems {
-  return "items" in x;
-}
-
-const to_item = (x: unknown): TItem => {
-  const obj = Object.assign({}, x);
-  if (hasType(obj)) {
-    if (obj.type === "kozane" || obj.type === "piece") {
-      return obj as TKozaneItem;
-    } else if (obj.type === "group") {
-      if (hasItems(obj)) {
-        return obj as TGroupItem;
-      }
-      throw new Error(`a group has no items: ${obj}`);
-    } else if (obj.type === "scrapbox") {
-      return obj as TScrapboxItem;
-    } else if (obj.type === "gyazo") {
-      return obj as TGyazoItem;
+export const get_ba = (ba: string) => {
+  const baCollection = collection(db, "ba");
+  const docRef = doc(baCollection, ba);
+  
+  return getDoc(docRef).then((doc: DocumentSnapshot<DocumentData>) => {
+    if (doc.exists()) {
+      const data = doc.data() as DocData;
+      const state = docdate_to_state(data);
+      setGlobal(state);
+      set_status("loaded from cloud" as any);
+      return state;
     } else {
-      throw new Error(`unknown type ${obj.type} on item ${obj}`);
+      set_status("ba not found" as any);
+      throw new Error("ba not found");
     }
-  } else {
-    throw new Error();
-  }
-};
-export const docdate_to_state = (data: DocData): Partial<State> => {
-  const ret = { ...data };
-  Object.entries(data.itemStore).forEach(([key, value]) => {
-    ret.itemStore[key] = to_item(value);
   });
-  ret.itemStore = upgrade(ret.itemStore);
-  return ret;
 };
 
-const new_docdata = () => {
-  return {};
+export const get_docdate = () => {
+  const g = getGlobal();
+  return state_to_docdate(g);
 };
 
-export const create_new_map = () => {
-  const docdata = new_docdata();
-  _save(docdata).then((docRef: DocRef) => {});
-};
-export const load_map = () => {};
-
-const add_map = (doc: DocData): Promise<DocRef> => {
-  return addDoc(collection(db, "map"), doc);
-};
-
-const add_key = (docRef: DocRef): Promise<DocRef> => {
-  return addDoc(collection(db, "key_to_map"), { mapname: docRef.id });
-};
-
-const _save = (doc: DocData) => add_map(doc).then(add_key);
+// Re-export docdate_to_state for backward compatibility
+export { docdate_to_state };
