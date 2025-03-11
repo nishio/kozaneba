@@ -9,9 +9,11 @@ import { TKozaneItem } from "../Global/TKozaneItem";
 import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
 import { DocData, DocRef } from "./FirebaseShortTypename";
-import { auth, db } from "./init_firebase";
+import { auth, db, googleAuthProvider } from "./init_firebase";
+import { collection, addDoc, onAuthStateChanged } from "firebase/firestore";
+import { onAuthStateChanged as authStateChanged } from "firebase/auth";
 
-auth.onAuthStateChanged((user) => {
+authStateChanged(auth, (user) => {
   setGlobal({ user });
   if (user?.uid === "X4csZggYy1dAhcilL1FyNfjBJj12") {
     // user is NISHIO Hirokazu
@@ -19,6 +21,8 @@ auth.onAuthStateChanged((user) => {
   }
 });
 
+// Firebase UI needs to be updated to work with Firebase v11
+// For now, we'll keep this but it will need to be updated
 export const authui = new firebaseui.auth.AuthUI(auth);
 
 export const showCurrentUser = () => {
@@ -83,11 +87,11 @@ export const create_new_map = () => {
 export const load_map = () => {};
 
 const add_map = (doc: DocData): Promise<DocRef> => {
-  return db.collection("map").add(doc);
+  return addDoc(collection(db, "map"), doc);
 };
 
 const add_key = (docRef: DocRef): Promise<DocRef> => {
-  return db.collection("key_to_map").add({ mapname: docRef.id });
+  return addDoc(collection(db, "key_to_map"), { mapname: docRef.id });
 };
 
 const _save = (doc: DocData) => add_map(doc).then(add_key);
