@@ -1,4 +1,5 @@
-import { getGlobal, useGlobal } from "../../Global/ReactnCompat";
+import { getGlobal } from "../../Global/ReactnCompat";
+import { useGlobalState } from "../../Global/GlobalContext";
 import { get_items_bounding_box } from "../../dimension/get_group_bounding_box";
 import { TAnnotation } from "../../Global/TAnnotation";
 import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
@@ -10,14 +11,14 @@ const get_contents_bound = () => {
 };
 
 export const AnnotationLayer = () => {
-  const [g] = useGlobal();
+  const g = useGlobalState();
 
-  const annotElement = g.annotations.flatMap((a: TAnnotation, index) => {
+  const annotElement = g.annotations?.flatMap((a: TAnnotation, index: number) => {
     if (a.type === "line") {
       return LineAnnot(g, a, index);
     }
     return [];
-  });
+  }) || [];
   const b = get_contents_bound();
   const r = bounding_box_to_rect(b);
   return (
