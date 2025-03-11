@@ -3,8 +3,7 @@ import { INITIAL_GLOBAL_STATE } from './initializeGlobalState';
 
 // Export GlobalState type for use in other components
 export type GlobalState = typeof INITIAL_GLOBAL_STATE;
-
-type GlobalState = typeof INITIAL_GLOBAL_STATE;
+// Action type for reducer
 type Action = { type: string; payload?: any };
 
 const GlobalStateContext = createContext<GlobalState | undefined>(undefined);
