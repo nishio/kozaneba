@@ -9,7 +9,7 @@ import { exposeGlobalForTest } from "./Global/exposeGlobal";
 
 import { initSentry } from "./initSentry";
 import { initGoogleAnalytics } from "./initGoogleAnalytics";
-import addReactNDevTools from "reactn-devtools";
+// TODO: Implement custom dev tools for React Context API
 import { run_user_script } from "./API/run_user_script";
 import { expose_kozaneba_api } from "./API/KozanebaAPI";
 
@@ -21,7 +21,7 @@ const initProduction = () => {
 
 const initDevelopment = () => {
   exposeGlobalForTest();
-  addReactNDevTools({ trace: true, traceLimit: 25 });
+  // Dev tools removed as part of reactn migration
   window.gtag = () => {};
 };
 

@@ -2,7 +2,7 @@ import { MenuItem } from "@mui/material";
 import React from "react";
 import { close_context_menu } from "../utils/close_context_menu";
 import { updateGlobal } from "../Global/updateGlobal";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { get_item } from "../utils/get_item";
 import { create_new_itemid } from "../utils/create_new_itemid";
 import { add_item } from "../API/add_item";

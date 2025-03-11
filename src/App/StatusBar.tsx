@@ -1,4 +1,4 @@
-import { getGlobal, useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "../Global/ReactnCompat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSpinner,

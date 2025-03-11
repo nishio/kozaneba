@@ -1,6 +1,7 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { updateGlobal } from "../Global/updateGlobal";
 import { db } from "./init_firebase";
+import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { set_up_read_subscription } from "./set_up_read_subscription";
 
@@ -9,10 +10,10 @@ export const save_new = (doc: DocData) => {
 
   let p;
   if (g.fix_ba_for_test === "") {
-    p = db.collection("ba").add(doc);
+    p = addDoc(collection(db, "ba"), doc);
   } else {
-    const docRef = db.collection("ba").doc(g.fix_ba_for_test);
-    p = docRef.set(doc).then(() => docRef);
+    const docRef = doc(collection(db, "ba"), g.fix_ba_for_test);
+    p = setDoc(docRef, doc).then(() => docRef);
   }
 
   p.then((docRef: DocRef) => {

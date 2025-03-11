@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useGlobal } from "reactn";
+import { useGlobalState } from "../Global/ReactnCompat";
 import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
@@ -12,9 +12,10 @@ import { Center } from "./Center";
 import { ids_to_dom } from "./ids_to_dom";
 
 export const ItemCanvas = () => {
-  const [drawOrder] = useGlobal("drawOrder");
-  const [selected_items] = useGlobal("selected_items");
-  const [is_selected] = useGlobal("is_selected");
+  const g = useGlobalState();
+  const drawOrder = g.drawOrder;
+  const selected_items = g.selected_items;
+  const is_selected = g.is_selected;
 
   const ref = useRef<HTMLDivElement>(null);
   const offset = { x: 0, y: 0 };

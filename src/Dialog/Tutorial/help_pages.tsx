@@ -1,6 +1,6 @@
 import { Collapse, List, ListItem, ListItemText } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { setGlobal, useState } from "reactn";
+import { setGlobal, useState } from "../../Global/ReactnCompat";
 import { tutorial_pages } from "./tutorial_pages";
 
 export type HelpPage = {

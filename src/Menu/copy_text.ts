@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { bounding_box_to_rect } from "../dimension/bounding_box_to_rect";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { L2norm, sub_v2 } from "../dimension/V2";

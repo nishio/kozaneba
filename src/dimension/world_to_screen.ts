@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { Static } from "runtypes";
 import { RT_V2 } from "./V2";
 

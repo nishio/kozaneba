@@ -1,4 +1,4 @@
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { TItemId } from "../Global/TItemId";
 import { TAnnotation } from "../Global/TAnnotation";
 

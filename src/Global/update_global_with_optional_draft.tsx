@@ -1,4 +1,4 @@
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { updateGlobal } from "./updateGlobal";
 
 export const update_global_with_optional_draft = (

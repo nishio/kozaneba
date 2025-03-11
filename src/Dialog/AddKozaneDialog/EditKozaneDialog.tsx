@@ -7,7 +7,7 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import React, { createRef } from "react";
-import { getGlobal, useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "../../Global/ReactnCompat";
 import { finishButtons } from "../../App/hotKey";
 import { get_item } from "../../utils/get_item";
 import { replace_multiple_kozane } from "../../utils/add_multiple_kozane";

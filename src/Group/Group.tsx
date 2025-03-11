@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { is_draggeing } from "../Event/fast_drag_manager";
 import { get_item } from "../utils/get_item";

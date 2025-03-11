@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { kozaneba } from "../API/KozanebaAPI";
 import { get_middle_point } from "../Canvas/Annotation/get_middle_point";
 import { TArrowHead } from "../Global/TAnnotation";

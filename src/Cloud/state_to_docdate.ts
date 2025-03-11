@@ -1,4 +1,4 @@
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { DocData } from "./FirebaseShortTypename";
 import { item_to_object } from "./item_to_object";
 

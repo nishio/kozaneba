@@ -7,7 +7,7 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import React, { createRef } from "react";
-import { getGlobal, useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "../../Global/ReactnCompat";
 import { finishButtons } from "../../App/hotKey";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { mark_local_changed } from "../../utils/mark_local_changed";

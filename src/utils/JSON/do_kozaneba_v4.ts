@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../../Global/ReactnCompat";
 import { add_item } from "../../API/add_item";
 import { redraw } from "../../API/redraw";
 import { get_center_of_screen } from "../../dimension/get_center_of_screen";

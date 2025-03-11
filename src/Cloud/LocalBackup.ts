@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { date_to_str } from "../utils/date_to_str";
 import { save_new } from "./save_new";
 import { stop_current_subscription } from "./set_up_read_subscription";

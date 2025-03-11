@@ -7,7 +7,7 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import { useRef, useState } from "react";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../../Global/ReactnCompat";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 
 export type Ba = { title: string; id: string; last_updated: number };

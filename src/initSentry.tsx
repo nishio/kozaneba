@@ -1,4 +1,4 @@
-import { getGlobal, setGlobal } from "reactn";
+import { getGlobal, setGlobal } from "./Global/ReactnCompat";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 

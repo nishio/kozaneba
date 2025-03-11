@@ -1,7 +1,7 @@
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
-import { setGlobal, useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "../../Global/ReactnCompat";
 import { kozaneba } from "../../API/KozanebaAPI";
 import { UserMenuItem } from "../../API/UserMenuItem";
 import { initial_save } from "../../Cloud/initial_save";

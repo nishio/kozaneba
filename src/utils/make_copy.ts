@@ -1,5 +1,5 @@
-import { getGlobal } from "reactn";
-import { State } from "reactn/default";
+import { getGlobal } from "../Global/ReactnCompat";
+import { State } from "../Global/initializeGlobalState";
 import { show_dialog } from "../API/show_dialog";
 import { state_to_docdate } from "../Cloud/state_to_docdate";
 import { save_new } from "../Cloud/save_new";

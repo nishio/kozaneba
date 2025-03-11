@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../Global/ReactnCompat";
 import { can_write } from "../utils/can_write";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { dev_log } from "../utils/dev";

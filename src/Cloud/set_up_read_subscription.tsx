@@ -1,4 +1,4 @@
-import { getGlobal, setGlobal } from "reactn";
+import { getGlobal, setGlobal } from "../Global/ReactnCompat";
 import { fit_to_contents } from "../utils/fit_to_contents";
 import { updateGlobal } from "../Global/updateGlobal";
 import { docdate_to_state } from "./FirestoreIO";

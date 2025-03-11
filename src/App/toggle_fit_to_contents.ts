@@ -1,4 +1,4 @@
-import { getGlobal, setGlobal } from "reactn";
+import { getGlobal, setGlobal } from "../Global/ReactnCompat";
 import { fit_to_contents } from "../utils/fit_to_contents";
 
 let prev_view = { scale: 1, trans_x: 0, trans_y: 0 };

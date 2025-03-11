@@ -1,4 +1,4 @@
-import { useGlobal } from "reactn";
+import { useGlobalState } from "../Global/ReactnCompat";
 import styled from "styled-components";
 
 export const CenterDiv = styled.div`
@@ -14,7 +14,7 @@ export const Center: React.FC<{ opacity: number }> = ({
   children,
   opacity,
 }) => {
-  const [g] = useGlobal();
+  const g = useGlobalState();
   const style = {
     opacity,
     transform: `scale(${g.scale}) translate(${g.trans_x}px, ${g.trans_y}px)`,

@@ -1,7 +1,7 @@
 import { TItem } from "../Global/TItem";
-import { State } from "reactn/default";
+import { GlobalState } from "../Global/GlobalContext";
 
-export const get_item = (g: State, id: string): TItem => {
+export const get_item = (g: GlobalState, id: string): TItem => {
   if (id === "") {
     throw new Error(`tried get_item {id: ""}`);
   }

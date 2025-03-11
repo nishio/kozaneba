@@ -3,7 +3,7 @@ import { TItemId } from "../Global/TItemId";
 import { find_parent } from "../utils/find_parent";
 import { get_item } from "../utils/get_item";
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { State } from "reactn/default";
+import { GlobalState as State } from "../Global/GlobalContext";
 
 export const get_total_offset_of_parents = (parent_id: TItemId, g: State) => {
   let offset = [0, 0] as TWorldCoord;

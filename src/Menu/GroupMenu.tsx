@@ -1,6 +1,6 @@
 import { Menu, MenuItem } from "@mui/material";
 import React from "react";
-import { getGlobal, useGlobal } from "reactn";
+import { getGlobal, useGlobal } from "../Global/ReactnCompat";
 import { kozaneba } from "../API/KozanebaAPI";
 import { UserMenuItem } from "../API/UserMenuItem";
 import { mark_local_changed } from "../utils/mark_local_changed";

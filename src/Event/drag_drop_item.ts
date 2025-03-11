@@ -12,7 +12,7 @@ import { reset_target } from "./fast_drag_manager";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
 import { TWorldCoord } from "../dimension/world_to_screen";
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { dev_log } from "../utils/dev";
 import { get_total_offset_of_parents } from "./get_total_offset_of_parents";
 

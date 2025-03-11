@@ -1,5 +1,5 @@
-import { State } from "reactn/default";
-import { setGlobal } from "reactn";
+import { State } from "../Global/initializeGlobalState";
+import { setGlobal } from "../Global/ReactnCompat";
 import { produce } from "immer";
 
 export const updateGlobal = (update: (draft: State) => void) => {

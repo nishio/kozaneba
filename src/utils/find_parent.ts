@@ -1,5 +1,5 @@
-import { getGlobal } from "reactn";
-import { State } from "reactn/default";
+import { getGlobal } from "../Global/ReactnCompat";
+import { State } from "../Global/initializeGlobalState";
 import { get_item } from "./get_item";
 import { TItemId } from "../Global/TItemId";
 

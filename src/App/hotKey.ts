@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { zoom_around_pointer } from "../Event/onWheel";
 import { constants } from "../API/constants";
 import { toggle_fit_to_contents } from "./toggle_fit_to_contents";

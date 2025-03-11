@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../Global/ReactnCompat";
 import { save } from "../Cloud/save";
 import { updateGlobal } from "../Global/updateGlobal";
 import { is_physics_on } from "../Physics/physics";

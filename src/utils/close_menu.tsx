@@ -1,4 +1,4 @@
-import { setGlobal } from "reactn";
+import { setGlobal } from "../Global/ReactnCompat";
 
 export const close_menu = () => {
   setGlobal({ menu: "" });

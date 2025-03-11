@@ -1,6 +1,6 @@
 import { Button, Menu, MenuItem } from "@mui/material";
 import React from "react";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../Global/ReactnCompat";
 import { initial_save } from "../Cloud/initial_save";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { toUseEmulator } from "../Global/exposeGlobal";

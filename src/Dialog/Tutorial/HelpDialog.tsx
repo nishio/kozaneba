@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { setGlobal, useGlobal } from "reactn";
+import { setGlobal, useGlobal } from "../../Global/ReactnCompat";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { help_pages } from "./help_pages";
 

@@ -1,6 +1,6 @@
 import { MenuItem } from "@mui/material";
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { close_menu } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { get_item } from "../utils/get_item";

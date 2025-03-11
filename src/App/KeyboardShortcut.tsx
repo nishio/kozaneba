@@ -1,4 +1,4 @@
-import { useEffect } from "reactn";
+import { useEffect } from "react";
 import { hotKey } from "./hotKey";
 
 export const KeyboardShortcut = () => {

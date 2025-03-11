@@ -1,7 +1,7 @@
 // Initialize Firebase
 import * as firebaseui from "firebaseui";
-import { State } from "reactn/default";
-import { setGlobal } from "reactn";
+import { State } from "../Global/initializeGlobalState";
+import { setGlobal } from "../Global/ReactnCompat";
 import { TItem } from "../Global/TItem";
 import { TScrapboxItem } from "../Global/TScrapboxItem";
 import { TGyazoItem } from "../Global/TGyazoItem";

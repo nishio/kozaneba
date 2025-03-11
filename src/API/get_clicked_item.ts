@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { TItem } from "../Global/TItem";
 
 export const get_clicked_item = (): TItem | undefined => {

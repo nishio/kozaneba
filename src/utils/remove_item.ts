@@ -1,4 +1,4 @@
-import { State } from "reactn/default";
+import { State } from "../Global/ReactnCompat";
 import { get_group } from "./get_group";
 import { TItemId } from "../Global/TItemId";
 import { find_parent } from "./find_parent";

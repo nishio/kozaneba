@@ -1,7 +1,7 @@
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { CSSProperties } from "react";
-import { useGlobal } from "reactn";
+import { useGlobal } from "../Global/ReactnCompat";
 import { kozaneba } from "../API/KozanebaAPI";
 import { TOffset } from "../dimension/TOffset";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";

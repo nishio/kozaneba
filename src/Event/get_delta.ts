@@ -1,5 +1,5 @@
 import React from "react";
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { sub_v2w } from "../dimension/V2";
 import { screen_to_world } from "../dimension/world_to_screen";
 import { get_client_pos } from "./get_client_pos";

@@ -1,4 +1,4 @@
-import { getGlobal } from "reactn";
+import { getGlobal } from "../Global/ReactnCompat";
 import { TOffset } from "../dimension/TOffset";
 import { Kozane } from "../Kozane/Kozane";
 import { Group } from "../Group/Group";
