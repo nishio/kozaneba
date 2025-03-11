@@ -14,9 +14,6 @@
     "@progfay/scrapbox-parser": "^7.2.0",
     "@sentry/react": "^6.11.0",
     "@sentry/tracing": "^6.11.0",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
     "@types/node-fetch": "^2.6.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
@@ -66,6 +63,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^26.0.23",
     "@types/node": "^16.3.1",
     "cypress": "^12.4.0",
