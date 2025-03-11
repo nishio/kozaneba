@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { authui } from "../Cloud/firebaseui-compat";
+import { authui } from "../Cloud/firebaseui-bypass";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { initial_save } from "../Cloud/initial_save";
