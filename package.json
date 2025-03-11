@@ -22,7 +22,6 @@
     "dexie": "^3.0.3",
     "eslint-plugin-cypress": "^2.11.3",
     "firebase": "^11.4.0",
-    "firebaseui": "^4.8.1",
     "immer": "^9.0.12",
     "install": "^0.13.0",
     "normalize-url": "^4.5.1",
