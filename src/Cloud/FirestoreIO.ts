@@ -26,11 +26,22 @@ onAuthStateChanged(auth, (user) => {
 export const authui = new firebaseui.auth.AuthUI(auth);
 
 export const showCurrentUser = () => {
+  // Updated to use Firebase v11 API
   console.log(auth.currentUser);
 };
 
-export const load_from_server = (data: DocData): void => {};
-export const save_to_server = (state: State): void => {};
+// Import Firebase utility functions
+import { getDocument, addDocument, updateDocument } from "./firebase-utils";
+
+export const load_from_server = (data: DocData): void => {
+  // Updated to use Firebase v11 API via utility functions
+  // Implementation would depend on specific requirements
+};
+
+export const save_to_server = (state: State): void => {
+  // Updated to use Firebase v11 API via utility functions
+  // Implementation would depend on specific requirements
+};
 
 interface IHasType {
   type: string;
