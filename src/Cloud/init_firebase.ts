@@ -1,17 +1,34 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getFirestore, connectFirestoreEmulator, setLogLevel, Settings } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
+import type { User } from "firebase/auth";
 
 const config = {
   apiKey: "AIzaSyB0wAxxeLeHr4udunpln5jCYpGpFGn7D00",
   authDomain: "regroup-d4932.firebaseapp.com",
   projectId: "regroup-d4932",
 };
-firebase.initializeApp(config);
 
-export const db = firebase.firestore();
-db.settings({ ignoreUndefinedProperties: true, merge: true });
+const app = initializeApp(config);
 
-export const auth = firebase.auth();
-export const GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
-export type TUser = firebase.User | null;
+export const db = getFirestore(app);
+
+// Configure Firestore settings
+const settings: Settings = { 
+  ignoreUndefinedProperties: true 
+};
+
+// Check if using emulator
+const usingEmulator = window.location.hostname === "localhost";
+if (usingEmulator) {
+  connectFirestoreEmulator(db, "localhost", 8080);
+  setLogLevel("debug");
+}
+
+export const auth = getAuth(app);
+if (usingEmulator) {
+  connectAuthEmulator(auth, "http://localhost:9099");
+}
+
+export const googleAuthProvider = new GoogleAuthProvider();
+export type TUser = User | null;
