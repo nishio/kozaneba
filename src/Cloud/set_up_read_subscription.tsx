@@ -50,3 +50,6 @@ export const unsubscribe_read = () => {
     unsubscribe = null;
   }
 };
+
+// Alias for backward compatibility
+export const stop_current_subscription = unsubscribe_read;
