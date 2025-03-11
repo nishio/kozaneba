@@ -11,7 +11,7 @@ import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { initial_save } from "../Cloud/initial_save";
 import { useEffect } from "react";
-import { GoogleAuthProvider } from "../Cloud/init_firebase";
+import { googleAuthProvider } from "../Cloud/init_firebase";
 
 export const CloudSaveDialog = () => {
   const [dialog] = useGlobal("dialog");
@@ -31,7 +31,7 @@ export const CloudSaveDialog = () => {
   };
   if (open) {
     authui.start("#could-save-firebaseui-auth-container", {
-      signInOptions: [GoogleAuthProvider.PROVIDER_ID],
+      signInOptions: [googleAuthProvider.providerId],
       tosUrl: undefined,
       privacyPolicyUrl: undefined,
       signInFlow: "popup",

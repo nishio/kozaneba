@@ -5,14 +5,16 @@ import { docdate_to_state } from "./FirestoreIO";
 import { db } from "./init_firebase";
 import { DocSnap } from "./FirebaseShortTypename";
 import { set_status } from "../utils/set_status";
+import { collection, doc, onSnapshot, DocumentSnapshot, DocumentData } from "firebase/firestore";
+
 let unsubscribe = null as null | (() => void);
 
 export const set_up_read_subscription = (ba: string) => {
   console.log("set_up_read_subscription", ba);
-  unsubscribe = db
-    .collection("ba")
-    .doc(ba)
-    .onSnapshot((doc: DocSnap) => {
+  const baCollection = collection(db, "ba");
+  const docRef = doc(baCollection, ba);
+  
+  unsubscribe = onSnapshot(docRef, (doc: DocumentSnapshot<DocumentData>) => {
       const data = doc.data();
       if (data === undefined) {
         // throw new TypeError("doc.data() is undefined");
@@ -31,7 +33,11 @@ export const set_up_read_subscription = (ba: string) => {
       if (data.last_updated > local_latest) {
         console.log("update local with data from server", server);
         setGlobal(server);
-        setGlobal(fit_to_contents());
+        // Cast fit_to_contents result to avoid type errors
+        const fitResult = fit_to_contents();
+        if (fitResult) {
+          setGlobal(fitResult as any);
+        }
       } else if (data.last_updated < local_latest) {
         throw new Error("received old data from server (warning)"); // it happens?
       } else {
