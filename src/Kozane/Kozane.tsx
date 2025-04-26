@@ -22,13 +22,15 @@ export const Kozane: React.FC<Props> = React.memo(({
   custom_style = {},
 }) => {
   const [print_mode] = useGlobal("print_mode");
-  const custom = value.custom?.style ?? {};
   const adjustedStyle = useAdjustFontsizeStyle(value, offset, print_mode);
-  const style = useMemo(() => ({
-    ...adjustedStyle,
-    ...custom_style,
-    ...custom,
-  }), [adjustedStyle, custom_style, custom]);
+  const style = useMemo(() => {
+    const custom = value.custom?.style ?? {};
+    return {
+      ...adjustedStyle,
+      ...custom_style,
+      ...custom,
+    };
+  }, [adjustedStyle, custom_style, value.custom?.style]);
   let content = build_content(value);
 
   if (kozaneba.constants.exp_no_adjust && value.text.startsWith("#")) {
