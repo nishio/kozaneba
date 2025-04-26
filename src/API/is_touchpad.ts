@@ -1,6 +1,16 @@
 export const is_touchpad = (e: WheelEvent) => {
   // distinguish touchpad and mouse-wheel
-  // tried https://stackoverflow.com/a/62415754/3651086
-  // but it return false for MacBook touchpad event
-  return true;
+  
+  const isTouchDevice = 'ontouchstart' in window || 
+                       navigator.maxTouchPoints > 0 ||
+                       navigator.userAgent.match(/iPad|iPhone|iPod|Android/i);
+                       
+  if (isTouchDevice) {
+    return true;
+  }
+  
+  const isDeltaSmall = Math.abs(e.deltaY) < 10;
+  const hasDeltaX = e.deltaX !== 0;
+  
+  return isDeltaSmall || hasDeltaX;
 };
