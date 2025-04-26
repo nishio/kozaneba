@@ -7,6 +7,7 @@ import { if_not_in_writer_add_self } from "./if_not_in_writer_add_self";
 import { not_login_then_show_dialog } from "./not_login_then_show_dialog";
 import { set_status } from "../utils/set_status";
 import { local_db } from "./LocalBackup";
+import { collection, doc as firestoreDoc, setDoc } from "firebase/firestore";
 
 export const save = () => {
   console.log("update save");
@@ -17,9 +18,7 @@ export const save = () => {
   const ba = getGlobal().cloud_ba;
   const doc = state_to_docdate(getGlobal());
   local_save(ba, doc);
-  db.collection("ba")
-    .doc(ba)
-    .set(doc)
+  setDoc(firestoreDoc(collection(db, "ba"), ba), doc)
     .then(() => {
       set_status("done");
     });

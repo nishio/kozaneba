@@ -10,8 +10,9 @@ import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { auth, db } from "./init_firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
-auth.onAuthStateChanged((user) => {
+onAuthStateChanged(auth, (user) => {
   setGlobal({ user });
   if (user?.uid === "X4csZggYy1dAhcilL1FyNfjBJj12") {
     // user is NISHIO Hirokazu
@@ -82,12 +83,14 @@ export const create_new_map = () => {
 };
 export const load_map = () => {};
 
+import { collection, addDoc } from "firebase/firestore";
+
 const add_map = (doc: DocData): Promise<DocRef> => {
-  return db.collection("map").add(doc);
+  return addDoc(collection(db, "map"), doc);
 };
 
 const add_key = (docRef: DocRef): Promise<DocRef> => {
-  return db.collection("key_to_map").add({ mapname: docRef.id });
+  return addDoc(collection(db, "key_to_map"), { mapname: docRef.id });
 };
 
 const _save = (doc: DocData) => add_map(doc).then(add_key);

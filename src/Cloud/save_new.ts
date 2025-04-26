@@ -3,16 +3,17 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { db } from "./init_firebase";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { set_up_read_subscription } from "./set_up_read_subscription";
+import { collection, doc as firestoreDoc, addDoc, setDoc } from "firebase/firestore";
 
 export const save_new = (doc: DocData) => {
   const g = getGlobal();
 
   let p;
   if (g.fix_ba_for_test === "") {
-    p = db.collection("ba").add(doc);
+    p = addDoc(collection(db, "ba"), doc);
   } else {
-    const docRef = db.collection("ba").doc(g.fix_ba_for_test);
-    p = docRef.set(doc).then(() => docRef);
+    const docRef = firestoreDoc(collection(db, "ba"), g.fix_ba_for_test);
+    p = setDoc(docRef, doc).then(() => docRef);
   }
 
   p.then((docRef: DocRef) => {
