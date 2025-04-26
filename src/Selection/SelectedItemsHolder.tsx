@@ -2,7 +2,7 @@ import React from "react";
 import { useGlobal } from "reactn";
 import { HolderDiv } from "./HolderDiv";
 
-export const SelectedItemsHolder: React.FC<{ top: number; left: number }> = ({
+export const SelectedItemsHolder: React.FC<React.PropsWithChildren<{ top: number; left: number }>> = ({
   top,
   left,
   children,
