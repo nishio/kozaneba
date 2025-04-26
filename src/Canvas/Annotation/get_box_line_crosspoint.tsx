@@ -10,11 +10,12 @@ export const get_box_line_crosspoint = (start: V2, end: V2, box: TRect): V2 => {
   const { top, left, width, height } = box;
   const right = left + width;
   const bottom = top + height;
-  if (!(left < x && x < right && top < y && y < bottom)) {
-    throw new Error(
-      `start point not in box ${JSON.stringify(start)}, ${JSON.stringify(box)}`
-    );
+  
+  if (width <= 0 || height <= 0 || !(left <= x && x <= right && top <= y && y <= bottom)) {
+    // Instead of throwing an error, return the start point
+    return start;
   }
+  
   if (dx > 0) {
     const ey = (right - x) * dy;
     if ((top - y) * dx < ey && ey < (bottom - y) * dx) {
