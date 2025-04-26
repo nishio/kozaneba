@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect } from "react";
 import { getGlobal, useGlobal } from "reactn";
 
 export const UserInfo = () => {
