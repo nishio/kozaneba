@@ -5,15 +5,15 @@ import { docdate_to_state } from "./FirestoreIO";
 import { db } from "./init_firebase";
 import { DocSnap } from "./FirebaseShortTypename";
 import { set_status } from "../utils/set_status";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 let unsubscribe = null as null | (() => void);
 
 export const set_up_read_subscription = (ba: string) => {
   console.log("set_up_read_subscription", ba);
-  unsubscribe = db
-    .collection("ba")
-    .doc(ba)
-    .onSnapshot((doc: DocSnap) => {
-      const data = doc.data();
+  unsubscribe = onSnapshot(
+    doc(collection(db, "ba"), ba),
+    (docSnapshot: DocSnap) => {
+      const data = docSnapshot.data();
       if (data === undefined) {
         // throw new TypeError("doc.data() is undefined");
         console.log("doc.data() is undefined. disconnecting");
