@@ -46,7 +46,7 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
             disableGutters={true}
           >
             <img
-              src="https://gyazo.com/53344a6db2cdf1c7ade0a2dd377c4793/thumb/50"
+              src="/images/menu-icons/add-line.png"
               alt="add line"
             />
           </MenuItem>
@@ -57,7 +57,7 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
             disableGutters={true}
           >
             <img
-              src="https://gyazo.com/53c370b43e1328439164baaed41be7a2/thumb/50"
+              src="/images/menu-icons/add-arrow.png"
               alt="add arrow"
             />
           </MenuItem>
@@ -67,7 +67,7 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
             disableGutters={true}
           >
             <img
-              src="https://gyazo.com/c6611e172ffb5f19558aa796d31b4fe7/thumb/50"
+              src="/images/menu-icons/add-bidirectional-arrow.png"
               alt="add bidirectional arrow"
             />
           </MenuItem>
@@ -77,7 +77,7 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
             disableGutters={true}
           >
             <img
-              src="https://gyazo.com/002bd9eca37cd538f35d369ed01b2659/thumb/50"
+              src="/images/menu-icons/add-double-lines.png"
               alt="add double lines"
             />
           </MenuItem>
