@@ -10,11 +10,11 @@ import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { kintone_demo } from "./kintone_demo";
 import { TKozaneItem } from "./TKozaneItem";
 import { updateGlobal } from "./updateGlobal";
-import { collection, doc, setDoc, connectFirestoreEmulator } from "firebase/firestore";
+
 
 const tmpfunc = () => {
   console.log("write");
-  setDoc(doc(collection(db, "ba"), "foo"), { x: "hello" })
+  db.collection("ba").doc("foo").set({ x: "hello" })
     .then(() => {
       console.log("OK");
     })
@@ -23,7 +23,7 @@ const tmpfunc = () => {
     });
 };
 export const toUseEmulator = () => {
-  connectFirestoreEmulator(db, "localhost", 8080);
+  db.useEmulator("localhost", 8080);
   updateGlobal((g) => {
     g.usingFirestoreEmulator = true;
   });

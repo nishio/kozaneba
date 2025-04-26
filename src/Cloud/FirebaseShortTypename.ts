@@ -1,7 +1,7 @@
-import { DocumentSnapshot, DocumentReference, DocumentData } from "firebase/firestore";
+import firebase from "firebase/compat/app";
 
-export type DocSnap = DocumentSnapshot<DocumentData>;
+export type DocSnap = firebase.firestore.DocumentSnapshot<firebase.firestore.DocumentData>;
 
-export type DocRef = DocumentReference<DocumentData>;
+export type DocRef = firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 
-export type DocData = DocumentData;
+export type DocData = firebase.firestore.DocumentData;

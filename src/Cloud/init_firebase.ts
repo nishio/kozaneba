@@ -1,7 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
-import type { User } from "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/auth";
 
 const config = {
   apiKey: "AIzaSyB0wAxxeLeHr4udunpln5jCYpGpFGn7D00",
@@ -9,10 +8,11 @@ const config = {
   projectId: "regroup-d4932",
 };
 
-const app = initializeApp(config);
+firebase.initializeApp(config);
 
-export const db = getFirestore(app);
+export const db = firebase.firestore();
+db.settings({ ignoreUndefinedProperties: true, merge: true });
 
-export const auth = getAuth(app);
-export { GoogleAuthProvider };
-export type TUser = User | null;
+export const auth = firebase.auth();
+export const GoogleAuthProvider = firebase.auth.GoogleAuthProvider;
+export type TUser = firebase.User | null;
