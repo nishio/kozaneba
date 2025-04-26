@@ -11,6 +11,7 @@ import { upgrade } from "../utils/piece_to_kozane";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { auth, db } from "./init_firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { collection, addDoc } from "firebase/firestore";
 
 onAuthStateChanged(auth, (user) => {
   setGlobal({ user });
@@ -82,8 +83,6 @@ export const create_new_map = () => {
   _save(docdata).then((docRef: DocRef) => {});
 };
 export const load_map = () => {};
-
-import { collection, addDoc } from "firebase/firestore";
 
 const add_map = (doc: DocData): Promise<DocRef> => {
   return addDoc(collection(db, "map"), doc);
