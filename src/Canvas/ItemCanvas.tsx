@@ -25,6 +25,10 @@ export const ItemCanvas = () => {
   useEffect(() => {
     if (ref.current !== null) {
       ref.current.addEventListener("wheel", onWheel, { passive: false });
+      
+      return () => {
+        ref.current?.removeEventListener("wheel", onWheel);
+      };
     }
   }, [ref]);
 

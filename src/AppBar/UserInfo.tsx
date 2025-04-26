@@ -4,7 +4,6 @@ import { getGlobal, useGlobal } from "reactn";
 
 export const UserInfo = () => {
   const [user] = useGlobal("user");
-  useEffect(() => {});
   if (user) {
     return (
       <span>
