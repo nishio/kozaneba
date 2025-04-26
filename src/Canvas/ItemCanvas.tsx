@@ -23,11 +23,12 @@ export const ItemCanvas = () => {
 
   dev_log("render ItemCanvas");
   useEffect(() => {
-    if (ref.current !== null) {
-      ref.current.addEventListener("wheel", onWheel, { passive: false });
+    const currentRef = ref.current;
+    if (currentRef !== null) {
+      currentRef.addEventListener("wheel", onWheel, { passive: false });
       
       return () => {
-        ref.current?.removeEventListener("wheel", onWheel);
+        currentRef.removeEventListener("wheel", onWheel);
       };
     }
   }, [ref]);
