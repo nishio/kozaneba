@@ -1,6 +1,6 @@
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, useMemo, useCallback } from "react";
 import { useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { TOffset } from "../dimension/TOffset";
@@ -16,18 +16,19 @@ type Props = {
   custom_style?: CSSProperties;
 };
 
-export const Kozane: React.FC<Props> = ({
+export const Kozane: React.FC<Props> = React.memo(({
   value,
   offset,
   custom_style = {},
 }) => {
   const [print_mode] = useGlobal("print_mode");
   const custom = value.custom?.style ?? {};
-  const style = {
-    ...useAdjustFontsizeStyle(value, offset, print_mode),
+  const adjustedStyle = useAdjustFontsizeStyle(value, offset, print_mode);
+  const style = useMemo(() => ({
+    ...adjustedStyle,
     ...custom_style,
     ...custom,
-  };
+  }), [adjustedStyle, custom_style, custom]);
   let content = build_content(value);
 
   if (kozaneba.constants.exp_no_adjust && value.text.startsWith("#")) {
@@ -41,11 +42,11 @@ export const Kozane: React.FC<Props> = ({
     ];
   }
 
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     onKozaneMouseDown(e, value);
-  };
+  }, [value]);
 
-  const link_mark = () => {
+  const link_mark = useCallback(() => {
     const url = value.custom?.url;
     if (url !== "" && url !== undefined) {
       return (
@@ -67,7 +68,7 @@ export const Kozane: React.FC<Props> = ({
       );
     }
     return null;
-  };
+  }, [value.custom?.url, value.scale]);
 
   return (
     <KozaneDiv
@@ -81,4 +82,4 @@ export const Kozane: React.FC<Props> = ({
       <KozaneDiv2>{content}</KozaneDiv2>
     </KozaneDiv>
   );
-};
+});
