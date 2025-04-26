@@ -55,9 +55,16 @@ help_pages.forEach((value, index) => {
 
 const TOC = () => {
   const [isOpenTutorial, setIsOpenTutorial] = useState(false);
+  const [isOpenSection2, setIsOpenSection2] = useState(false);
+  
   const onOpenTutorial = () => {
     setIsOpenTutorial(!isOpenTutorial);
   };
+  
+  const onOpenSection2 = () => {
+    setIsOpenSection2(!isOpenSection2);
+  };
+  
   const make_LI = (x: HelpPage) => (
     <ListItem
       button
@@ -88,10 +95,15 @@ const TOC = () => {
           {tutorial_items}
         </List>
       </Collapse>
-      <ListItem button onClick={onOpenTutorial}>
+      <ListItem button onClick={onOpenSection2}>
         <ListItemText primary="Section 2:" />
+        {isOpenSection2 ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
-      {other_items}
+      <Collapse in={isOpenSection2} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {other_items}
+        </List>
+      </Collapse>
     </div>
   );
 };
