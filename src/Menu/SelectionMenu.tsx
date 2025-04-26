@@ -178,7 +178,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/b0759506d00aabdd7a2443b7ab32ac70/thumb/50"
+            src="/images/menu-icons/add-lines-bipartite-single.png"
             alt="add lines(bipartite, single)"
           />
         </MenuItem>
@@ -189,7 +189,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/ed558892471712dc893b30bd257fa521/thumb/50"
+            src="/images/menu-icons/add-arrow-head-none.png"
             alt="add arrow(head:none)"
           />
         </MenuItem>
@@ -200,7 +200,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/75a5ad73d5d4b768de7bf1f3ea7864c2/thumb/50"
+            src="/images/menu-icons/add-arrow-head-right.png"
             alt="add arrow(head:right)"
           />
         </MenuItem>
@@ -210,7 +210,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/770e188862ebe1db8ceacb691a973eaf/thumb/50"
+            src="/images/menu-icons/add-arrow-head-all.png"
             alt="add arrow(head:all)"
           />
         </MenuItem>
@@ -228,7 +228,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/f95bb0b29f554dc5cff8f50562c26e67/thumb/50"
+            src="/images/menu-icons/add-arrow-bipartite.png"
             alt="add arrow(bipartite)"
           />
         </MenuItem>
@@ -238,7 +238,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/f8112925940d458c77d37b53ad62974b/thumb/50"
+            src="/images/menu-icons/add-arrow-head-none-doubled.png"
             alt="add arrow(head:none, doubled)"
           />
         </MenuItem>
@@ -249,7 +249,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/e31fec4c894b227e7b13c230b9e046af/thumb/50"
+            src="/images/menu-icons/add-arrow-head-all-doubled.png"
             alt="add arrow(head:all, doubled)"
           />
         </MenuItem>
@@ -259,7 +259,7 @@ export const SelectionMenu = () => {
           disableGutters={true}
         >
           <img
-            src="https://gyazo.com/9d58339c0d47868f6f76f72885ff2783/thumb/50"
+            src="/images/menu-icons/add-arrow-bipartite-doubled.png"
             alt="add arrow(bipartite, doubled)"
           />
         </MenuItem>
