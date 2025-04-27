@@ -1,10 +1,8 @@
 import React from "react";
-import { useEffect } from "react";
 import { getGlobal, useGlobal } from "reactn";
 
 export const UserInfo = () => {
   const [user] = useGlobal("user");
-  useEffect(() => {});
   if (user) {
     return (
       <span>

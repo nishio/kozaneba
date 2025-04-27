@@ -7,7 +7,7 @@ import { SelectedItemsHolder } from "./SelectedItemsHolder";
 import { SelectionDiv } from "./SelectionDiv";
 import { SelectionViewDiv } from "./SelectionViewDiv";
 
-export const SelectionView: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
+export const SelectionView: React.FC = React.memo(() => {
   const [selectionRange] = useGlobal("selectionRange");
   const [selected_items] = useGlobal("selected_items");
   const rect = normalize_rect(selectionRange);
@@ -28,4 +28,4 @@ export const SelectionView: React.FC<React.PropsWithChildren<{}>> = ({ children 
       <SelectionViewDiv />
     </SelectionDiv>
   );
-};
+});

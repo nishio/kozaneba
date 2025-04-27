@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useGlobal } from "reactn";
 import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
@@ -11,7 +11,7 @@ import { AnnotationLayer } from "./Annotation/AnnotationLayer";
 import { Center } from "./Center";
 import { ids_to_dom } from "./ids_to_dom";
 
-export const ItemCanvas = () => {
+export const ItemCanvas = React.memo(() => {
   const [drawOrder] = useGlobal("drawOrder");
   const [selected_items] = useGlobal("selected_items");
   const [is_selected] = useGlobal("is_selected");
@@ -23,8 +23,13 @@ export const ItemCanvas = () => {
 
   dev_log("render ItemCanvas");
   useEffect(() => {
-    if (ref.current !== null) {
-      ref.current.addEventListener("wheel", onWheel, { passive: false });
+    const currentRef = ref.current;
+    if (currentRef !== null) {
+      currentRef.addEventListener("wheel", onWheel, { passive: false });
+      
+      return () => {
+        currentRef.removeEventListener("wheel", onWheel);
+      };
     }
   }, [ref]);
 
@@ -71,4 +76,4 @@ export const ItemCanvas = () => {
       {contents}
     </div>
   );
-};
+});
