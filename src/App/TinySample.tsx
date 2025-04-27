@@ -11,6 +11,6 @@ export const TinySample = () => {
       g.itemStore[obj.id] = obj;
       g.drawOrder.push(obj.id);
     });
-  });
+  }, []); // 空の依存配列を追加して初回レンダリング時のみ実行
   return <Blank />;
 };
