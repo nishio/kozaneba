@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React, { useRef, useMemo, useCallback } from "react";
 import { getGlobal } from "reactn";
 import { ids_to_dom } from "../Canvas/ids_to_dom";
 import { is_draggeing } from "../Event/fast_drag_manager";
@@ -17,34 +17,34 @@ import { TGroupItem } from "../Global/TGroupItem";
 import { GROUP_BORDER_COLOR } from "../utils/group_constants";
 import { highlight_group, highlight_parent } from "./highlight_group";
 
-export const Group: React.FC<Props> = ({ value, offset }) => {
+export const Group: React.FC<Props> = React.memo(({ value, offset }) => {
   const self = useRef<HTMLDivElement>(null);
-  const onMouseEnter = (e: React.DragEvent<HTMLDivElement>) => {
+  const onMouseEnter = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     if (!is_draggeing()) return;
     highlight_group(value.id, true);
     highlight_parent(value.id, false);
     e.stopPropagation();
-  };
-  const onMouseLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  }, [value.id]);
+  const onMouseLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     if (!is_draggeing()) return;
     highlight_group(value.id, false);
     highlight_parent(value.id, true);
     e.stopPropagation();
-  };
+  }, [value.id]);
 
-  const onMouseUp = (e: React.DragEvent<HTMLDivElement>) => {
+  const onMouseUp = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     if (self.current !== null) {
       self.current.style.borderColor = GROUP_BORDER_COLOR;
     }
     onGroupMouseUp(e, value);
-  };
+  }, [value]);
 
   // let dragging_self = false;
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const onMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // dragging_self = true;
     onGroupMouseDown(e, value);
-  };
-  const common_props = {
+  }, [value]);
+  const common_props = useMemo(() => ({
     key: value.id,
     "data-testid": value.id,
     onMouseDown,
@@ -52,7 +52,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
     onMouseLeave,
     onMouseUp,
     id: "group-" + value.id,
-  };
+  }), [value.id, onMouseDown, onMouseEnter, onMouseLeave, onMouseUp]);
 
   if (value.isOpen === false) {
     const { style, new_offset, text } = calc_closed_style(value, offset);
@@ -83,7 +83,7 @@ export const Group: React.FC<Props> = ({ value, offset }) => {
       {ids_to_dom(value.items, new_offset)}
     </GroupDiv>
   );
-};
+});
 export type Props = {
   value: TGroupItem;
   offset: { x: number; y: number };

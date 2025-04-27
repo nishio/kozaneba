@@ -1,3 +1,4 @@
+import React from "react";
 import { getGlobal } from "reactn";
 import { TOffset } from "../dimension/TOffset";
 import { Kozane } from "../Kozane/Kozane";
