@@ -1,12 +1,13 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/auth";
 
 const config = {
   apiKey: "AIzaSyB0wAxxeLeHr4udunpln5jCYpGpFGn7D00",
   authDomain: "regroup-d4932.firebaseapp.com",
   projectId: "regroup-d4932",
 };
+
 firebase.initializeApp(config);
 
 export const db = firebase.firestore();

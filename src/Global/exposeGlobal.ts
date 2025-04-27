@@ -11,20 +11,18 @@ import { kintone_demo } from "./kintone_demo";
 import { TKozaneItem } from "./TKozaneItem";
 import { updateGlobal } from "./updateGlobal";
 
+
 const tmpfunc = () => {
   console.log("write");
-  db.collection("ba")
-    .doc("foo")
-    .set({ x: "hello" })
+  db.collection("ba").doc("foo").set({ x: "hello" })
     .then(() => {
       console.log("OK");
     })
-    .catch((err) => {
+    .catch((err: Error) => {
       console.log(err);
     });
 };
 export const toUseEmulator = () => {
-  db.settings({ experimentalForceLongPolling: true });
   db.useEmulator("localhost", 8080);
   updateGlobal((g) => {
     g.usingFirestoreEmulator = true;

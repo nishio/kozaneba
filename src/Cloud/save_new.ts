@@ -4,6 +4,7 @@ import { db } from "./init_firebase";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { set_up_read_subscription } from "./set_up_read_subscription";
 
+
 export const save_new = (doc: DocData) => {
   const g = getGlobal();
 
