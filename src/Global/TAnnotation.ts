@@ -1,4 +1,4 @@
-import { Array, Boolean, Literal, Number, Record, Static } from "runtypes";
+import { Array, Boolean, Literal, Number, Record, Static, String } from "runtypes";
 import { RTItemId } from "./TItemId";
 
 export const RTArrowHead = Literal("none").Or(Literal("arrow"));
@@ -9,6 +9,7 @@ export const RTLineAnnot = Record({
   items: Array(RTItemId),
   heads: Array(RTArrowHead),
   is_doubled: Boolean,
+  label: String.optional(),
   custom: Record({
     arrow_head_size: Number.optional(),
     is_clickable: Boolean.optional(),

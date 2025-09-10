@@ -10,4 +10,5 @@ export type TDialog =
   | "Loading"
   | "Ba"
   | "EditKozane"
-  | "UserScript";
+  | "UserScript"
+  | "label_input";

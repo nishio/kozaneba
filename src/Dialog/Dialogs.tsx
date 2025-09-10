@@ -9,6 +9,7 @@ import { LoadingDialog } from "./LoadingDialog";
 import { BaDialog } from "./BaDialog";
 import { EditKozaneDialog } from "./AddKozaneDialog/EditKozaneDialog";
 import { UserScriptDialog } from "./User/UserScriptDialog";
+import { LabelInputDialog } from "./LabelInputDialog";
 
 export const Dialogs = () => (
   <>
@@ -23,5 +24,6 @@ export const Dialogs = () => (
     <BaDialog />
     <EditKozaneDialog />
     <UserScriptDialog />
+    <LabelInputDialog />
   </>
 );

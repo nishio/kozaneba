@@ -10,9 +10,9 @@ export const AddLineMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
   ({ id }, ref) => {
     const onAddLine = (typ: TLineType) => {
       updateGlobal((g) => {
-        g.mouseState = "making_line";
         g.line_start = id;
         g.line_type = typ;
+        g.dialog = "label_input";
       });
       close_context_menu();
     };

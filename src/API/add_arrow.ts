@@ -14,7 +14,8 @@ export const add_arrow = (
   ids: TItemId[],
   heads: TArrowHead[],
   is_doubled = false,
-  custom = THICK_ARROW
+  custom = THICK_ARROW,
+  label = ""
 ) => {
   updateGlobal((g) => {
     g.annotations.push({
@@ -23,6 +24,7 @@ export const add_arrow = (
       heads,
       is_doubled,
       custom,
+      label,
     });
   });
   mark_local_changed();
