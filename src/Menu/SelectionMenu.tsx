@@ -20,6 +20,13 @@ import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { copy_json } from "./copy_json";
 import { copy_text } from "./copy_text";
+import { redraw } from "../API/redraw";
+import {
+  faArrowsUpDownLeftRight,
+  faRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { add_v2w, sub_v2w } from "../dimension/V2";
 
 export const SelectionMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -153,6 +160,82 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
+  const onRotate = () => {
+    updateGlobal((draft) => {
+      const selected_items = getGlobal().selected_items;
+      if (selected_items.length === 0) return;
+      
+      const positions = selected_items.map((id) => {
+        const item = get_item(draft, id);
+        return item.position;
+      });
+      const center = get_middle_point(positions) as TWorldCoord;
+      
+      selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const relative_pos = sub_v2w(item.position, center);
+        const [x, y] = relative_pos;
+        const rotated_relative = [y, -x] as TWorldCoord;
+        item.position = add_v2w(rotated_relative, center);
+      });
+    });
+    reset_selection();
+    mark_local_changed();
+    redraw();
+    setMenu("");
+  };
+
+  const onSpread = () => {
+    updateGlobal((draft) => {
+      const selected_items = getGlobal().selected_items;
+      if (selected_items.length === 0) return;
+      
+      const positions = selected_items.map((id) => {
+        const item = get_item(draft, id);
+        return item.position;
+      });
+      const center = get_middle_point(positions) as TWorldCoord;
+      
+      selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const relative_pos = sub_v2w(item.position, center);
+        const [x, y] = relative_pos;
+        const spread_relative = [2 * x, 2 * y] as TWorldCoord;
+        item.position = add_v2w(spread_relative, center);
+      });
+    });
+    reset_selection();
+    mark_local_changed();
+    redraw();
+    setMenu("");
+  };
+
+  const onScaleDouble = () => {
+    updateGlobal((draft) => {
+      const selected_items = getGlobal().selected_items;
+      if (selected_items.length === 0) return;
+      
+      const positions = selected_items.map((id) => {
+        const item = get_item(draft, id);
+        return item.position;
+      });
+      const center = get_middle_point(positions) as TWorldCoord;
+      
+      selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const relative_pos = sub_v2w(item.position, center);
+        const [x, y] = relative_pos;
+        const scaled_relative = [2 * x, 2 * y] as TWorldCoord;
+        item.position = add_v2w(scaled_relative, center);
+        item.scale *= 2;
+      });
+    });
+    reset_selection();
+    mark_local_changed();
+    redraw();
+    setMenu("");
+  };
+
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onMakeGroup} data-testid="make-group">
@@ -163,6 +246,18 @@ export const SelectionMenu = () => {
       </MenuItem>
       <MenuItem onClick={onCopyJSON} data-testid="copy-text">
         copy JSON
+      </MenuItem>
+      <MenuItem onClick={onRotate}>
+        <FontAwesomeIcon icon={faRotateLeft} />
+        rotate
+      </MenuItem>
+      <MenuItem onClick={onSpread}>
+        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+        spread
+      </MenuItem>
+      <MenuItem onClick={onScaleDouble}>
+        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+        scale double
       </MenuItem>
 
       <li
