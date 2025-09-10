@@ -20,6 +20,12 @@ import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { copy_json } from "./copy_json";
 import { copy_text } from "./copy_text";
+import { redraw } from "../API/redraw";
+import {
+  faArrowsUpDownLeftRight,
+  faRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const SelectionMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -153,6 +159,49 @@ export const SelectionMenu = () => {
     setMenu("");
   };
 
+  const onRotate = () => {
+    updateGlobal((draft) => {
+      getGlobal().selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const [x, y] = item.position;
+        item.position = [y, -x] as TWorldCoord;
+      });
+    });
+    reset_selection();
+    mark_local_changed();
+    redraw();
+    setMenu("");
+  };
+
+  const onSpread = () => {
+    updateGlobal((draft) => {
+      getGlobal().selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const [x, y] = item.position;
+        item.position = [2 * x, 2 * y] as TWorldCoord;
+      });
+    });
+    reset_selection();
+    mark_local_changed();
+    redraw();
+    setMenu("");
+  };
+
+  const onScaleDouble = () => {
+    updateGlobal((draft) => {
+      getGlobal().selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const [x, y] = item.position;
+        item.position = [2 * x, 2 * y] as TWorldCoord;
+        item.scale *= 2;
+      });
+    });
+    reset_selection();
+    mark_local_changed();
+    redraw();
+    setMenu("");
+  };
+
   return (
     <Menu anchorEl={anchor} keepMounted open={open} onClose={onClose}>
       <MenuItem onClick={onMakeGroup} data-testid="make-group">
@@ -163,6 +212,18 @@ export const SelectionMenu = () => {
       </MenuItem>
       <MenuItem onClick={onCopyJSON} data-testid="copy-text">
         copy JSON
+      </MenuItem>
+      <MenuItem onClick={onRotate}>
+        <FontAwesomeIcon icon={faRotateLeft} />
+        rotate
+      </MenuItem>
+      <MenuItem onClick={onSpread}>
+        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+        spread
+      </MenuItem>
+      <MenuItem onClick={onScaleDouble}>
+        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+        scale double
       </MenuItem>
 
       <li
