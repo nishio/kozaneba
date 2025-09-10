@@ -234,6 +234,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     </text>
   ) : null;
 
+
   return (
     <g opacity={custom_opacity * group_opacity} key={`line-${annot_index}`}>
       {result}

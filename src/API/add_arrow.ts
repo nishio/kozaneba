@@ -17,15 +17,16 @@ export const add_arrow = (
   custom = THICK_ARROW,
   label = ""
 ) => {
+  const annotation = {
+    type: "line" as const,
+    items: ids,
+    heads,
+    is_doubled,
+    custom,
+    label: label || undefined,
+  };
   updateGlobal((g) => {
-    g.annotations.push({
-      type: "line",
-      items: ids,
-      heads,
-      is_doubled,
-      custom,
-      label,
-    });
+    g.annotations.push(annotation);
   });
   mark_local_changed();
 };
