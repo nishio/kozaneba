@@ -26,6 +26,7 @@ import {
   faRotateLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { add_v2w, sub_v2w } from "../dimension/V2";
 
 export const SelectionMenu = () => {
   const [menu, setMenu] = useGlobal("menu");
@@ -161,10 +162,21 @@ export const SelectionMenu = () => {
 
   const onRotate = () => {
     updateGlobal((draft) => {
-      getGlobal().selected_items.forEach((id) => {
+      const selected_items = getGlobal().selected_items;
+      if (selected_items.length === 0) return;
+      
+      const positions = selected_items.map((id) => {
         const item = get_item(draft, id);
-        const [x, y] = item.position;
-        item.position = [y, -x] as TWorldCoord;
+        return item.position;
+      });
+      const center = get_middle_point(positions) as TWorldCoord;
+      
+      selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const relative_pos = sub_v2w(item.position, center);
+        const [x, y] = relative_pos;
+        const rotated_relative = [y, -x] as TWorldCoord;
+        item.position = add_v2w(rotated_relative, center);
       });
     });
     reset_selection();
@@ -175,10 +187,21 @@ export const SelectionMenu = () => {
 
   const onSpread = () => {
     updateGlobal((draft) => {
-      getGlobal().selected_items.forEach((id) => {
+      const selected_items = getGlobal().selected_items;
+      if (selected_items.length === 0) return;
+      
+      const positions = selected_items.map((id) => {
         const item = get_item(draft, id);
-        const [x, y] = item.position;
-        item.position = [2 * x, 2 * y] as TWorldCoord;
+        return item.position;
+      });
+      const center = get_middle_point(positions) as TWorldCoord;
+      
+      selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const relative_pos = sub_v2w(item.position, center);
+        const [x, y] = relative_pos;
+        const spread_relative = [2 * x, 2 * y] as TWorldCoord;
+        item.position = add_v2w(spread_relative, center);
       });
     });
     reset_selection();
@@ -189,10 +212,21 @@ export const SelectionMenu = () => {
 
   const onScaleDouble = () => {
     updateGlobal((draft) => {
-      getGlobal().selected_items.forEach((id) => {
+      const selected_items = getGlobal().selected_items;
+      if (selected_items.length === 0) return;
+      
+      const positions = selected_items.map((id) => {
         const item = get_item(draft, id);
-        const [x, y] = item.position;
-        item.position = [2 * x, 2 * y] as TWorldCoord;
+        return item.position;
+      });
+      const center = get_middle_point(positions) as TWorldCoord;
+      
+      selected_items.forEach((id) => {
+        const item = get_item(draft, id);
+        const relative_pos = sub_v2w(item.position, center);
+        const [x, y] = relative_pos;
+        const scaled_relative = [2 * x, 2 * y] as TWorldCoord;
+        item.position = add_v2w(scaled_relative, center);
         item.scale *= 2;
       });
     });
