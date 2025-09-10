@@ -108,6 +108,19 @@ export const GroupMenu = () => {
     redraw();
   };
 
+  const onScaleDouble = () => {
+    updateGlobal((draft) => {
+      group.items.forEach((id) => {
+        const item = get_item(draft, id);
+        const [x, y] = item.position;
+        item.position = [2 * x, 2 * y] as TWorldCoord;
+        item.scale *= 2;
+      });
+    });
+    close_context_menu();
+    redraw();
+  };
+
   const onRotate = () => {
     updateGlobal((draft) => {
       group.items.forEach((id) => {
@@ -144,6 +157,10 @@ export const GroupMenu = () => {
       <MenuItem onClick={onSpread}>
         <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
         spread
+      </MenuItem>
+      <MenuItem onClick={onScaleDouble}>
+        <FontAwesomeIcon icon={faArrowsUpDownLeftRight} />
+        scale double
       </MenuItem>
 
       <MenuItem onClick={onLeaveFromLines}>leave from lines</MenuItem>
