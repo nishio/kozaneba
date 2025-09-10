@@ -1,7 +1,6 @@
 import { Menu, MenuItem } from "@mui/material";
 import React from "react";
 import { getGlobal, useGlobal } from "reactn";
-import { add_kozane } from "../API/add_kozane";
 import { kozaneba } from "../API/KozanebaAPI";
 import { add_bipartite } from "../API/sample/add_bipartite";
 import { UserMenuItem } from "../API/UserMenuItem";
@@ -15,7 +14,6 @@ import {
   add_arrow_among_selected_items,
   THeadsOption,
 } from "../utils/add_arrow";
-import { create_new_itemid } from "../utils/create_new_itemid";
 import { delete_item_from_world } from "../utils/delete_item_from_world";
 import { get_item } from "../utils/get_item";
 import { make_items_into_new_group } from "../utils/make_items_into_new_group";
@@ -78,25 +76,35 @@ export const SelectionMenu = () => {
 
   const onMerge = () => {
     const g = getGlobal();
-    const texts = [] as string[];
-    const positions = [] as TWorldCoord[][];
-    const ids = [] as TItemId[];
+    const kozanes = [] as { item: any; id: TItemId }[];
+    
     g.selected_items.forEach((id) => {
       const x = get_item(g, id);
       if (x.type === "kozane") {
-        if (!texts.includes(x.text)) {
-          texts.push(x.text);
-          positions.push([x.position]);
-        } else {
-          const i = texts.indexOf(x.text);
-          positions[i]!.push(x.position);
-        }
-        ids.push(id);
+        kozanes.push({ item: x, id });
       }
     });
-    if (texts.length === 0) {
+    
+    if (kozanes.length === 0) {
       return; // nothing to merge
     }
+    
+    const maxScale = Math.max(...kozanes.map(k => k.item.scale));
+    
+    const largestKozanes = kozanes.filter(k => k.item.scale === maxScale);
+    
+    const texts = [] as string[];
+    const positions = [] as TWorldCoord[][];
+    largestKozanes.forEach(({ item }) => {
+      if (!texts.includes(item.text)) {
+        texts.push(item.text);
+        positions.push([item.position]);
+      } else {
+        const i = texts.indexOf(item.text);
+        positions[i]!.push(item.position);
+      }
+    });
+    
     let merged_text = "";
     if (texts.length > 1) {
       const left_to_right = positions
@@ -105,40 +113,41 @@ export const SelectionMenu = () => {
         .sort((a, b) => a[0][0] - b[0][0]);
       merged_text = left_to_right.map((v) => texts[v[1]]).join("/");
     } else {
-      // length === 1
       merged_text = texts[0]!;
     }
-    {
-      const id = create_new_itemid();
-      const position = get_middle_point(
-        positions.flatMap((x) => x)
-      ) as TWorldCoord;
-      add_kozane(merged_text, {
-        position,
-        id,
-      });
-
-      // potential heavy process, O(`num lines` x `num merged items`)
-      const merged_item = id;
-      updateGlobal((g) => {
-        ids.forEach((id) => {
-          g.annotations.forEach((a) => {
-            if (a.type === "line") {
-              if (a.items.includes(id)) {
-                const i = a.items.indexOf(id);
-                a.items[i] = merged_item;
-              }
+    
+    const surviving_id = largestKozanes[0]!.id;
+    const new_position = get_middle_point(
+      positions.flatMap((x) => x)
+    ) as TWorldCoord;
+    
+    updateGlobal((g) => {
+      const surviving_item = get_item(g, surviving_id);
+      surviving_item.text = merged_text;
+      surviving_item.position = new_position;
+    });
+    
+    const ids_to_delete = kozanes
+      .filter(({ id }) => id !== surviving_id)
+      .map(({ id }) => id);
+    
+    updateGlobal((g) => {
+      ids_to_delete.forEach((id) => {
+        g.annotations.forEach((a) => {
+          if (a.type === "line") {
+            if (a.items.includes(id)) {
+              const i = a.items.indexOf(id);
+              a.items[i] = surviving_id;
             }
-          });
+          }
         });
       });
-
-      // removed old items
-      ids.forEach((id) => {
-        delete_item_from_world(id);
-      });
-    }
-
+    });
+    
+    ids_to_delete.forEach((id) => {
+      delete_item_from_world(id);
+    });
+    
     reset_selection();
     mark_local_changed();
     setMenu("");
