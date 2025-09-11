@@ -29,7 +29,7 @@ const arrow_sin = Math.sin((arrow_angle / 180) * Math.PI);
 export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const lines = [] as [V2, V2, number][];
   // currently ignore items[2~], and item deletion
-  const positions = a.items.map((id) => get_global_position(id, g));
+  const positions = a.items.map((id: TItemId) => get_global_position(id, g));
   const center = get_middle_point(positions);
 
   const is_doubled = a.is_doubled;
@@ -93,7 +93,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     return { top: top2, left: left2, width, height };
   };
   const rects = a.items.map(get_rect);
-  const crosspoints = a.items.map((id, index) => {
+  const crosspoints = a.items.map((id: TItemId, index: number) => {
     const p = positions[index]!;
     if (!equal_v2(p, center)) {
       return get_box_line_crosspoint(p, center, rects[index]!);
@@ -130,15 +130,15 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     // end of (a.items.length === 2)
   } else {
     // a.items.length !== 2
-    const angles = crosspoints.flatMap((cp) => {
+    const angles = crosspoints.flatMap((cp: V2 | undefined) => {
       if (cp === undefined) return [];
       const d = sub_v2(center, cp);
       const th = Math.atan2(d[1], d[0]);
       return [th];
     });
-    angles.sort((a, b) => a - b);
+    angles.sort((a: number, b: number) => a - b);
 
-    crosspoints.forEach((cp, index) => {
+    crosspoints.forEach((cp: V2 | undefined, index: number) => {
       if (cp !== undefined && !equal_v2(center, cp)) {
         draw_arrowhead(a.heads[index], cp, center, index);
         const d = sub_v2(center, cp);
@@ -206,9 +206,39 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     );
   });
 
+  const labelElement = a.label ? (
+    <text
+      x={center[0]}
+      y={center[1]}
+      textAnchor="middle"
+      dominantBaseline="middle"
+      fontSize="12"
+      fill="black"
+      style={{ userSelect: "none" }}
+    >
+      <tspan
+        x={center[0]}
+        y={center[1]}
+        style={{
+          fill: "white",
+          stroke: "white",
+          strokeWidth: "3",
+          paintOrder: "stroke"
+        }}
+      >
+        {a.label}
+      </tspan>
+      <tspan x={center[0]} y={center[1]}>
+        {a.label}
+      </tspan>
+    </text>
+  ) : null;
+
+
   return (
     <g opacity={custom_opacity * group_opacity} key={`line-${annot_index}`}>
       {result}
+      {labelElement}
     </g>
   );
 };

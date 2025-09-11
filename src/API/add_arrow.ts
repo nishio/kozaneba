@@ -14,16 +14,19 @@ export const add_arrow = (
   ids: TItemId[],
   heads: TArrowHead[],
   is_doubled = false,
-  custom = THICK_ARROW
+  custom = THICK_ARROW,
+  label = ""
 ) => {
+  const annotation = {
+    type: "line" as const,
+    items: ids,
+    heads,
+    is_doubled,
+    custom,
+    label: label || undefined,
+  };
   updateGlobal((g) => {
-    g.annotations.push({
-      type: "line",
-      items: ids,
-      heads,
-      is_doubled,
-      custom,
-    });
+    g.annotations.push(annotation);
   });
   mark_local_changed();
 };
