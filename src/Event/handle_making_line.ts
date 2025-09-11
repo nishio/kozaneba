@@ -15,16 +15,16 @@ export const handle_making_line = (id: TItemId) => {
   if (g.line_start !== "" && g.line_start !== id) {
     switch (g.line_type) {
       case "line":
-        kozaneba.add_arrow([g.line_start, id], ["none", "none"], false, undefined, g.line_label);
+        kozaneba.add_arrow([g.line_start, id], ["none", "none"]);
         break;
       case "arrow":
-        kozaneba.add_arrow([g.line_start, id], ["none", "arrow"], false, undefined, g.line_label);
+        kozaneba.add_arrow([g.line_start, id], ["none", "arrow"]);
         break;
       case "double_heads":
-        kozaneba.add_arrow([g.line_start, id], ["arrow", "arrow"], false, undefined, g.line_label);
+        kozaneba.add_arrow([g.line_start, id], ["arrow", "arrow"]);
         break;
       case "double_lines":
-        kozaneba.add_arrow([g.line_start, id], ["none", "none"], true, undefined, g.line_label);
+        kozaneba.add_arrow([g.line_start, id], ["none", "none"], true);
         break;
       case "delete":
         const start = g.line_start,

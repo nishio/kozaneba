@@ -57,7 +57,6 @@ export const INITIAL_GLOBAL_STATE = {
 
   line_start: "" as "" | TItemId,
   line_type: "line" as TLineType,
-  line_label: "",
 };
 
 // Implicit Mouse Mode
