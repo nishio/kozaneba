@@ -6,4 +6,5 @@ export type TMenu =
   | "Selection"
   | "Group"
   | "Scrapbox"
-  | "Gyazo";
+  | "Gyazo"
+  | "Annotation";

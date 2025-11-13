@@ -8,7 +8,8 @@ export const Line = (
   key: string,
   stroke_width: number,
   opacity: number,
-  is_clickable: boolean
+  is_clickable: boolean,
+  onContextMenu?: (e: React.MouseEvent) => void
 ) => {
   const [x1, y1] = p1;
   const [x2, y2] = p2;
@@ -30,6 +31,7 @@ export const Line = (
       opacity={opacity}
       strokeLinecap="round"
       onClick={onClick}
+      onContextMenu={onContextMenu}
       style={style}
       key={key}
     />
