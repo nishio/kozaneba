@@ -3,7 +3,6 @@ import { SelectionMenu } from "./SelectionMenu";
 import { GroupMenu } from "./GroupMenu";
 import { ScrapboxMenu } from "./ScrapboxMenu";
 import { GyazoMenu } from "./GyazoMenu";
-import { AnnotationMenu } from "./AnnotationMenu";
 
 export const Menus = () => (
   <>
@@ -12,6 +11,5 @@ export const Menus = () => (
     <GroupMenu />
     <ScrapboxMenu />
     <GyazoMenu />
-    <AnnotationMenu />
   </>
 );

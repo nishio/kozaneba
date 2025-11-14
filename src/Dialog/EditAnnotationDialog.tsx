@@ -92,6 +92,9 @@ export const EditAnnotationDialog = () => {
   const opacity = annotation.custom?.opacity ?? 0.2;
   const arrowSize = annotation.custom?.arrow_head_size ?? 10;
 
+  // Check if annotation has any arrow heads
+  const hasArrowHead = annotation.heads.some((head) => head === "arrow");
+
   return (
     <Dialog
       open={open}
@@ -139,17 +142,19 @@ export const EditAnnotationDialog = () => {
             />
           </Box>
 
-          <Box sx={{ mt: 3 }}>
-            <Typography gutterBottom>Arrow Size: {arrowSize}</Typography>
-            <Slider
-              value={arrowSize}
-              onChange={handleArrowSizeChange}
-              min={5}
-              max={50}
-              step={5}
-              valueLabelDisplay="auto"
-            />
-          </Box>
+          {hasArrowHead && (
+            <Box sx={{ mt: 3 }}>
+              <Typography gutterBottom>Arrow Size: {arrowSize}</Typography>
+              <Slider
+                value={arrowSize}
+                onChange={handleArrowSizeChange}
+                min={5}
+                max={50}
+                step={5}
+                valueLabelDisplay="auto"
+              />
+            </Box>
+          )}
 
           <Box sx={{ mt: 3 }}>
             <Typography variant="body2" color="text.secondary">
