@@ -40,6 +40,9 @@ export const AnnotationLabel: React.FC<AnnotationLabelProps> = ({
     }
   }, [label, fontSize, lines.length, lineHeight]);
 
+  // Calculate vertical offset to center text in the box
+  const textStartY = y - bbox.height / 2 + fontSize;
+
   return (
     <g className="annotation-label">
       {/* Background rectangle for readability */}
@@ -54,7 +57,7 @@ export const AnnotationLabel: React.FC<AnnotationLabelProps> = ({
         ry={3}
       />
       {/* Text */}
-      <text ref={textRef} x={x} y={y} textAnchor="middle" fontSize={fontSize}>
+      <text ref={textRef} x={x} y={textStartY} textAnchor="middle" fontSize={fontSize}>
         {lines.map((line, index) => (
           <tspan
             key={index}
