@@ -71,6 +71,21 @@ export const EditAnnotationDialog = () => {
     updateCustom({ arrow_head_size: value as number });
   };
 
+  const handleReverseArrow = () => {
+    if (clicked_annotation_index === null) return;
+
+    const newAnnotations = [...annotations];
+    const reversedHeads = [...annotation.heads].reverse();
+    const reversedItems = [...annotation.items].reverse();
+    newAnnotations[clicked_annotation_index] = {
+      ...annotation,
+      heads: reversedHeads,
+      items: reversedItems,
+    };
+    setGlobal({ annotations: newAnnotations });
+    mark_local_changed();
+  };
+
   const handleDelete = () => {
     if (
       clicked_annotation_index === null ||
@@ -166,6 +181,9 @@ export const EditAnnotationDialog = () => {
       <DialogActions>
         <Button onClick={handleDelete} color="error">
           Delete
+        </Button>
+        <Button onClick={handleReverseArrow} color="secondary">
+          Reverse Arrow
         </Button>
         <Button onClick={onClose} color="primary">
           Close
