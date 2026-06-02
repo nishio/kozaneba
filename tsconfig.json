@@ -17,7 +17,7 @@
     "noUncheckedIndexedAccess": true,
     "jsx": "react-jsx",
     "downlevelIteration": true,
-    "types": ["node"]
+    "types": ["node", "vitest/globals"]
   },
   "include": ["src"]
 }
