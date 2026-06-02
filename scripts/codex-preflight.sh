@@ -52,18 +52,16 @@ fi
 
 section "Boot contract"
 INDEX_HTML="$(mktemp -t kozaneba-codex-preflight-index.XXXXXX.html)"
-BUNDLE_JS="$(mktemp -t kozaneba-codex-preflight-bundle.XXXXXX.js)"
 curl -fsS "$BASE_URL/#blank" >"$INDEX_HTML"
 grep -q 'id="boot-fallback"' "$INDEX_HTML"
-grep -q '/static/js/bundle.js' "$INDEX_HTML"
+grep -q '/src/index.tsx' "$INDEX_HTML"
 if grep -q 'gstatic.com/firebasejs/ui' "$INDEX_HTML"; then
   echo "Initial HTML must not depend on gstatic Firebase UI CSS." >&2
   exit 1
 fi
 
-curl -fsS "$BASE_URL/static/js/bundle.js" >"$BUNDLE_JS"
-grep -q 'Failed to run user script from localStorage.onLoad' "$BUNDLE_JS"
-grep -q 'line-label-hit-' "$BUNDLE_JS"
+grep -q 'Failed to run user script from localStorage.onLoad' src/API/run_user_script.ts
+grep -q 'line-label-hit-' src/Canvas/Annotation/LineAnnot.tsx
 echo "#blank boot contract is served by the current implementation."
 
 section "Cypress"
@@ -72,7 +70,7 @@ env -u ELECTRON_RUN_AS_NODE npx cypress run \
   --config video=false
 
 section "Unit tests"
-npm test -- --watchAll=false
+npm test
 
 section "Production build"
 npm run build

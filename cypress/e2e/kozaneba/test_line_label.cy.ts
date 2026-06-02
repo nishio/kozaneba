@@ -9,7 +9,7 @@ describe("blank ba", () => {
       .its("body")
       .should("not.contain", "gstatic.com/firebasejs/ui")
       .and("contain", "boot-fallback")
-      .and("contain", "/static/js/bundle.js");
+      .and("contain", "/src/index.tsx");
   });
 
   it("renders the app chrome and canvas", () => {

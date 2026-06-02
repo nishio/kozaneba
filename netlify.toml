@@ -1,5 +1,5 @@
 [build]
-  command = "CI=false npm install --legacy-peer-deps && npm run build"
+  command = "npm ci --legacy-peer-deps && npm run build"
   publish = "build"
 
 [build.environment]

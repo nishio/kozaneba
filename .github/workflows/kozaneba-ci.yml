@@ -36,7 +36,7 @@ jobs:
         run: npx cypress verify
 
       - name: Unit tests
-        run: npm test -- --watchAll=false
+        run: npm test
 
       - name: Production build
         run: npm run build
