@@ -1,5 +1,4 @@
 import { mark_local_changed } from "../utils/mark_local_changed";
-import { add_v2w, sub_v2w } from "../dimension/V2";
 import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../utils/find_parent";
 import { TGroupItem } from "../Global/TGroupItem";
@@ -16,7 +15,7 @@ import { dev_log } from "../utils/dev";
 import { Sentry } from "../initSentry";
 import { drag_drop_item } from "./drag_drop_item";
 import { getGlobal } from "reactn";
-import { get_total_offset_of_parents } from "./get_total_offset_of_parents";
+import { get_position_after_parent_change } from "./get_position_after_parent_change";
 
 export function drag_drop_item_into_group(
   group_id: TItemId,
@@ -41,11 +40,12 @@ export function drag_drop_item_into_group(
       // `p` may equals to `group`, it's OK
       p.items = remove_item_from(p.items, target_id);
       group_draft.items.push(target_id);
-      const perv_offset = get_total_offset_of_parents(previous_parent, g);
-      const new_offset = get_total_offset_of_parents(group_id, g);
-
-      position = add_v2w(position, perv_offset);
-      position = sub_v2w(position, new_offset);
+      position = get_position_after_parent_change(
+        position,
+        previous_parent,
+        group_id,
+        g
+      );
 
       if (p.items.length === 0 && p.text === "") {
         remove_item(g, previous_parent);
@@ -55,8 +55,7 @@ export function drag_drop_item_into_group(
     } else {
       g.drawOrder = remove_item_from(g.drawOrder, target_id);
       group_draft.items.push(target_id);
-      const new_offset = get_total_offset_of_parents(group_id, g);
-      position = sub_v2w(position, new_offset);
+      position = get_position_after_parent_change(position, null, group_id, g);
     }
     const target = get_item(g, target_id);
     target.position = position;
