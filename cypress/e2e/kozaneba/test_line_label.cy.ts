@@ -20,6 +20,24 @@ describe("blank ba", () => {
     cy.testid("ba").should("exist");
     cy.get("#canvas").should("be.visible");
   });
+
+  it("renders even when a saved onLoad user script throws", () => {
+    cy.visit("/#blank", {
+      onBeforeLoad(win) {
+        win.localStorage.setItem(
+          "onLoad",
+          "throw new Error('broken startup script')"
+        );
+      },
+    });
+    cy.viewport(500, 500);
+
+    cy.get("#appbar").should("be.visible").contains("Kozaneba");
+    cy.testid("ba").should("exist");
+    cy.window().then((win) => {
+      win.localStorage.removeItem("onLoad");
+    });
+  });
 });
 
 const ready_two_kozanes_with_line = () => {
