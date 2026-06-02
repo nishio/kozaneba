@@ -45,6 +45,7 @@
     "test": "react-scripts test",
     "codex:preflight": "bash scripts/codex-preflight.sh",
     "cypress:emulator-smoke": "bash scripts/cypress-emulator-smoke.sh",
+    "cypress:kozaneba-all": "bash scripts/cypress-kozaneba-all.sh",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

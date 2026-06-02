@@ -1,0 +1,80 @@
+name: Kozaneba CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: kozaneba-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-build-preflight:
+    name: Unit, build, and preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Verify Cypress binary
+        run: npx cypress verify
+
+      - name: Unit tests
+        run: npm test -- --watchAll=false
+
+      - name: Production build
+        run: npm run build
+
+      - name: Codex preflight
+        run: npm run codex:preflight
+
+  cypress-emulator:
+    name: Cypress with Firebase emulator
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Verify Firebase CLI and Cypress
+        run: |
+          npx firebase --version
+          npx cypress verify
+
+      - name: Firebase emulator smoke
+        run: npm run cypress:emulator-smoke
+
+      - name: Kozaneba Cypress suite
+        run: npm run cypress:kozaneba-all
