@@ -49,6 +49,7 @@ export const INITIAL_GLOBAL_STATE = {
   disableHotKey: false,
 
   annotations: [] as TAnnotation[],
+  editing_line_label: null as TEditingLineLabel,
 
   scrapbox: "" as string,
   language: window.navigator.language,
@@ -68,6 +69,10 @@ export type TLineType =
   | "double_heads"
   | "double_lines"
   | "delete";
+type TEditingLineLabel = null | {
+  annot_index: number;
+  value: string;
+};
 
 type TMenuAnchor = null | Element;
 

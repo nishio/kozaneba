@@ -1,3 +1,8 @@
+import type {
+  ChangeEvent,
+  KeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+} from "react";
 import { State } from "reactn/default";
 import { kozaneba } from "../../API/KozanebaAPI";
 import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
@@ -16,8 +21,10 @@ import {
 import { get_total_offset_of_parents } from "../../Event/get_total_offset_of_parents";
 import { TLineAnnot } from "../../Global/TAnnotation";
 import { TItemId } from "../../Global/TItemId";
+import { updateGlobal } from "../../Global/updateGlobal";
 import { find_parent } from "../../utils/find_parent";
 import { KOZANE_WIDTH } from "../../utils/kozane_constants";
+import { mark_local_changed } from "../../utils/mark_local_changed";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_middle_point } from "./get_middle_point";
 import { Line } from "./Line";
@@ -183,14 +190,83 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     });
   }
 
-  // const is_clickable = a.custom?.is_clickable ?? false;
   const is_clickable = false;
-  let onClick: (() => void) | undefined = undefined;
-  if (is_clickable) {
-    onClick = () => {
-      console.log("line clicked");
-    };
-  }
+  const onClick = undefined;
+  const can_edit_label = g.mouseState !== "making_line";
+  const is_editing = g.editing_line_label?.annot_index === annot_index;
+  const editing_value = is_editing ? g.editing_line_label!.value : "";
+
+  const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (!can_edit_label) return;
+    updateGlobal((draft) => {
+      draft.editing_line_label = {
+        annot_index,
+        value: a.label ?? "",
+      };
+      draft.disableHotKey = true;
+    });
+  };
+
+  const cancelLabelEdit = () => {
+    updateGlobal((draft) => {
+      draft.editing_line_label = null;
+      draft.disableHotKey = false;
+    });
+  };
+
+  const commitLabelEdit = (
+    value = g.editing_line_label?.annot_index === annot_index
+      ? g.editing_line_label.value
+      : ""
+  ) => {
+    const label = value.trim();
+    let did_change = false;
+    updateGlobal((draft) => {
+      const annotation = draft.annotations[annot_index];
+      if (annotation !== undefined && annotation.type === "line") {
+        if (label === "") {
+          if (annotation.label !== undefined) {
+            delete annotation.label;
+            did_change = true;
+          }
+        } else if ((annotation.label ?? "") !== label) {
+          annotation.label = label;
+          did_change = true;
+        }
+      }
+      draft.editing_line_label = null;
+      draft.disableHotKey = false;
+    });
+    if (did_change) {
+      mark_local_changed();
+    }
+  };
+
+  const onEditorChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    updateGlobal((draft) => {
+      if (draft.editing_line_label?.annot_index === annot_index) {
+        draft.editing_line_label.value = value;
+      }
+    });
+  };
+
+  const onEditorKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    event.stopPropagation();
+    if (event.key === "Enter") {
+      event.preventDefault();
+      commitLabelEdit(event.currentTarget.value);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      cancelLabelEdit();
+    }
+  };
+
+  const stopMouseEvent = (event: ReactMouseEvent) => {
+    event.stopPropagation();
+  };
 
   const custom_opacity = a.custom?.opacity ?? 0.2;
 
@@ -206,7 +282,34 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     );
   });
 
-  const labelElement = a.label ? (
+  const hit_stroke_width = Math.max(stroke_width + 12, 16);
+  const hitElements = can_edit_label && !is_editing
+    ? lines.map(([p1, p2], index) => {
+        const [x1, y1] = p1;
+        const [x2, y2] = p2;
+        return (
+          <line
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="transparent"
+            strokeWidth={hit_stroke_width}
+            strokeLinecap="round"
+            pointerEvents="stroke"
+            onMouseDown={stopMouseEvent}
+            onMouseUp={stopMouseEvent}
+            onClick={stopMouseEvent}
+            onDoubleClick={startLabelEdit}
+            style={{ cursor: "text" }}
+            data-testid={`line-label-hit-${annot_index}-${index}`}
+            key={`line-label-hit-${annot_index}-${index}`}
+          />
+        );
+      })
+    : null;
+
+  const labelElement = a.label && !is_editing ? (
     <text
       x={center[0]}
       y={center[1]}
@@ -214,7 +317,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       dominantBaseline="middle"
       fontSize="12"
       fill="black"
-      style={{ userSelect: "none" }}
+      style={{ pointerEvents: "none", userSelect: "none" }}
     >
       <tspan
         x={center[0]}
@@ -234,11 +337,57 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     </text>
   ) : null;
 
+  const editor_width = Math.max(
+    90,
+    Math.min(260, editing_value.length * 8 + 32)
+  );
+  const editor_height = 28;
+  const editorElement = is_editing ? (
+    <foreignObject
+      x={center[0] - editor_width / 2}
+      y={center[1] - editor_height / 2}
+      width={editor_width}
+      height={editor_height}
+      style={{ overflow: "visible", pointerEvents: "auto" }}
+    >
+      <input
+        autoFocus
+        data-testid={`line-label-editor-${annot_index}`}
+        value={editing_value}
+        onBlur={(event) => commitLabelEdit(event.currentTarget.value)}
+        onChange={onEditorChange}
+        onFocus={(event) => event.currentTarget.select()}
+        onKeyDown={onEditorKeyDown}
+        onMouseDown={stopMouseEvent}
+        onMouseUp={stopMouseEvent}
+        onClick={stopMouseEvent}
+        style={{
+          background: "white",
+          border: "1px solid #555",
+          borderRadius: "3px",
+          boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
+          boxSizing: "border-box",
+          color: "black",
+          fontSize: "12px",
+          height: "24px",
+          lineHeight: "20px",
+          outline: "none",
+          padding: "1px 4px",
+          textAlign: "center",
+          width: "100%",
+        }}
+      />
+    </foreignObject>
+  ) : null;
 
   return (
-    <g opacity={custom_opacity * group_opacity} key={`line-${annot_index}`}>
-      {result}
-      {labelElement}
+    <g key={`line-${annot_index}`}>
+      <g opacity={custom_opacity * group_opacity}>
+        {result}
+        {labelElement}
+        {hitElements}
+      </g>
+      {editorElement}
     </g>
   );
 };
