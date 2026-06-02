@@ -125,7 +125,7 @@ export const step = () => {
   redraw();
 };
 
-let timer: null | NodeJS.Timer = null;
+let timer: ReturnType<typeof setInterval> | null = null;
 export const toggle_physics = () => {
   if (timer === null) {
     gradient_method = new GradientDecent();
