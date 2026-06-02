@@ -55,7 +55,8 @@ export function drag_drop_item_into_group(
     } else {
       g.drawOrder = remove_item_from(g.drawOrder, target_id);
       group_draft.items.push(target_id);
-      position = sub_v2w(position, group_draft.position);
+      const new_offset = get_total_offset_of_parents(group_id, g);
+      position = sub_v2w(position, new_offset);
     }
     const target = get_item(g, target_id);
     target.position = position;

@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import { TGroupItem } from "../../../src/Global/TGroupItem";
+import { TItemId } from "../../../src/Global/TItemId";
 import {
   KOZANE_BORDER,
   KOZANE_WIDTH,
@@ -16,6 +17,30 @@ import {
 } from "../../support/e2e";
 import { TITLE_HEIGHT } from "../../../src/dimension/BORDER";
 import { constants } from "../../../src/API/constants";
+import { TWorldCoord } from "../../../src/dimension/world_to_screen";
+
+const ready_nested_groups_with_offset_parent = () => {
+  cy.movidea((m) => {
+    m.make_one_kozane({
+      id: "leaf" as TItemId,
+      text: "leaf",
+      position: [0, 0] as TWorldCoord,
+    });
+    m.make_items_into_new_group(["leaf" as TItemId], {
+      id: "C" as TItemId,
+      text: "C",
+    });
+    m.make_items_into_new_group(["C" as TItemId], {
+      id: "B" as TItemId,
+      text: "B",
+    });
+    m.make_items_into_new_group(["B" as TItemId], {
+      id: "A" as TItemId,
+      text: "A",
+      position: [100, 80] as TWorldCoord,
+    });
+  });
+};
 
 describe("drag", () => {
   beforeEach(() => {
@@ -129,6 +154,7 @@ describe("drag", () => {
     cy.testid("1").should("hasPosition", [184, 199]);
 
     do_drag("G1", "ba", 0, 0);
+    cy.testid("G1").should("hasPosition", [0, 0]);
     do_drag("G1", "G2", 0, 0);
     cy.testid("1").should("hasPosition", [225, 225]);
 
@@ -137,6 +163,31 @@ describe("drag", () => {
     let pos = [100, 100];
     // was: pos = [59, 74];
     cy.testid("1").should("hasPosition", pos);
+  });
+
+  it("keeps position when dragging a root group into a nested group", () => {
+    ready_nested_groups_with_offset_parent();
+
+    do_drag("C", "ba", 0, 0);
+    cy.getGlobal((g) => g.drawOrder.includes("C")).should("eql", true);
+    cy.testid("B").should(($b) => {
+      const rect = $b[0]!.getBoundingClientRect();
+      expect(rect.width).to.eq(160);
+    });
+
+    let dropPosition: [number, number] = [0, 0];
+    cy.testid("B").then(($b) => {
+      const rect = $b[0]!.getBoundingClientRect();
+      dropPosition = [rect.x, rect.y];
+    });
+
+    do_drag("C", "B", 0, 0);
+    cy.testid("C").should(($c) => {
+      const rect = $c[0]!.getBoundingClientRect();
+      expect(rect.x).to.be.closeTo(dropPosition[0], 0.001);
+      expect(rect.y).to.be.closeTo(dropPosition[1], 0.001);
+    });
+    cy.getGroup("B", (g) => g.items).should("eql", ["C"]);
   });
 
   // Broken

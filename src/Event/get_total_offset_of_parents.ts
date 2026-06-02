@@ -11,7 +11,7 @@ export const get_total_offset_of_parents = (parent_id: TItemId, g: State) => {
   while (current_parent) {
     const parent = get_item(g, current_parent);
     offset = add_v2w(offset, parent.position);
-    const next_parent = find_parent(current_parent);
+    const next_parent = find_parent(current_parent, g);
     if (!next_parent) {
       break;
     }
