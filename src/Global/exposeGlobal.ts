@@ -11,6 +11,8 @@ import { kintone_demo } from "./kintone_demo";
 import { TKozaneItem } from "./TKozaneItem";
 import { updateGlobal } from "./updateGlobal";
 
+let isFirestoreEmulatorConnected = false;
+let isAuthEmulatorConnected = false;
 
 const tmpfunc = () => {
   console.log("write");
@@ -23,7 +25,14 @@ const tmpfunc = () => {
     });
 };
 export const toUseEmulator = () => {
-  db.useEmulator("localhost", 8080);
+  if (!isFirestoreEmulatorConnected) {
+    db.useEmulator("localhost", 8080);
+    isFirestoreEmulatorConnected = true;
+  }
+  if (!isAuthEmulatorConnected) {
+    auth.useEmulator("http://localhost:9099");
+    isAuthEmulatorConnected = true;
+  }
   updateGlobal((g) => {
     g.usingFirestoreEmulator = true;
   });

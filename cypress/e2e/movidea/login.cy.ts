@@ -1,5 +1,5 @@
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 
 describe("login", () => {
   it("login", () => {
@@ -8,7 +8,7 @@ describe("login", () => {
 
     // cy.login();
     cy.movidea((m) => {
-      m.auth.useEmulator("http://localhost:9099");
+      m.toUseEmulator();
       m.auth.signInWithCredential(
         firebase.auth.GoogleAuthProvider.credential(
           null,
@@ -17,7 +17,7 @@ describe("login", () => {
       );
     });
 
-    cy.contains("NISHIO_TEST");
+    cy.testid("login-status").contains("user with no display name");
 
     cy.testid("dev-menu").click();
     cy.contains("Sign Out").click();

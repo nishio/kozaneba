@@ -4,7 +4,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextareaAutosize,
 } from "@mui/material";
 import React, { createRef } from "react";
 import { getGlobal, useGlobal } from "reactn";
@@ -74,7 +73,7 @@ export const EditGroupTitleDialog = () => {
         {/* <DialogContentText>...</DialogContentText> */}
         <div style={{ display: "flex" }}>
           <div style={{ flexGrow: 1 }}>
-            <TextareaAutosize
+            <textarea
               autoFocus
               id="multiline"
               style={{
@@ -82,7 +81,7 @@ export const EditGroupTitleDialog = () => {
                 backgroundColor: "#eee",
                 border: "none",
               }}
-              minRows={1}
+              rows={1}
               data-testid="textarea"
               ref={textarea}
               defaultValue={text}

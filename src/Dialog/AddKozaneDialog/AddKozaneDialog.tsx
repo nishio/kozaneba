@@ -4,7 +4,6 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  TextareaAutosize,
 } from "@mui/material";
 import React, { createRef } from "react";
 import { useGlobal } from "reactn";
@@ -53,16 +52,19 @@ export const AddKozaneDialog = () => {
         {/* <DialogContentText>...</DialogContentText> */}
         <div style={{ display: "flex" }}>
           <div style={{ flexGrow: 1 }}>
-            <TextareaAutosize
+            <textarea
               autoFocus
               id="multiline"
               style={{
                 width: "calc(100% - 10px)",
+                height: fullScreen ? "calc(100vh - 180px)" : "50vh",
+                maxHeight: fullScreen ? undefined : "320px",
+                boxSizing: "border-box",
                 backgroundColor: "#eee",
                 border: "none",
                 fontSize,
               }}
-              minRows={30}
+              rows={30}
               data-testid="textarea"
               ref={textarea}
               defaultValue={text}

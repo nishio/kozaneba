@@ -1,12 +1,15 @@
 /// <reference types="cypress" />
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 import { do_click, do_drag } from "../../support/e2e";
 
 describe("tutorial", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.viewport(1000, 660);
+    cy.movidea((m) => {
+      m.toUseEmulator();
+    });
   });
 
   it("main", () => {
@@ -135,8 +138,6 @@ describe("tutorial", () => {
 
     // switch to local emulator
     cy.movidea((m) => {
-      m.toUseEmulator();
-      m.auth.useEmulator("http://localhost:9099");
       m.auth.signInWithCredential(
         firebase.auth.GoogleAuthProvider.credential(
           null,
@@ -144,7 +145,9 @@ describe("tutorial", () => {
         )
       );
     });
-    cy.testid("login-status").contains("NISHIO_TEST", { timeout: 20000 });
+    cy.testid("login-status").contains("user with no display name", {
+      timeout: 20000,
+    });
 
     cy.setGlobal({ fix_ba_for_test: "test" });
     cy.testid("main-menu").click();
