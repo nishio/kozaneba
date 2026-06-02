@@ -22,7 +22,7 @@ Kozaneba is a digital stationery tool that helps you organize your thoughts. It 
 
 ### 必要条件 / Requirements
 
-- Node.js (LTS version)
+- Node.js 24
 - npm または yarn
 
 ### インストール手順 / Installation
@@ -35,7 +35,7 @@ Kozaneba is a digital stationery tool that helps you organize your thoughts. It 
 
 2. Node.jsのバージョンを設定 / Set Node.js version
    ```
-   nvm install lts/*
+   nvm install 24
    nvm use
    ```
 
