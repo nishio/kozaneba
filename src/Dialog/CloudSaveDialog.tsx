@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { authui } from "../Cloud/FirestoreIO";
+import { ensureFirebaseUiCss } from "../Cloud/ensureFirebaseUiCss";
 import { signInAsAnonymousUser } from "../Cloud/signInAsAnonymousUser";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { initial_save } from "../Cloud/initial_save";
@@ -29,7 +30,10 @@ export const CloudSaveDialog = () => {
       close_menu_and_dialog();
     });
   };
-  if (open) {
+  useEffect(() => {
+    if (!open) return;
+    ensureFirebaseUiCss();
+    authui.reset();
     authui.start("#could-save-firebaseui-auth-container", {
       signInOptions: [GoogleAuthProvider.PROVIDER_ID],
       tosUrl: undefined,
@@ -43,7 +47,7 @@ export const CloudSaveDialog = () => {
         },
       },
     });
-  }
+  }, [open]);
 
   return (
     <Dialog

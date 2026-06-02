@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useGlobal } from "reactn";
 import {
   Button,
@@ -7,6 +8,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { authui } from "../Cloud/FirestoreIO";
+import { ensureFirebaseUiCss } from "../Cloud/ensureFirebaseUiCss";
 import { GoogleAuthProvider } from "../Cloud/init_firebase";
 
 export const SignDialog = () => {
@@ -16,7 +18,10 @@ export const SignDialog = () => {
     setDialog("");
   };
 
-  if (open) {
+  useEffect(() => {
+    if (!open) return;
+    ensureFirebaseUiCss();
+    authui.reset();
     authui.start("#firebaseui-auth-container", {
       signInOptions: [GoogleAuthProvider.PROVIDER_ID],
       tosUrl: undefined,
@@ -29,7 +34,8 @@ export const SignDialog = () => {
         },
       },
     });
-  }
+  }, [open, setDialog]);
+
   return (
     <Dialog
       open={open}

@@ -4,6 +4,14 @@ import { TWorldCoord } from "../../../src/dimension/world_to_screen";
 import { TItemId } from "../../../src/Global/TItemId";
 
 describe("blank ba", () => {
+  it("does not block boot on external firebase ui css", () => {
+    cy.request("/#blank")
+      .its("body")
+      .should("not.contain", "gstatic.com/firebasejs/ui")
+      .and("contain", "boot-fallback")
+      .and("contain", "/static/js/bundle.js");
+  });
+
   it("renders the app chrome and canvas", () => {
     cy.visit("/#blank");
     cy.viewport(500, 500);
