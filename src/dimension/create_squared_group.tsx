@@ -3,6 +3,7 @@ import { TItem } from "../Global/TItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
 import { create_gyazo_item } from "../utils/add_gyazo_item";
+import { dev_log } from "../utils/dev";
 import { url_to_text } from "../utils/url_to_text";
 import { create_squared_position } from "./create_squared_position";
 import { TWorldCoord } from "./world_to_screen";
@@ -62,7 +63,7 @@ export const create_squared_group = (texts: string[]) => {
     kozane_list.push(kozane);
   });
 
-  console.log(kozane_list);
+  dev_log(kozane_list);
   updateGlobal((g) => {
     kozane_list.forEach((kozane) => {
       g.itemStore[kozane.id] = kozane;

@@ -3,6 +3,7 @@ import React from "react";
 import { getGlobal } from "reactn";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { make_scrapbox_url } from "../Scrapbox/make_scrapbox_kozane";
+import { dev_log } from "../utils/dev";
 
 export const build_content = (value: TKozaneItem) => {
   const g = getGlobal();
@@ -23,10 +24,10 @@ export const build_content = (value: TKozaneItem) => {
           const src = `https://scrapbox.io/api/pages/${node.path}/icon`;
           return <img src={src} style={{ height: "1em" }} alt={node.path} />;
         } else {
-          console.log(node);
+          dev_log(node);
         }
       } else if (node.type === "link") {
-        console.log(node);
+        dev_log(node);
         if (node.pathType === "relative") {
           // const src = `https://scrapbox.io/${proj}/${node.href}`;
           // return <a href={src}> {node.raw} </a>;
@@ -40,11 +41,11 @@ export const build_content = (value: TKozaneItem) => {
           // return <a href={src}> {node.raw} </a>;
           return <span style={{ color: "blue" }}>[URL]</span>;
         } else {
-          console.log(node);
+          dev_log(node);
           return node.raw;
         }
       } else {
-        console.log(node);
+        dev_log(node);
         return node.raw;
       }
       return null;
@@ -62,7 +63,7 @@ export const get_scarpbox_links = (value: TKozaneItem) => {
 
     line.nodes.forEach((node) => {
       if (node.type === "link") {
-        console.log(node);
+        dev_log(node);
         if (node.pathType === "relative") {
           const url = make_scrapbox_url(
             `https://scrapbox.io/${proj}`,

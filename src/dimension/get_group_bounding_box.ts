@@ -82,6 +82,5 @@ export const get_items_bounding_box = (items: TItemId[]): TBoundingBox => {
     }
   });
   const r = { left, right, top, bottom };
-  // console.log("group bounding box", r);
   return r;
 };

@@ -66,6 +66,5 @@ export const normalize = (v: V2): V2 => {
 };
 
 export const equal_v2 = (v1: V2, v2: V2): boolean => {
-  // console.log(v1, v2);
   return v1[0] === v2[0] && v1[1] === v2[1];
 };

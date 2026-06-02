@@ -3,6 +3,7 @@ import { bounding_box_to_rect } from "../dimension/bounding_box_to_rect";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { L2norm, sub_v2 } from "../dimension/V2";
 import { TItemId } from "../Global/TItemId";
+import { dev_log } from "../utils/dev";
 import { get_item } from "../utils/get_item";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 
@@ -96,7 +97,7 @@ const sort_items_for_next_item = (items: TItemId[]): TItemId[] => {
   const get_cost = (id: TItemId) => {
     const item = get_item(g, id);
     const cost = item.position[0] + item.position[1] * 4;
-    console.log(item.text, cost);
+    dev_log(item.text, cost);
     return cost;
   };
 
@@ -110,7 +111,7 @@ export const cluster_to_chain = (items: TItemId[]): TItemId[][] => {
   const g = getGlobal();
 
   const visit = (current: TItemId, chain: TItemId[]) => {
-    console.log("visit", get_item(g, current).text);
+    dev_log("visit", get_item(g, current).text);
     chain.push(current);
     visited[current] = true;
     const next_items = [] as TItemId[];
@@ -119,9 +120,9 @@ export const cluster_to_chain = (items: TItemId[]): TItemId[][] => {
         next_items.push(next);
       }
     });
-    console.log("next_items", next_items);
+    dev_log("next_items", next_items);
     sort_items_for_next_item(next_items).forEach((next) => {
-      console.log("next", get_item(g, next).text);
+      dev_log("next", get_item(g, next).text);
       if (visited[next] !== true) {
         visit(next, chain);
       }
@@ -129,7 +130,7 @@ export const cluster_to_chain = (items: TItemId[]): TItemId[][] => {
   };
 
   sort_items_from_left_top(items).forEach((start) => {
-    console.log("start", get_item(g, start).text);
+    dev_log("start", get_item(g, start).text);
     if (visited[start] === true) {
       return;
     }
@@ -172,11 +173,11 @@ export const items_to_lines = (items: TItemId[]): string[] => {
 
 export const copy_text = () => {
   const ret = items_to_lines(getGlobal().selected_items).join("\n");
-  console.log(ret);
+  dev_log(ret);
   navigator.clipboard.writeText(ret);
 };
 
 // @ts-ignore
 window.copy_text = () => {
-  console.log(items_to_lines(getGlobal().drawOrder).join("\n"));
+  dev_log(items_to_lines(getGlobal().drawOrder).join("\n"));
 };

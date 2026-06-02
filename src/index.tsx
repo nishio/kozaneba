@@ -11,6 +11,7 @@ import { initGoogleAnalytics } from "./initGoogleAnalytics";
 import addReactNDevTools from "reactn-devtools";
 import { run_user_script } from "./API/run_user_script";
 import { expose_kozaneba_api } from "./API/KozanebaAPI";
+import { dev_log } from "./utils/dev";
 
 const initProduction = () => {
   initSentry();
@@ -36,7 +37,7 @@ expose_kozaneba_api();
 run_user_script();
 
 window.matchMedia("print").addEventListener("change", (e) => {
-  console.log(e);
+  dev_log(e);
   setGlobal({
     print_mode: e.matches,
   });

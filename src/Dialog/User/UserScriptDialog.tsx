@@ -9,6 +9,7 @@ import {
 import { useRef, useState } from "react";
 import { useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../../utils/close_menu";
+import { dev_log } from "../../utils/dev";
 
 export type Ba = { title: string; id: string; last_updated: number };
 
@@ -24,17 +25,17 @@ export const UserScriptDialog = () => {
 
   const onRun = () => {
     try {
-      console.log("Run UserScript");
+      dev_log("Run UserScript");
       // eslint-disable-next-line no-eval
       eval(ref.current!.value);
-      console.log("OK");
+      dev_log("OK");
     } catch (error) {
       console.error(error);
     }
   };
   const onSave = () => {
     localStorage.setItem("onLoad", ref.current!.value);
-    console.log("Saved");
+    dev_log("Saved");
   };
   const onSample = () => {
     window.open(

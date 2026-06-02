@@ -1,5 +1,6 @@
 import { create_squared_position } from "../dimension/create_squared_position";
 import { get_center_of_screen } from "../dimension/get_center_of_screen";
+import { dev_log } from "../utils/dev";
 import { GroupItem } from "../Group/GroupItem";
 import { KozaneItem } from "../Kozane/KozaneItem";
 import { TItem } from "./TItem";
@@ -17,7 +18,7 @@ export const kintone_demo = (
   })
     .then((res) => res.json())
     .then((records) => {
-      console.log(records);
+      dev_log(records);
 
       // from create_squared_group
       const positions = create_squared_position(records);

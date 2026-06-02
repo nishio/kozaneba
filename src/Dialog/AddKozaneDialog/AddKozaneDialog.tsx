@@ -11,6 +11,7 @@ import { constants } from "../../API/constants";
 import { finishButtons } from "../../App/hotKey";
 import { addTooltip } from "../../utils/addTooltip";
 import { add_multiple_kozane } from "../../utils/add_multiple_kozane";
+import { dev_log } from "../../utils/dev";
 
 export const AddKozaneDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -24,7 +25,7 @@ export const AddKozaneDialog = () => {
   };
 
   const onAddKozane = () => {
-    console.log("onAddKozane", open, textarea.current);
+    dev_log("onAddKozane", open, textarea.current);
     if (textarea.current === null) return;
     if (!open) return;
     let multiline = textarea.current.value;

@@ -49,12 +49,10 @@ export const LineSpring: PhysicalLaw = (g) => {
     a.items.forEach((old_id, index) => {
       const v = sub_v2(gp, positions[index]!);
       const n = L2norm(v);
-      // console.log("n", n);
       if (n > NL) {
         add(grad, targets[index]!, mul_v2(n - NL, normalize(v)));
       }
     });
   });
-  // console.log("LineSpring grad", grad);
   return grad;
 };

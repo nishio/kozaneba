@@ -3,6 +3,7 @@ import { get_item } from "../utils/get_item";
 import { TItemId } from "../Global/TItemId";
 import { TItem } from "../Global/TItem";
 import { TAnnotation, TArrowHead } from "../Global/TAnnotation";
+import { dev_log } from "../utils/dev";
 
 type InType = "selection" | "all" | TItemId[];
 const out = { console: true, clipboard: true };
@@ -66,7 +67,7 @@ export const copy_json = (
   });
 
   if (out_type.console) {
-    console.log(json);
+    dev_log(json);
   }
   if (out_type.clipboard) {
     navigator.clipboard.writeText(json);

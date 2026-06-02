@@ -5,13 +5,14 @@ import { get_delta } from "./get_delta";
 import { finish_selecting } from "./finish_selecting";
 import { drag_drop_selection } from "./drag_drop_selection";
 import { drag_drop_item } from "./drag_drop_item";
+import { dev_log } from "../utils/dev";
 import { moveCenter } from "../utils/moveCenter";
 import { handle_making_line } from "./handle_making_line";
 
 export const onCanvasMouseUp = (
   event: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
-  console.log("onCanvasMouseUp");
+  dev_log("onCanvasMouseUp");
   if (handle_if_is_click(event)) return;
 
   const g = getGlobal();

@@ -6,9 +6,10 @@ import { set_status } from "../utils/set_status";
 import { save_new } from "./save_new";
 import { not_login_then_show_dialog } from "./not_login_then_show_dialog";
 import { get_user_id } from "./get_user_id";
+import { dev_log } from "../utils/dev";
 
 export const initial_save = () => {
-  console.log("initial save");
+  dev_log("initial save");
   if (not_login_then_show_dialog()) return;
   close_menu();
   set_status("uploading");

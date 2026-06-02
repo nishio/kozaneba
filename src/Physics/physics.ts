@@ -5,6 +5,7 @@ import { add_v2, L2norm, mul_v2, normalize, V2 } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
+import { dev_time, dev_time_end } from "../utils/dev";
 import { ItemRepulse } from "./ItemRepulse";
 import { LineSpring } from "./LineSpring";
 import { pin } from "./pin";
@@ -58,9 +59,6 @@ class AdaDelta {
         mul_v2(1 - this.gamma, square(delta[key]!))
       );
     });
-    // console.log("MSG", this.mean_squared_gradient);
-    // console.log("MSD", this.mean_squared_delta);
-
     return delta;
   }
 }
@@ -98,7 +96,7 @@ interface IGradientMethod {
 let gradient_method: IGradientMethod = new GradientDecent();
 
 export const step = () => {
-  console.time("Physics step");
+  dev_time("Physics step");
   [1, 2].forEach(() => {
     const g = getGlobal();
     const grad = {};
@@ -121,7 +119,7 @@ export const step = () => {
       });
     });
   });
-  console.timeEnd("Physics step");
+  dev_time_end("Physics step");
   redraw();
 };
 

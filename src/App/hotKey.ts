@@ -4,6 +4,7 @@ import { constants } from "../API/constants";
 import { toggle_fit_to_contents } from "./toggle_fit_to_contents";
 import { moveCenter } from "../utils/moveCenter";
 import { open_dialog } from "../utils/open_dialog";
+import { dev_log } from "../utils/dev";
 
 export const hotKey = (e: KeyboardEvent) => {
   const g = getGlobal();
@@ -48,7 +49,7 @@ export const hotKey = (e: KeyboardEvent) => {
     zoom_out_pointer();
     e.preventDefault();
   } else {
-    console.log(e);
+    dev_log(e);
   }
 };
 export const finishButtons = {} as { [dialogName: string]: () => void };

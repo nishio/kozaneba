@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { close_menu_and_dialog } from "../../utils/close_menu";
+import { dev_log } from "../../utils/dev";
 import { tutorial_pages } from "./tutorial_pages";
 import { useEffect } from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,7 +26,7 @@ export const TutorialDialog = () => {
     close_menu_and_dialog();
   };
   useEffect(() => {
-    console.log(`Tutorial Page: ${p} open: ${open}`);
+    dev_log(`Tutorial Page: ${p} open: ${open}`);
   }, [p, open]);
 
   let page = tutorial_pages[p]!;

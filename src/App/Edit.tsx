@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { updateGlobal } from "../Global/updateGlobal";
+import { dev_log } from "../utils/dev";
 import { Blank } from "./Blank";
 
 export const Edit: React.FC<{ ba: string }> = ({ ba }) => {
   useEffect(() => {
-    console.log("loading", ba);
+    dev_log("loading", ba);
     updateGlobal((g) => {
       g.statusBar.type = "downloading";
       g.dialog = "Loading";

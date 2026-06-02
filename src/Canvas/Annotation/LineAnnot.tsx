@@ -23,6 +23,7 @@ import { TLineAnnot } from "../../Global/TAnnotation";
 import { TItemId } from "../../Global/TItemId";
 import { updateGlobal } from "../../Global/updateGlobal";
 import { find_parent } from "../../utils/find_parent";
+import { dev_log } from "../../utils/dev";
 import { KOZANE_WIDTH } from "../../utils/kozane_constants";
 import { mark_local_changed } from "../../utils/mark_local_changed";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
@@ -92,7 +93,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       return bounding_box_to_rect(get_item_bounding_box(id));
     }
     const offset = get_total_offset_of_parents(parent, g);
-    console.log({ offset });
+    dev_log({ offset });
     const { top, left, width, height } = bounding_box_to_rect(
       get_item_bounding_box(id)
     );
