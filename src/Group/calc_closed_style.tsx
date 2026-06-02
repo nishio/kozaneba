@@ -31,7 +31,7 @@ export function calc_closed_style(
     x: width / 2,
     y: height / 2,
   };
-  const text = get_group_title(value).replace("\n", " ");
+  const text = get_group_title(value).replace(/\n/g, " ");
   // need to keep "\n" for future edit, but need to be space for better rendering
   return { style, new_offset, text };
 }

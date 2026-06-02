@@ -34,7 +34,7 @@ export const add_urls = (urls: string[]) => {
   );
   const group = new GroupItem();
   const url_to_item = async (url: string) => {
-    if (url.startsWith("https://scrapbox.io")) {
+    if (is_scrapbox_url(url)) {
       // scrapbox kozane
       console.log(url);
       return get_page_json(url).then((page) =>
@@ -128,6 +128,15 @@ export const add_scrapbox_links = (
     set_status("done");
     mark_local_changed();
   });
+};
+
+const is_scrapbox_url = (url: string): boolean => {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" && parsed.hostname === "scrapbox.io";
+  } catch {
+    return false;
+  }
 };
 
 const page_to_scrapbox_item = (page: TScrapboxPageJSON, url: string): TScrapboxItem => {
