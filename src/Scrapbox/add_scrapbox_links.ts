@@ -17,9 +17,10 @@ import { SCRAPBOX_SIZE } from "./get_scrapbox_bounding_box";
 import { create_kozane } from "../API/add_kozane";
 import { url_to_text } from "../utils/url_to_text";
 import { TWorldCoord } from "../dimension/world_to_screen";
+import { dev_log } from "../utils/dev";
 
 export const add_urls = (urls: string[]) => {
-  console.log(urls);
+  dev_log(urls);
   updateGlobal((g) => {
     g.dialog = "Loading";
     g.statusBar.type = "downloading";
@@ -36,7 +37,7 @@ export const add_urls = (urls: string[]) => {
   const url_to_item = async (url: string) => {
     if (is_scrapbox_url(url)) {
       // scrapbox kozane
-      console.log(url);
+      dev_log(url);
       return get_page_json(url).then((page) =>
         page_to_scrapbox_item(page, url)
       );

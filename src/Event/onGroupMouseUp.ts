@@ -40,7 +40,7 @@ export const onGroupMouseUp = (
     dev_log(`target_id === ${target_id}`);
     drag_drop_item_into_group(group_id, delta, target_id);
   } else {
-    console.log("unexpected behavior", group_id);
+    dev_log("unexpected behavior", group_id);
 
     throw new Error();
   }

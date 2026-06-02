@@ -8,6 +8,7 @@ import { TGyazoItem } from "../Global/TGyazoItem";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
+import { dev_log } from "../utils/dev";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { auth, db } from "./init_firebase";
 
@@ -22,7 +23,7 @@ auth.onAuthStateChanged((user) => {
 export const authui = new firebaseui.auth.AuthUI(auth);
 
 export const showCurrentUser = () => {
-  console.log(auth.currentUser);
+  dev_log(auth.currentUser);
 };
 
 export const load_from_server = (data: DocData): void => {};

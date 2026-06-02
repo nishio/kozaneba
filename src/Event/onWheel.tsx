@@ -4,6 +4,7 @@ import { constants } from "../API/constants";
 import { get_last_mouse_position } from "./onCanvasMouseMove";
 import { kozaneba } from "../API/KozanebaAPI";
 import { zoom_around_world_point } from "../dimension/zoom_around_world_point";
+import { dev_log } from "../utils/dev";
 
 export const zoom_around_pointer = (delta_scale: number) => {
   updateGlobal((g) => {
@@ -41,7 +42,7 @@ export const onWheel = (e: WheelEvent) => {
   count++;
   const now = Date.now();
   if (now > prevTiming + 1000) {
-    console.log(`count: ${count - prevCount}, time: ${now - prevTiming}`);
+    dev_log(`count: ${count - prevCount}, time: ${now - prevTiming}`);
     prevCount = count;
     prevTiming = now;
   }

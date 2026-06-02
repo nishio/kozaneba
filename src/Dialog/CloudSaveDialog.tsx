@@ -13,12 +13,13 @@ import { close_menu_and_dialog } from "../utils/close_menu";
 import { initial_save } from "../Cloud/initial_save";
 import { useEffect } from "react";
 import { GoogleAuthProvider } from "../Cloud/init_firebase";
+import { dev_log } from "../utils/dev";
 
 export const CloudSaveDialog = () => {
   const [dialog] = useGlobal("dialog");
   const open = dialog === "CloudSave";
   useEffect(() => {
-    console.log("CloudSaveDialog open:", open);
+    dev_log("CloudSaveDialog open:", open);
   }, [open]);
 
   const onClose = () => {

@@ -3,6 +3,7 @@ import { set_status } from "../utils/set_status";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { updateGlobal } from "../Global/updateGlobal";
 import { get_page_json, make_scrapbox_kozane } from "./make_scrapbox_kozane";
+import { dev_log } from "../utils/dev";
 
 export const add_scrapbox_item = (url: string) => {
   const items = url.split("/");
@@ -44,7 +45,7 @@ export const add_scrapbox_contents = (url: string) => {
     }
   )
     .then((x) => {
-      console.log(x.text);
+      dev_log(x.text);
     })
     .then(() => {
       set_status("done");

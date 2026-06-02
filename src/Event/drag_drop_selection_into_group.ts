@@ -8,12 +8,13 @@ import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { TItemId } from "../Global/TItemId";
+import { dev_log } from "../utils/dev";
 
 export function drag_drop_selection_into_group(
   group_id: TItemId,
   delta: TWorldCoord
 ) {
-  console.log("selection drop on group", group_id);
+  dev_log("selection drop on group", group_id);
   updateGlobal((g) => {
     const group_draft = get_group(g, group_id);
     g.selected_items.forEach((id) => {

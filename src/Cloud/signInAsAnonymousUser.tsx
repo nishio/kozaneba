@@ -1,9 +1,10 @@
 import { auth } from "./init_firebase";
+import { dev_log } from "../utils/dev";
 
 
 export const signInAsAnonymousUser = () => {
-  console.log("signInAsAnonymousUser");
+  dev_log("signInAsAnonymousUser");
   return auth.signInAnonymously().then(() => {
-    console.log("done");
+    dev_log("done");
   });
 };

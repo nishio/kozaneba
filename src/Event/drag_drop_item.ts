@@ -24,7 +24,7 @@ export function drag_drop_item(
   dev_log("drag_drop_item", target_id, delta);
   const parent = find_parent(target_id);
   if (parent !== null) {
-    console.log(`move target ${target_id} out from parent ${parent} to top`);
+    dev_log(`move target ${target_id} out from parent ${parent} to top`);
     updateGlobal((g) => {
       const p = get_group(g, parent);
       p.items = remove_item_from(p.items, target_id);
@@ -43,7 +43,7 @@ export function drag_drop_item(
       }
     });
   } else {
-    console.log(`move target ${target_id} from top to top`);
+    dev_log(`move target ${target_id} from top to top`);
     move_front(target_id);
     updateGlobal((g) => {
       const x = get_item(g, target_id);

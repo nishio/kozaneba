@@ -6,6 +6,7 @@ import { closeGroup } from "../Group/closeGroup";
 import { KozaneItem } from "../Kozane/KozaneItem";
 import { importRegroupJSON } from "../Regroup/importRegroupJSON";
 import { reset_selection } from "../Selection/reset_selection";
+import { dev_log } from "../utils/dev";
 import { make_items_into_new_group } from "../utils/make_items_into_new_group";
 import { kintone_demo } from "./kintone_demo";
 import { TKozaneItem } from "./TKozaneItem";
@@ -15,13 +16,13 @@ let isFirestoreEmulatorConnected = false;
 let isAuthEmulatorConnected = false;
 
 const tmpfunc = () => {
-  console.log("write");
+  dev_log("write");
   db.collection("ba").doc("foo").set({ x: "hello" })
     .then(() => {
-      console.log("OK");
+      dev_log("OK");
     })
     .catch((err: Error) => {
-      console.log(err);
+      dev_log(err);
     });
 };
 export const toUseEmulator = () => {

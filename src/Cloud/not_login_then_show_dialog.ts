@@ -1,4 +1,5 @@
 import { updateGlobal } from "../Global/updateGlobal";
+import { dev_log } from "../utils/dev";
 import { auth } from "./init_firebase";
 
 export const not_login_then_show_dialog = () => {
@@ -6,9 +7,9 @@ export const not_login_then_show_dialog = () => {
     updateGlobal((g) => {
       g.dialog = "CloudSave";
     });
-    console.log(`not login. show dialog.`);
+    dev_log(`not login. show dialog.`);
     return true;
   }
-  console.log(`save as ${auth.currentUser.displayName ?? "Anonymous"}`);
+  dev_log(`save as ${auth.currentUser.displayName ?? "Anonymous"}`);
   return false;
 };

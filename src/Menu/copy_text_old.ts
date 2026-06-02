@@ -3,6 +3,7 @@ import { L1norm, L2norm, V2 } from "../dimension/V2";
 import { get_item } from "../utils/get_item";
 import { TItemId } from "../Global/TItemId";
 import { TItem } from "../Global/TItem";
+import { dev_log } from "../utils/dev";
 import { KOZANE_HEIGHT, KOZANE_WIDTH } from "../utils/kozane_constants";
 import { remove_item_from } from "../utils/remove_item_from";
 
@@ -152,7 +153,7 @@ const get_chain = (items: TItemId[], out: Buffer): [TItemId[], TItemId[]] => {
     side_chain.delete(cur);
     result.push(cur);
     const item = get_item(g, cur);
-    console.log(item.text);
+    dev_log(item.text);
     push(item, out);
     const neighbors = get_neighbors(item.position, items);
     if (neighbors.length === 1) {
@@ -163,7 +164,7 @@ const get_chain = (items: TItemId[], out: Buffer): [TItemId[], TItemId[]] => {
         // finish
         return [result, items];
       } else {
-        console.log("no-neighbor chain break");
+        dev_log("no-neighbor chain break");
         out.newline();
         cur = get_left_top(Array.from(side_chain));
       }
@@ -181,7 +182,7 @@ export const copy_text = () => {
   let items = getGlobal().selected_items;
   const out = new Buffer();
   serialize(items, out);
-  console.log(out.concat());
+  dev_log(out.concat());
   navigator.clipboard.writeText(out.concat());
 };
 
@@ -192,7 +193,7 @@ const serialize = (items: TItemId[], out: Buffer) => {
   while (items.length > 0) {
     let [, new_items] = get_chain(items, out);
     items = new_items;
-    console.log("chain break");
+    dev_log("chain break");
     out.newline();
   }
 };
@@ -200,5 +201,5 @@ const serialize = (items: TItemId[], out: Buffer) => {
 window.test = () => {
   const out = new Buffer();
   serialize(getGlobal().drawOrder, out);
-  console.log(out.concat());
+  dev_log(out.concat());
 };

@@ -15,6 +15,7 @@ import { mark_local_changed } from "../utils/mark_local_changed";
 import { delete_ba } from "../Cloud/delete_ba";
 import { can_write, is_cloud } from "../utils/can_write";
 import { make_copy } from "../utils/make_copy";
+import { dev_log } from "../utils/dev";
 
 export type Ba = { title: string; id: string; last_updated: number };
 
@@ -112,9 +113,9 @@ const Share: React.FC<{ mode: string }> = ({ mode }) => {
   const share_url = `https://kozaneba.netlify.app/#${mode}=${cloud_ba}`;
   const onChange = (e: SelectChangeEvent<string>) => {
     const value = e.target.value;
-    console.log(e);
+    dev_log(e);
     const anyone_writable = value === "edit";
-    console.log(anyone_writable);
+    dev_log(anyone_writable);
     setGlobal({ anyone_writable });
     mark_local_changed();
   };

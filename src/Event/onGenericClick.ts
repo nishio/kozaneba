@@ -30,7 +30,7 @@ export const onGenericClick = (
   });
   reset_target();
 
-  console.log(`onGenericClick type:${target.type} id:${id}`);
+  dev_log(`onGenericClick type:${target.type} id:${id}`);
   if (target.type === "kozane") {
     show_menu("Kozane", event);
     return true;
