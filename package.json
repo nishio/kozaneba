@@ -45,6 +45,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "codex:preflight": "bash scripts/codex-preflight.sh",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
