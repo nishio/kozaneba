@@ -1,9 +1,9 @@
+/// <reference types="cypress" />
+
 import "firebase/compat/auth";
+
 describe("save", () => {
-  // it("Adds document to test_hello_world collection of Firestore", () => {
-  //   cy.callFirestore("add", "test_hello_world", { some: "value" });
-  // });
-  it("main", () => {
+  it("enables cloud save with anonymous sign-in on the Firebase emulator", () => {
     cy.visit("/#blank");
     cy.viewport(500, 500);
 
@@ -20,5 +20,10 @@ describe("save", () => {
     cy.contains("Trigger Cloud Save").click();
     cy.testid("continue-as-anonymous-user").click();
     cy.testid("login-status").contains("signed in as anonymous user");
+
+    cy.movidea((m) => {
+      m.auth.signOut();
+    });
+    cy.testid("login-status").contains("not signed in");
   });
 });
