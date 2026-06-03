@@ -25,7 +25,19 @@ export const Group: React.FC<Props> = React.memo(({ value, offset }) => {
     highlight_parent(value.id, false);
     e.stopPropagation();
   }, [value.id]);
+  const onPointerEnter = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!is_draggeing()) return;
+    highlight_group(value.id, true);
+    highlight_parent(value.id, false);
+    e.stopPropagation();
+  }, [value.id]);
   const onMouseLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    if (!is_draggeing()) return;
+    highlight_group(value.id, false);
+    highlight_parent(value.id, true);
+    e.stopPropagation();
+  }, [value.id]);
+  const onPointerLeave = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!is_draggeing()) return;
     highlight_group(value.id, false);
     highlight_parent(value.id, true);
@@ -38,21 +50,44 @@ export const Group: React.FC<Props> = React.memo(({ value, offset }) => {
     }
     onGroupMouseUp(e, value);
   }, [value]);
+  const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (self.current !== null) {
+      self.current.style.borderColor = GROUP_BORDER_COLOR;
+    }
+    onGroupMouseUp(e, value);
+  }, [value]);
 
   // let dragging_self = false;
   const onMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     // dragging_self = true;
     onGroupMouseDown(e, value);
   }, [value]);
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    onGroupMouseDown(e, value);
+  }, [value]);
   const common_props = useMemo(() => ({
     key: value.id,
     "data-testid": value.id,
     onMouseDown,
+    onPointerDown,
     onMouseEnter,
+    onPointerEnter,
     onMouseLeave,
+    onPointerLeave,
     onMouseUp,
+    onPointerUp,
     id: "group-" + value.id,
-  }), [value.id, onMouseDown, onMouseEnter, onMouseLeave, onMouseUp]);
+  }), [
+    value.id,
+    onMouseDown,
+    onPointerDown,
+    onMouseEnter,
+    onPointerEnter,
+    onMouseLeave,
+    onPointerLeave,
+    onMouseUp,
+    onPointerUp,
+  ]);
 
   if (value.isOpen === false) {
     const { style, new_offset, text } = calc_closed_style(value, offset);

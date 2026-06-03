@@ -8,15 +8,43 @@ import {
 } from "../dimension/world_to_screen";
 import { dev_log } from "../utils/dev";
 import { get_client_pos } from "./get_client_pos";
+import { TInputEvent } from "./input_event";
 
-let _target: HTMLDivElement | null;
+let _target: HTMLElement | null;
 let _mouse_down_point = [0, 0] as TScreenCoord;
 let _first_element_position = [0, 0] as TScreenCoord;
 let _is_mousemoved = false;
 let _is_dragging = false;
+let _captured_pointer_id: number | null = null;
 
-export const set_target = (event: React.MouseEvent<HTMLDivElement>) => {
+export const capture_pointer_on_canvas = (event: TInputEvent<Element>) => {
+  if (!("pointerId" in event)) return;
+  const canvas = document.getElementById("canvas");
+  if (!(canvas instanceof HTMLDivElement)) return;
+  try {
+    canvas.setPointerCapture(event.pointerId);
+    _captured_pointer_id = event.pointerId;
+  } catch {
+    // The pointer may already be released by the browser, e.g. after cancel.
+  }
+};
+
+export const release_pointer_capture = () => {
+  if (_captured_pointer_id === null) return;
+  const canvas = document.getElementById("canvas");
+  if (canvas instanceof HTMLDivElement) {
+    try {
+      canvas.releasePointerCapture(_captured_pointer_id);
+    } catch {
+      // It is valid for capture to have been lost before explicit release.
+    }
+  }
+  _captured_pointer_id = null;
+};
+
+export const set_target = <T extends HTMLElement>(event: TInputEvent<T>) => {
   dev_log("set_target", event);
+  capture_pointer_on_canvas(event);
   _target = event.currentTarget;
   dev_log("_target", _target);
   _mouse_down_point = get_client_pos(event);
@@ -49,9 +77,10 @@ export const reset_target = () => {
 
   _target = null;
   _is_dragging = false;
+  release_pointer_capture();
 };
 
-export const move_target = (event: React.MouseEvent) => {
+export const move_target = (event: TInputEvent<Element>) => {
   if (_target === null) {
     throw new Error("try to move element:null");
   }
@@ -68,7 +97,7 @@ export const move_target = (event: React.MouseEvent) => {
   _is_mousemoved = true;
 };
 
-export const move_target_on_screen = (event: React.MouseEvent) => {
+export const move_target_on_screen = (event: TInputEvent<Element>) => {
   // for SelectionView, it is not under `world` transform
   if (_target === null) {
     throw new Error("try to move element:null");
@@ -92,7 +121,7 @@ export const is_draggeing = () => {
 };
 
 // currently not used but may useful for refactoring
-export const get_delta = (event: React.MouseEvent<HTMLDivElement>) => {
+export const get_delta = (event: TInputEvent<HTMLElement>) => {
   const delta = sub_v2w(
     screen_to_world(get_client_pos(event)),
     screen_to_world(_mouse_down_point)
@@ -101,7 +130,7 @@ export const get_delta = (event: React.MouseEvent<HTMLDivElement>) => {
 };
 
 // not used
-export const get_target = (): HTMLDivElement => {
+export const get_target = (): HTMLElement => {
   if (_target === null) {
     throw new Error("did get_target but target is null");
   }

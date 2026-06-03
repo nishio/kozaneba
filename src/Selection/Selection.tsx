@@ -19,6 +19,7 @@ export const SelectionView: React.FC = React.memo(() => {
     <SelectionDiv
       rect={rect}
       onMouseDown={onSelectionMouseDown}
+      onPointerDown={onSelectionMouseDown}
       id="selection-view"
       data-testid="selection-view"
     >

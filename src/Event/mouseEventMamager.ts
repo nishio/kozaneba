@@ -1,13 +1,14 @@
-import React from "react";
 import { screen_to_world } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
 import { dev_log } from "../utils/dev";
 import { set_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
+import { should_ignore_compat_mouse_event, TInputEvent } from "./input_event";
 
 export const onSelectionMouseDown = (
-  event: React.MouseEvent<HTMLDivElement>
+  event: TInputEvent<HTMLDivElement>
 ) => {
+  if (should_ignore_compat_mouse_event(event)) return;
   dev_log("onSelectionMouseDown");
   set_target(event);
   updateGlobal((g) => {

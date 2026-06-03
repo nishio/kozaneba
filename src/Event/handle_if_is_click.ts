@@ -1,11 +1,11 @@
-import React from "react";
 import { getGlobal } from "reactn";
 import { Sentry } from "../initSentry";
 import { is_dragged } from "./fast_drag_manager";
 import { onGenericClick } from "./onGenericClick";
 import { onSelectionClick } from "./onSelectionClick";
+import { TInputEvent } from "./input_event";
 
-export const handle_if_is_click = (event: React.MouseEvent<HTMLDivElement>) => {
+export const handle_if_is_click = (event: TInputEvent<HTMLDivElement>) => {
   // if the event is click, return true to prevent drag handling
   const g = getGlobal();
   if (!is_dragged()) {

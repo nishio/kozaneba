@@ -1,4 +1,3 @@
-import React from "react";
 import { getGlobal } from "reactn";
 import { TGroupItem } from "../Global/TGroupItem";
 import { move_front } from "../utils/move_front";
@@ -9,15 +8,23 @@ import { drag_drop_selection_into_group } from "./drag_drop_selection_into_group
 import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
 import { dev_log } from "../utils/dev";
 import { moveCenter } from "../utils/moveCenter";
+import { clear_drop_group_highlight } from "./drop_target";
+import { release_pointer_capture } from "./fast_drag_manager";
+import { should_ignore_compat_mouse_event, TInputEvent } from "./input_event";
 
 export const onGroupMouseUp = (
-  event: React.MouseEvent<HTMLDivElement>,
+  event: TInputEvent<HTMLDivElement>,
   group: TGroupItem
 ) => {
+  if (should_ignore_compat_mouse_event(event)) return;
   dev_log("onGroupMouseUp");
+  clear_drop_group_highlight();
   event.preventDefault();
   event.stopPropagation();
-  if (handle_if_is_click(event)) return;
+  if (handle_if_is_click(event)) {
+    release_pointer_capture();
+    return;
+  }
   const g = getGlobal();
 
   if (g.mouseState === "selecting") {
@@ -44,4 +51,5 @@ export const onGroupMouseUp = (
 
     throw new Error();
   }
+  release_pointer_capture();
 };
