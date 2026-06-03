@@ -47,6 +47,9 @@ export const Kozane: React.FC<Props> = React.memo(({
   const onMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     onKozaneMouseDown(e, value);
   }, [value]);
+  const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    onKozaneMouseDown(e, value);
+  }, [value]);
 
   const link_mark = useCallback(() => {
     const url = value.custom?.url;
@@ -79,6 +82,7 @@ export const Kozane: React.FC<Props> = React.memo(({
       key={value.id}
       style={style}
       onMouseDown={onMouseDown}
+      onPointerDown={onPointerDown}
     >
       {link_mark()}
       <KozaneDiv2>{content}</KozaneDiv2>

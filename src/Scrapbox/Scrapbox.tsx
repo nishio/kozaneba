@@ -62,6 +62,9 @@ export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
   const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     onGenericMouseDown(e, value);
   };
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    onGenericMouseDown(e, value);
+  };
 
   const b = get_scrapbox_bounding_box(value);
   const left_top = position_to_left_top(
@@ -78,7 +81,11 @@ export const Scrapbox: React.FC<Props> = ({ value, offset }) => {
 
   const lineHeight = 40 * value.scale;
   return (
-    <ScrapboxDiv onMouseDown={onMouseDown} style={style}>
+    <ScrapboxDiv
+      onMouseDown={onMouseDown}
+      onPointerDown={onPointerDown}
+      style={style}
+    >
       <ScrapboxBack />
       <div>
         <div

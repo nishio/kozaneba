@@ -53,7 +53,10 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
   ] as TWorldCoord;
   const left_top = position_to_left_top(add_v2w(value.position, o));
 
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const onMouseDown = (e: React.MouseEvent<HTMLImageElement>) => {
+    onGenericMouseDown(e, value);
+  };
+  const onPointerDown = (e: React.PointerEvent<HTMLImageElement>) => {
     onGenericMouseDown(e, value);
   };
 
@@ -74,6 +77,7 @@ export const Gyazo: React.FC<Props> = ({ value, offset }) => {
         onLoad={onLoad}
         style={style}
         onMouseDown={onMouseDown}
+        onPointerDown={onPointerDown}
         draggable={false}
       />
       {loaded ? null : <img src="spinner.gif" alt="" />}

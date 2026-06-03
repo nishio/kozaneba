@@ -1,17 +1,19 @@
-import React from "react";
 import { convert_bounding_box_screen_to_world } from "../dimension/convert_bounding_box_screen_to_world";
 import { get_item_bounding_box } from "../dimension/get_bounding_box";
 import { isOverlap } from "../dimension/isOverlap";
 import { selection_range_to_bounding_box } from "../dimension/selection_range_to_bounding_box";
 import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
+import { get_client_pos } from "./get_client_pos";
+import { TInputEvent } from "./input_event";
 
 export function finish_selecting(
-  event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  event: TInputEvent<HTMLDivElement>
 ) {
+  const [x, y] = get_client_pos(event);
   updateGlobal((g) => {
-    g.selectionRange.width = event.pageX - g.selectionRange.left;
-    g.selectionRange.height = event.pageY - g.selectionRange.top;
+    g.selectionRange.width = x - g.selectionRange.left;
+    g.selectionRange.height = y - g.selectionRange.top;
 
     if (g.selectionRange.width === 0 && g.selectionRange.height === 0) {
       // not selected

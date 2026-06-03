@@ -1,4 +1,3 @@
-import React from "react";
 import { getGlobal } from "reactn";
 import { TItemId } from "../Global/TItemId";
 import { updateGlobal } from "../Global/updateGlobal";
@@ -7,9 +6,10 @@ import { reset_target } from "./fast_drag_manager";
 import { get_item } from "../utils/get_item";
 import { dev_log } from "../utils/dev";
 import { handle_making_line } from "./handle_making_line";
+import { TInputEvent } from "./input_event";
 
 export const onGenericClick = (
-  event: React.MouseEvent<HTMLDivElement>,
+  event: TInputEvent<HTMLDivElement>,
   id: TItemId
 ) => {
   const g = getGlobal();

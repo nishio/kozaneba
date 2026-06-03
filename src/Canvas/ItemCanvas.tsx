@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useGlobal } from "reactn";
 import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
-import { onCanvasMouseUp } from "../Event/onCanvasMouseUp";
+import { onCanvasMouseUp, onCanvasPointerCancel } from "../Event/onCanvasMouseUp";
 import { onWheel } from "../Event/onWheel";
 import { TItemId } from "../Global/TItemId";
 import { SelectionView } from "../Selection/Selection";
@@ -70,6 +70,10 @@ export const ItemCanvas = React.memo(() => {
       onMouseUp={onCanvasMouseUp}
       onMouseDown={onCanvasMouseDown}
       onMouseMove={onCanvasMouseMove}
+      onPointerUp={onCanvasMouseUp}
+      onPointerDown={onCanvasMouseDown}
+      onPointerMove={onCanvasMouseMove}
+      onPointerCancel={onCanvasPointerCancel}
       data-testid="ba"
       ref={ref}
     >
