@@ -51,7 +51,7 @@ fi
 section "Firebase emulator smoke"
 env -u ELECTRON_RUN_AS_NODE npx firebase emulators:exec --only auth,firestore \
   "env -u ELECTRON_RUN_AS_NODE npx cypress run \
-    --spec cypress/e2e/movidea/login.cy.ts,cypress/e2e/movidea/save.cy.ts,cypress/e2e/kozaneba/test_tutorial.cy.ts \
+    --spec cypress/e2e/kozaneba/test_login.cy.ts,cypress/e2e/kozaneba/test_save.cy.ts,cypress/e2e/kozaneba/test_tutorial.cy.ts \
     --config baseUrl=$BASE_URL,video=false"
 
 section "Done"

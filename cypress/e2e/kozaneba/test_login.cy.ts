@@ -1,12 +1,13 @@
+/// <reference types="cypress" />
+
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 
 describe("login", () => {
-  it("login", () => {
+  it("signs in with the Firebase auth emulator and signs out", () => {
     cy.visit("/#blank");
     cy.viewport(500, 500);
 
-    // cy.login();
     cy.movidea((m) => {
       m.toUseEmulator();
       m.auth.signInWithCredential(
