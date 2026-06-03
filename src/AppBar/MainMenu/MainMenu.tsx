@@ -10,6 +10,7 @@ import { Sentry } from "../../initSentry";
 import { show_menu } from "../../utils/show_menu";
 import { close_menu_and_dialog } from "../../utils/close_menu";
 import { can_write, is_cloud } from "../../utils/can_write";
+import { download_static_html } from "../../StaticExport/download_static_html";
 // import { StartTutorial } from "./StartTutorial";
 
 export const MainMenu = () => {
@@ -49,6 +50,7 @@ export const MainMenu = () => {
         <User />
 
         <Ba />
+        <DownloadStaticHtml />
         {/* <StartTutorial /> */}
         <SendFeedback />
         {kozaneba.user_menus["Main"]!.map(UserMenuItem)}
@@ -62,6 +64,12 @@ const Ba = () => {
     setGlobal({ dialog: "Ba" });
   };
   return <MenuItem onClick={onClick}>Ba</MenuItem>;
+};
+
+const DownloadStaticHtml = () => {
+  return (
+    <MenuItem onClick={download_static_html}>Download Static HTML</MenuItem>
+  );
 };
 
 const SendFeedback = () => {
