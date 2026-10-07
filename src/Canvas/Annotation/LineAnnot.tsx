@@ -2,6 +2,7 @@ import type {
   ChangeEvent,
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
 } from "react";
 import { State } from "reactn/default";
 import { kozaneba } from "../../API/KozanebaAPI";
@@ -33,6 +34,11 @@ import { Line } from "./Line";
 const arrow_angle = 30; // degrees
 const arrow_tan = Math.tan((arrow_angle / 180) * Math.PI);
 const arrow_sin = Math.sin((arrow_angle / 180) * Math.PI);
+
+// Touch has no reliable dblclick, so a second tap on the same line-label hit
+// target within this window opens the inline editor (mouse keeps onDoubleClick).
+const DOUBLE_TAP_MS = 300;
+const lineLabelLastTap = new Map<string, number>();
 
 export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const lines = [] as [V2, V2, number][];
@@ -197,9 +203,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const is_editing = g.editing_line_label?.annot_index === annot_index;
   const editing_value = is_editing ? g.editing_line_label!.value : "";
 
-  const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const openLabelEditor = () => {
     if (!can_edit_label) return;
     updateGlobal((draft) => {
       draft.editing_line_label = {
@@ -208,6 +212,12 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       };
       draft.disableHotKey = true;
     });
+  };
+
+  const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    openLabelEditor();
   };
 
   const cancelLabelEdit = () => {
@@ -269,6 +279,32 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     event.stopPropagation();
   };
 
+  // Absorb pointer/touch on the line so it does not fall through to the canvas
+  // (which would start a selection or drag on iPad).
+  const stopPointerEvent = (event: ReactPointerEvent) => {
+    event.stopPropagation();
+  };
+
+  // Detect a double-tap (touch/pen) on a line-label hit target and open the
+  // editor. Mouse still uses onDoubleClick, so it is excluded here.
+  const onHitPointerUp = (
+    event: ReactPointerEvent<SVGLineElement>,
+    hit_index: number
+  ) => {
+    event.stopPropagation();
+    if (event.pointerType === "mouse") return;
+    const key = `${annot_index}-${hit_index}`;
+    const now = Date.now();
+    const last = lineLabelLastTap.get(key) ?? 0;
+    if (now - last < DOUBLE_TAP_MS) {
+      lineLabelLastTap.delete(key);
+      event.preventDefault();
+      openLabelEditor();
+    } else {
+      lineLabelLastTap.set(key, now);
+    }
+  };
+
   const custom_opacity = a.custom?.opacity ?? 0.2;
 
   const result = lines.map(([p1, p2, op], index) => {
@@ -302,6 +338,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
             onMouseUp={stopMouseEvent}
             onClick={stopMouseEvent}
             onDoubleClick={startLabelEdit}
+            onPointerDown={stopPointerEvent}
+            onPointerUp={(event) => onHitPointerUp(event, index)}
             style={{ cursor: "text" }}
             data-testid={`line-label-hit-${annot_index}-${index}`}
             key={`line-label-hit-${annot_index}-${index}`}
@@ -362,6 +400,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
         onMouseDown={stopMouseEvent}
         onMouseUp={stopMouseEvent}
         onClick={stopMouseEvent}
+        onPointerDown={stopPointerEvent}
+        onPointerUp={stopPointerEvent}
         style={{
           background: "white",
           border: "1px solid #555",
