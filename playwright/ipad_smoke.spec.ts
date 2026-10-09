@@ -105,6 +105,38 @@ test("touch-drag drops a kozane into a group", async ({ page }) => {
   expect(items).toContain("1");
 });
 
+// Line-label editing via touch double-tap (LineAnnot pointer support, #54 folded
+// into this base). Verifies the consolidated line input under real WebKit.
+test("double-tap on a line opens the label editor", async ({ page }) => {
+  await page.evaluate(() => {
+    const m = (window as any).movidea;
+    m.make_one_kozane({ id: "A", text: "A", position: [-120, 0] });
+    m.make_one_kozane({ id: "B", text: "B", position: [120, 0] });
+    m.updateGlobal((g: any) => {
+      g.annotations.push({
+        type: "line",
+        items: ["A", "B"],
+        heads: ["none", "none"],
+        custom: {},
+        is_doubled: false,
+      });
+    });
+  });
+  const hit = page.locator("[data-testid='line-label-hit-0-0']");
+  // The hit target is a transparent SVG <line> with zero-height geometry bbox,
+  // so toBeVisible() reports hidden; it is still interactable. Wait for attach.
+  await hit.waitFor({ state: "attached" });
+  // Events are dispatched on the element itself; exact coords are irrelevant to
+  // the double-tap handler, so use the line's bbox center.
+  const c = await centerOf(page, "line-label-hit-0-0");
+  // two taps within the double-tap window
+  await pointer(page, "line-label-hit-0-0", "pointerdown", c);
+  await pointer(page, "line-label-hit-0-0", "pointerup", c);
+  await pointer(page, "line-label-hit-0-0", "pointerdown", c);
+  await pointer(page, "line-label-hit-0-0", "pointerup", c);
+  await expect(page.locator("[data-testid='line-label-editor-0']")).toBeVisible();
+});
+
 // Pinch-zoom is UNSUPPORTED on current main (no multi-touch gesture handler
 // yet — QUEUE K12). Baseline confirmed 2026-10-09: scale stays 1 after a
 // two-finger spread. Marked fixme so the harness stays green until K12 lands;

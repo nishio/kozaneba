@@ -96,4 +96,35 @@ describe("line label", () => {
 
     cy.testid("line-label-hit-0-0").should("not.exist");
   });
+
+  // iPad / touch has no reliable dblclick; a double-tap on the line opens the
+  // editor, and a touch on the line must not leak to the canvas as a selection.
+  const touch = {
+    pointerId: 1,
+    pointerType: "touch",
+    isPrimary: true,
+    button: 0,
+    buttons: 1,
+    force: true,
+  };
+  const touchEnd = { ...touch, buttons: 0 };
+
+  it("opens the editor on a touch double-tap", () => {
+    cy.testid("line-label-hit-0-0").trigger("pointerdown", "center", touch);
+    cy.testid("line-label-hit-0-0").trigger("pointerup", "center", touchEnd);
+    cy.testid("line-label-hit-0-0").trigger("pointerdown", "center", touch);
+    cy.testid("line-label-hit-0-0").trigger("pointerup", "center", touchEnd);
+
+    cy.testid("line-label-editor-0").should("exist");
+    cy.testid("line-label-editor-0").type("touch{enter}");
+    cy.getGlobal((g) => g.annotations[0]!.label).should("eql", "touch");
+  });
+
+  it("does not start a canvas selection when a line is touched", () => {
+    cy.testid("line-label-hit-0-0").trigger("pointerdown", "center", touch);
+    cy.testid("line-label-hit-0-0").trigger("pointerup", "center", touchEnd);
+
+    cy.getGlobal((g) => g.selected_items).should("eql", []);
+    cy.getGlobal((g) => g.mouseState).should("not.eql", "selecting");
+  });
 });
