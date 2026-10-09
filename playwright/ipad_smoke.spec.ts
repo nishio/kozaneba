@@ -170,11 +170,8 @@ test("double-tap on a line opens the label editor", async ({ page }) => {
   await expect(page.locator("[data-testid='line-label-editor-0']")).toBeVisible();
 });
 
-// Pinch-zoom is UNSUPPORTED on current main (no multi-touch gesture handler
-// yet — QUEUE K12). Baseline confirmed 2026-10-09: scale stays 1 after a
-// two-finger spread. Marked fixme so the harness stays green until K12 lands;
-// remove .fixme when the pinch handler is implemented.
-test.fixme("pinch-zoom changes scale (K12 target)", async ({ page }) => {
+// Two-finger pinch zooms (K12). Spreading the fingers increases scale.
+test("pinch-zoom (two-finger spread) zooms in", async ({ page }) => {
   const scaleBefore = await page.evaluate(() => (window as any).movidea.getGlobal().scale);
   const c = await centerOf(page, "ba");
   await pointer(page, "ba", "pointerdown", { x: c.x - 40, y: c.y }, { pointerId: 1 });
@@ -184,5 +181,27 @@ test.fixme("pinch-zoom changes scale (K12 target)", async ({ page }) => {
   await pointer(page, "ba", "pointerup", { x: c.x - 120, y: c.y }, { pointerId: 1 });
   await pointer(page, "ba", "pointerup", { x: c.x + 120, y: c.y }, { pointerId: 2 });
   const scaleAfter = await page.evaluate(() => (window as any).movidea.getGlobal().scale);
-  expect(scaleAfter).not.toEqual(scaleBefore);
+  // fingers spread 80px -> 240px => ~3x
+  expect(scaleAfter).toBeGreaterThan(scaleBefore * 1.5);
+});
+
+// A two-finger drag (both fingers move together, distance ~constant) pans.
+test("two-finger drag pans the canvas", async ({ page }) => {
+  const before = await page.evaluate(() => {
+    const g = (window as any).movidea.getGlobal();
+    return { tx: g.trans_x, ty: g.trans_y, scale: g.scale };
+  });
+  const c = await centerOf(page, "ba");
+  await pointer(page, "ba", "pointerdown", { x: c.x - 40, y: c.y }, { pointerId: 1 });
+  await pointer(page, "ba", "pointerdown", { x: c.x + 40, y: c.y }, { pointerId: 2 });
+  await pointer(page, "ba", "pointermove", { x: c.x - 40 + 60, y: c.y + 40 }, { pointerId: 1 });
+  await pointer(page, "ba", "pointermove", { x: c.x + 40 + 60, y: c.y + 40 }, { pointerId: 2 });
+  await pointer(page, "ba", "pointerup", { x: c.x - 40 + 60, y: c.y + 40 }, { pointerId: 1 });
+  await pointer(page, "ba", "pointerup", { x: c.x + 40 + 60, y: c.y + 40 }, { pointerId: 2 });
+  const after = await page.evaluate(() => {
+    const g = (window as any).movidea.getGlobal();
+    return { tx: g.trans_x, ty: g.trans_y, scale: g.scale };
+  });
+  expect(after.scale).toBeCloseTo(before.scale, 1); // pan keeps scale ~constant
+  expect({ tx: after.tx, ty: after.ty }).not.toEqual({ tx: before.tx, ty: before.ty });
 });
