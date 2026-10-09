@@ -189,6 +189,33 @@ test("tap a kozane opens its menu and edit opens the dialog", async ({ page }) =
   await expect(page.locator("[role='dialog'] textarea").first()).toBeVisible();
 });
 
+// K14: the app container height follows the visible viewport. We can't trigger a
+// real iOS soft keyboard headlessly, so shrink the viewport as a proxy and assert
+// --app-height tracks it (so the canvas fits the visible area instead of scrolling).
+test("app height tracks the visible viewport (soft-keyboard proxy)", async ({ page }) => {
+  const readVar = () =>
+    page.evaluate(() =>
+      getComputedStyle(document.documentElement).getPropertyValue("--app-height").trim()
+    );
+  const before = await readVar();
+  expect(before).not.toEqual("");
+  const size = page.viewportSize()!;
+  await page.setViewportSize({ width: size.width, height: Math.round(size.height * 0.6) });
+  await page.waitForFunction((b) => {
+    const v = getComputedStyle(document.documentElement).getPropertyValue("--app-height").trim();
+    return v !== "" && v !== b;
+  }, before);
+  const after = await readVar();
+  expect(parseInt(after)).toBeLessThan(parseInt(before));
+  // .App honours the variable
+  const appHeight = await page.evaluate(() => {
+    const el = document.querySelector(".App") as HTMLElement | null;
+    return el ? el.getBoundingClientRect().height : -1;
+  });
+  expect(appHeight).toBeGreaterThan(0);
+  expect(appHeight).toBeLessThanOrEqual(parseInt(after) + 1);
+});
+
 // Two-finger pinch zooms (K12). Spreading the fingers increases scale.
 test("pinch-zoom (two-finger spread) zooms in", async ({ page }) => {
   const scaleBefore = await page.evaluate(() => (window as any).movidea.getGlobal().scale);
