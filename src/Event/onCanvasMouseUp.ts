@@ -23,6 +23,7 @@ import {
 } from "./input_event";
 import { TItemId } from "../Global/TItemId";
 import { find_parent } from "../utils/find_parent";
+import { pinch_pointer_up } from "./pinch_gesture";
 
 const is_self_or_descendant_group = (
   group_id: TItemId,
@@ -51,6 +52,12 @@ export const onCanvasMouseUp = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  // If a finger of an active pinch lifts, consume it so it does not trigger a
+  // drop or finish-selecting.
+  if (pinch_pointer_up(event)) {
+    release_pointer_capture();
+    return;
+  }
   dev_log("onCanvasMouseUp");
   clear_drop_group_highlight();
   if (handle_if_is_click(event)) {
@@ -101,6 +108,7 @@ export const onCanvasPointerCancel = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  pinch_pointer_up(event);
   clear_drop_group_highlight();
   updateGlobal((g) => {
     g.mouseState = "";
