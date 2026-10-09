@@ -13,6 +13,7 @@ import { close_menu_and_dialog } from "../utils/close_menu";
 import { initial_save } from "../Cloud/initial_save";
 import { useEffect } from "react";
 import { GoogleAuthProvider } from "../Cloud/init_firebase";
+import { preferred_sign_in_flow } from "../Cloud/preferred_sign_in_flow";
 import { dev_log } from "../utils/dev";
 
 export const CloudSaveDialog = () => {
@@ -39,7 +40,8 @@ export const CloudSaveDialog = () => {
       signInOptions: [GoogleAuthProvider.PROVIDER_ID],
       tosUrl: undefined,
       privacyPolicyUrl: undefined,
-      signInFlow: "popup",
+      // popup on desktop, redirect on iPad / touch (popups are unreliable there)
+      signInFlow: preferred_sign_in_flow(),
       callbacks: {
         signInSuccessWithAuthResult: () => {
           initial_save();
