@@ -10,6 +10,7 @@ import {
 import { authui } from "../Cloud/FirestoreIO";
 import { ensureFirebaseUiCss } from "../Cloud/ensureFirebaseUiCss";
 import { GoogleAuthProvider } from "../Cloud/init_firebase";
+import { preferred_sign_in_flow } from "../Cloud/preferred_sign_in_flow";
 
 export const SignDialog = () => {
   const [dialog, setDialog] = useGlobal("dialog");
@@ -26,7 +27,8 @@ export const SignDialog = () => {
       signInOptions: [GoogleAuthProvider.PROVIDER_ID],
       tosUrl: undefined,
       privacyPolicyUrl: undefined,
-      signInFlow: "popup",
+      // popup on desktop, redirect on iPad / touch (popups are unreliable there)
+      signInFlow: preferred_sign_in_flow(),
       callbacks: {
         signInSuccessWithAuthResult: () => {
           setDialog("");
