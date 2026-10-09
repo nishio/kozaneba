@@ -44,7 +44,8 @@
     "test": "vitest run",
     "codex:preflight": "bash scripts/codex-preflight.sh",
     "cypress:emulator-smoke": "bash scripts/cypress-emulator-smoke.sh",
-    "cypress:kozaneba-all": "bash scripts/cypress-kozaneba-all.sh"
+    "cypress:kozaneba-all": "bash scripts/cypress-kozaneba-all.sh",
+    "test:ipad": "playwright test"
   },
   "browserslist": {
     "production": [
@@ -59,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@types/node": "^24.9.0",
     "@vitejs/plugin-react": "^6.0.2",
     "cypress": "^13.17.0",
