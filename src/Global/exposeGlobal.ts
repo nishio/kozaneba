@@ -1,6 +1,6 @@
 import { getGlobal, setGlobal } from "reactn";
 import { TKozaneba } from "../API/KozanebaAPI";
-import { auth, db } from "../Cloud/init_firebase";
+import { auth, db, storage } from "../Cloud/init_firebase";
 import { screen_to_world, world_to_screen } from "../dimension/world_to_screen";
 import { closeGroup } from "../Group/closeGroup";
 import { KozaneItem } from "../Kozane/KozaneItem";
@@ -14,6 +14,7 @@ import { updateGlobal } from "./updateGlobal";
 
 let isFirestoreEmulatorConnected = false;
 let isAuthEmulatorConnected = false;
+let isStorageEmulatorConnected = false;
 
 const tmpfunc = () => {
   dev_log("write");
@@ -33,6 +34,10 @@ export const toUseEmulator = () => {
   if (!isAuthEmulatorConnected) {
     auth.useEmulator("http://localhost:9099");
     isAuthEmulatorConnected = true;
+  }
+  if (!isStorageEmulatorConnected) {
+    storage.useEmulator("localhost", 9199);
+    isStorageEmulatorConnected = true;
   }
   updateGlobal((g) => {
     g.usingFirestoreEmulator = true;

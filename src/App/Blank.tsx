@@ -10,6 +10,7 @@ import { KeyboardShortcut } from "./KeyboardShortcut";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
 import { StatusBar } from "./StatusBar";
 import { onPaste } from "./onPaste";
+import { onDragOver, onDrop } from "./onDrop";
 import { dev_log } from "../utils/dev";
 import { Alert, Snackbar } from "@mui/material";
 import { updateGlobal } from "../Global/updateGlobal";
@@ -25,7 +26,12 @@ export const Blank = () => {
   }, [cloud_ba]);
 
   return (
-    <div className="App" onPaste={onPaste}>
+    <div
+      className="App"
+      onPaste={onPaste}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
       <MyAppBar />
       <ItemCanvas />
       <AdjustFontSize />

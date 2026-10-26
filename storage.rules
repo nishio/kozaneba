@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Images on Ba. They are read through download URLs, whose token bypasses
+    // these rules: anyone who has the URL can see the image, like anyone who
+    // has the Ba ID can see the Ba. Only the owner can read them by path
+    // (getDownloadURL needs it), and nobody can list them.
+    // Only the owner can upload, and files are never overwritten or deleted
+    // from the client.
+    match /images/{uid}/{file} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && resource == null
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
