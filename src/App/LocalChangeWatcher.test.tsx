@@ -3,18 +3,17 @@ import { act, render } from "@testing-library/react";
 import { setGlobal } from "reactn";
 import { vi } from "vitest";
 import { INITIAL_GLOBAL_STATE } from "../Global/initializeGlobalState";
+import { LocalChangeWatcher } from "./LocalChangeWatcher";
+import { mark_local_changed } from "../utils/mark_local_changed";
 
-const save = vi.fn();
-let physics_on = false;
-vi.mock("../Cloud/save", () => ({ save: () => save() }));
-vi.mock("../Physics/physics", () => ({ is_physics_on: () => physics_on }));
+const mocks = vi.hoisted(() => ({ save: vi.fn(), physics_on: false }));
+vi.mock("../Cloud/save", () => ({ save: () => mocks.save() }));
+vi.mock("../Physics/physics", () => ({ is_physics_on: () => mocks.physics_on }));
 vi.mock("../utils/can_write", () => ({
   can_write: () => true,
   is_cloud: () => true,
 }));
-
-const { LocalChangeWatcher } = await import("./LocalChangeWatcher");
-const { mark_local_changed } = await import("../utils/mark_local_changed");
+const save = mocks.save;
 
 const edit = async () => {
   await act(async () => {
@@ -27,7 +26,7 @@ const edit = async () => {
 describe("LocalChangeWatcher", () => {
   beforeEach(() => {
     save.mockClear();
-    physics_on = false;
+    mocks.physics_on = false;
     setGlobal({ ...INITIAL_GLOBAL_STATE, cloud_ba: "ba1" });
   });
 
@@ -40,10 +39,10 @@ describe("LocalChangeWatcher", () => {
 
   test("an edit while physics is on does not block later saves", async () => {
     render(<LocalChangeWatcher />);
-    physics_on = true;
+    mocks.physics_on = true;
     await edit();
     expect(save).toHaveBeenCalledTimes(0);
-    physics_on = false;
+    mocks.physics_on = false;
     await edit();
     await edit();
     expect(save).toHaveBeenCalledTimes(2);
