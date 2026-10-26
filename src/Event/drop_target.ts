@@ -1,6 +1,7 @@
 import { TItemId } from "../Global/TItemId";
 import { highlight_group, highlight_parent } from "../Group/highlight_group";
 import { get_client_pos } from "./get_client_pos";
+import { get_dragging_element } from "./fast_drag_manager";
 import { TInputEvent } from "./input_event";
 
 const GROUP_ID_PREFIX = "group-";
@@ -13,9 +14,13 @@ const group_id_from_element = (element: Element | null): TItemId | null => {
 };
 
 const group_id_from_screen_point = ([x, y]: [number, number]): TItemId | null => {
+  // The dragged element follows the pointer with pointer-events:none, so
+  // elementFromPoint skips it; skip it (and its children) here as well,
+  // otherwise a dragged group is dropped into itself.
+  const dragging = get_dragging_element();
   const groups = Array.from(
     document.querySelectorAll<HTMLElement>(`[id^="${GROUP_ID_PREFIX}"]`)
-  );
+  ).filter((group) => !(dragging?.contains(group) ?? false));
   const hitGroups = groups.filter((group) => {
     const rect = group.getBoundingClientRect();
     return rect.left <= x && x <= rect.right && rect.top <= y && y <= rect.bottom;
