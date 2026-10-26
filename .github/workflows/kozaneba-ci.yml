@@ -73,6 +73,9 @@ jobs:
           npx firebase --version
           npx cypress verify
 
+      - name: Firestore rules
+        run: npm run test:rules
+
       - name: Firebase emulator smoke
         run: npm run cypress:emulator-smoke
 
