@@ -10,7 +10,7 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "18"
+    "node": "22"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -19,7 +19,7 @@
     "node-fetch": "^2.7.0"
   },
   "devDependencies": {
-    "@types/node": "^18.19.0",
+    "@types/node": "^22.0.0",
     "@types/node-fetch": "^2.6.13",
     "@typescript-eslint/eslint-plugin": "^8.60.1",
     "@typescript-eslint/parser": "^8.60.1",
