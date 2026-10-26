@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
 
+# The jobs only read the repository; do not hand npm scripts a write token.
+permissions:
+  contents: read
+
 concurrency:
   group: kozaneba-ci-${{ github.ref }}
   cancel-in-progress: true
