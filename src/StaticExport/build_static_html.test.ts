@@ -33,6 +33,14 @@ describe("build_static_html", () => {
     expect(html).toContain('"viewer":"static-html-mvp"');
     expect(html).toContain("2026-06-03T00:00:00.000Z");
   });
+
+  test("viewer links only http(s) URLs", () => {
+    const html = build_static_html(makeDoc("x"), {
+      title: "t",
+      exportedAt: new Date("2026-06-03T00:00:00.000Z"),
+    });
+    expect(html).toContain("item.custom.url && /^https?:/i.test(item.custom.url)");
+  });
 });
 
 describe("make_static_html_filename", () => {
