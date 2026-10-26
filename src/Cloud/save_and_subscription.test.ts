@@ -1,36 +1,42 @@
 import { getGlobal, setGlobal } from "reactn";
 import { vi } from "vitest";
 import { INITIAL_GLOBAL_STATE } from "../Global/initializeGlobalState";
+import {
+  set_up_read_subscription,
+  stop_current_subscription,
+} from "./set_up_read_subscription";
+import { save } from "./save";
+import { local_db } from "./LocalBackup";
 
 // minimal fake of the compat Firestore API used by save / subscription
-const listeners = new Map<number, string>();
-let next_listener = 0;
-let set_result: Promise<void> = Promise.resolve();
-const fake_db = {
-  collection: () => ({
-    doc: (ba: string) => ({
-      onSnapshot: () => {
-        const key = next_listener++;
-        listeners.set(key, ba);
-        return () => listeners.delete(key);
-      },
-      set: () => set_result,
+const fake = vi.hoisted(() => {
+  const state = {
+    listeners: new Map<number, string>(),
+    next_listener: 0,
+    set_result: Promise.resolve() as Promise<void>,
+  };
+  const db = {
+    collection: () => ({
+      doc: (ba: string) => ({
+        onSnapshot: () => {
+          const key = state.next_listener++;
+          state.listeners.set(key, ba);
+          return () => state.listeners.delete(key);
+        },
+        set: () => state.set_result,
+      }),
     }),
-  }),
-};
-vi.mock("./init_firebase", () => ({ db: fake_db, auth: { currentUser: { uid: "u1" } } }));
+  };
+  return { state, db };
+});
+vi.mock("./init_firebase", () => ({ db: fake.db, auth: { currentUser: { uid: "u1" } } }));
 vi.mock("./FirestoreIO", () => ({ docdate_to_state: (x: unknown) => x }));
 vi.mock("./not_login_then_show_dialog", () => ({ not_login_then_show_dialog: () => false }));
 vi.mock("./LocalBackup", () => ({ local_db: { backup: { add: vi.fn() } } }));
 vi.mock("../API/KozanebaAPI", () => ({
   kozaneba: { constants: { to_make_local_backup: false } },
 }));
-
-const { set_up_read_subscription, stop_current_subscription } = await import(
-  "./set_up_read_subscription"
-);
-const { save } = await import("./save");
-const { local_db } = await import("./LocalBackup");
+const listeners = fake.state.listeners;
 
 describe("read subscription", () => {
   beforeEach(() => {
@@ -56,7 +62,7 @@ describe("save", () => {
   });
 
   test("a rejected save is shown and backed up locally", async () => {
-    set_result = Promise.reject({ code: "invalid-argument", message: "too big" });
+    fake.state.set_result = Promise.reject({ code: "invalid-argument", message: "too big" });
     save();
     await new Promise((r) => setTimeout(r, 0));
     expect(getGlobal().statusBar.type).toBe("text");
@@ -67,7 +73,7 @@ describe("save", () => {
 
   test("a successful save clears the error", async () => {
     setGlobal({ save_error: "Could not save: x" });
-    set_result = Promise.resolve();
+    fake.state.set_result = Promise.resolve();
     save();
     await new Promise((r) => setTimeout(r, 0));
     expect(getGlobal().statusBar.type).toBe("done");
