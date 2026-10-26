@@ -36,7 +36,25 @@ export const Blank = () => {
       <Dialogs />
       <Menus />
       <OverCapacityAlert />
+      <SaveErrorAlert />
     </div>
+  );
+};
+
+const SaveErrorAlert = () => {
+  const [save_error] = useGlobal("save_error");
+  if (save_error === "") return null;
+  const onClose = () => {
+    updateGlobal((g) => {
+      g.save_error = "";
+    });
+  };
+  return (
+    <Snackbar open={true}>
+      <Alert variant="filled" severity="error" onClose={onClose}>
+        {save_error}
+      </Alert>
+    </Snackbar>
   );
 };
 

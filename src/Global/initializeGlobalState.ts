@@ -55,6 +55,7 @@ export const INITIAL_GLOBAL_STATE = {
   language: window.navigator.language,
   print_mode: false,
   did_warn_over_capacity: false,
+  save_error: "",
 
   line_start: "" as "" | TItemId,
   line_type: "line" as TLineType,
