@@ -1,5 +1,7 @@
-import type { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { getGlobal, useGlobal } from "reactn";
+import { updateGlobal } from "../../Global/updateGlobal";
+import { resolve_annotation_ref } from "../../utils/annotation_ref";
 import { get_items_bounding_box } from "../../dimension/get_group_bounding_box";
 import { TAnnotation } from "../../Global/TAnnotation";
 import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
@@ -16,6 +18,20 @@ const get_contents_bound = () => {
 // do not get in the way of moving kozane.
 export const AnnotationLayer = ({ children }: { children?: ReactNode }) => {
   const [g] = useGlobal();
+
+  // The line being edited inline is gone (another client's save, or its
+  // kozane was deleted): close the editor and give the hot keys back.
+  const editing_target_gone =
+    g.editing_line_label !== null &&
+    resolve_annotation_ref(g.annotations, g.editing_line_label.target) ===
+      null;
+  useEffect(() => {
+    if (!editing_target_gone) return;
+    updateGlobal((draft) => {
+      draft.editing_line_label = null;
+      draft.disableHotKey = false;
+    });
+  }, [editing_target_gone]);
 
   const elements = g.annotations.flatMap((a: TAnnotation, index) => {
     if (a.type === "line") {

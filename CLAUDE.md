@@ -149,15 +149,17 @@ python kozaneba.py  # Kozanebaデータ構造を操作するためのPython API
 ### 辺の編集
 
 辺に沿って透明な当たり判定用の線（`line-label-hit-*`）があり、操作はそこで受けます。当たり判定の線はこざねの下の SVG 層（`annotation-hit-layer`）に、見える線はこざねの上の層（`annotation-layer`）に描きます（`AnnotationLayer` が items を挟む）。こざね・グループと重なる所では押下がこざね側に行くので、線がこざねの drag を妨げません。線の上での左押下は #canvas に伝わって選択矩形を始めますが、#canvas は pointer を capture しません（`onCanvasMouseDown` の `data-line-hit` 判定。capture するとダブルクリック・右クリックが線に届かない）。左以外のボタンは線で止めます：
-- **ダブルクリック**: その場でラベルを1行編集（`editing_line_label`、Enterで確定・Escで取消・空にすると削除）
-- **右クリック**: `clicked_annotation_index` を設定して `EditAnnotationDialog` を開く
+- **ダブルクリック**: その場でラベルを1行編集（`editing_line_label`、Enterで確定・Escで取消・空にすると削除）。ラベルが複数行なら1行の editor では改行が消えるので、代わりに `EditAnnotationDialog` を開く
+- **右クリック**: `clicked_annotation` を設定して `EditAnnotationDialog` を開く
+
+編集中の線は配列の index ではなく `TAnnotationRef`（index と items の組、`src/utils/annotation_ref.ts`）で指し、描画のたびに `resolve_annotation_ref` で引き直します。他のクライアントの保存で index がずれても同じ線を編集し、線が消えたらダイアログ・editor を閉じます。
 
 `EditAnnotationDialog` で編集できるもの：
 - ラベルテキスト（複数行可）
 - 線の太さ（`stroke_width`）
 - 透明度（`opacity`）
 - 矢印サイズ（`arrow_head_size`、矢印がある時のみ）
-- 矢印の向きを反転
+- 矢印の向きを反転（`heads` だけを反転。items は変えない。向きのない線では押せない）
 - 接続先アイテムの表示
 - 辺の削除
 

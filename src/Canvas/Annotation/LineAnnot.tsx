@@ -27,6 +27,10 @@ import { find_parent } from "../../utils/find_parent";
 import { dev_log } from "../../utils/dev";
 import { KOZANE_WIDTH } from "../../utils/kozane_constants";
 import { mark_local_changed } from "../../utils/mark_local_changed";
+import {
+  ref_of_annotation,
+  resolve_annotation_ref,
+} from "../../utils/annotation_ref";
 import { AnnotationLabel } from "./AnnotationLabel";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_middle_point } from "./get_middle_point";
@@ -208,16 +212,32 @@ export const LineAnnot = (
   const is_clickable = false;
   const onClick = undefined;
   const can_edit_label = g.mouseState !== "making_line";
-  const is_editing = g.editing_line_label?.annot_index === annot_index;
+  const is_editing =
+    g.editing_line_label !== null &&
+    resolve_annotation_ref(g.annotations, g.editing_line_label.target) ===
+      annot_index;
   const editing_value = is_editing ? g.editing_line_label!.value : "";
+
+  const openEditDialog = () => {
+    updateGlobal((draft) => {
+      draft.clicked_annotation = ref_of_annotation(a, annot_index);
+      draft.dialog = "EditAnnotation";
+    });
+  };
 
   const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
     event.preventDefault();
     event.stopPropagation();
     if (!can_edit_label) return;
+    // The inline editor is a single-line <input>, which drops newlines and
+    // would save the joined text on blur. Multi-line labels open the dialog.
+    if ((a.label ?? "").includes("\n")) {
+      openEditDialog();
+      return;
+    }
     updateGlobal((draft) => {
       draft.editing_line_label = {
-        annot_index,
+        target: ref_of_annotation(a, annot_index),
         value: a.label ?? "",
       };
       draft.disableHotKey = true;
@@ -231,15 +251,16 @@ export const LineAnnot = (
     });
   };
 
-  const commitLabelEdit = (
-    value = g.editing_line_label?.annot_index === annot_index
-      ? g.editing_line_label.value
-      : ""
-  ) => {
+  const commitLabelEdit = (value = editing_value) => {
     const label = value.trim();
     let did_change = false;
     updateGlobal((draft) => {
-      const annotation = draft.annotations[annot_index];
+      const index = resolve_annotation_ref(
+        draft.annotations,
+        draft.editing_line_label?.target ?? null
+      );
+      const annotation =
+        index === null ? undefined : draft.annotations[index];
       if (annotation !== undefined && annotation.type === "line") {
         if (label === "") {
           if (annotation.label !== undefined) {
@@ -262,7 +283,7 @@ export const LineAnnot = (
   const onEditorChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     updateGlobal((draft) => {
-      if (draft.editing_line_label?.annot_index === annot_index) {
+      if (draft.editing_line_label !== null) {
         draft.editing_line_label.value = value;
       }
     });
@@ -293,13 +314,10 @@ export const LineAnnot = (
     }
   };
 
-  const openEditDialog = (event: ReactMouseEvent<SVGLineElement>) => {
+  const onHitContextMenu = (event: ReactMouseEvent<SVGLineElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    updateGlobal((draft) => {
-      draft.clicked_annotation_index = annot_index;
-      draft.dialog = "EditAnnotation";
-    });
+    openEditDialog();
   };
 
   const custom_opacity = a.custom?.opacity ?? 0.2;
@@ -338,7 +356,7 @@ export const LineAnnot = (
             onMouseUp={stopMouseEvent}
             onClick={stopMouseEvent}
             onDoubleClick={startLabelEdit}
-            onContextMenu={openEditDialog}
+            onContextMenu={onHitContextMenu}
             style={{ cursor: "text" }}
             data-testid={`line-label-hit-${annot_index}-${index}`}
             key={`line-label-hit-${annot_index}-${index}`}

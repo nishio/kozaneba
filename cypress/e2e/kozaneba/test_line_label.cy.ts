@@ -239,3 +239,197 @@ describe("line over a kozane", () => {
     cy.testid("line-label-editor-0").should("exist");
   });
 });
+
+const push_line = (
+  items: string[],
+  heads: ("none" | "arrow")[],
+  label?: string
+) => {
+  cy.updateGlobal((g) => {
+    g.annotations.push({
+      type: "line",
+      items: items as TItemId[],
+      heads,
+      custom: {},
+      is_doubled: false,
+      ...(label === undefined ? {} : { label }),
+    });
+  });
+};
+
+// A button of the Edit Annotation dialog (other dialogs keep hidden buttons
+// with the same text in the DOM).
+const dialog_button = (text: string) =>
+  cy.testid("edit-annotation-dialog").contains("button", text);
+
+const real_click_button = (text: string) => {
+  dialog_button(text).then(($b) => real_click_at(center_of($b)));
+};
+
+// Waits until a global state value equals `value` (cy.getGlobal takes one
+// snapshot and does not retry).
+const global_should_eql = (key: string, value: unknown) =>
+  cy
+    .window()
+    .its("movidea")
+    .invoke("getGlobal")
+    .should((g: any) => expect(g[key]).to.eql(value));
+
+// x2 of the arrow head strokes drawn for line 0 (all strokes after the shaft)
+const arrow_head_x2s = () =>
+  cy
+    .testid("annotation-layer")
+    .find("line")
+    .then(($lines) =>
+      $lines
+        .toArray()
+        .slice(1)
+        .map((l) => Number(l.getAttribute("x2")))
+    );
+
+describe("line label editing keeps the right line", () => {
+  beforeEach(() => {
+    cy.visit("/#blank");
+    cy.viewport(500, 500);
+    ready_two_kozanes_with_line(); // line 0: A-B
+  });
+
+  it("opens the dialog, not the one-line editor, for a multi-line label", () => {
+    cy.updateGlobal((g) => {
+      g.annotations[0]!.label = "first\nsecond";
+    });
+    on_line(real_dblclick_at);
+    cy.testid("edit-annotation-dialog").should("be.visible");
+    cy.get("[data-testid=edit-annotation-dialog] textarea")
+      .first()
+      .should("have.value", "first\nsecond");
+    real_click_button("Close");
+    cy.testid("edit-annotation-dialog").should("not.exist");
+    cy.getGlobal((g) => g.annotations[0]!.label).should(
+      "eql",
+      "first\nsecond"
+    );
+  });
+
+  it("does not join the lines of a multi-line label on blur", () => {
+    cy.updateGlobal((g) => {
+      g.annotations[0]!.label = "first\nsecond";
+    });
+    on_line(real_dblclick_at);
+    // click empty canvas, which blurs an inline editor
+    real_click_at([20, 480]);
+    cy.getGlobal((g) => g.annotations[0]!.label).should(
+      "eql",
+      "first\nsecond"
+    );
+  });
+
+  it("Reverse Arrow moves the arrow head to the other end", () => {
+    cy.updateGlobal((g) => {
+      g.annotations[0]!.heads = ["none", "arrow"];
+    });
+    // A is at x < 0, B at x > 0 (world coordinates, as in the SVG)
+    arrow_head_x2s().should(($x) => {
+      expect($x).to.have.length(2);
+      $x.forEach((x) => expect(x).to.be.greaterThan(0));
+    });
+    on_line(real_rightclick_at);
+    real_click_button("Reverse Arrow");
+    cy.getGlobal((g) => g.annotations[0]!.heads).should("eql", [
+      "arrow",
+      "none",
+    ]);
+    cy.getGlobal((g) => g.annotations[0]!.items).should("eql", ["A", "B"]);
+    arrow_head_x2s().should(($x) => {
+      expect($x).to.have.length(2);
+      $x.forEach((x) => expect(x).to.be.lessThan(0));
+    });
+  });
+
+  it("disables Reverse Arrow for a line without direction", () => {
+    on_line(real_rightclick_at);
+    dialog_button("Reverse Arrow").should("be.disabled");
+  });
+});
+
+describe("line label editing while lines change elsewhere", () => {
+  beforeEach(() => {
+    cy.visit("/#blank");
+    cy.viewport(500, 500);
+    cy.movidea((m) => {
+      m.make_one_kozane({
+        id: "A" as TItemId,
+        text: "A",
+        position: [-100, -100] as TWorldCoord,
+      });
+      m.make_one_kozane({
+        id: "B" as TItemId,
+        text: "B",
+        position: [100, -100] as TWorldCoord,
+      });
+      m.make_one_kozane({
+        id: "C" as TItemId,
+        text: "C",
+        position: [100, 100] as TWorldCoord,
+      });
+    });
+    push_line(["A", "B"], ["none", "none"]); // line 0
+    push_line(["B", "C"], ["none", "none"]); // line 1
+  });
+
+  // Stands in for another client's save that removes line 0 (A-B) while
+  // this client is editing line 1 (B-C).
+  const remote_removes_line_0 = () => {
+    cy.updateGlobal((g) => {
+      g.annotations.splice(0, 1);
+    });
+  };
+
+  const on_line_1 = (callback: (point: TAppPoint) => void) => {
+    cy.testid("line-label-hit-1-0").then(($hit) => callback(center_of($hit)));
+  };
+
+  it("the dialog keeps editing the same line after an earlier line is removed", () => {
+    on_line_1(real_rightclick_at);
+    cy.testid("edit-annotation-dialog").should("be.visible");
+    remote_removes_line_0();
+    cy.testid("edit-annotation-dialog").should("be.visible");
+    cy.get("[data-testid=edit-annotation-dialog] textarea").first().type("x");
+    cy.getGlobal((g) => g.annotations).should((annotations: any) => {
+      expect(annotations).to.have.length(1);
+      expect(annotations[0].items).to.eql(["B", "C"]);
+      expect(annotations[0].label).to.eql("x");
+    });
+  });
+
+  it("the dialog closes when its line is removed", () => {
+    on_line_1(real_rightclick_at);
+    cy.testid("edit-annotation-dialog").should("be.visible");
+    cy.updateGlobal((g) => {
+      g.annotations.splice(1, 1);
+    });
+    global_should_eql("dialog", "");
+  });
+
+  it("the inline editor keeps editing the same line after an earlier line is removed", () => {
+    on_line_1(real_dblclick_at);
+    cy.testid("line-label-editor-1").type("y");
+    remote_removes_line_0();
+    cy.testid("line-label-editor-0").should("have.value", "y").type("{enter}");
+    cy.getGlobal((g) => g.annotations).should((annotations: any) => {
+      expect(annotations).to.have.length(1);
+      expect(annotations[0].items).to.eql(["B", "C"]);
+      expect(annotations[0].label).to.eql("y");
+    });
+  });
+
+  it("the inline editor closes and hot keys come back when its line is removed", () => {
+    on_line_1(real_dblclick_at);
+    cy.testid("line-label-editor-1").should("exist");
+    cy.updateGlobal((g) => {
+      g.annotations.splice(1, 1);
+    });
+    global_should_eql("editing_line_label", null);
+    global_should_eql("disableHotKey", false);
+  });
+});
