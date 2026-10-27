@@ -39,11 +39,16 @@ const ba = (writers, anyone_writable = true, extra = {}) => ({
   ...extra,
 });
 
+// Every check runs and each failure is listed, so a run against older rules
+// shows all the cases they get wrong.
+const failures = [];
 const allowed = async (name, p) => {
   try {
     await p;
   } catch (e) {
-    assert.fail(`${name}: expected allowed, got ${e.code ?? e}`);
+    failures.push(name);
+    console.log(`FAIL allowed: ${name} (got ${e.code ?? e})`);
+    return;
   }
   console.log(`ok   allowed: ${name}`);
 };
@@ -51,11 +56,34 @@ const denied = async (name, p) => {
   try {
     await p;
   } catch (e) {
-    assert.equal(e.code, "permission-denied", `${name}: ${e}`);
-    console.log(`ok   denied:  ${name}`);
+    if (e.code === "permission-denied") {
+      console.log(`ok   denied:  ${name}`);
+    } else {
+      failures.push(name);
+      console.log(`FAIL denied:  ${name} (got ${e.code ?? e})`);
+    }
     return;
   }
-  assert.fail(`${name}: expected permission-denied`);
+  failures.push(name);
+  console.log(`FAIL denied:  ${name} (was allowed)`);
+};
+
+// Writes a doc with rules bypassed (emulator admin access), for shapes a
+// client can no longer create, e.g. the writers: [] of create_ba.
+const seed = async (id, data) => {
+  const v = (x) =>
+    typeof x === "string" ? { stringValue: x }
+    : typeof x === "boolean" ? { booleanValue: x }
+    : typeof x === "number" ? { integerValue: String(x) }
+    : Array.isArray(x) ? { arrayValue: { values: x.map(v) } }
+    : { mapValue: { fields: Object.fromEntries(Object.entries(x).map(([k, y]) => [k, v(y)])) } };
+  const url = `http://${HOST}:${PORT}/v1/projects/${PROJECT_ID}/databases/(default)/documents/ba/${id}`;
+  const res = await fetch(url, {
+    method: "PATCH",
+    headers: { Authorization: "Bearer owner", "Content-Type": "application/json" },
+    body: JSON.stringify({ fields: v(data).mapValue.fields }),
+  });
+  assert.ok(res.ok, `seed ${id}: ${res.status} ${await res.text()}`);
 };
 
 const anon = client(null);
@@ -96,13 +124,33 @@ await denied("non-writer edits private ba", setDoc(doc(coeditor, "ba", "priv"), 
 await allowed("owner edits private ba", setDoc(doc(owner, "ba", "priv"), ba(["owner"], false, { title: "o" })));
 await allowed("owner makes it public", setDoc(doc(owner, "ba", "priv"), ba(["owner"], true)));
 
+// writers only grows by the requesting user themself, for the owner too
+// (a writer cannot be pushed into someone else's "Ba which you can write"
+// list, and writers[0] never moves). Each case starts from a fresh doc so a
+// wrongly allowed write does not change the next case.
+const w1 = async () => { await seed("w", ba(["owner"], true)); return doc(owner, "ba", "w"); };
+const w2 = async () => { await seed("w", ba(["owner", "other"], true)); return doc(owner, "ba", "w"); };
+await allowed("owner creates ba", setDoc(doc(owner, "ba", "w0"), ba(["owner"], true)));
+await denied("owner adds someone else right after create", setDoc(doc(owner, "ba", "w0"), ba(["owner", "victim"], true)));
+await denied("owner adds someone else while making it private", setDoc(await w1(), ba(["owner", "victim"], false)));
+await denied("owner hands writers[0] to someone else", setDoc(await w1(), ba(["victim", "owner"], true)));
+await denied("owner replaces writers", setDoc(await w1(), ba(["victim"], true)));
+await denied("owner duplicates self in writers", setDoc(await w1(), ba(["owner", "owner"], true)));
+await denied("owner removes a writer", setDoc(await w2(), ba(["owner"], true)));
+await denied("owner empties writers", setDoc(await w2(), ba([], true)));
+await denied("joiner adds self twice", setDoc(doc(coeditor, "ba", (await w2()).id), ba(["owner", "other", "coeditor", "coeditor"], true)));
+await allowed("non-owner joins", setDoc(doc(other, "ba", (await w1()).id), ba(["owner", "other"], true)));
+await allowed("owner edits with writers unchanged", setDoc(await w2(), ba(["owner", "other"], true, { title: "o2" })));
+await allowed("owner still makes it private", setDoc(await w2(), ba(["owner", "other"], false)));
+await allowed("owner still deletes", deleteDoc(await w2()));
+
 // legacy ba without writers (e.g. made by create_ba): editable, nobody owns it
-const admin = client("owner");
-await allowed("seed legacy ba", setDoc(doc(admin, "ba", "legacy"), ba(["owner"], true)));
-await allowed("owner empties writers", setDoc(doc(admin, "ba", "legacy"), ba([], true)));
+await seed("legacy", ba([], true));
 await denied("nobody can make an ownerless ba private", setDoc(doc(other, "ba", "legacy"), ba(["other"], false)));
+await denied("first editor of an ownerless ba adds someone else", setDoc(doc(other, "ba", "legacy"), ba(["other", "victim"], true)));
 // The first signed-in editor lands in writers[0] and owns it from then on.
 await allowed("anyone signed in edits ownerless ba", setDoc(doc(other, "ba", "legacy"), ba(["other"], true)));
+await allowed("the first editor now owns it and makes it private", setDoc(doc(other, "ba", "legacy"), ba(["other"], false)));
 
 // delete
 await allowed("owner deletes", deleteDoc(doc(owner, "ba", "sb")));
@@ -113,5 +161,9 @@ await denied("signed-in writes other collection", setDoc(doc(other, "map", "a"),
 await denied("unauth reads other collection", getDoc(doc(anon, "zzz", "a")));
 
 await Promise.all(apps.map((app) => deleteApp(app)));
+if (failures.length > 0) {
+  console.log(`${failures.length} firestore rules check(s) failed:\n  ${failures.join("\n  ")}`);
+  process.exit(1);
+}
 console.log("all firestore rules checks passed");
 process.exit(0);
