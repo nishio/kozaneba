@@ -7,6 +7,7 @@ import {
 } from "./set_up_read_subscription";
 import { save } from "./save";
 import { local_db } from "./LocalBackup";
+import { note_server_version } from "./sync_version";
 
 // minimal fake of the compat Firestore API used by save / subscription
 const fake = vi.hoisted(() => {
@@ -26,6 +27,17 @@ const fake = vi.hoisted(() => {
         set: () => state.set_result,
       }),
     }),
+    // save() writes in a transaction; the server doc is at version 5
+    runTransaction: async (
+      fn: (t: { get: () => Promise<unknown>; set: () => void }) => Promise<unknown>
+    ) => {
+      const r = await fn({
+        get: async () => ({ exists: true, data: () => ({ last_updated: 5 }) }),
+        set: () => {},
+      });
+      await state.set_result;
+      return r;
+    },
   };
   return { state, db };
 });
@@ -59,6 +71,7 @@ describe("read subscription", () => {
 describe("save", () => {
   beforeEach(() => {
     setGlobal({ ...INITIAL_GLOBAL_STATE, cloud_ba: "ba1", last_updated: 5 });
+    note_server_version("ba1", 5);
   });
 
   test("a rejected save is shown and backed up locally", async () => {

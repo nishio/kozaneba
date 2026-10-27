@@ -60,6 +60,9 @@ export const INITIAL_GLOBAL_STATE = {
   print_mode: false,
   did_warn_over_capacity: false,
   save_error: "",
+  // cloud_ba whose save was stopped because the server has a version from
+  // elsewhere (another device / tab); "" when there is none
+  save_conflict: "",
 
   line_start: "" as "" | TItemId,
   line_type: "line" as TLineType,
