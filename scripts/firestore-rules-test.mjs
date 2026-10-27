@@ -138,7 +138,10 @@ await denied("owner replaces writers", setDoc(await w1(), ba(["victim"], true)))
 await denied("owner duplicates self in writers", setDoc(await w1(), ba(["owner", "owner"], true)));
 await denied("owner removes a writer", setDoc(await w2(), ba(["owner"], true)));
 await denied("owner empties writers", setDoc(await w2(), ba([], true)));
-await denied("joiner adds self twice", setDoc(doc(coeditor, "ba", (await w2()).id), ba(["owner", "other", "coeditor", "coeditor"], true)));
+await denied("owner swaps a writer for self", setDoc(await w2(), ba(["owner", "owner"], true)));
+await denied("non-member adds someone else instead of self", setDoc(doc(other, "ba", (await w1()).id), ba(["owner", "victim"], true)));
+await denied("non-member swaps an existing writer for self", setDoc(doc(coeditor, "ba", (await w2()).id), ba(["owner", "coeditor"], true)));
+await denied("joiner adds self twice",setDoc(doc(coeditor, "ba", (await w2()).id), ba(["owner", "other", "coeditor", "coeditor"], true)));
 await allowed("non-owner joins", setDoc(doc(other, "ba", (await w1()).id), ba(["owner", "other"], true)));
 await allowed("owner edits with writers unchanged", setDoc(await w2(), ba(["owner", "other"], true, { title: "o2" })));
 await allowed("owner still makes it private", setDoc(await w2(), ba(["owner", "other"], false)));
