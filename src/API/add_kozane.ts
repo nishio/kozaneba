@@ -2,6 +2,7 @@ import { get_center_of_screen } from "../dimension/get_center_of_screen";
 import { KozaneItem } from "../Kozane/KozaneItem";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { add_item } from "./add_item";
+import { mark_local_changed } from "../utils/mark_local_changed";
 
 export const create_kozane = (
   text: string,
@@ -13,6 +14,8 @@ export const create_kozane = (
   Object.assign(kozane, option);
   return kozane;
 };
+// kozaneba.add_kozane (user scripts / preset buttons) is a user edit, so save it
 export const add_kozane = (text: string, option: Partial<TKozaneItem> = {}) => {
   add_item(create_kozane(text, option));
+  mark_local_changed();
 };
