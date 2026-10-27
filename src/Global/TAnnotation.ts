@@ -15,7 +15,6 @@ export const RTLineAnnot = Record({
     is_clickable: Boolean.optional(),
     stroke_width: Number.optional(),
     opacity: Number.optional(),
-    label: String.optional(),
   }),
 });
 export type TLineAnnot = Static<typeof RTLineAnnot>;

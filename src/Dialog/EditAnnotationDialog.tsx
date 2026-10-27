@@ -56,7 +56,16 @@ export const EditAnnotationDialog = () => {
   };
 
   const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateCustom({ label: e.target.value });
+    if (clicked_annotation_index === null) return;
+
+    // Firestore rejects undefined, so drop the key for an empty label
+    const { label: _, ...rest } = annotation;
+    const value = e.target.value;
+    const newAnnotations = [...annotations];
+    newAnnotations[clicked_annotation_index] =
+      value === "" ? rest : { ...rest, label: value };
+    setGlobal({ annotations: newAnnotations });
+    mark_local_changed();
   };
 
   const handleStrokeWidthChange = (_: Event, value: number | number[]) => {
@@ -102,7 +111,7 @@ export const EditAnnotationDialog = () => {
     onClose();
   };
 
-  const label = annotation.custom?.label ?? "";
+  const label = annotation.label ?? "";
   const strokeWidth = annotation.custom?.stroke_width ?? 1;
   const opacity = annotation.custom?.opacity ?? 0.2;
   const arrowSize = annotation.custom?.arrow_head_size ?? 10;

@@ -142,35 +142,24 @@ python kozaneba.py  # Kozanebaデータ構造を操作するためのPython API
 ### ラベル表示
 
 辺にテキストラベルを付けることができます：
-- `TAnnotation.custom.label` - 辺のラベルテキスト（optional）
-- ラベルは辺の中点に表示され、半透明の背景で囲まれます
+- `TAnnotation.label` - 辺のラベルテキスト（optional、トップレベル。`custom` の中ではない）
+- ラベルは辺の中点に `AnnotationLabel` で表示され、半透明の背景で囲まれます
 - 複数行のラベルもサポート（改行で区切る）
 
 ### 辺の編集
 
-辺をクリックすると`EditAnnotationDialog`が開き、以下を編集できます：
-- ラベルテキスト
+辺の上に透明な当たり判定用の線（`line-label-hit-*`）が重なっており、操作はそこで受けます：
+- **ダブルクリック**: その場でラベルを1行編集（`editing_line_label`、Enterで確定・Escで取消・空にすると削除）
+- **右クリック**: `clicked_annotation_index` を設定して `EditAnnotationDialog` を開く
+
+`EditAnnotationDialog` で編集できるもの：
+- ラベルテキスト（複数行可）
 - 線の太さ（`stroke_width`）
 - 透明度（`opacity`）
-- 矢印サイズ（`arrow_head_size`）
+- 矢印サイズ（`arrow_head_size`、矢印がある時のみ）
+- 矢印の向きを反転
 - 接続先アイテムの表示
 - 辺の削除
-
-### 辺のコンテキストメニュー
-
-辺を右クリックすると`AnnotationMenu`が開き、以下の操作が可能：
-- ラベル編集
-- 詳細表示
-- 線を太くする/細くする
-- 透明度を上げる/下げる
-- 矢印の向きを反転
-- 線を削除
-
-### 辺のクリック可能化
-
-- 辺は`custom.is_clickable`が`true`の場合クリック可能（デフォルト: `true`）
-- クリック時に`clicked_annotation_index`が設定され、ダイアログが開く
-- 右クリックでコンテキストメニューが開く
 
 ## 注意事項
 
