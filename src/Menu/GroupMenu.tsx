@@ -63,6 +63,7 @@ export const GroupMenu = () => {
       );
       g.menu = "";
     });
+    mark_local_changed();
   };
 
   const onEditGroupTitle = () => {
@@ -75,6 +76,7 @@ export const GroupMenu = () => {
     updateGlobal((g) => {
       update_annotation_after_deletion(g, id);
     });
+    mark_local_changed();
     close_context_menu();
   };
 
@@ -104,6 +106,7 @@ export const GroupMenu = () => {
         item.position = [2 * x, 2 * y] as TWorldCoord;
       });
     });
+    mark_local_changed();
     close_context_menu();
     redraw();
   };
@@ -117,6 +120,7 @@ export const GroupMenu = () => {
         item.scale *= 2;
       });
     });
+    mark_local_changed();
     close_context_menu();
     redraw();
   };
@@ -129,6 +133,7 @@ export const GroupMenu = () => {
         item.position = [y, -x] as TWorldCoord;
       });
     });
+    mark_local_changed();
     close_context_menu();
     redraw();
   };

@@ -120,6 +120,11 @@ export const is_draggeing = () => {
   return _is_dragging;
 };
 
+// The element being dragged (an item or the selection) while a drag is active
+export const get_dragging_element = (): HTMLElement | null => {
+  return _is_dragging ? _target ?? null : null;
+};
+
 // currently not used but may useful for refactoring
 export const get_delta = (event: TInputEvent<HTMLElement>) => {
   const delta = sub_v2w(
