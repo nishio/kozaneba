@@ -433,3 +433,67 @@ describe("line label editing while lines change elsewhere", () => {
     global_should_eql("disableHotKey", false);
   });
 });
+
+// Values a saved doc can hold although RTLineAnnot says otherwise (docs are
+// not checked when loaded). Written with updateGlobal, which stands in for
+// loading such a doc.
+describe("line with values of the wrong type", () => {
+  beforeEach(() => {
+    cy.visit("/#blank");
+    cy.viewport(500, 500);
+    ready_two_kozanes_with_line();
+  });
+
+  const set_line_0 = (fields: Record<string, unknown>) => {
+    cy.updateGlobal((g) => {
+      const a = g.annotations[0] as unknown as Record<string, unknown>;
+      Object.keys(fields).forEach((key) => {
+        a[key] = fields[key];
+      });
+    });
+  };
+
+  it("shows a numeric label instead of crashing the ba", () => {
+    set_line_0({ label: 123 });
+    cy.testid("annotation-layer").contains("123").should("exist");
+    cy.testid("A").should("be.visible");
+  });
+
+  it("edits a numeric label inline", () => {
+    set_line_0({ label: 123 });
+    on_line(real_dblclick_at);
+    cy.testid("line-label-editor-0").should("have.value", "123");
+  });
+
+  it("opens the dialog for a line whose opacity is a string", () => {
+    set_line_0({ custom: { opacity: "0.5" } });
+    on_line(real_rightclick_at);
+    cy.testid("edit-annotation-dialog")
+      .should("be.visible")
+      .contains("Opacity: 0.50");
+  });
+
+  it("keeps the hit area narrow when stroke_width is a string", () => {
+    set_line_0({ custom: { stroke_width: "3" } });
+    // max(3 + 12, 16), not max("3" + 12, 16) = 312
+    cy.testid("line-label-hit-0-0").should("have.attr", "stroke-width", "16");
+  });
+
+  it("draws a normal arrow head when arrow_head_size is a string", () => {
+    set_line_0({ heads: ["none", "arrow"], custom: { arrow_head_size: "20" } });
+    cy.testid("annotation-layer")
+      .find("line")
+      .should(($lines) => {
+        const heads = $lines.toArray().slice(1);
+        expect(heads).to.have.length(2);
+        heads.forEach((l) => {
+          const dx =
+            Number(l.getAttribute("x2")) - Number(l.getAttribute("x1"));
+          const dy =
+            Number(l.getAttribute("y2")) - Number(l.getAttribute("y1"));
+          // 20, not "20" + 0 = 200
+          expect(Math.sqrt(dx * dx + dy * dy)).to.be.closeTo(20, 0.5);
+        });
+      });
+  });
+});

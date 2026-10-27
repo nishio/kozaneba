@@ -28,6 +28,11 @@ import { dev_log } from "../../utils/dev";
 import { KOZANE_WIDTH } from "../../utils/kozane_constants";
 import { mark_local_changed } from "../../utils/mark_local_changed";
 import {
+  arrow_head_size_of,
+  label_of,
+  stroke_width_of,
+} from "../../utils/annotation_values";
+import {
   ref_of_annotation,
   resolve_annotation_ref,
 } from "../../utils/annotation_ref";
@@ -59,10 +64,13 @@ export const LineAnnot = (
   const center = get_middle_point(positions);
 
   const is_doubled = a.is_doubled;
-  const stroke_width = a.custom?.stroke_width ?? 1;
+  // read through *_of: a saved doc may hold e.g. "3" instead of 3, and
+  // "3" + 12 is "312"
+  const stroke_width = stroke_width_of(a);
+  const current_label = label_of(a);
 
   const arrow_head_size =
-    (a.custom?.arrow_head_size ?? 10) +
+    arrow_head_size_of(a) +
     (is_doubled ? stroke_width / arrow_sin : 0);
 
   let group_opacity = 1.0;
@@ -231,14 +239,14 @@ export const LineAnnot = (
     if (!can_edit_label) return;
     // The inline editor is a single-line <input>, which drops newlines and
     // would save the joined text on blur. Multi-line labels open the dialog.
-    if ((a.label ?? "").includes("\n")) {
+    if (current_label.includes("\n")) {
       openEditDialog();
       return;
     }
     updateGlobal((draft) => {
       draft.editing_line_label = {
         target: ref_of_annotation(a, annot_index),
-        value: a.label ?? "",
+        value: current_label,
       };
       draft.disableHotKey = true;
     });
@@ -365,8 +373,8 @@ export const LineAnnot = (
       })
     : null;
 
-  const labelElement = a.label && !is_editing ? (
-    <AnnotationLabel position={center} label={a.label} />
+  const labelElement = current_label && !is_editing ? (
+    <AnnotationLabel position={center} label={current_label} />
   ) : null;
 
   const editor_width = Math.max(
