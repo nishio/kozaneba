@@ -2,6 +2,7 @@ import { create_kozane } from "../API/add_kozane";
 import { TItem } from "../Global/TItem";
 import { updateGlobal } from "../Global/updateGlobal";
 import { GroupItem } from "../Group/GroupItem";
+import { is_image_url } from "../Image/is_image_url";
 import { create_gyazo_item } from "../utils/add_gyazo_item";
 import { dev_log } from "../utils/dev";
 import { url_to_text } from "../utils/url_to_text";
@@ -43,16 +44,14 @@ export const create_squared_group = (texts: string[]) => {
     {
       const { result, new_text } = process_images_on_one_line(
         text,
-        positions[index]!
+        positions[index]!,
       );
       kozane_list.push(...result);
       text = new_text;
     }
 
     if (text === "") return;
-    if (text.startsWith("https://gyazo.com/")) {
-      kozane = create_gyazo_item(text);
-    } else if (text.endsWith(".png")) {
+    if (is_image_url(text)) {
       kozane = create_gyazo_item(text);
     } else if (text.startsWith("https://") || text.startsWith("http://")) {
       kozane = create_kozane(url_to_text(text), { custom: { url: text } }); // [External Kozane]
