@@ -6,6 +6,7 @@ import { add_gyazo_item } from "../utils/add_gyazo_item";
 import { is_some_dialog_open } from "../utils/is_some_dialog_open";
 import { try_to_import_json } from "../utils/JSON/try_to_import_json";
 import { url_to_text } from "../utils/url_to_text";
+import { is_http_url } from "../utils/is_http_url";
 import { mark_local_changed } from "../utils/mark_local_changed";
 
 export const onPaste = (e: React.ClipboardEvent) => {
@@ -28,7 +29,7 @@ const pasted = (text: string) => {
   } else if (text.startsWith("https://gyazo.com/")) {
     add_gyazo_item(text);
     mark_local_changed();
-  } else if (text.endsWith(".png")) {
+  } else if (text.endsWith(".png") && is_http_url(text)) {
     add_gyazo_item(text);
     mark_local_changed();
   } else if (text.startsWith("https://") || text.startsWith("http://")) {

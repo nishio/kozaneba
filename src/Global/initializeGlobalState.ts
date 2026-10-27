@@ -25,6 +25,7 @@ export const INITIAL_GLOBAL_STATE = {
   is_selected: false,
   mouseState: "" as TMouseState,
   clicked_target: "" as "" | TItemId,
+  clicked_annotation_index: null as number | null,
 
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
