@@ -42,6 +42,7 @@
     "start": "vite",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
+    "test:rules": "firebase emulators:exec --project demo-rules --only firestore \"node scripts/firestore-rules-test.mjs\"",
     "codex:preflight": "bash scripts/codex-preflight.sh",
     "cypress:emulator-smoke": "bash scripts/cypress-emulator-smoke.sh",
     "cypress:kozaneba-all": "bash scripts/cypress-kozaneba-all.sh"
