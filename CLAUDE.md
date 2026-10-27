@@ -16,13 +16,13 @@ Kozanebaは思考整理のためのデジタル付箋紙ツールです。ユー
 ### フロントエンド（メインアプリ）
 ```bash
 # 開発サーバーを起動（ポート3000）
-yarn start
+npm start
 
 # プロダクションビルド
-yarn build
+npm run build
 
 # テストを実行
-yarn test
+npm test
 ```
 
 ### Firebase Emulator
