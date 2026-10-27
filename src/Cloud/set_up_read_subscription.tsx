@@ -11,6 +11,9 @@ let unsubscribe = null as null | (() => void);
 
 export const set_up_read_subscription = (ba: string) => {
   dev_log("set_up_read_subscription", ba);
+  // save_new and Blank's effect both subscribe; keep only one live listener,
+  // otherwise the old ba keeps writing into the current one (Make Copy).
+  stop_current_subscription();
   unsubscribe = db.collection("ba").doc(ba).onSnapshot((doc: DocSnap) => {
       const data = doc.data();
       if (data === undefined) {
@@ -32,11 +35,17 @@ export const set_up_read_subscription = (ba: string) => {
         setGlobal(server);
         setGlobal(fit_to_contents());
       } else if (data.last_updated < local_latest) {
-        throw new Error("received old data from server (warning)"); // it happens?
+        // e.g. the server rolled back a rejected save; keep the local state
+        // (save() reports the failure)
+        console.warn("received old data from server");
+        return;
       } else {
         dev_log("no need to update");
       }
-      set_status("done");
+      // a local write not yet acknowledged by the server is not "done"
+      if (!doc.metadata.hasPendingWrites) {
+        set_status("done");
+      }
     });
   return unsubscribe;
 };
@@ -47,5 +56,6 @@ export const stop_current_subscription = () => {
     dev_log("no current subscription");
   } else {
     unsubscribe();
+    unsubscribe = null;
   }
 };

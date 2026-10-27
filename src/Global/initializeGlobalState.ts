@@ -36,6 +36,9 @@ export const INITIAL_GLOBAL_STATE = {
 
   in_tutorial: false,
   tutorial_page: 0,
+  // Help has more pages (TOC + tutorial + others) than Tutorial, so it keeps
+  // its own page number; sharing tutorial_page crashed TutorialDialog.
+  help_page: 0,
 
   show_devmenu: true,
   fix_timestamp_for_test: null as null | number,
@@ -56,6 +59,7 @@ export const INITIAL_GLOBAL_STATE = {
   language: window.navigator.language,
   print_mode: false,
   did_warn_over_capacity: false,
+  save_error: "",
 
   line_start: "" as "" | TItemId,
   line_type: "line" as TLineType,
