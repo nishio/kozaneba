@@ -11,6 +11,10 @@ import {
 } from "./input_event";
 import { onCanvasMouseUp } from "./onCanvasMouseUp";
 
+const is_on_line_hit = (event: TInputEvent<HTMLDivElement>) =>
+  event.target instanceof Element &&
+  event.target.closest("[data-line-hit]") !== null;
+
 export const onCanvasMouseDown = (
   event: TInputEvent<HTMLDivElement>
 ) => {
@@ -21,7 +25,12 @@ export const onCanvasMouseDown = (
     onCanvasMouseUp(event);
   }
 
-  capture_pointer_on_canvas(event);
+  // Do not capture a press on a line's hit area (LineAnnot): capturing sends
+  // the click / dblclick / contextmenu to #canvas, so the line could never
+  // open its label editor. The selection still starts as on empty canvas.
+  if (!is_on_line_hit(event)) {
+    capture_pointer_on_canvas(event);
+  }
   const [x, y] = get_client_pos(event);
   dev_log("onCanvasMouseDown", get_button(event));
   if (get_button(event) === 1 /* middle mouse button */) {
