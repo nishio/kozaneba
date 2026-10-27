@@ -6,6 +6,7 @@ import { add_gyazo_item } from "../utils/add_gyazo_item";
 import { is_some_dialog_open } from "../utils/is_some_dialog_open";
 import { try_to_import_json } from "../utils/JSON/try_to_import_json";
 import { url_to_text } from "../utils/url_to_text";
+import { is_http_url } from "../utils/is_http_url";
 
 export const onPaste = (e: React.ClipboardEvent) => {
   if (is_some_dialog_open()) return;
@@ -26,7 +27,7 @@ const pasted = (text: string) => {
     add_scrapbox_item(text);
   } else if (text.startsWith("https://gyazo.com/")) {
     add_gyazo_item(text);
-  } else if (text.endsWith(".png")) {
+  } else if (text.endsWith(".png") && is_http_url(text)) {
     add_gyazo_item(text);
   } else if (text.startsWith("https://") || text.startsWith("http://")) {
     add_kozane(url_to_text(text), { custom: { url: text } });
