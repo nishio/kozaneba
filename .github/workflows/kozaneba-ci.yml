@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
 
+# The jobs only read the repository; do not hand npm scripts a write token.
+permissions:
+  contents: read
+
 concurrency:
   group: kozaneba-ci-${{ github.ref }}
   cancel-in-progress: true
@@ -44,6 +48,32 @@ jobs:
       - name: Codex preflight
         run: npm run codex:preflight
 
+  functions-build:
+    name: Cloud Functions build and lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          # Keep in sync with functions/package.json engines.node (deploy runtime).
+          node-version: 22
+          cache: yarn
+          cache-dependency-path: functions/yarn.lock
+
+      - name: Install dependencies
+        run: yarn --cwd functions install --frozen-lockfile
+
+      - name: Build
+        run: yarn --cwd functions build
+
+      - name: Lint
+        run: yarn --cwd functions lint
+
   cypress-emulator:
     name: Cypress with Firebase emulator
     runs-on: ubuntu-latest
@@ -72,6 +102,9 @@ jobs:
         run: |
           npx firebase --version
           npx cypress verify
+
+      - name: Firestore rules
+        run: npm run test:rules
 
       - name: Firebase emulator smoke
         run: npm run cypress:emulator-smoke

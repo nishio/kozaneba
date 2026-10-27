@@ -88,6 +88,25 @@ describe("line label", () => {
     cy.getGlobal((g) => g.annotations[0]!.label).should("be.undefined");
   });
 
+  it("edits a multi-line label in the dialog opened by right click", () => {
+    cy.testid("line-label-hit-0-0").rightclick({ force: true });
+    cy.testid("edit-annotation-dialog").should("be.visible");
+    cy.get("[data-testid=edit-annotation-dialog] textarea")
+      .first()
+      .type("first{enter}second");
+
+    cy.getGlobal((g) => g.annotations[0]!.label).should(
+      "eql",
+      "first\nsecond"
+    );
+    cy.getGlobal((g) => g.is_local_change).should("eql", true);
+
+    cy.get("[data-testid=edit-annotation-dialog] textarea")
+      .first()
+      .clear();
+    cy.getGlobal((g) => g.annotations[0]!.label).should("be.undefined");
+  });
+
   it("does not open the editor while making a line", () => {
     cy.setGlobal({
       mouseState: "making_line",
