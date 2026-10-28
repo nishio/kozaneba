@@ -299,9 +299,11 @@ describe("save does not overwrite a version saved elsewhere", () => {
     await open_ba1();
     fs.fail_next = { code: "unavailable", message: "offline" };
     await edit("k1", "edited offline");
-    await flush();
-    expect(server().itemStore["k1"]!.text).toBe("first");
-    // the retry (20 ms here) writes it without another edit
+    // the first attempt failed (the fake throws before it commits). Do not
+    // look at the server here: the 20 ms retry may already have run when the
+    // test is slow (cold start, a loaded machine).
+    expect(fs.fail_next).toBeNull();
+    // the retry writes it without another edit
     for (let i = 0; i < 100 && server().itemStore["k1"]!.text !== "edited offline"; i++) {
       await act(async () => {
         await new Promise((r) => setTimeout(r, 20));
