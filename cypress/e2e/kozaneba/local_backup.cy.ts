@@ -82,7 +82,10 @@ describe("local backup", () => {
     cy.testid("dev-menu").click();
     cy.contains("Trigger Cloud Save").click();
     cy.testid("continue-as-anonymous-user").click();
-    cy.location("hash").should("match", /^#edit=/);
+    // The hash changes when the server acknowledges the first write. The
+    // first write to a fresh emulator takes several seconds (measured 5.9 s
+    // and 6.8 s locally, over the 4 s default; the next one ~0.5 s).
+    cy.location("hash", { timeout: 30000 }).should("match", /^#edit=/);
     cy.testid("save-status").should("exist");
 
     wait_saved();
