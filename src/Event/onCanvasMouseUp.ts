@@ -13,6 +13,7 @@ import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
 import { move_front } from "../utils/move_front";
 import { updateGlobal } from "../Global/updateGlobal";
 import {
+  pointer_id_of,
   release_pointer_capture,
   reset_target,
   is_draggeing,
@@ -44,13 +45,13 @@ export const onCanvasMouseUp = (
   // If a finger of an active pinch lifts, consume it so it does not trigger a
   // drop or finish-selecting.
   if (pinch_pointer_up(event)) {
-    release_pointer_capture();
+    release_pointer_capture(pointer_id_of(event));
     return;
   }
   dev_log("onCanvasMouseUp");
   clear_drop_group_highlight();
   if (handle_if_is_click(event)) {
-    release_pointer_capture();
+    release_pointer_capture(pointer_id_of(event));
     return;
   }
 
@@ -92,7 +93,7 @@ export const onCanvasMouseUp = (
   } else {
     throw new Error();
   }
-  release_pointer_capture();
+  release_pointer_capture(pointer_id_of(event));
   event.preventDefault();
 };
 
@@ -111,6 +112,6 @@ export const onCanvasPointerCancel = (
   if (is_draggeing()) {
     reset_target();
   } else {
-    release_pointer_capture();
+    release_pointer_capture(pointer_id_of(event));
   }
 };
