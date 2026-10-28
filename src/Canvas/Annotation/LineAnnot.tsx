@@ -2,6 +2,7 @@ import type {
   ChangeEvent,
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
 } from "react";
 import { State } from "reactn/default";
 import { kozaneba } from "../../API/KozanebaAPI";
@@ -35,7 +36,19 @@ const arrow_angle = 30; // degrees
 const arrow_tan = Math.tan((arrow_angle / 180) * Math.PI);
 const arrow_sin = Math.sin((arrow_angle / 180) * Math.PI);
 
-export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
+// What LineAnnot draws: `visual` goes above the kozane, `hit` (the transparent
+// lines that take double click / right click) goes below them, so a kozane or
+// group always gets the press when it overlaps a line.
+export type TLineAnnotElements = {
+  visual: JSX.Element;
+  hit: JSX.Element | null;
+};
+
+export const LineAnnot = (
+  g: State,
+  a: TLineAnnot,
+  annot_index: number
+): TLineAnnotElements | null => {
   const lines = [] as [V2, V2, number][];
   // currently ignore items[2~], and item deletion
   const positions = a.items.map((id: TItemId) => get_global_position(id, g));
@@ -84,7 +97,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   if (a.items.length === 2) {
     if (equal_v2(positions[0]!, positions[1]!)) {
       // same point. e.g. in the same closed group
-      return [];
+      return null;
     }
   }
 
@@ -115,7 +128,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     const cp0 = crosspoints[0];
     const cp1 = crosspoints[1];
     if (cp0 === undefined || cp1 === undefined || equal_v2(cp0, cp1)) {
-      return [];
+      return null;
     }
     const v = sub_v2(cp1, cp0);
     const length = L2norm(v);
@@ -270,6 +283,16 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     event.stopPropagation();
   };
 
+  // A left press on a line goes on to #canvas, which starts a selection as on
+  // empty canvas (#canvas does not capture the pointer for it, see
+  // onCanvasMouseDown, so click / dblclick still reach this line). Other
+  // buttons stop here: a right click on a line must not start a selection.
+  const stopNonPrimaryPointer = (event: ReactPointerEvent) => {
+    if (event.button !== 0) {
+      event.stopPropagation();
+    }
+  };
+
   const openEditDialog = (event: ReactMouseEvent<SVGLineElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -308,6 +331,9 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
             strokeWidth={hit_stroke_width}
             strokeLinecap="round"
             pointerEvents="stroke"
+            data-line-hit=""
+            onPointerDown={stopNonPrimaryPointer}
+            onPointerUp={stopNonPrimaryPointer}
             onMouseDown={stopMouseEvent}
             onMouseUp={stopMouseEvent}
             onClick={stopMouseEvent}
@@ -368,14 +394,19 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     </foreignObject>
   ) : null;
 
-  return (
-    <g key={`line-${annot_index}`}>
-      <g opacity={custom_opacity * group_opacity}>
-        {result}
-        {labelElement}
-        {hitElements}
+  return {
+    visual: (
+      <g key={`line-${annot_index}`}>
+        <g opacity={custom_opacity * group_opacity}>
+          {result}
+          {labelElement}
+        </g>
+        {editorElement}
       </g>
-      {editorElement}
-    </g>
-  );
+    ),
+    hit:
+      hitElements === null ? null : (
+        <g key={`line-hit-${annot_index}`}>{hitElements}</g>
+      ),
+  };
 };

@@ -148,7 +148,7 @@ python kozaneba.py  # Kozanebaデータ構造を操作するためのPython API
 
 ### 辺の編集
 
-辺の上に透明な当たり判定用の線（`line-label-hit-*`）が重なっており、操作はそこで受けます：
+辺に沿って透明な当たり判定用の線（`line-label-hit-*`）があり、操作はそこで受けます。当たり判定の線はこざねの下の SVG 層（`annotation-hit-layer`）に、見える線はこざねの上の層（`annotation-layer`）に描きます（`AnnotationLayer` が items を挟む）。こざね・グループと重なる所では押下がこざね側に行くので、線がこざねの drag を妨げません。線の上での左押下は #canvas に伝わって選択矩形を始めますが、#canvas は pointer を capture しません（`onCanvasMouseDown` の `data-line-hit` 判定。capture するとダブルクリック・右クリックが線に届かない）。左以外のボタンは線で止めます：
 - **ダブルクリック**: その場でラベルを1行編集（`editing_line_label`、Enterで確定・Escで取消・空にすると削除）
 - **右クリック**: `clicked_annotation_index` を設定して `EditAnnotationDialog` を開く
 
