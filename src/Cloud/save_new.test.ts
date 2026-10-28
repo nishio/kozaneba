@@ -14,20 +14,44 @@ import { is_ba_owner } from "../utils/can_write";
 const fake = vi.hoisted(() => {
   const added: Record<string, unknown>[] = [];
   const set: { id: string; doc: Record<string, unknown> }[] = [];
+  const docs = new Map<string, Record<string, unknown>>();
   const db = {
     collection: () => ({
       add: (doc: Record<string, unknown>) => {
         added.push(doc);
+        docs.set("copy1", doc);
         return Promise.resolve({ id: "copy1" });
       },
       doc: (id: string) => ({
         id,
         set: (doc: Record<string, unknown>) => {
           set.push({ id, doc });
+          docs.set(id, doc);
           return Promise.resolve();
         },
       }),
     }),
+    // save() writes in a transaction (optimistic lock)
+    runTransaction: async (
+      fn: (t: {
+        get: (ref: { id: string }) => Promise<unknown>;
+        set: (ref: { id: string }, doc: Record<string, unknown>) => void;
+      }) => Promise<unknown>
+    ) => {
+      const writes: { id: string; doc: Record<string, unknown> }[] = [];
+      const result = await fn({
+        get: async (ref) => {
+          const d = docs.get(ref.id);
+          return { exists: d !== undefined, data: () => d };
+        },
+        set: (ref, doc) => writes.push({ id: ref.id, doc }),
+      });
+      writes.forEach((w) => {
+        set.push(w);
+        docs.set(w.id, w.doc);
+      });
+      return result;
+    },
   };
   return { added, set, db, auth: { currentUser: { uid: "me" } } };
 });

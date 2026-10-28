@@ -8,11 +8,13 @@ import { MenuAnchor } from "../utils/show_menu";
 import { Dialogs } from "../Dialog/Dialogs";
 import { KeyboardShortcut } from "./KeyboardShortcut";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
+import { LocalDraftKeeper } from "./LocalDraftKeeper";
 import { StatusBar } from "./StatusBar";
 import { onPaste } from "./onPaste";
 import { dev_log } from "../utils/dev";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Button, Snackbar } from "@mui/material";
 import { updateGlobal } from "../Global/updateGlobal";
+import { make_copy } from "../utils/make_copy";
 
 export const Blank = () => {
   const [cloud_ba] = useGlobal("cloud_ba");
@@ -32,11 +34,13 @@ export const Blank = () => {
       <MenuAnchor />
       <StatusBar />
       <LocalChangeWatcher />
+      <LocalDraftKeeper />
       <KeyboardShortcut />
       <Dialogs />
       <Menus />
       <OverCapacityAlert />
       <SaveErrorAlert />
+      <SaveConflictAlert />
     </div>
   );
 };
@@ -53,6 +57,41 @@ const SaveErrorAlert = () => {
     <Snackbar open={true}>
       <Alert variant="filled" severity="error" onClose={onClose}>
         {save_error}
+      </Alert>
+    </Snackbar>
+  );
+};
+
+// save() stopped because another device / tab saved this Ba in between
+// (optimistic lock, D3). This tab's state is kept in the local backup.
+const SaveConflictAlert = () => {
+  const [save_conflict] = useGlobal("save_conflict");
+  const [cloud_ba] = useGlobal("cloud_ba");
+  const [language] = useGlobal("language");
+  if (save_conflict === "" || save_conflict !== cloud_ba) return null;
+  const ja = language.startsWith("ja");
+  const onReload = () => {
+    window.location.reload();
+  };
+  return (
+    <Snackbar open={true} data-testid="save-conflict">
+      <Alert
+        variant="filled"
+        severity="warning"
+        action={
+          <>
+            <Button color="inherit" size="small" onClick={onReload}>
+              {ja ? "再読み込み" : "Reload"}
+            </Button>
+            <Button color="inherit" size="small" onClick={make_copy}>
+              {ja ? "こちらを別の場として保存" : "Save this as a new Ba"}
+            </Button>
+          </>
+        }
+      >
+        {ja
+          ? "別の端末かタブでこの場が更新されています。上書きしないよう、こちらの変更は保存していません（この端末のバックアップには残しています）。再読み込みすると向こうの版を開きます。"
+          : "This Ba was updated on another device or tab. To avoid overwriting it, the changes here are not saved (a copy is kept in this device's backup). Reload opens the other version."}
       </Alert>
     </Snackbar>
   );
