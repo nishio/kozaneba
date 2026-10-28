@@ -15,6 +15,8 @@ import {
   is_own_version,
   note_server_version,
 } from "./sync_version";
+import { can_write } from "../utils/can_write";
+import { backup_if_enabled } from "./backup_store";
 
 let unsubscribe = null as null | (() => void);
 
@@ -73,6 +75,8 @@ export const set_up_read_subscription = (ba: string) => {
         setGlobal(server);
         setGlobal(fit_to_contents());
         note_server_version(ba, version);
+        // the state before the first local edit, so that it can be restored
+        if (can_write()) backup_if_enabled(ba, data);
       }
       // a local write not yet acknowledged by the server is not "done"
       if (!doc.metadata.hasPendingWrites) {

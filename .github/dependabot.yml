@@ -1,0 +1,58 @@
+# Dependabot configuration.
+#
+# Note: this file does NOT change how many alerts appear under Security >
+# Dependabot alerts. Alerts are raised from the advisory database regardless of
+# this file. What it controls is the pull requests Dependabot opens, and how
+# many of them. Before this file existed, every security update arrived as its
+# own PR (see #50), which is why the review queue filled up.
+#
+# Grouping keeps each run to a single PR per manifest, and "monthly" keeps the
+# cadence low enough that a human can actually review them.
+#
+# Two npm manifests, deliberately separate:
+#   /           -> package-lock.json (npm). The root yarn.lock was deleted in
+#                  #81 because it was unused and double-counted every alert.
+#   /functions  -> yarn.lock (yarn 1). Uses "resolutions" to pin transitive
+#                  dependencies, which is a yarn-only feature. Keep it on yarn.
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    groups:
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      npm-version:
+        applies-to: version-updates
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/functions"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    groups:
+      functions-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      functions-version:
+        applies-to: version-updates
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 1
+    groups:
+      actions:
+        patterns:
+          - "*"

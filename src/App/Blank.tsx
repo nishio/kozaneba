@@ -8,6 +8,7 @@ import { MenuAnchor } from "../utils/show_menu";
 import { Dialogs } from "../Dialog/Dialogs";
 import { KeyboardShortcut } from "./KeyboardShortcut";
 import { LocalChangeWatcher } from "./LocalChangeWatcher";
+import { LocalDraftKeeper } from "./LocalDraftKeeper";
 import { StatusBar } from "./StatusBar";
 import { onPaste } from "./onPaste";
 import { dev_log } from "../utils/dev";
@@ -33,6 +34,7 @@ export const Blank = () => {
       <MenuAnchor />
       <StatusBar />
       <LocalChangeWatcher />
+      <LocalDraftKeeper />
       <KeyboardShortcut />
       <Dialogs />
       <Menus />

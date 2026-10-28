@@ -4,7 +4,7 @@
 // These tests render the real Edit page (subscription, LocalChangeWatcher,
 // save, alerts) against an in-memory Firestore that supports transactions,
 // and check what the server ends up with.
-// Mocks: Cloud/init_firebase (fake db / auth), firebaseui, Cloud/LocalBackup
+// Mocks: Cloud/init_firebase (fake db / auth), firebaseui, Cloud/backup_store
 // (records the local backups instead of IndexedDB).
 import { act, cleanup, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -13,6 +13,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { Edit } from "../App/Edit";
 import { INITIAL_GLOBAL_STATE } from "../Global/initializeGlobalState";
 import { mark_local_changed } from "../utils/mark_local_changed";
+import { constants } from "../API/constants";
 import { SAVE_RETRY } from "./save";
 import { reset_sync_version } from "./sync_version";
 
@@ -127,17 +128,15 @@ vi.mock("./init_firebase", () => ({
   GoogleAuthProvider: { PROVIDER_ID: "google.com" },
 }));
 vi.mock("firebaseui", () => ({ auth: { AuthUI: class { start() {} reset() {} } } }));
-vi.mock("./LocalBackup", () => ({
-  local_db: {
-    backup: {
-      add: (x: { json: string }) => {
-        fake.backups.push(x.json);
-        return Promise.resolve(1);
-      },
-    },
+vi.mock("./backup_store", () => ({
+  add_backup: (_ba: string, doc: unknown) => {
+    fake.backups.push(JSON.stringify(doc));
+    return Promise.resolve();
   },
-  show_backup: () => {},
-  save_backup_as_new: () => {},
+  backup_if_enabled: () => Promise.resolve(),
+  list_backups: () => Promise.resolve([]),
+  get_backup_doc: () => Promise.resolve(null),
+  local_db: {},
 }));
 
 const { fs, backups } = fake;
@@ -225,10 +224,14 @@ beforeEach(async () => {
 afterEach(() => {
   cleanup();
   window.location.hash = "";
+  constants.to_make_local_backup = true;
 });
 
 describe("save does not overwrite a version saved elsewhere", () => {
   test("a sleeping tab that wakes up does not overwrite an hour of work from another device", async () => {
+    // backups of every save off (user script): the backup asserted below must
+    // come from the conflict path, not from the ordinary save
+    constants.to_make_local_backup = false;
     await open_ba1();
     fs.asleep = true; // the laptop lid is closed
     await other_device_saves(T0 + 30 * 60 * 1000);

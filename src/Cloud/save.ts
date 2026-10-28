@@ -6,7 +6,7 @@ import { state_to_docdate } from "./state_to_docdate";
 import { if_not_in_writer_add_self } from "./if_not_in_writer_add_self";
 import { not_login_then_show_dialog } from "./not_login_then_show_dialog";
 import { set_status } from "../utils/set_status";
-import { local_db } from "./LocalBackup";
+import { add_backup } from "./backup_store";
 import { dev_log } from "../utils/dev";
 import { updateGlobal } from "../Global/updateGlobal";
 import {
@@ -93,7 +93,8 @@ const write_if_not_changed = (ba: string, doc: DocData) => {
       }
       // Do not re-mark is_local_change here: the watcher would retry at once
       // and loop on a permanent error. The next edit retries.
-      local_save(ba, doc, true);
+      // keep what could not be saved (already done when backups are on)
+      if (!kozaneba.constants.to_make_local_backup) local_save(ba, doc, true);
       updateGlobal((g) => {
         g.statusBar.type = "text";
         g.statusBar.text = "not saved";
@@ -152,10 +153,6 @@ const save_error_message = (e: { code?: string; message?: string }) => {
 
 const local_save = (ba: string, doc: DocData, force = false) => {
   if (force || kozaneba.constants.to_make_local_backup) {
-    local_db.backup.add({
-      cloud_ba: ba,
-      last_updated: doc.last_updated,
-      json: JSON.stringify(doc),
-    });
+    add_backup(ba, doc);
   }
 };

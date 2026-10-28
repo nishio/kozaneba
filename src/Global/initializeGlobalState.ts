@@ -6,6 +6,7 @@ import { TItem } from "./TItem";
 import { TItemId } from "./TItemId";
 import { TMenu } from "./TMenu";
 import { TStatusType } from "./TStatusType";
+import { TAnnotationRef } from "../utils/annotation_ref";
 
 export const INITIAL_GLOBAL_STATE = {
   drawOrder: [] as TItemId[],
@@ -25,7 +26,8 @@ export const INITIAL_GLOBAL_STATE = {
   is_selected: false,
   mouseState: "" as TMouseState,
   clicked_target: "" as "" | TItemId,
-  clicked_annotation_index: null as number | null,
+  // the line EditAnnotationDialog edits (resolved again on every render)
+  clicked_annotation: null as TAnnotationRef | null,
 
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
@@ -78,7 +80,7 @@ export type TLineType =
   | "double_lines"
   | "delete";
 type TEditingLineLabel = null | {
-  annot_index: number;
+  target: TAnnotationRef;
   value: string;
 };
 
