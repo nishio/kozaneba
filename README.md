@@ -43,18 +43,10 @@ Kozaneba is a digital stationery tool that helps you organize your thoughts. It 
    ```
    npm install --legacy-peer-deps
    ```
-   または / or
-   ```
-   yarn install
-   ```
 
 4. 開発サーバーを起動 / Start development server
    ```
    npm start
-   ```
-   または / or
-   ```
-   yarn start
    ```
 
 5. ブラウザで http://localhost:3000 にアクセス / Access in browser

@@ -13,7 +13,7 @@ import { setGlobal, useGlobal } from "reactn";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { delete_ba } from "../Cloud/delete_ba";
-import { can_write, is_cloud } from "../utils/can_write";
+import { can_write, is_ba_owner, is_cloud } from "../utils/can_write";
 import { make_copy } from "../utils/make_copy";
 import { dev_log } from "../utils/dev";
 
@@ -144,10 +144,17 @@ const Share: React.FC<{ mode: string }> = ({ mode }) => {
       </div>
       <div>
         Anyone with the link can{" "}
-        <Select value={mode} onChange={onChange}>
-          <MenuItem value="edit">edit</MenuItem>
-          <MenuItem value="view">view</MenuItem>
-        </Select>
+        {is_ba_owner() ? (
+          <Select value={mode} onChange={onChange}>
+            <MenuItem value="edit">edit</MenuItem>
+            <MenuItem value="view">view</MenuItem>
+          </Select>
+        ) : (
+          <>
+            <b data-testid="share-mode">{mode}</b>{" "}
+            <small>(only the creator of this Ba can change this)</small>
+          </>
+        )}
       </div>
     </div>
   );

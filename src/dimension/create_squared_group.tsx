@@ -7,6 +7,7 @@ import { dev_log } from "../utils/dev";
 import { url_to_text } from "../utils/url_to_text";
 import { create_squared_position } from "./create_squared_position";
 import { TWorldCoord } from "./world_to_screen";
+import { is_http_url } from "../utils/is_http_url";
 
 const RE_IMAGE1 = /\[(https:\/\/gyazo\.com\/[^\]]+)\]/g;
 const RE_IMAGE2 = /\[(http.*[^\]]+\.png)\]/g;
@@ -52,7 +53,7 @@ export const create_squared_group = (texts: string[]) => {
     if (text === "") return;
     if (text.startsWith("https://gyazo.com/")) {
       kozane = create_gyazo_item(text);
-    } else if (text.endsWith(".png")) {
+    } else if (text.endsWith(".png") && is_http_url(text)) {
       kozane = create_gyazo_item(text);
     } else if (text.startsWith("https://") || text.startsWith("http://")) {
       kozane = create_kozane(url_to_text(text), { custom: { url: text } }); // [External Kozane]
