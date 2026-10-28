@@ -2,6 +2,7 @@ import type {
   ChangeEvent,
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
 } from "react";
 import { State } from "reactn/default";
 import { kozaneba } from "../../API/KozanebaAPI";
@@ -26,6 +27,15 @@ import { find_parent } from "../../utils/find_parent";
 import { dev_log } from "../../utils/dev";
 import { KOZANE_WIDTH } from "../../utils/kozane_constants";
 import { mark_local_changed } from "../../utils/mark_local_changed";
+import {
+  arrow_head_size_of,
+  label_of,
+  stroke_width_of,
+} from "../../utils/annotation_values";
+import {
+  ref_of_annotation,
+  resolve_annotation_ref,
+} from "../../utils/annotation_ref";
 import { AnnotationLabel } from "./AnnotationLabel";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_middle_point } from "./get_middle_point";
@@ -35,17 +45,32 @@ const arrow_angle = 30; // degrees
 const arrow_tan = Math.tan((arrow_angle / 180) * Math.PI);
 const arrow_sin = Math.sin((arrow_angle / 180) * Math.PI);
 
-export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
+// What LineAnnot draws: `visual` goes above the kozane, `hit` (the transparent
+// lines that take double click / right click) goes below them, so a kozane or
+// group always gets the press when it overlaps a line.
+export type TLineAnnotElements = {
+  visual: JSX.Element;
+  hit: JSX.Element | null;
+};
+
+export const LineAnnot = (
+  g: State,
+  a: TLineAnnot,
+  annot_index: number
+): TLineAnnotElements | null => {
   const lines = [] as [V2, V2, number][];
   // currently ignore items[2~], and item deletion
   const positions = a.items.map((id: TItemId) => get_global_position(id, g));
   const center = get_middle_point(positions);
 
   const is_doubled = a.is_doubled;
-  const stroke_width = a.custom?.stroke_width ?? 1;
+  // read through *_of: a saved doc may hold e.g. "3" instead of 3, and
+  // "3" + 12 is "312"
+  const stroke_width = stroke_width_of(a);
+  const current_label = label_of(a);
 
   const arrow_head_size =
-    (a.custom?.arrow_head_size ?? 10) +
+    arrow_head_size_of(a) +
     (is_doubled ? stroke_width / arrow_sin : 0);
 
   let group_opacity = 1.0;
@@ -84,7 +109,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   if (a.items.length === 2) {
     if (equal_v2(positions[0]!, positions[1]!)) {
       // same point. e.g. in the same closed group
-      return [];
+      return null;
     }
   }
 
@@ -115,7 +140,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     const cp0 = crosspoints[0];
     const cp1 = crosspoints[1];
     if (cp0 === undefined || cp1 === undefined || equal_v2(cp0, cp1)) {
-      return [];
+      return null;
     }
     const v = sub_v2(cp1, cp0);
     const length = L2norm(v);
@@ -195,17 +220,33 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const is_clickable = false;
   const onClick = undefined;
   const can_edit_label = g.mouseState !== "making_line";
-  const is_editing = g.editing_line_label?.annot_index === annot_index;
+  const is_editing =
+    g.editing_line_label !== null &&
+    resolve_annotation_ref(g.annotations, g.editing_line_label.target) ===
+      annot_index;
   const editing_value = is_editing ? g.editing_line_label!.value : "";
+
+  const openEditDialog = () => {
+    updateGlobal((draft) => {
+      draft.clicked_annotation = ref_of_annotation(a, annot_index);
+      draft.dialog = "EditAnnotation";
+    });
+  };
 
   const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
     event.preventDefault();
     event.stopPropagation();
     if (!can_edit_label) return;
+    // The inline editor is a single-line <input>, which drops newlines and
+    // would save the joined text on blur. Multi-line labels open the dialog.
+    if (current_label.includes("\n")) {
+      openEditDialog();
+      return;
+    }
     updateGlobal((draft) => {
       draft.editing_line_label = {
-        annot_index,
-        value: a.label ?? "",
+        target: ref_of_annotation(a, annot_index),
+        value: current_label,
       };
       draft.disableHotKey = true;
     });
@@ -218,15 +259,16 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     });
   };
 
-  const commitLabelEdit = (
-    value = g.editing_line_label?.annot_index === annot_index
-      ? g.editing_line_label.value
-      : ""
-  ) => {
+  const commitLabelEdit = (value = editing_value) => {
     const label = value.trim();
     let did_change = false;
     updateGlobal((draft) => {
-      const annotation = draft.annotations[annot_index];
+      const index = resolve_annotation_ref(
+        draft.annotations,
+        draft.editing_line_label?.target ?? null
+      );
+      const annotation =
+        index === null ? undefined : draft.annotations[index];
       if (annotation !== undefined && annotation.type === "line") {
         if (label === "") {
           if (annotation.label !== undefined) {
@@ -249,7 +291,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const onEditorChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     updateGlobal((draft) => {
-      if (draft.editing_line_label?.annot_index === annot_index) {
+      if (draft.editing_line_label !== null) {
         draft.editing_line_label.value = value;
       }
     });
@@ -270,13 +312,20 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     event.stopPropagation();
   };
 
-  const openEditDialog = (event: ReactMouseEvent<SVGLineElement>) => {
+  // A left press on a line goes on to #canvas, which starts a selection as on
+  // empty canvas (#canvas does not capture the pointer for it, see
+  // onCanvasMouseDown, so click / dblclick still reach this line). Other
+  // buttons stop here: a right click on a line must not start a selection.
+  const stopNonPrimaryPointer = (event: ReactPointerEvent) => {
+    if (event.button !== 0) {
+      event.stopPropagation();
+    }
+  };
+
+  const onHitContextMenu = (event: ReactMouseEvent<SVGLineElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    updateGlobal((draft) => {
-      draft.clicked_annotation_index = annot_index;
-      draft.dialog = "EditAnnotation";
-    });
+    openEditDialog();
   };
 
   const custom_opacity = a.custom?.opacity ?? 0.2;
@@ -308,11 +357,14 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
             strokeWidth={hit_stroke_width}
             strokeLinecap="round"
             pointerEvents="stroke"
+            data-line-hit=""
+            onPointerDown={stopNonPrimaryPointer}
+            onPointerUp={stopNonPrimaryPointer}
             onMouseDown={stopMouseEvent}
             onMouseUp={stopMouseEvent}
             onClick={stopMouseEvent}
             onDoubleClick={startLabelEdit}
-            onContextMenu={openEditDialog}
+            onContextMenu={onHitContextMenu}
             style={{ cursor: "text" }}
             data-testid={`line-label-hit-${annot_index}-${index}`}
             key={`line-label-hit-${annot_index}-${index}`}
@@ -321,8 +373,8 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       })
     : null;
 
-  const labelElement = a.label && !is_editing ? (
-    <AnnotationLabel position={center} label={a.label} />
+  const labelElement = current_label && !is_editing ? (
+    <AnnotationLabel position={center} label={current_label} />
   ) : null;
 
   const editor_width = Math.max(
@@ -368,14 +420,19 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     </foreignObject>
   ) : null;
 
-  return (
-    <g key={`line-${annot_index}`}>
-      <g opacity={custom_opacity * group_opacity}>
-        {result}
-        {labelElement}
-        {hitElements}
+  return {
+    visual: (
+      <g key={`line-${annot_index}`}>
+        <g opacity={custom_opacity * group_opacity}>
+          {result}
+          {labelElement}
+        </g>
+        {editorElement}
       </g>
-      {editorElement}
-    </g>
-  );
+    ),
+    hit:
+      hitElements === null ? null : (
+        <g key={`line-hit-${annot_index}`}>{hitElements}</g>
+      ),
+  };
 };
