@@ -9,6 +9,8 @@ import { BaDialog } from "./BaDialog";
 vi.mock("../Cloud/init_firebase", () => ({ db: {}, auth: {} }));
 vi.mock("../utils/make_copy", () => ({ make_copy: vi.fn() }));
 vi.mock("../Cloud/delete_ba", () => ({ delete_ba: vi.fn() }));
+// the backup list loads FirestoreIO (Firebase Auth); it has its own test
+vi.mock("./BackupList", () => ({ BackupList: () => null }));
 
 const open_dialog = (uid: string, writers: string[], anyone_writable = true) => {
   setGlobal({

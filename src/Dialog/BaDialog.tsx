@@ -16,6 +16,7 @@ import { delete_ba } from "../Cloud/delete_ba";
 import { can_write, is_ba_owner, is_cloud } from "../utils/can_write";
 import { make_copy } from "../utils/make_copy";
 import { dev_log } from "../utils/dev";
+import { BackupList } from "./BackupList";
 
 export type Ba = { title: string; id: string; last_updated: number };
 
@@ -43,6 +44,7 @@ export const BaDialog = () => {
         <Title />
         <Share mode={mode} />
         <Scrapbox />
+        <BackupList />
 
         <div>
           <MakeCopy />
