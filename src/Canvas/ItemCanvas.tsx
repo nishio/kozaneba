@@ -57,8 +57,7 @@ export const ItemCanvas = React.memo(() => {
     contents = (
       <>
         <Center opacity={1}>
-          {dom}
-          <AnnotationLayer />
+          <AnnotationLayer>{dom}</AnnotationLayer>
         </Center>
         <SelectionView />
       </>
