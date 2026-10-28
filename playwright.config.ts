@@ -13,6 +13,8 @@ const baseURL = process.env.PW_BASE_URL ?? "http://localhost:3100";
 
 export default defineConfig({
   testDir: "./playwright",
+  // playwright/replay/ needs Chromium (CDP); it runs with playwright.replay.config.ts
+  testIgnore: ["replay/**"],
   timeout: 30_000,
   expect: { timeout: 7_000 },
   fullyParallel: false,
