@@ -6,6 +6,7 @@ import { clear_drop_group_highlight, update_drop_group_highlight } from "./drop_
 import { move_target, move_target_on_screen } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
 import { should_ignore_compat_mouse_event, TInputEvent } from "./input_event";
+import { pinch_pointer_move } from "./pinch_gesture";
 
 let last_mouse_position = [0, 0] as TScreenCoord;
 export const get_last_mouse_position = () => {
@@ -16,6 +17,8 @@ export const onCanvasMouseMove = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  // While two fingers are down, drive pinch/pan instead of selection/drag.
+  if (pinch_pointer_move(event)) return;
   last_mouse_position = get_client_pos(event);
   const g = getGlobal();
   if (g.mouseState === "selecting") {

@@ -8,6 +8,7 @@ import { reset_selection } from "../Selection/reset_selection";
 import { dev_log } from "../utils/dev";
 import { set_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
+import { pinch_pointer_down } from "./pinch_gesture";
 import {
   get_button,
   should_ignore_compat_mouse_event,
@@ -19,6 +20,12 @@ export const onGenericMouseDown = <T extends HTMLElement>(
   value: { id: TItemId; position: V2 }
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  // A finger on a kozane/group counts toward a pinch like one on #canvas; a
+  // second finger here switches to the pinch instead of starting a drag.
+  if (pinch_pointer_down(event)) {
+    event.stopPropagation();
+    return;
+  }
   if (get_button(event) === 1 /* middle mouse button */) {
     // ignore
     return;

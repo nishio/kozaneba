@@ -13,6 +13,7 @@ import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
 import { move_front } from "../utils/move_front";
 import { updateGlobal } from "../Global/updateGlobal";
 import {
+  pointer_id_of,
   release_pointer_capture,
   reset_target,
   is_draggeing,
@@ -21,6 +22,7 @@ import {
   should_ignore_compat_mouse_event,
   TInputEvent,
 } from "./input_event";
+import { pinch_pointer_up } from "./pinch_gesture";
 import {
   get_valid_selection_drop_group_id,
   is_self_or_descendant_group,
@@ -40,10 +42,16 @@ export const onCanvasMouseUp = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  // If a finger of an active pinch lifts, consume it so it does not trigger a
+  // drop or finish-selecting.
+  if (pinch_pointer_up(event)) {
+    release_pointer_capture(pointer_id_of(event));
+    return;
+  }
   dev_log("onCanvasMouseUp");
   clear_drop_group_highlight();
   if (handle_if_is_click(event)) {
-    release_pointer_capture();
+    release_pointer_capture(pointer_id_of(event));
     return;
   }
 
@@ -85,7 +93,7 @@ export const onCanvasMouseUp = (
   } else {
     throw new Error();
   }
-  release_pointer_capture();
+  release_pointer_capture(pointer_id_of(event));
   event.preventDefault();
 };
 
@@ -93,6 +101,7 @@ export const onCanvasPointerCancel = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  pinch_pointer_up(event);
   clear_drop_group_highlight();
   updateGlobal((g) => {
     g.mouseState = "";
@@ -103,6 +112,6 @@ export const onCanvasPointerCancel = (
   if (is_draggeing()) {
     reset_target();
   } else {
-    release_pointer_capture();
+    release_pointer_capture(pointer_id_of(event));
   }
 };
