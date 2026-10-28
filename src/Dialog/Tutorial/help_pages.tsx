@@ -75,7 +75,7 @@ const TOC = () => {
         lineHeight: 1,
       }}
       onClick={() => {
-        setGlobal({ tutorial_page: x.page_no });
+        setGlobal({ help_page: x.page_no });
       }}
       key={x.page_no}
     >
