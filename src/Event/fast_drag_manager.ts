@@ -15,31 +15,56 @@ let _mouse_down_point = [0, 0] as TScreenCoord;
 let _first_element_position = [0, 0] as TScreenCoord;
 let _is_mousemoved = false;
 let _is_dragging = false;
-let _captured_pointer_id: number | null = null;
+// Pointers captured on #canvas (one per finger during a pinch).
+const _captured = new Set<number>();
+// A touch or pen that moves less than this is still a tap (a finger jitters).
+const TOUCH_SLOP_PX = 8;
+let _pointer_type = "mouse";
 
-export const capture_pointer_on_canvas = (event: TInputEvent<Element>) => {
-  if (!("pointerId" in event)) return;
+export const capture_pointer_id_on_canvas = (pointer_id: number) => {
   const canvas = document.getElementById("canvas");
   if (!(canvas instanceof HTMLDivElement)) return;
   try {
-    canvas.setPointerCapture(event.pointerId);
-    _captured_pointer_id = event.pointerId;
+    canvas.setPointerCapture(pointer_id);
+    _captured.add(pointer_id);
   } catch {
     // The pointer may already be released by the browser, e.g. after cancel.
   }
 };
 
-export const release_pointer_capture = () => {
-  if (_captured_pointer_id === null) return;
+export const capture_pointer_on_canvas = (event: TInputEvent<Element>) => {
+  if (!("pointerId" in event)) return;
+  capture_pointer_id_on_canvas(event.pointerId);
+};
+
+// Releases the given pointer, or every captured pointer when none is given.
+// With two fingers down, lifting one must not release the other.
+export const release_pointer_capture = (pointer_id?: number) => {
+  const ids = pointer_id === undefined ? [..._captured] : [pointer_id];
   const canvas = document.getElementById("canvas");
-  if (canvas instanceof HTMLDivElement) {
-    try {
-      canvas.releasePointerCapture(_captured_pointer_id);
-    } catch {
-      // It is valid for capture to have been lost before explicit release.
+  for (const id of ids) {
+    if (!_captured.has(id)) continue;
+    if (canvas instanceof HTMLDivElement) {
+      try {
+        canvas.releasePointerCapture(id);
+      } catch {
+        // It is valid for capture to have been lost before explicit release.
+      }
     }
+    _captured.delete(id);
   }
-  _captured_pointer_id = null;
+};
+
+export const pointer_id_of = (event: TInputEvent<Element>) =>
+  "pointerId" in event ? event.pointerId : undefined;
+
+const is_within_touch_slop = (event: TInputEvent<Element>) => {
+  if (_is_mousemoved || _pointer_type === "mouse") return false;
+  const [x, y] = get_client_pos(event);
+  return (
+    Math.hypot(x - _mouse_down_point[0], y - _mouse_down_point[1]) <
+    TOUCH_SLOP_PX
+  );
 };
 
 export const set_target = <T extends HTMLElement>(event: TInputEvent<T>) => {
@@ -59,6 +84,8 @@ export const set_target = <T extends HTMLElement>(event: TInputEvent<T>) => {
 
   _is_mousemoved = false;
   _is_dragging = true;
+  _pointer_type =
+    "pointerType" in event && event.pointerType ? event.pointerType : "mouse";
 };
 
 export const reset_target = () => {
@@ -84,6 +111,7 @@ export const move_target = (event: TInputEvent<Element>) => {
   if (_target === null) {
     throw new Error("try to move element:null");
   }
+  if (is_within_touch_slop(event)) return;
   const delta = sub_v2w(
     screen_to_world(get_client_pos(event)),
     screen_to_world(_mouse_down_point)
@@ -102,6 +130,7 @@ export const move_target_on_screen = (event: TInputEvent<Element>) => {
   if (_target === null) {
     throw new Error("try to move element:null");
   }
+  if (is_within_touch_slop(event)) return;
   const delta = sub_v2s(get_client_pos(event), _mouse_down_point);
   const pos = add_v2s(_first_element_position, delta);
   const style = {

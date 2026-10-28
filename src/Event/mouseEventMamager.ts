@@ -3,12 +3,17 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { dev_log } from "../utils/dev";
 import { set_target } from "./fast_drag_manager";
 import { get_client_pos } from "./get_client_pos";
+import { pinch_pointer_down } from "./pinch_gesture";
 import { should_ignore_compat_mouse_event, TInputEvent } from "./input_event";
 
 export const onSelectionMouseDown = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  if (pinch_pointer_down(event)) {
+    event.stopPropagation();
+    return;
+  }
   dev_log("onSelectionMouseDown");
   set_target(event);
   updateGlobal((g) => {
