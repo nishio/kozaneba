@@ -45,7 +45,8 @@
     "test:rules": "firebase emulators:exec --project demo-rules --only firestore \"node scripts/firestore-rules-test.mjs\"",
     "codex:preflight": "bash scripts/codex-preflight.sh",
     "cypress:emulator-smoke": "bash scripts/cypress-emulator-smoke.sh",
-    "cypress:kozaneba-all": "bash scripts/cypress-kozaneba-all.sh"
+    "cypress:kozaneba-all": "bash scripts/cypress-kozaneba-all.sh",
+    "test:replay": "playwright test --config playwright.replay.config.ts"
   },
   "browserslist": {
     "production": [
@@ -60,10 +61,11 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.0",
     "@types/node": "^24.9.0",
     "@vitejs/plugin-react": "^6.0.2",
     "cypress": "^13.17.0",
-    "firebase-tools": "^15.19.0",
+    "firebase-tools": "^15.34.1",
     "jsdom": "^29.1.1",
     "typescript": "^4.9.5",
     "vite": "^8.0.16",
