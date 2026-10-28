@@ -9,17 +9,30 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { useEffect } from "react";
 import { useGlobal, setGlobal } from "reactn";
+import {
+  can_reverse,
+  resolve_annotation_ref,
+  reversed_heads,
+} from "../utils/annotation_ref";
+import { opacity_of } from "../utils/annotation_values";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 
 export const EditAnnotationDialog = () => {
   const [dialog] = useGlobal("dialog");
-  const [clicked_annotation_index] = useGlobal("clicked_annotation_index");
+  const [clicked_annotation] = useGlobal("clicked_annotation");
   const [annotations] = useGlobal("annotations");
 
   const open = dialog === "EditAnnotation";
 
+  // Resolved on every render: the array index of the line moves when
+  // another client's save arrives.
+  const clicked_annotation_index = resolve_annotation_ref(
+    annotations,
+    clicked_annotation
+  );
   const annotation =
     clicked_annotation_index !== null
       ? annotations[clicked_annotation_index]
@@ -27,8 +40,18 @@ export const EditAnnotationDialog = () => {
 
   const onClose = () => {
     close_menu_and_dialog();
-    setGlobal({ clicked_annotation_index: null });
+    setGlobal({ clicked_annotation: null });
   };
+
+  // The line is gone: close the dialog, otherwise the app stays in dialog
+  // mode (hot keys and paste disabled) with nothing on the screen.
+  const target_gone = open && annotation === undefined;
+  useEffect(() => {
+    if (target_gone) {
+      close_menu_and_dialog();
+      setGlobal({ clicked_annotation: null });
+    }
+  }, [target_gone]);
 
   if (!annotation) {
     return null;
@@ -83,13 +106,12 @@ export const EditAnnotationDialog = () => {
   const handleReverseArrow = () => {
     if (clicked_annotation_index === null) return;
 
+    // Reversing heads and items together drew the same line, so only the
+    // heads change: the arrow moves to the other end.
     const newAnnotations = [...annotations];
-    const reversedHeads = [...annotation.heads].reverse();
-    const reversedItems = [...annotation.items].reverse();
     newAnnotations[clicked_annotation_index] = {
       ...annotation,
-      heads: reversedHeads,
-      items: reversedItems,
+      heads: reversed_heads(annotation.heads),
     };
     setGlobal({ annotations: newAnnotations });
     mark_local_changed();
@@ -113,7 +135,8 @@ export const EditAnnotationDialog = () => {
 
   const label = annotation.label ?? "";
   const strokeWidth = annotation.custom?.stroke_width ?? 1;
-  const opacity = annotation.custom?.opacity ?? 0.2;
+  // a saved doc may hold "0.5"; opacity.toFixed below needs a number
+  const opacity = opacity_of(annotation);
   const arrowSize = annotation.custom?.arrow_head_size ?? 10;
 
   // Check if annotation has any arrow heads
@@ -191,7 +214,11 @@ export const EditAnnotationDialog = () => {
         <Button onClick={handleDelete} color="error">
           Delete
         </Button>
-        <Button onClick={handleReverseArrow} color="secondary">
+        <Button
+          onClick={handleReverseArrow}
+          color="secondary"
+          disabled={!can_reverse(annotation.heads)}
+        >
           Reverse Arrow
         </Button>
         <Button onClick={onClose} color="primary">
