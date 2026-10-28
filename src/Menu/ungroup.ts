@@ -2,7 +2,7 @@ import { redraw } from "../API/redraw";
 import { close_menu } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 import { get_group_bounding_box } from "../dimension/get_group_bounding_box";
-import { add_v2w, sub_v2w } from "../dimension/V2";
+import { add_v2w } from "../dimension/V2";
 import { TWorldCoord } from "../dimension/world_to_screen";
 import { get_group } from "../utils/get_group";
 import { get_item } from "../utils/get_item";
@@ -27,10 +27,9 @@ export function ungroup(gid: TItemId) {
       group.items.forEach((id) => {
         new_parent.items.push(id);
         const item = get_item(g, id);
-        item.position = sub_v2w(
-          add_v2w(item.position, group.position),
-          new_parent.position
-        );
+        // positions are relative to the parent group, so moving up one level
+        // only adds the dissolved group's position
+        item.position = add_v2w(item.position, group.position);
       });
     }
     if (group.text !== "") {

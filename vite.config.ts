@@ -15,8 +15,8 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: "./src/setupTests.ts",
-    // Unit tests live under src/. Keep vitest out of playwright/ (iPad WebKit
-    // smoke run by `npm run test:ipad`, not vitest).
+    // Unit tests live under src/. Keep vitest out of playwright/ (run by
+    // Playwright: `npm run test:replay`, and the iPad smoke from #57).
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
   },
 });

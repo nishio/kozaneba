@@ -21,21 +21,10 @@ import {
   should_ignore_compat_mouse_event,
   TInputEvent,
 } from "./input_event";
-import { TItemId } from "../Global/TItemId";
-import { find_parent } from "../utils/find_parent";
-
-const is_self_or_descendant_group = (
-  group_id: TItemId,
-  target_id: string
-): boolean => {
-  if (group_id === target_id) return true;
-  let parent = find_parent(group_id);
-  while (parent !== null) {
-    if (parent === target_id) return true;
-    parent = find_parent(parent);
-  }
-  return false;
-};
+import {
+  get_valid_selection_drop_group_id,
+  is_self_or_descendant_group,
+} from "./drop_validity";
 
 const get_valid_drop_group_id = (
   event: TInputEvent<HTMLDivElement>,
@@ -75,7 +64,10 @@ export const onCanvasMouseUp = (
       drag_drop_item(g, delta, g.drag_target);
     }
   } else if (g.drag_target === "selection") {
-    const group_id = get_drop_group_id(event);
+    const group_id = get_valid_selection_drop_group_id(
+      get_drop_group_id(event),
+      g.selected_items
+    );
     if (group_id !== null) {
       move_front(group_id);
       drag_drop_selection_into_group(group_id, delta);
