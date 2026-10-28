@@ -405,3 +405,44 @@ describe("no false conflicts", () => {
     expect(Object.keys(server().itemStore).sort()).toEqual(["k1", "k2"]);
   });
 });
+
+// #85 asks before closing a tab with work that is not on the server. A
+// conflict and an offline save waiting for its retry are such work too.
+describe("closing the tab asks while this tab's edits are not on the server", () => {
+  const fire_beforeunload = () => {
+    const e = new Event("beforeunload", { cancelable: true });
+    window.dispatchEvent(e);
+    return e;
+  };
+
+  test("during a save conflict", async () => {
+    await open_ba1();
+    fs.asleep = true;
+    await other_device_saves(T0 + 30 * 60 * 1000);
+    await edit("k1", "moved on the laptop");
+    await flush();
+    expect(screen.getByTestId("save-conflict")).toBeInTheDocument();
+    expect(server().itemStore["k1"]!.text).toBe("first");
+    expect(fire_beforeunload().defaultPrevented).toBe(true);
+  });
+
+  test("while an offline save waits for its retry, not after it reached the server", async () => {
+    const retry = SAVE_RETRY as { first_ms: number } | undefined;
+    if (retry) retry.first_ms = 10 * 60 * 1000;
+    await open_ba1();
+    expect(fire_beforeunload().defaultPrevented).toBe(false);
+    fs.fail_next = { code: "unavailable", message: "offline" };
+    await edit("k1", "edited offline");
+    await flush();
+    expect(server().itemStore["k1"]!.text).toBe("first");
+    expect(fire_beforeunload().defaultPrevented).toBe(true);
+
+    await act(async () => {
+      window.dispatchEvent(new Event("online"));
+    });
+    await flush();
+    expect(server().itemStore["k1"]!.text).toBe("edited offline");
+    expect(fire_beforeunload().defaultPrevented).toBe(false);
+    if (retry) retry.first_ms = 2000;
+  });
+});

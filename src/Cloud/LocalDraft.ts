@@ -2,6 +2,7 @@ import { getGlobal } from "reactn";
 import { State } from "reactn/default";
 import { DocData } from "./FirebaseShortTypename";
 import { state_to_docdate } from "./state_to_docdate";
+import { has_pending_retry } from "./save";
 
 // A Ba that is not saved to the cloud (before sign-in, before Cloud Save, or
 // after the cloud doc disappeared) lives only in memory. Keep a copy in
@@ -82,5 +83,9 @@ export const has_unsaved_work = (g: State = getGlobal()) => {
   // a write the server has not acknowledged yet, or a failed one
   if (g.statusBar.type === "uploading") return true;
   if (g.save_error !== "") return true;
+  // not written because another device or tab saved in between (D3)
+  if (g.save_conflict === g.cloud_ba) return true;
+  // offline: waiting to retry the save
+  if (has_pending_retry(g.cloud_ba)) return true;
   return false;
 };
