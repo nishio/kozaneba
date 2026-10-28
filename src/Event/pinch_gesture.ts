@@ -3,7 +3,12 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { TScreenCoord, TWorldCoord } from "../dimension/world_to_screen";
 import { clear_drop_group_highlight } from "./drop_target";
 import { get_client_pos } from "./get_client_pos";
-import { reset_target } from "./fast_drag_manager";
+import {
+  capture_pointer_id_on_canvas,
+  is_draggeing,
+  release_pointer_capture,
+  reset_target,
+} from "./fast_drag_manager";
 import { TInputEvent } from "./input_event";
 import { pinch_transform } from "./pinch_transform";
 
@@ -15,8 +20,15 @@ import { pinch_transform } from "./pinch_transform";
 
 const activePointers = new Map<number, TScreenCoord>();
 let pinchActive = false;
+// Once two fingers have been down, the whole touch sequence belongs to the
+// gesture until every finger is up: the finger that stays down must not go
+// on as a selection or drag (or a stray "click on nothing").
+let gestureLocked = false;
 let prevDist = 0;
 let prevMid: TScreenCoord = [0, 0] as TScreenCoord;
+
+const isPrimary = (event: TInputEvent<Element>): boolean =>
+  (event as { isPrimary?: boolean }).isPrimary === true;
 
 const isTouchLike = (event: TInputEvent<Element>): boolean => {
   const t = (event as { pointerType?: string }).pointerType;
@@ -43,12 +55,37 @@ const firstTwo = (): [TScreenCoord, TScreenCoord] | null => {
 
 export const is_pinching = () => pinchActive;
 
-// Call from onCanvasMouseDown. Returns true if the event is consumed by the
-// pinch gesture (the caller must then skip selection/drag handling).
+// Ends whatever the first finger started (a drag of a kozane, group or the
+// selection, or a selection rectangle) so the pinch owns the fingers.
+const abort_single_pointer_action = () => {
+  clear_drop_group_highlight();
+  if (is_draggeing()) {
+    reset_target(); // restores the dragged element and releases capture
+  } else {
+    release_pointer_capture();
+  }
+  updateGlobal((g) => {
+    g.mouseState = "";
+    g.drag_target = "";
+    g.selectionRange = { top: 0, left: 0, width: 0, height: 0 };
+    g.is_selected = false;
+  });
+};
+
+// Call first from every pointerdown handler that a finger can land on
+// (#canvas, kozane/group, the selection). Returns true if the event is
+// consumed by the pinch gesture (the caller must then skip its own handling).
 export const pinch_pointer_down = (event: TInputEvent<Element>): boolean => {
   if (!isTouchLike(event)) return false;
   const id = pointerId(event);
   if (id === null) return false;
+  if (isPrimary(event)) {
+    // A primary pointer starts a new touch sequence: nothing else is down,
+    // whatever we still hold is left over from an up we never received.
+    activePointers.clear();
+    pinchActive = false;
+    gestureLocked = false;
+  }
   activePointers.set(id, get_client_pos(event));
 
   const two = firstTwo();
@@ -58,14 +95,10 @@ export const pinch_pointer_down = (event: TInputEvent<Element>): boolean => {
     prevMid = midpoint(two[0], two[1]);
     if (!pinchActive) {
       pinchActive = true;
-      clear_drop_group_highlight();
-      reset_target();
-      updateGlobal((g) => {
-        g.mouseState = "";
-        g.drag_target = "";
-        g.selectionRange = { top: 0, left: 0, width: 0, height: 0 };
-        g.is_selected = false;
-      });
+      gestureLocked = true;
+      abort_single_pointer_action();
+      // Every finger's move/up must reach #canvas, wherever it went down.
+      activePointers.forEach((_, pid) => capture_pointer_id_on_canvas(pid));
     }
     return true;
   }
@@ -74,10 +107,12 @@ export const pinch_pointer_down = (event: TInputEvent<Element>): boolean => {
 
 // Call from onCanvasMouseMove. Returns true if consumed.
 export const pinch_pointer_move = (event: TInputEvent<Element>): boolean => {
-  if (!pinchActive) return false;
+  if (!gestureLocked) return false;
   const id = pointerId(event);
   if (id === null || !activePointers.has(id)) return false;
   activePointers.set(id, get_client_pos(event));
+  // a finger left over after the pinch: consume, do nothing
+  if (!pinchActive) return true;
 
   const two = firstTwo();
   if (two === null) return true;
@@ -115,12 +150,13 @@ export const pinch_pointer_up = (event: TInputEvent<Element>): boolean => {
   const id = pointerId(event);
   if (id === null) return false;
   const had = activePointers.delete(id);
-  const wasPinching = pinchActive;
+  const consumed = gestureLocked && had;
   if (activePointers.size < 2) {
     pinchActive = false;
     prevDist = 0;
   }
-  // Consume the up only while a pinch was in progress, so the lifted finger does
-  // not trigger a drop or finish-selecting.
-  return wasPinching && had;
+  if (activePointers.size === 0) gestureLocked = false;
+  // Consume every up of a pinched sequence, so no lifted finger triggers a
+  // drop or finish-selecting.
+  return consumed;
 };

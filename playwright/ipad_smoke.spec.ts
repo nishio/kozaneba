@@ -58,10 +58,21 @@ async function touchDrag(
 const gl = (page: Page, fn: string) =>
   page.evaluate((fn) => (window as any).movidea.getGlobal()[fn], fn);
 
+// An exception in a pointer handler does not fail a test by itself (the
+// pinch-start throw in #61 went unnoticed this way), so collect them.
+const pageErrors = new WeakMap<Page, Error[]>();
+
 test.beforeEach(async ({ page }) => {
+  const errors: Error[] = [];
+  pageErrors.set(page, errors);
+  page.on("pageerror", (e) => errors.push(e));
   await page.goto("/#blank");
   await expect(page.locator("#appbar")).toContainText("Kozaneba");
   await expect(page.locator("[data-testid='ba']")).toBeVisible();
+});
+
+test.afterEach(async ({ page }) => {
+  expect(pageErrors.get(page)?.map((e) => e.message) ?? []).toEqual([]);
 });
 
 test("boots on iPad viewport", async ({ page }) => {
