@@ -7,6 +7,14 @@ import { db } from "./init_firebase";
 import { DocSnap } from "./FirebaseShortTypename";
 import { set_status } from "../utils/set_status";
 import { dev_log } from "../utils/dev";
+import { has_pending_retry, on_save_conflict } from "./save";
+import { state_to_docdate } from "./state_to_docdate";
+import {
+  as_version,
+  has_write_in_flight,
+  is_own_version,
+  note_server_version,
+} from "./sync_version";
 import { can_write } from "../utils/can_write";
 import { backup_if_enabled } from "./backup_store";
 
@@ -40,23 +48,35 @@ export const set_up_read_subscription = (ba: string) => {
       const server = docdate_to_state(data);
       const local_latest = getGlobal().last_updated;
       const server_latest = server.last_updated;
+      // the version as stored (docdate_to_state may clamp last_updated)
+      const version = as_version(data.last_updated);
       if (server_latest === undefined) {
         dev_log("no valid last_updated in server data");
-      } else if (server_latest > local_latest) {
+      } else if (server_latest === local_latest) {
+        adopt_server_permissions(server);
+        note_server_version(ba, version);
+        dev_log("no need to update");
+      } else if (is_own_version(ba, version)) {
+        adopt_server_permissions(server);
+        // the ack of an older save of this tab; a newer edit is being saved
+        dev_log("ack of an older own save");
+        return;
+      } else if (has_unsaved_local_changes(ba)) {
+        adopt_server_permissions(server);
+        // Someone else saved while this tab has changes not on the server.
+        // Replacing the local state would drop them silently (D3).
+        console.warn("the server has a version from elsewhere; keeping local changes");
+        on_save_conflict(ba, state_to_docdate(getGlobal()));
+        return;
+      } else {
+        // A version from elsewhere and nothing unsaved here: follow the
+        // server, whether its client clock was ahead or behind ours (D14).
         dev_log("update local with data from server", server);
         setGlobal(server);
         setGlobal(fit_to_contents());
+        note_server_version(ba, version);
         // the state before the first local edit, so that it can be restored
         if (can_write()) backup_if_enabled(ba, data);
-      } else if (server_latest < local_latest) {
-        adopt_server_permissions(server);
-        // e.g. the server rolled back a rejected save; keep the local state
-        // (save() reports the failure)
-        console.warn("received old data from server");
-        return;
-      } else {
-        adopt_server_permissions(server);
-        dev_log("no need to update");
       }
       // a local write not yet acknowledged by the server is not "done"
       if (!doc.metadata.hasPendingWrites) {
@@ -87,6 +107,20 @@ const adopt_server_permissions = (server: Partial<State>) => {
       g.anyone_writable = server.anyone_writable;
     }
   });
+};
+
+// Changes of this tab that are not (yet) on the server: an edit not yet
+// handed to save(), a save in flight or waiting for a retry, a failed save,
+// or a conflict already shown.
+const has_unsaved_local_changes = (ba: string) => {
+  const g = getGlobal();
+  return (
+    g.is_local_change ||
+    has_write_in_flight(ba) ||
+    has_pending_retry(ba) ||
+    g.save_error !== "" ||
+    g.save_conflict === ba
+  );
 };
 
 export const stop_current_subscription = () => {

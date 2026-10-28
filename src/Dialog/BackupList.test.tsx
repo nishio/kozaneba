@@ -11,6 +11,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { Edit } from "../App/Edit";
 import { INITIAL_GLOBAL_STATE } from "../Global/initializeGlobalState";
 import { mark_local_changed } from "../utils/mark_local_changed";
+import { reset_sync_version } from "../Cloud/sync_version";
 
 const fake = vi.hoisted(() => {
   type Doc = { [key: string]: unknown };
@@ -53,6 +54,22 @@ const fake = vi.hoisted(() => {
   });
   const db = {
     collection: () => ({ doc: doc_ref, add: () => Promise.reject(new Error("not used")) }),
+    // save() reads the server version and writes in a transaction (#98);
+    // nothing else writes here, so it commits on the first attempt
+    async runTransaction(fn: (t: unknown) => Promise<unknown>) {
+      const writes: [string, Doc][] = [];
+      const result = await fn({
+        get: async (ref: { id: string }) => {
+          const v = fs.docs.get(ref.id);
+          return { exists: v !== undefined, data: () => (v === undefined ? undefined : clone(v)) };
+        },
+        set: (ref: { id: string }, doc: Doc) => {
+          writes.push([ref.id, clone(doc)]);
+        },
+      });
+      for (const [id, doc] of writes) await doc_ref(id).set(doc);
+      return result;
+    },
     settings: () => {},
   };
   const auth = {
@@ -159,6 +176,7 @@ const open_ba_dialog = async () => {
 
 beforeEach(async () => {
   fs.reset();
+  reset_sync_version(); // a new page load
   store.rows = [];
   store.next_id = 1;
   fs.docs.set("ba1", my_ba());

@@ -71,6 +71,9 @@ describe("permissions from a snapshot that is not newer", () => {
 
   test("the owner's own unsaved share change is not reverted", () => {
     open("owner", ["owner", "other"], false);
+    // the change is not on the server yet (optimistic lock: a version from
+    // elsewhere while there are unsaved changes is a conflict, not followed)
+    setGlobal({ is_local_change: true });
     deliver({ last_updated: 98, writers: ["owner", "other"], anyone_writable: true });
     expect(getGlobal().anyone_writable).toBe(false);
   });
