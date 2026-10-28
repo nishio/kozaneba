@@ -9,6 +9,7 @@ import { dev_time, dev_time_end } from "../utils/dev";
 import { ItemRepulse } from "./ItemRepulse";
 import { LineSpring } from "./LineSpring";
 import { pin } from "./pin";
+import { mark_local_changed } from "../utils/mark_local_changed";
 
 export type Gradient = { [id: string]: V2 };
 export type PhysicalLaw = (state: State) => Gradient; // return Negative Gradient(aka Power)
@@ -131,6 +132,11 @@ export const toggle_physics = () => {
   } else {
     clearInterval(timer);
     timer = null;
+    // LocalChangeWatcher skips saving while physics is on; save what was
+    // changed meanwhile.
+    if (getGlobal().is_local_change) {
+      mark_local_changed();
+    }
   }
 };
 export const is_physics_on = () => {

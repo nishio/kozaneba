@@ -393,7 +393,7 @@ const STATIC_VIEWER_SCRIPT = `
     content.textContent = item.text || "";
     node.appendChild(content);
 
-    if (item.custom && item.custom.url) {
+    if (item.custom && item.custom.url && /^https?:/i.test(item.custom.url)) {
       node.appendChild(renderLinkMark(item.custom.url, scale));
     }
     itemLayer.appendChild(node);

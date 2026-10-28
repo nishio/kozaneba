@@ -1,4 +1,6 @@
-import * as functions from "firebase-functions";
+// eslint-plugin-import cannot resolve package "exports" subpaths.
+// eslint-disable-next-line import/no-unresolved
+import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
 import fetch from "node-fetch";
 // const { KintoneRestAPIClient } = require("@kintone/rest-api-client");
@@ -103,21 +105,6 @@ export const get_scrapbox_page = functions.https.onRequest((req, res) => {
       });
 });
 
-export const proxy = functions.https.onRequest((req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
-
-  if (req.method === "OPTIONS") {
-    // Send response to preflight OPTIONS requests
-    res.set("Access-Control-Allow-Methods", "GET");
-    res.set("Access-Control-Allow-Headers", "Content-Type");
-    res.set("Access-Control-Max-Age", "3600");
-    res.status(204).send("");
-    return;
-  }
-
-  res.status(410).json({error: "proxy is disabled"});
-});
-
 // export const kintone_get = functions.https.onRequest((req, res) => {
 //   res.set("Access-Control-Allow-Origin", "*");
 
@@ -143,7 +130,11 @@ export const proxy = functions.https.onRequest((req, res) => {
 
 export const create_ba = functions.https.onRequest(async (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
-  const state = JSON.parse(req.body);
+  const state = parseJsonBody(req.body);
+  if (state === null) {
+    res.status(400).json({error: "invalid json body"});
+    return;
+  }
   const {
     itemStore,
     drawOrder,

@@ -11,7 +11,7 @@ import { help_pages } from "./help_pages";
 
 export const HelpDialog = () => {
   const [dialog] = useGlobal("dialog");
-  const [p, setPage] = useGlobal("tutorial_page");
+  const [p, setPage] = useGlobal("help_page");
   const open = dialog === "Help";
   const onClose = () => {
     close_menu_and_dialog();
@@ -20,7 +20,7 @@ export const HelpDialog = () => {
   const page = help_pages[p];
 
   const onTOC = () => {
-    setGlobal({ tutorial_page: 0 });
+    setGlobal({ help_page: 0 });
   };
   const Prev =
     p > 0 ? (

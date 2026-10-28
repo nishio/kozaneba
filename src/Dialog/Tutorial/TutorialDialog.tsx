@@ -29,7 +29,7 @@ export const TutorialDialog = () => {
     dev_log(`Tutorial Page: ${p} open: ${open}`);
   }, [p, open]);
 
-  let page = tutorial_pages[p]!;
+  let page = tutorial_pages[p] ?? tutorial_pages[0]!;
   if (page.translate && page.translate[lang]) {
     page = page.translate[lang]!;
   }
