@@ -45,6 +45,11 @@ const arrow_angle = 30; // degrees
 const arrow_tan = Math.tan((arrow_angle / 180) * Math.PI);
 const arrow_sin = Math.sin((arrow_angle / 180) * Math.PI);
 
+// Touch has no reliable dblclick, so a second tap on the same line-label hit
+// target within this window opens the inline editor (mouse keeps onDoubleClick).
+const DOUBLE_TAP_MS = 300;
+const lineLabelLastTap = new Map<string, number>();
+
 // What LineAnnot draws: `visual` goes above the kozane, `hit` (the transparent
 // lines that take double click / right click) goes below them, so a kozane or
 // group always gets the press when it overlaps a line.
@@ -233,9 +238,7 @@ export const LineAnnot = (
     });
   };
 
-  const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
+  const openLabelEditor = () => {
     if (!can_edit_label) return;
     // The inline editor is a single-line <input>, which drops newlines and
     // would save the joined text on blur. Multi-line labels open the dialog.
@@ -250,6 +253,12 @@ export const LineAnnot = (
       };
       draft.disableHotKey = true;
     });
+  };
+
+  const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    openLabelEditor();
   };
 
   const cancelLabelEdit = () => {
@@ -328,6 +337,32 @@ export const LineAnnot = (
     openEditDialog();
   };
 
+  // A double-tap (touch/pen) on a hit line opens the inline editor; mouse
+  // uses onDoubleClick. The pointerup still goes on to #canvas like a left
+  // press does (see stopNonPrimaryPointer), which ends its selection.
+  const onHitPointerUp = (
+    event: ReactPointerEvent<SVGLineElement>,
+    hit_index: number
+  ) => {
+    stopNonPrimaryPointer(event);
+    if (event.pointerType === "mouse") return;
+    const key = `${annot_index}-${hit_index}`;
+    const now = Date.now();
+    const last = lineLabelLastTap.get(key) ?? 0;
+    if (now - last < DOUBLE_TAP_MS) {
+      lineLabelLastTap.delete(key);
+      event.preventDefault();
+      openLabelEditor();
+    } else {
+      lineLabelLastTap.set(key, now);
+    }
+  };
+
+  // The inline editor keeps its presses: they must not reach #canvas.
+  const stopPointerEvent = (event: ReactPointerEvent) => {
+    event.stopPropagation();
+  };
+
   const custom_opacity = a.custom?.opacity ?? 0.2;
 
   const result = lines.map(([p1, p2, op], index) => {
@@ -359,7 +394,7 @@ export const LineAnnot = (
             pointerEvents="stroke"
             data-line-hit=""
             onPointerDown={stopNonPrimaryPointer}
-            onPointerUp={stopNonPrimaryPointer}
+            onPointerUp={(event) => onHitPointerUp(event, index)}
             onMouseDown={stopMouseEvent}
             onMouseUp={stopMouseEvent}
             onClick={stopMouseEvent}
@@ -401,6 +436,8 @@ export const LineAnnot = (
         onMouseDown={stopMouseEvent}
         onMouseUp={stopMouseEvent}
         onClick={stopMouseEvent}
+        onPointerDown={stopPointerEvent}
+        onPointerUp={stopPointerEvent}
         style={{
           background: "white",
           border: "1px solid #555",

@@ -183,6 +183,38 @@ describe("line label", () => {
 
     cy.testid("line-label-hit-0-0").should("not.exist");
   });
+
+  // iPad / touch has no reliable dblclick; a double-tap on the line opens the
+  // editor. A press on a line goes on to #canvas (see LineAnnot
+  // stopNonPrimaryPointer), so a tap must end with no selection left behind.
+  const touch = {
+    pointerId: 1,
+    pointerType: "touch",
+    isPrimary: true,
+    button: 0,
+    buttons: 1,
+    force: true,
+  };
+  const touchEnd = { ...touch, buttons: 0 };
+
+  it("opens the editor on a touch double-tap", () => {
+    cy.testid("line-label-hit-0-0").trigger("pointerdown", "center", touch);
+    cy.testid("line-label-hit-0-0").trigger("pointerup", "center", touchEnd);
+    cy.testid("line-label-hit-0-0").trigger("pointerdown", "center", touch);
+    cy.testid("line-label-hit-0-0").trigger("pointerup", "center", touchEnd);
+
+    cy.testid("line-label-editor-0").should("exist");
+    cy.testid("line-label-editor-0").type("touch{enter}");
+    cy.getGlobal((g) => g.annotations[0]!.label).should("eql", "touch");
+  });
+
+  it("leaves no selection behind after a tap on a line", () => {
+    cy.testid("line-label-hit-0-0").trigger("pointerdown", "center", touch);
+    cy.testid("line-label-hit-0-0").trigger("pointerup", "center", touchEnd);
+
+    cy.getGlobal((g) => g.selected_items).should("eql", []);
+    cy.getGlobal((g) => g.mouseState).should("not.eql", "selecting");
+  });
 });
 
 describe("line over a kozane", () => {
