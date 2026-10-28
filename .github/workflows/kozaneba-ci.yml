@@ -111,3 +111,29 @@ jobs:
 
       - name: Kozaneba Cypress suite
         run: npm run cypress:kozaneba-all
+
+  touch-replay:
+    name: Touch replay (Playwright Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Replays every recording in playwright/recordings/ plus a self-test
+      # that records and replays a session in the same browser.
+      - name: Replay
+        run: npm run test:replay
