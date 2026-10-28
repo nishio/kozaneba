@@ -1,6 +1,7 @@
 import { getGlobal, setGlobal } from "reactn";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import { device_context, sentry_context } from "./sentry_context";
 
 const CONFIG = {
   labelName: "NAME (optional)",
@@ -48,10 +49,19 @@ export const initSentry = () => {
           ...CONFIG_FOR_FEEDBACK,
         });
       }
-      Sentry.setContext("global", getGlobal());
 
       return event;
     },
+  });
+  // An event processor runs before the event is sent, so the context belongs
+  // to this event (setContext in beforeSend only reached the next one).
+  Sentry.addGlobalEventProcessor((event) => {
+    event.contexts = {
+      ...event.contexts,
+      kozaneba: sentry_context(getGlobal()),
+      device: { ...event.contexts?.device, ...device_context() },
+    };
+    return event;
   });
 };
 export { Sentry };

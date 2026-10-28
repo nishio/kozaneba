@@ -9,10 +9,12 @@ export const remove_item = (g: State, id: TItemId): void => {
   let parent = find_parent(id);
   if (parent === null) {
     g.drawOrder = remove_item_from(g.drawOrder, id);
-    delete g.itemStore[id];
-    update_annotation_after_deletion(g, id);
   } else {
     const new_parent = get_group(g, parent);
     new_parent.items = remove_item_from(new_parent.items, id);
   }
+  // a nested item must leave itemStore and its lines too, otherwise an
+  // invisible orphan and a dangling line are saved
+  delete g.itemStore[id];
+  update_annotation_after_deletion(g, id);
 };
