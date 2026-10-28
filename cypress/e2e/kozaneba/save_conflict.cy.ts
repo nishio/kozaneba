@@ -39,6 +39,11 @@ const add_kozane = (text: string) => {
   cy.testid("add-kozane-button").click();
 };
 const global = () => cy.window().its("movidea").invoke("getGlobal");
+// The hash changes to #edit= when the server acknowledges the first write.
+// The first write to a fresh emulator takes several seconds (measured 5.9 s
+// and 6.8 s locally, with and without the optimistic lock; the next one
+// ~0.5 s), over the 4 s default. In CI this spec was the first to write.
+const wait_cloud_saved = () => cy.location("hash", { timeout: 30000 }).should("match", /^#edit=/);
 
 describe("save conflict", () => {
   it("a sleeping tab does not overwrite another device's save, and can save its own as a new Ba", () => {
@@ -57,7 +62,7 @@ describe("save conflict", () => {
     cy.testid("dev-menu").click();
     cy.contains("Trigger Cloud Save").click();
     cy.testid("continue-as-anonymous-user").click();
-    cy.location("hash").should("match", /^#edit=/);
+    wait_cloud_saved();
     global().its("statusBar.type").should("eql", "done");
 
     cy.location("hash").then((hash) => {
@@ -133,7 +138,7 @@ describe("save conflict", () => {
     cy.testid("dev-menu").click();
     cy.contains("Trigger Cloud Save").click();
     cy.testid("continue-as-anonymous-user").click();
-    cy.location("hash").should("match", /^#edit=/);
+    wait_cloud_saved();
     add_kozane("two");
     add_kozane("three");
     add_kozane("four");
