@@ -16,6 +16,7 @@ import {
   resolve_annotation_ref,
   reversed_heads,
 } from "../utils/annotation_ref";
+import { opacity_of } from "../utils/annotation_values";
 import { close_menu_and_dialog } from "../utils/close_menu";
 import { mark_local_changed } from "../utils/mark_local_changed";
 
@@ -134,7 +135,8 @@ export const EditAnnotationDialog = () => {
 
   const label = annotation.label ?? "";
   const strokeWidth = annotation.custom?.stroke_width ?? 1;
-  const opacity = annotation.custom?.opacity ?? 0.2;
+  // a saved doc may hold "0.5"; opacity.toFixed below needs a number
+  const opacity = opacity_of(annotation);
   const arrowSize = annotation.custom?.arrow_head_size ?? 10;
 
   // Check if annotation has any arrow heads
