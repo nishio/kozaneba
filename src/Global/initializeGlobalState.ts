@@ -6,6 +6,7 @@ import { TItem } from "./TItem";
 import { TItemId } from "./TItemId";
 import { TMenu } from "./TMenu";
 import { TStatusType } from "./TStatusType";
+import { TAnnotationRef } from "../utils/annotation_ref";
 
 export const INITIAL_GLOBAL_STATE = {
   drawOrder: [] as TItemId[],
@@ -25,6 +26,8 @@ export const INITIAL_GLOBAL_STATE = {
   is_selected: false,
   mouseState: "" as TMouseState,
   clicked_target: "" as "" | TItemId,
+  // the line EditAnnotationDialog edits (resolved again on every render)
+  clicked_annotation: null as TAnnotationRef | null,
 
   statusBar: { text: "", type: "no-connection" as TStatusType },
   user: null as TUser,
@@ -35,6 +38,9 @@ export const INITIAL_GLOBAL_STATE = {
 
   in_tutorial: false,
   tutorial_page: 0,
+  // Help has more pages (TOC + tutorial + others) than Tutorial, so it keeps
+  // its own page number; sharing tutorial_page crashed TutorialDialog.
+  help_page: 0,
 
   show_devmenu: true,
   fix_timestamp_for_test: null as null | number,
@@ -55,6 +61,7 @@ export const INITIAL_GLOBAL_STATE = {
   language: window.navigator.language,
   print_mode: false,
   did_warn_over_capacity: false,
+  save_error: "",
 
   line_start: "" as "" | TItemId,
   line_type: "line" as TLineType,
@@ -70,7 +77,7 @@ export type TLineType =
   | "double_lines"
   | "delete";
 type TEditingLineLabel = null | {
-  annot_index: number;
+  target: TAnnotationRef;
   value: string;
 };
 
