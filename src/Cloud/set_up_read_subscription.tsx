@@ -7,6 +7,8 @@ import { db } from "./init_firebase";
 import { DocSnap } from "./FirebaseShortTypename";
 import { set_status } from "../utils/set_status";
 import { dev_log } from "../utils/dev";
+import { can_write } from "../utils/can_write";
+import { backup_if_enabled } from "./backup_store";
 
 let unsubscribe = null as null | (() => void);
 
@@ -44,6 +46,8 @@ export const set_up_read_subscription = (ba: string) => {
         dev_log("update local with data from server", server);
         setGlobal(server);
         setGlobal(fit_to_contents());
+        // the state before the first local edit, so that it can be restored
+        if (can_write()) backup_if_enabled(ba, data);
       } else if (server_latest < local_latest) {
         adopt_server_permissions(server);
         // e.g. the server rolled back a rejected save; keep the local state
