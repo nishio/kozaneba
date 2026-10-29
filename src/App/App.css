@@ -16,7 +16,10 @@ html {
   height: 100%;
 }
 .App {
-  height: 100%;
+  /* --app-height tracks window.visualViewport.height (see visual_viewport.ts) so
+     the app fits the visible area when the iPad soft keyboard is shown. Falls
+     back to 100% before JS runs and on browsers without visualViewport. */
+  height: var(--app-height, 100%);
 }
 .firebase-emulator-warning {
   width: 50% !important;
