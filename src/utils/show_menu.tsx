@@ -7,10 +7,12 @@ import { get_client_pos, TInputEvent } from "../Event/input_event";
 // A tap that opens a menu is followed by the click the browser synthesizes
 // for that tap. Chromium hit-tests it after the menu has appeared under the
 // finger, so it lands on a menu item: a tap on a group opened the group
-// instead of showing its menu (found by replaying an iPad recording; iOS
-// Safari does not do this). Swallow that one click.
-const GHOST_CLICK_MS = 500;
-let opened_by_touch_at = -Infinity;
+// instead of showing its menu (found by replaying an iPad recording). iOS
+// Safari sends no such click, so only a click at the opening tap's point,
+// right after it, is swallowed; a real tap on a menu item is never that.
+const GHOST_CLICK_MS = 300;
+const GHOST_CLICK_PX = 10;
+let opening_tap: { x: number; y: number; at: number } | null = null;
 let guard_installed = false;
 const install_ghost_click_guard = () => {
   if (guard_installed) return;
@@ -18,8 +20,14 @@ const install_ghost_click_guard = () => {
   window.addEventListener(
     "click",
     (e) => {
-      if (Date.now() - opened_by_touch_at < GHOST_CLICK_MS) {
-        opened_by_touch_at = -Infinity;
+      const tap = opening_tap;
+      if (tap === null) return;
+      opening_tap = null;
+      const is_ghost =
+        Date.now() - tap.at < GHOST_CLICK_MS &&
+        Math.abs(e.clientX - tap.x) <= GHOST_CLICK_PX &&
+        Math.abs(e.clientY - tap.y) <= GHOST_CLICK_PX;
+      if (is_ghost) {
         e.stopPropagation();
         e.preventDefault();
       }
@@ -40,7 +48,7 @@ export const show_menu = (menu: TMenu, event: TInputEvent<Element>) => {
     } else {
       if (is_touch_or_pen(event)) {
         install_ghost_click_guard();
-        opened_by_touch_at = Date.now();
+        opening_tap = { x, y, at: Date.now() };
       }
       g.menu = menu;
       const a = document.getElementById("menu-anchor") as HTMLDivElement;
