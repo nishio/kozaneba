@@ -203,28 +203,32 @@ test("tap a kozane opens its menu and edit opens the dialog", async ({ page }) =
 // K14: the app container height follows the visible viewport. We can't trigger a
 // real iOS soft keyboard headlessly, so shrink the viewport as a proxy and assert
 // --app-height tracks it (so the canvas fits the visible area instead of scrolling).
-test("app height tracks the visible viewport (soft-keyboard proxy)", async ({ page }) => {
-  const readVar = () =>
-    page.evaluate(() =>
-      getComputedStyle(document.documentElement).getPropertyValue("--app-height").trim()
-    );
-  const before = await readVar();
-  expect(before).not.toEqual("");
+test("the app fits the visible area while the soft keyboard is up", async ({ page }) => {
+  const read = () =>
+    page.evaluate(() => ({
+      v: getComputedStyle(document.documentElement).getPropertyValue("--app-height").trim(),
+      app: (document.querySelector(".App") as HTMLElement).getBoundingClientRect().height,
+      inner: window.innerHeight,
+    }));
+  // No keyboard: plain height:100%, also right after a window resize.
   const size = page.viewportSize()!;
   await page.setViewportSize({ width: size.width, height: Math.round(size.height * 0.6) });
-  await page.waitForFunction((b) => {
-    const v = getComputedStyle(document.documentElement).getPropertyValue("--app-height").trim();
-    return v !== "" && v !== b;
-  }, before);
-  const after = await readVar();
-  expect(parseInt(after)).toBeLessThan(parseInt(before));
-  // .App honours the variable
-  const appHeight = await page.evaluate(() => {
-    const el = document.querySelector(".App") as HTMLElement | null;
-    return el ? el.getBoundingClientRect().height : -1;
+  let r = await read();
+  expect(r.v).toBe("");
+  expect(Math.abs(r.app - r.inner)).toBeLessThanOrEqual(1);
+  // Keyboard up: WebKit cannot show it here, so make the visual viewport
+  // smaller than the layout viewport the way the keyboard does.
+  await page.evaluate(() => {
+    const h = Math.round(window.innerHeight * 0.5);
+    Object.defineProperty(window, "visualViewport", {
+      configurable: true,
+      value: Object.assign(new EventTarget(), { height: h }),
+    });
+    window.dispatchEvent(new Event("resize"));
   });
-  expect(appHeight).toBeGreaterThan(0);
-  expect(appHeight).toBeLessThanOrEqual(parseInt(after) + 1);
+  r = await read();
+  expect(parseInt(r.v)).toBe(Math.round(r.inner * 0.5));
+  expect(r.app).toBeLessThanOrEqual(parseInt(r.v) + 1);
 });
 
 // Two-finger pinch zooms (K12). Spreading the fingers increases scale.
