@@ -10,6 +10,7 @@ import {
   TInputEvent,
 } from "./input_event";
 import { onCanvasMouseUp } from "./onCanvasMouseUp";
+import { pinch_pointer_down } from "./pinch_gesture";
 
 const is_on_line_hit = (event: TInputEvent<HTMLDivElement>) =>
   event.target instanceof Element &&
@@ -19,6 +20,9 @@ export const onCanvasMouseDown = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  // A second finger on the canvas switches to a pinch/pan gesture; the first
+  // finger registers here and continues as normal selection.
+  if (pinch_pointer_down(event)) return;
   dev_log("onCanvasMouseDown");
   if (getGlobal().drag_target !== "") {
     dev_log("previous mouseUp was not handled");

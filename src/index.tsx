@@ -11,6 +11,7 @@ import { initGoogleAnalytics } from "./initGoogleAnalytics";
 import addReactNDevTools from "reactn-devtools";
 import { run_user_script } from "./API/run_user_script";
 import { expose_kozaneba_api } from "./API/KozanebaAPI";
+import { install_visual_viewport_height } from "./App/visual_viewport";
 import { dev_log } from "./utils/dev";
 import { install_recorder, is_record_requested, is_sample_requested } from "./Recorder/recorder";
 import { load_sample_board } from "./Recorder/sample_board";
@@ -49,6 +50,7 @@ if (import.meta.env.DEV || is_record_requested()) {
 }
 
 expose_kozaneba_api();
+install_visual_viewport_height();
 run_user_script();
 
 window.matchMedia("print").addEventListener("change", (e) => {
