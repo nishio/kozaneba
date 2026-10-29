@@ -1,0 +1,15 @@
+{
+  "name": "migrate-gyazo-images",
+  "private": true,
+  "type": "module",
+  "description": "One-off: copy Gyazo images on your own Ba to Firebase Storage",
+  "scripts": {
+    "test": "node --test gyazo_test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.10.0"
+  }
+}
