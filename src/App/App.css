@@ -25,6 +25,25 @@ html {
   width: 50% !important;
 }
 
+/* iPad: keep the top toolbar clear of the notch / status bar in standalone PWA
+   (env insets are 0 on devices without safe areas, so this is a no-op there). */
+#appbar .MuiToolbar-root {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Touch targets: ensure menu items and app-bar controls are at least ~44pt tall
+   for fingers. MUI defaults are already >=44px in comfortable density, so this
+   only raises dense ones and is a no-op otherwise. */
+.MuiMenuItem-root {
+  min-height: 44px;
+}
+#appbar .MuiButtonBase-root {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 /* Tooltip container */
 .tooltip {
   position: relative;

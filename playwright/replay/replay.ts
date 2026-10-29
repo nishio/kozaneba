@@ -37,24 +37,40 @@ export const replay = async (
   let prev_t = rec.events[0]?.t ?? 0;
   let next_cp = 0;
 
-  const points = () => [...touches.values()].map((p) => ({ x: p.x, y: p.y, id: p.id }));
+  let next_touch_id = 0;
 
   const dispatch = async (e: TRecordedEvent) => {
     if (e.pt === "touch") {
+      // Each event lists only the touch point that changed, by id: a
+      // touchEnd releases the points it lists (listing the fingers that stay
+      // down released those instead).
       if (e.type === "down") {
-        touches.set(e.id, { x: e.x, y: e.y, id: touches.size });
-        await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: points() });
+        const p = { x: e.x, y: e.y, id: next_touch_id++ };
+        touches.set(e.id, p);
+        await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [p] });
       } else if (e.type === "move") {
         const p = touches.get(e.id);
         if (p === undefined) return;
         p.x = e.x;
         p.y = e.y;
-        await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: points() });
+        await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [p] });
       } else {
+        const p = touches.get(e.id);
+        if (p === undefined) return;
+        // iOS reports the up where the finger left, which can differ from the
+        // last move; move it there first (a drop lands at the up position).
+        // Only for the last finger: while others are down (a pinch) the app
+        // ignores the up position, and an extra move would add a pinch step
+        // iOS never sent.
+        if (touches.size === 1 && (p.x !== e.x || p.y !== e.y)) {
+          p.x = e.x;
+          p.y = e.y;
+          await cdp.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [p] });
+        }
         touches.delete(e.id);
         await cdp.send("Input.dispatchTouchEvent", {
           type: e.type === "up" ? "touchEnd" : "touchCancel",
-          touchPoints: points(),
+          touchPoints: [p],
         });
       }
       return;
