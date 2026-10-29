@@ -115,6 +115,11 @@ export const step = () => {
           // it is pinned, should not update position
           return;
         }
+        if (!Number.isFinite(v[0]) || !Number.isFinite(v[1])) {
+          // never write a NaN/Infinity position: it would be saved and make
+          // every later step throw
+          return;
+        }
         const item = g.itemStore[id]!;
         item.position = add_v2(item.position, v) as TWorldCoord;
       });
