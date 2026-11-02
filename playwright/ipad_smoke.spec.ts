@@ -105,6 +105,39 @@ test("touch-drag drops a kozane into a group", async ({ page }) => {
   expect(items).toContain("1");
 });
 
+test("touch-drag drops a kozane into a NESTED group", async ({ page }) => {
+  // A(B(C)) nested groups + a root item R; drop R onto the inner group B.
+  await page.evaluate(() => {
+    const m = (window as any).movidea;
+    m.make_one_kozane({ id: "C", text: "C", position: [0, 0] });
+    m.make_items_into_new_group(["C"], { id: "B", text: "B" });
+    m.make_items_into_new_group(["B"], { id: "A", text: "A" });
+    m.make_one_kozane({ id: "R", text: "R", position: [300, 0] });
+  });
+  await expect(page.locator("[data-testid='B']")).toBeVisible();
+  const b = await centerOf(page, "B");
+  await touchDrag(page, "R", b);
+  const items = await page.evaluate(() => (window as any).movidea.getGlobal().itemStore["B"].items);
+  expect(items).toContain("R");
+});
+
+test("touch-drag drops a kozane into a CLOSED group", async ({ page }) => {
+  await page.evaluate(() => {
+    const m = (window as any).movidea;
+    m.make_one_kozane({ id: "1", text: "1", position: [0, 0] });
+    m.make_items_into_new_group(["1"], { id: "G", text: "G" });
+    m.closeGroup("G"); // real DOM so group bounding box is available
+    m.make_one_kozane({ id: "R", text: "R", position: [300, 0] });
+  });
+  await expect(page.locator("[data-testid='G']")).toBeVisible();
+  const g = await centerOf(page, "G");
+  await touchDrag(page, "R", g);
+  const items = await page.evaluate(() => (window as any).movidea.getGlobal().itemStore["G"].items);
+  expect(items).toContain("R");
+  const isOpen = await page.evaluate(() => (window as any).movidea.getGlobal().itemStore["G"].isOpen);
+  expect(isOpen).toBe(false);
+});
+
 // Line-label editing via touch double-tap (LineAnnot pointer support, #54 folded
 // into this base). Verifies the consolidated line input under real WebKit.
 test("double-tap on a line opens the label editor", async ({ page }) => {
