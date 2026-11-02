@@ -181,6 +181,25 @@ test("double-tap on a line opens the label editor", async ({ page }) => {
   await expect(page.locator("[data-testid='line-label-editor-0']")).toBeVisible();
 });
 
+// Tapping a kozane opens its context menu (no right-click needed) and the menu's
+// "edit" opens the edit dialog. Confirms the touch path for the two interactions
+// a mouse would use right-click / double-click for. See QUEUE K13 inventory.
+test("tap a kozane opens its menu and edit opens the dialog", async ({ page }) => {
+  await page.evaluate(() =>
+    (window as any).movidea.make_one_kozane({ id: "1", text: "hi", position: [0, 0] })
+  );
+  await expect(page.locator("[data-testid='1']")).toBeVisible();
+  const c = await centerOf(page, "1");
+  // a tap: pointer down on the kozane, up at the same spot (no drag)
+  await pointer(page, "1", "pointerdown", c);
+  await pointer(page, "ba", "pointerup", c);
+  const edit = page.locator("[data-testid='kozane-edit']");
+  await expect(edit).toBeVisible();
+  await edit.click();
+  // the edit dialog has a textarea (the menu does not)
+  await expect(page.locator("[role='dialog'] textarea").first()).toBeVisible();
+});
+
 // Two-finger pinch zooms (K12). Spreading the fingers increases scale.
 test("pinch-zoom (two-finger spread) zooms in", async ({ page }) => {
   const scaleBefore = await page.evaluate(() => (window as any).movidea.getGlobal().scale);
