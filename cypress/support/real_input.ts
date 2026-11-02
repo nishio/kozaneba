@@ -12,6 +12,10 @@
 // dependency.
 
 type TButton = "left" | "right";
+// What the page sees as PointerEvent.pointerType. "pen" stands for a stylus
+// (e.g. a pen on a Windows tablet or a Wacom tablet); the right button is the
+// pen's barrel button.
+type TPointerType = "mouse" | "pen";
 
 const BUTTONS_MASK: Record<TButton, number> = { left: 1, right: 2 };
 
@@ -41,7 +45,7 @@ type TMouseEvent = {
 };
 
 // Send the events one after another, waiting for each to be dispatched.
-const dispatch = (events: TMouseEvent[]) =>
+const dispatch = (events: TMouseEvent[], pointerType: TPointerType = "mouse") =>
   cy.then(() =>
     cy.wrap(
       events.reduce<PromiseLike<unknown>>(
@@ -50,7 +54,7 @@ const dispatch = (events: TMouseEvent[]) =>
             send("Input.dispatchMouseEvent", {
               clickCount: 0,
               ...e,
-              pointerType: "mouse",
+              pointerType,
             })
           ),
         Cypress.Promise.resolve()
@@ -67,7 +71,8 @@ export const real_click_at = (
   {
     button = "left",
     clickCount = 1,
-  }: { button?: TButton; clickCount?: number } = {}
+    pointerType = "mouse",
+  }: { button?: TButton; clickCount?: number; pointerType?: TPointerType } = {}
 ) =>
   cy.then(() => {
     const [x, y] = to_top_level(point[0], point[1]);
@@ -80,7 +85,7 @@ export const real_click_at = (
         { type: "mouseReleased", x, y, button, buttons: 0, clickCount: i }
       );
     }
-    dispatch(events);
+    dispatch(events, pointerType);
   });
 
 export const real_dblclick_at = (point: TAppPoint) =>
@@ -88,6 +93,13 @@ export const real_dblclick_at = (point: TAppPoint) =>
 
 export const real_rightclick_at = (point: TAppPoint) =>
   real_click_at(point, { button: "right" });
+
+export const real_pen_dblclick_at = (point: TAppPoint) =>
+  real_click_at(point, { clickCount: 2, pointerType: "pen" });
+
+// A tap with the pen's barrel button held (the pen's right click).
+export const real_pen_rightclick_at = (point: TAppPoint) =>
+  real_click_at(point, { button: "right", pointerType: "pen" });
 
 // Press the left button at `from`, move in `steps` to `to`, release.
 export const real_drag = (from: TAppPoint, to: TAppPoint, steps = 5) =>
