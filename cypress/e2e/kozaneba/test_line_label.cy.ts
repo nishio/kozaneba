@@ -7,6 +7,8 @@ import {
   real_click_at,
   real_dblclick_at,
   real_drag,
+  real_pen_dblclick_at,
+  real_pen_rightclick_at,
   real_rightclick_at,
   TAppPoint,
 } from "../../support/real_input";
@@ -137,6 +139,42 @@ describe("line label", () => {
     on_line(real_rightclick_at);
     cy.testid("edit-annotation-dialog").should("be.visible");
     cy.getGlobal((g) => g.mouseState).should("not.eql", "selecting");
+  });
+
+  // Pen: the same path as the mouse (pointer capture on #canvas used to
+  // swallow dblclick / contextmenu), but checked with pointerType "pen" so a
+  // pen-only regression shows up. The page records the pointerType it saw so
+  // the test fails if the input silently falls back to mouse.
+  const record_pointer_types = () =>
+    cy.window().then((win) => {
+      const seen: string[] = [];
+      (win as unknown as { __pointer_types: string[] }).__pointer_types = seen;
+      win.addEventListener(
+        "pointerdown",
+        (e) => seen.push(e.pointerType),
+        { capture: true }
+      );
+    });
+  const pointer_types_seen = () =>
+    cy.window().then(
+      (win) => (win as unknown as { __pointer_types: string[] }).__pointer_types
+    );
+
+  it("edits a line label inline with a real pen double tap", () => {
+    record_pointer_types();
+    on_line(real_pen_dblclick_at);
+    cy.testid("line-label-editor-0").should("have.value", "");
+    cy.testid("line-label-editor-0").type("pen{enter}");
+    cy.getGlobal((g) => g.annotations[0]!.label).should("eql", "pen");
+    pointer_types_seen().should("include", "pen").and("not.include", "mouse");
+  });
+
+  it("opens the dialog with the pen's barrel button", () => {
+    record_pointer_types();
+    on_line(real_pen_rightclick_at);
+    cy.testid("edit-annotation-dialog").should("be.visible");
+    cy.getGlobal((g) => g.mouseState).should("not.eql", "selecting");
+    pointer_types_seen().should("include", "pen").and("not.include", "mouse");
   });
 
   it("still drags a kozane when pressed near where the line meets it", () => {
