@@ -231,6 +231,29 @@ test("the app fits the visible area while the soft keyboard is up", async ({ pag
   expect(r.app).toBeLessThanOrEqual(parseInt(r.v) + 1);
 });
 
+// K16: touch targets and PWA manifest.
+test("app-bar controls meet the 44px touch target", async ({ page }) => {
+  const buttons = page.locator("#appbar .MuiButtonBase-root");
+  const n = await buttons.count();
+  expect(n).toBeGreaterThan(0);
+  for (let i = 0; i < n; i++) {
+    const box = await buttons.nth(i).boundingBox();
+    if (box) {
+      expect(box.height).toBeGreaterThanOrEqual(44);
+      expect(box.width).toBeGreaterThanOrEqual(44);
+    }
+  }
+});
+
+test("manifest declares a standalone Kozaneba PWA", async ({ page }) => {
+  const res = await page.request.get("/manifest.json");
+  expect(res.ok()).toBeTruthy();
+  const m = await res.json();
+  expect(m.display).toBe("standalone");
+  expect(m.short_name).toBe("Kozaneba");
+  expect(Array.isArray(m.icons) && m.icons.length).toBeGreaterThan(0);
+});
+
 // Two-finger pinch zooms (K12). Spreading the fingers increases scale.
 test("pinch-zoom (two-finger spread) zooms in", async ({ page }) => {
   const scaleBefore = await page.evaluate(() => (window as any).movidea.getGlobal().scale);
