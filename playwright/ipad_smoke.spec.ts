@@ -200,6 +200,37 @@ test("tap a kozane opens its menu and edit opens the dialog", async ({ page }) =
   await expect(page.locator("[role='dialog'] textarea").first()).toBeVisible();
 });
 
+// K14: the app container height follows the visible viewport. We can't trigger a
+// real iOS soft keyboard headlessly, so shrink the viewport as a proxy and assert
+// --app-height tracks it (so the canvas fits the visible area instead of scrolling).
+test("the app fits the visible area while the soft keyboard is up", async ({ page }) => {
+  const read = () =>
+    page.evaluate(() => ({
+      v: getComputedStyle(document.documentElement).getPropertyValue("--app-height").trim(),
+      app: (document.querySelector(".App") as HTMLElement).getBoundingClientRect().height,
+      inner: window.innerHeight,
+    }));
+  // No keyboard: plain height:100%, also right after a window resize.
+  const size = page.viewportSize()!;
+  await page.setViewportSize({ width: size.width, height: Math.round(size.height * 0.6) });
+  let r = await read();
+  expect(r.v).toBe("");
+  expect(Math.abs(r.app - r.inner)).toBeLessThanOrEqual(1);
+  // Keyboard up: WebKit cannot show it here, so make the visual viewport
+  // smaller than the layout viewport the way the keyboard does.
+  await page.evaluate(() => {
+    const h = Math.round(window.innerHeight * 0.5);
+    Object.defineProperty(window, "visualViewport", {
+      configurable: true,
+      value: Object.assign(new EventTarget(), { height: h }),
+    });
+    window.dispatchEvent(new Event("resize"));
+  });
+  r = await read();
+  expect(parseInt(r.v)).toBe(Math.round(r.inner * 0.5));
+  expect(r.app).toBeLessThanOrEqual(parseInt(r.v) + 1);
+});
+
 // Two-finger pinch zooms (K12). Spreading the fingers increases scale.
 test("pinch-zoom (two-finger spread) zooms in", async ({ page }) => {
   const scaleBefore = await page.evaluate(() => (window as any).movidea.getGlobal().scale);

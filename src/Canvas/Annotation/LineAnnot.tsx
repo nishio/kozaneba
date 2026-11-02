@@ -431,7 +431,11 @@ export const LineAnnot = (
         value={editing_value}
         onBlur={(event) => commitLabelEdit(event.currentTarget.value)}
         onChange={onEditorChange}
-        onFocus={(event) => event.currentTarget.select()}
+        onFocus={(event) => {
+          event.currentTarget.select();
+          // bring the inline editor above the iPad soft keyboard
+          event.currentTarget.scrollIntoView({ block: "center", inline: "center" });
+        }}
         onKeyDown={onEditorKeyDown}
         onMouseDown={stopMouseEvent}
         onMouseUp={stopMouseEvent}
