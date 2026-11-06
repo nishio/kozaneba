@@ -70,14 +70,14 @@ const denied = async (name, p) => {
 
 // Writes a doc with rules bypassed (emulator admin access), for shapes a
 // client can no longer create, e.g. the writers: [] of create_ba.
-const seed = async (id, data) => {
+const seed = async (id, data, col = "ba") => {
   const v = (x) =>
     typeof x === "string" ? { stringValue: x }
     : typeof x === "boolean" ? { booleanValue: x }
     : typeof x === "number" ? { integerValue: String(x) }
     : Array.isArray(x) ? { arrayValue: { values: x.map(v) } }
     : { mapValue: { fields: Object.fromEntries(Object.entries(x).map(([k, y]) => [k, v(y)])) } };
-  const url = `http://${HOST}:${PORT}/v1/projects/${PROJECT_ID}/databases/(default)/documents/ba/${id}`;
+  const url = `http://${HOST}:${PORT}/v1/projects/${PROJECT_ID}/databases/(default)/documents/${col}/${id}`;
   const res = await fetch(url, {
     method: "PATCH",
     headers: { Authorization: "Bearer owner", "Content-Type": "application/json" },
@@ -162,6 +162,21 @@ await allowed("owner deletes", deleteDoc(doc(owner, "ba", "sb")));
 await denied("unauth writes other collection", setDoc(doc(anon, "zzz", "a"), { x: 1 }));
 await denied("signed-in writes other collection", setDoc(doc(other, "map", "a"), { x: 1 }));
 await denied("unauth reads other collection", getDoc(doc(anon, "zzz", "a")));
+
+// Regroup (the predecessor, same Firebase project): its key_to_map and map
+// stay readable so old shared URLs open, and nothing can be written there.
+await seed("k1", { mapname: "m1", isReadOnly: true }, "key_to_map");
+await seed("m1", { title: "regroup board" }, "map");
+await allowed("unauth gets Regroup key_to_map", getDoc(doc(anon, "key_to_map", "k1")));
+await allowed("unauth gets Regroup map", getDoc(doc(anon, "map", "m1")));
+await allowed("unauth gets missing Regroup map", getDoc(doc(anon, "map", "nope")));
+await denied("list Regroup key_to_map", getDocs(collection(anon, "key_to_map")));
+await denied("signed-in lists Regroup map", getDocs(collection(other, "map")));
+await denied("unauth creates Regroup key_to_map", setDoc(doc(anon, "key_to_map", "k2"), { mapname: "m1" }));
+await denied("unauth overwrites Regroup map", setDoc(doc(anon, "map", "m1"), { x: 1 }));
+await denied("signed-in overwrites Regroup key_to_map", setDoc(doc(other, "key_to_map", "k1"), { mapname: "evil" }));
+await denied("signed-in deletes Regroup map", deleteDoc(doc(other, "map", "m1")));
+await denied("unauth reads Regroup map subcollection", getDoc(doc(anon, "map", "m1", "sub", "a")));
 
 await Promise.all(apps.map((app) => deleteApp(app)));
 if (failures.length > 0) {
