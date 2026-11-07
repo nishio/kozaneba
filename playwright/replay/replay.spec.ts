@@ -17,6 +17,17 @@ const files = (() => {
   }
 })();
 
+// A recording replays taps by position, so it only matches the layout the
+// person saw. Recordings made while the menu items were MUI's 36px on the iPad
+// width (before #110 raised them to 44px on touch) tap menu rows at 36px
+// steps; for those, put the old menu item heights back during the replay.
+// Re-record on a device after #110 and drop the file from this set.
+const MENU_ITEMS_36PX = new Set(["ipad-2026-10-29-sample-board.json"]);
+const MENU_ITEMS_36PX_CSS = `
+.MuiMenuItem-root.MuiMenuItem-root.MuiMenuItem-root { min-height: auto; }
+.MuiMenuItem-root.MuiMenuItem-root.MuiMenuItem-dense { min-height: 32px; }
+`;
+
 const touch = async (cdp: CDPSession, type: string, points: { x: number; y: number }[]) => {
   await cdp.send("Input.dispatchTouchEvent", {
     type,
@@ -46,6 +57,7 @@ test.describe("replay of recorded touch sessions", () => {
       test.skip(rec.version !== 1, "unknown recording version");
       await page.setViewportSize(rec.viewport);
       await open_board(page, rec);
+      if (MENU_ITEMS_36PX.has(f)) await page.addStyleTag({ content: MENU_ITEMS_36PX_CSS });
       const cdp = await context.newCDPSession(page);
       const failures = await replay(page, cdp, rec);
       expect(failures, JSON.stringify(failures, null, 2)).toEqual([]);
