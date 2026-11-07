@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",
-    "@types/node": "^24.9.0",
+    "@types/node": "^26.6.6",
     "@vitejs/plugin-react": "^6.0.2",
     "cypress": "^16.2.0",
     "firebase-tools": "^15.34.1",
