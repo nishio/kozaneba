@@ -33,9 +33,8 @@ const WidthCheck = () => {
   );
 };
 
-const Gyazo: React.FC<{ url: string }> = ({ url }) => {
-  const raw_url = url + "/raw";
-  return <img src={raw_url} alt="" style={{ maxWidth: "100%" }} />;
+const TutorialImage: React.FC<{ src: string }> = ({ src }) => {
+  return <img src={src} alt="" style={{ maxWidth: "100%" }} />;
 };
 
 const openPrefilledDialog = () => {
@@ -135,8 +134,8 @@ export const tutorial_pages: HelpPage[] = [
           You can open this <b>tutorial dialog</b> by clicking the icon on
           right-bottom <b>status bar</b>.
         </p>
-        <Gyazo
-          url="https://gyazo.com/afe024068b9f42f1aa04b1fe404daa5d"
+        <TutorialImage
+          src="/images/tutorial/afe024068b9f42f1aa04b1fe404daa5d.png"
           key="statusbar"
         />
         <p>Let's close and open this dialog.</p>
@@ -151,8 +150,8 @@ export const tutorial_pages: HelpPage[] = [
               右上のはてなアイコンをクリックすると、この
               <b>チュートリアルダイアログ</b>を開くことができます。
             </p>
-            {/* <Gyazo
-              url="https://gyazo.com/afe024068b9f42f1aa04b1fe404daa5d"
+            {/* <TutorialImage
+              src="/images/tutorial/afe024068b9f42f1aa04b1fe404daa5d.png"
               key="statusbar"
             /> */}
             <img
@@ -178,8 +177,8 @@ export const tutorial_pages: HelpPage[] = [
           By clicking ADD KOZANE button, Kozaneba makes each line into one
           kozane and puts all newly added kozane in a group.
         </p>
-        <Gyazo
-          url="https://gyazo.com/cbf3d0f3c616fc2a5575d7d648db6883"
+        <TutorialImage
+          src="/images/tutorial/cbf3d0f3c616fc2a5575d7d648db6883.gif"
           key="add_kozane"
         />
         <p>Now let's close the tutorial and try to add some kozane!</p>
@@ -198,8 +197,8 @@ export const tutorial_pages: HelpPage[] = [
               ADD
               KOZANEボタンをクリックすると、Kozanebaは各行を1つのこざねにします。新しく追加されたこざねはグループにまとまっています。
             </p>
-            <Gyazo
-              url="https://gyazo.com/cbf3d0f3c616fc2a5575d7d648db6883"
+            <TutorialImage
+              src="/images/tutorial/cbf3d0f3c616fc2a5575d7d648db6883.gif"
               key="add_kozane"
             />
             <p>
@@ -218,8 +217,8 @@ export const tutorial_pages: HelpPage[] = [
           You can move a group by dragging it. You can move a kozane out from
           its belonging group and into another group.
         </p>
-        <Gyazo
-          url="https://gyazo.com/030902caab04818679b6db3e510e570b"
+        <TutorialImage
+          src="/images/tutorial/030902caab04818679b6db3e510e570b.gif"
           key="move_kozane"
         />
       </div>
@@ -232,8 +231,8 @@ export const tutorial_pages: HelpPage[] = [
             <p>
               こざねやグループはドラッグすると移動できます。こざねを所属するグループから別のグループに移動させることもできます。
             </p>
-            <Gyazo
-              url="https://gyazo.com/030902caab04818679b6db3e510e570b"
+            <TutorialImage
+              src="/images/tutorial/030902caab04818679b6db3e510e570b.gif"
               key="move_kozane"
             />
           </div>
@@ -302,8 +301,8 @@ export const tutorial_pages: HelpPage[] = [
           By clicking an object, the menu to handle the object appears.You can
           delete the clicked object and make the important object bigger.
         </p>
-        <Gyazo
-          url="https://gyazo.com/ded56b27aab3057542d576d46239b559"
+        <TutorialImage
+          src="/images/tutorial/ded56b27aab3057542d576d46239b559.gif"
           key="object menu"
         />
       </div>
@@ -317,8 +316,8 @@ export const tutorial_pages: HelpPage[] = [
               こざねやグループなどの「オブジェクト」をクリックすると、そのオブジェクトを扱うためのメニューが表示されます。
               クリックしたオブジェクトを削除したり、重要なオブジェクトを大きくしたりすることができます。
             </p>
-            <Gyazo
-              url="https://gyazo.com/ded56b27aab3057542d576d46239b559"
+            <TutorialImage
+              src="/images/tutorial/ded56b27aab3057542d576d46239b559.gif"
               key="object menu"
             />
           </div>
@@ -345,8 +344,8 @@ export const tutorial_pages: HelpPage[] = [
           to open the pre-filled `Add Kozane` dialog. It makes a lot of kozane
           for further explanation.
         </p>
-        <Gyazo
-          url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"
+        <TutorialImage
+          src="/images/tutorial/6c9609965b35a4183d1759cc9b1452d7.gif"
           key="adjust_size"
         />
       </div>
@@ -370,8 +369,8 @@ export const tutorial_pages: HelpPage[] = [
               すると、あらかじめ入力されたAdd
               Kozaneダイアログが表示されます。今後の説明のために、たくさんのこざねを作ります。
             </p>
-            <Gyazo
-              url="https://gyazo.com/6c9609965b35a4183d1759cc9b1452d7"
+            <TutorialImage
+              src="/images/tutorial/6c9609965b35a4183d1759cc9b1452d7.gif"
               key="adjust_size"
             />
           </div>
@@ -384,8 +383,8 @@ export const tutorial_pages: HelpPage[] = [
     body: (
       <div>
         <p>You can convert a group into individual kozane.</p>
-        <Gyazo
-          url="https://gyazo.com/17b9d7a64afb62d61cfcd0f355cda15a"
+        <TutorialImage
+          src="/images/tutorial/17b9d7a64afb62d61cfcd0f355cda15a.gif"
           key="ungroup"
         />
       </div>
@@ -396,8 +395,8 @@ export const tutorial_pages: HelpPage[] = [
         body: (
           <div>
             <p>グループを個別のこざねにすることができます。</p>
-            <Gyazo
-              url="https://gyazo.com/17b9d7a64afb62d61cfcd0f355cda15a"
+            <TutorialImage
+              src="/images/tutorial/17b9d7a64afb62d61cfcd0f355cda15a.gif"
               key="ungroup"
             />
           </div>
@@ -410,8 +409,8 @@ export const tutorial_pages: HelpPage[] = [
     body: (
       <div>
         <p>You can select multiple objects and make them into a new group.</p>
-        <Gyazo
-          url="https://gyazo.com/43fe6d98037a2d91a94618ca3a736978"
+        <TutorialImage
+          src="/images/tutorial/43fe6d98037a2d91a94618ca3a736978.gif"
           key="select objects"
         />
       </div>
@@ -424,8 +423,8 @@ export const tutorial_pages: HelpPage[] = [
             <p>
               複数のオブジェクトを選択して、新しいグループにすることができます。
             </p>
-            <Gyazo
-              url="https://gyazo.com/43fe6d98037a2d91a94618ca3a736978"
+            <TutorialImage
+              src="/images/tutorial/43fe6d98037a2d91a94618ca3a736978.gif"
               key="select objects"
             />
           </div>
@@ -445,7 +444,7 @@ export const tutorial_pages: HelpPage[] = [
           later. In such a case, you can make such kozane temporarily invisible
           by closing the group.
         </p>
-        <Gyazo url="https://gyazo.com/e7bd72693b5259a03de28de403eb992d" />
+        <TutorialImage src="/images/tutorial/e7bd72693b5259a03de28de403eb992d.gif" />
       </div>
     ),
     translate: {
@@ -459,7 +458,7 @@ export const tutorial_pages: HelpPage[] = [
               今は画面に表示する必要はないですが、後で使うかもしれないから消したくない、と思ったとしましょう。
               そんなときは、グループを閉じることで、一時的にこざねを見えなくすることができます。
             </p>
-            <Gyazo url="https://gyazo.com/e7bd72693b5259a03de28de403eb992d" />
+            <TutorialImage src="/images/tutorial/e7bd72693b5259a03de28de403eb992d.gif" />
           </div>
         ),
       },
@@ -476,7 +475,7 @@ export const tutorial_pages: HelpPage[] = [
           nameplate. The nameplate appears as the group title when the group is
           open. It becomes a new Kozane when the group is ungrouped.
         </p>
-        <Gyazo url="https://gyazo.com/aba547cf9ebab645e0cda2eed939fb89" />
+        <TutorialImage src="/images/tutorial/aba547cf9ebab645e0cda2eed939fb89.gif" />
       </div>
     ),
 
@@ -491,7 +490,7 @@ export const tutorial_pages: HelpPage[] = [
               表札はグループが開いているときはグループタイトルとして表示されます。
               表札はグループが解除されると新しいこざねになります。
             </p>
-            <Gyazo url="https://gyazo.com/aba547cf9ebab645e0cda2eed939fb89" />
+            <TutorialImage src="/images/tutorial/aba547cf9ebab645e0cda2eed939fb89.gif" />
           </div>
         ),
       },
@@ -506,8 +505,8 @@ export const tutorial_pages: HelpPage[] = [
           automatically saves the Ba to the cloud. Let's see how to enable
           auto-save on the next page.
         </p>
-        <Gyazo
-          url="https://gyazo.com/6f34fd9f2cda800a56ab77429323d39c"
+        <TutorialImage
+          src="/images/tutorial/6f34fd9f2cda800a56ab77429323d39c.png"
           key="not saved"
         />
         {in_readonly_mode() ? (
@@ -528,8 +527,8 @@ export const tutorial_pages: HelpPage[] = [
               一般的な使用法では、KozanebaはBaをクラウドに自動的に保存します。
               次のページでは、自動保存を有効にする方法を見てみましょう。
             </p>
-            <Gyazo
-              url="https://gyazo.com/6f34fd9f2cda800a56ab77429323d39c"
+            <TutorialImage
+              src="/images/tutorial/6f34fd9f2cda800a56ab77429323d39c.png"
               key="not saved"
             />
             {in_readonly_mode() ? (
@@ -551,8 +550,8 @@ export const tutorial_pages: HelpPage[] = [
           To enable auto-save, you need to create a user account. You can sign
           in using Google integration or create an anonymous account.
         </p>
-        <Gyazo
-          url="https://gyazo.com/57c3ed5edc084a00522b447352d98980"
+        <TutorialImage
+          src="/images/tutorial/57c3ed5edc084a00522b447352d98980.gif"
           key="enable autosave"
         />
       </div>
@@ -566,8 +565,8 @@ export const tutorial_pages: HelpPage[] = [
               自動保存を有効にするには、ユーザーアカウントを作成する必要があります。
               Google連携を使ってサインインするか、匿名のアカウントを作成することができます。
             </p>
-            <Gyazo
-              url="https://gyazo.com/57c3ed5edc084a00522b447352d98980"
+            <TutorialImage
+              src="/images/tutorial/57c3ed5edc084a00522b447352d98980.gif"
               key="enable autosave"
             />
           </div>
@@ -585,7 +584,7 @@ export const tutorial_pages: HelpPage[] = [
           status bar indicates that saved all local changes.
         </p>
         <p></p>
-        <Gyazo url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584" />
+        <TutorialImage src="/images/tutorial/06f2ecff545249e4aed63f74a85fb584.gif" />
       </div>
     ),
     translate: {
@@ -598,7 +597,7 @@ export const tutorial_pages: HelpPage[] = [
               ステータスバーの「チェックマーク」は、ローカルの変更がすべて保存されたことを示しています。
             </p>
             <p></p>
-            <Gyazo url="https://gyazo.com/06f2ecff545249e4aed63f74a85fb584" />
+            <TutorialImage src="/images/tutorial/06f2ecff545249e4aed63f74a85fb584.gif" />
           </div>
         ),
       },
@@ -617,7 +616,7 @@ export const tutorial_pages: HelpPage[] = [
           In the User dialog, you can see all Ba which you have
           write-permission.
         </p>
-        <Gyazo url="https://gyazo.com/d05e3effdf4935a29d5107386b3758ff" />
+        <TutorialImage src="/images/tutorial/d05e3effdf4935a29d5107386b3758ff.gif" />
       </div>
     ),
     translate: {
@@ -632,7 +631,7 @@ export const tutorial_pages: HelpPage[] = [
             <p>
               Userダイアログでは，自分が書き込み権限を持っているすべてのBaを見ることができます。
             </p>
-            <Gyazo url="https://gyazo.com/d05e3effdf4935a29d5107386b3758ff" />
+            <TutorialImage src="/images/tutorial/d05e3effdf4935a29d5107386b3758ff.gif" />
           </div>
         ),
       },

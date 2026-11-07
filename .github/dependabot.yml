@@ -6,8 +6,22 @@
 # many of them. Before this file existed, every security update arrived as its
 # own PR (see #50), which is why the review queue filled up.
 #
-# Grouping keeps each run to a single PR per manifest, and "monthly" keeps the
-# cadence low enough that a human can actually review them.
+# Grouping keeps the minor and patch updates of each run in a single PR per
+# manifest, and "monthly" keeps the cadence low enough that a human can
+# actually review them.
+#
+# Major updates are NOT grouped (`update-types: ["minor", "patch"]` on every
+# group). A major update in a group made the whole group PR red (#93, #105,
+# both closed on 2026-11-07), so each major update gets its own PR, which can
+# be merged, fixed or closed on its own. GitHub docs, "Optimizing pull request
+# creation for version updates", example 3: "All major updates will continue
+# to be raised as individual pull requests." The same applies to the security
+# groups (example 4 there uses update-types with applies-to: security-updates).
+#
+# open-pull-requests-limit counts only version-update PRs (security-update PRs
+# have their own fixed limit of 10). It is 5 for npm so that the group PR and
+# a few separate major PRs can be open at once; at 2, each monthly run could
+# open only the group and one major update.
 #
 # Two npm manifests, deliberately separate:
 #   /           -> package-lock.json (npm). The root yarn.lock was deleted in
@@ -21,38 +35,53 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 5
     groups:
       npm-security:
         applies-to: security-updates
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
       npm-version:
         applies-to: version-updates
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "npm"
     directory: "/functions"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 5
     groups:
       functions-security:
         applies-to: security-updates
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
       functions-version:
         applies-to: version-updates
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 1
+    open-pull-requests-limit: 3
     groups:
       actions:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
