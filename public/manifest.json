@@ -1,20 +1,25 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Kozaneba",
+  "name": "Kozaneba: digital stationery to organize your thought",
+  "id": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "kozaneba.png",
       "sizes": "280x280",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "kozaneba@2x.png",
       "type": "image/png",
-      "sizes": "560x560"
+      "sizes": "560x560",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
+  "orientation": "any",
+  "theme_color": "#000080",
   "background_color": "#ffffff"
 }

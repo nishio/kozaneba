@@ -61,5 +61,17 @@ service cloud.firestore {
               && keeps_anyone_writable()));
       allow delete: if is_owner();
     }
+
+    // The predecessor Regroup (https://regroup.netlify.app/, repo
+    // nishio/regroup) shares this Firebase project and keeps its data in
+    // key_to_map (shared URL #/key=<id> -> mapname) and map (the board).
+    // Read-only, so its users can still open and export their boards; writes
+    // stay closed. Kozaneba itself does not use these collections.
+    match /key_to_map/{key} {
+      allow get: if true;
+    }
+    match /map/{mapname} {
+      allow get: if true;
+    }
   }
 }

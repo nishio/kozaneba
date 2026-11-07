@@ -46,6 +46,7 @@
     "codex:preflight": "bash scripts/codex-preflight.sh",
     "cypress:emulator-smoke": "bash scripts/cypress-emulator-smoke.sh",
     "cypress:kozaneba-all": "bash scripts/cypress-kozaneba-all.sh",
+    "test:ipad": "playwright test",
     "test:replay": "playwright test --config playwright.replay.config.ts"
   },
   "browserslist": {
