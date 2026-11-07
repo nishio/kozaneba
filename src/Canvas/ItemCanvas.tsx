@@ -4,6 +4,13 @@ import { onCanvasMouseDown } from "../Event/onCanvasMouseDown";
 import { onCanvasMouseMove } from "../Event/onCanvasMouseMove";
 import { onCanvasMouseUp, onCanvasPointerCancel } from "../Event/onCanvasMouseUp";
 import { onWheel } from "../Event/onWheel";
+import {
+  commitLineEdit,
+  finishAnchorLineDrag,
+  finishLineEndpointRetarget,
+  is_line_editor_interaction_target,
+} from "../Global/line_edit_actions";
+import { release_pointer_capture } from "../Event/fast_drag_manager";
 import { TItemId } from "../Global/TItemId";
 import { SelectionView } from "../Selection/Selection";
 import { dev_log, dev_time, dev_time_end } from "../utils/dev";
@@ -32,6 +39,38 @@ export const ItemCanvas = React.memo(() => {
       };
     }
   }, [ref]);
+  useEffect(() => {
+    const commit_if_outside_editor = (event: PointerEvent | MouseEvent) => {
+      if (is_line_editor_interaction_target(event.target)) return;
+      commitLineEdit();
+    };
+    const finish_line_pointer = (event: PointerEvent | MouseEvent) => {
+      if (
+        finishAnchorLineDrag(event) ||
+        finishLineEndpointRetarget(event)
+      ) {
+        release_pointer_capture();
+      }
+    };
+    document.addEventListener("pointerdown", commit_if_outside_editor, true);
+    document.addEventListener("mousedown", commit_if_outside_editor, true);
+    document.addEventListener("pointerup", finish_line_pointer, true);
+    document.addEventListener("mouseup", finish_line_pointer, true);
+    return () => {
+      document.removeEventListener(
+        "pointerdown",
+        commit_if_outside_editor,
+        true
+      );
+      document.removeEventListener(
+        "mousedown",
+        commit_if_outside_editor,
+        true
+      );
+      document.removeEventListener("pointerup", finish_line_pointer, true);
+      document.removeEventListener("mouseup", finish_line_pointer, true);
+    };
+  }, []);
 
   if (is_selected) {
     const m = {} as { [key: string]: boolean };

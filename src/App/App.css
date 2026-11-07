@@ -76,3 +76,78 @@ html {
   border-radius: 10px;
   margin-left: 3px;
 }
+
+.line-anchor-layer {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.line-anchor {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: crosshair;
+  display: flex;
+  height: 18px;
+  justify-content: center;
+  opacity: 0.001;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
+  transition: opacity 80ms ease;
+  width: 18px;
+}
+
+.line-anchor::before {
+  background: rgba(0, 0, 0, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  box-sizing: border-box;
+  content: "";
+  height: 6px;
+  width: 6px;
+}
+
+.kozane:hover .line-anchor,
+.line-anchor:hover,
+.line-anchor:focus-visible {
+  opacity: 0.52;
+}
+
+.line-anchor:hover,
+.line-anchor:focus-visible {
+  opacity: 0.82;
+  outline: none;
+}
+
+.line-anchor-top {
+  left: calc(50% - 9px);
+  top: 1px;
+}
+
+.line-anchor-right {
+  right: 1px;
+  top: calc(50% - 9px);
+}
+
+.line-anchor-bottom {
+  bottom: 1px;
+  left: calc(50% - 9px);
+}
+
+.line-anchor-left {
+  left: 1px;
+  top: calc(50% - 9px);
+}
+
+.line-midpoint-dot {
+  fill: rgba(0, 0, 0, 0.38);
+  transition: fill 80ms ease, r 80ms ease;
+}
+
+.line-midpoint-affordance:hover .line-midpoint-dot {
+  fill: rgba(0, 0, 0, 0.68);
+  r: 3;
+}

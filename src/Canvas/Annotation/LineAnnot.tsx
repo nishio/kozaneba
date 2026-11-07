@@ -2,11 +2,10 @@ import type {
   ChangeEvent,
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
 } from "react";
 import { State } from "reactn/default";
 import { kozaneba } from "../../API/KozanebaAPI";
-import { bounding_box_to_rect } from "../../dimension/bounding_box_to_rect";
-import { get_item_bounding_box } from "../../dimension/get_bounding_box";
 import { get_global_position } from "../../dimension/get_global_position";
 import {
   add_v2,
@@ -18,21 +17,45 @@ import {
   sub_v2,
   V2,
 } from "../../dimension/V2";
-import { get_total_offset_of_parents } from "../../Event/get_total_offset_of_parents";
+import {
+  commitLineEdit,
+  deleteLineEditAnnotation,
+  openLineEdit,
+  setLineEditStyle,
+  startLineEndpointRetarget,
+  updateLineEditValue,
+} from "../../Global/line_edit_actions";
 import { TLineAnnot } from "../../Global/TAnnotation";
 import { TItemId } from "../../Global/TItemId";
-import { updateGlobal } from "../../Global/updateGlobal";
-import { find_parent } from "../../utils/find_parent";
-import { dev_log } from "../../utils/dev";
+import { TLineEditStyle } from "../../Global/initializeGlobalState";
 import { KOZANE_WIDTH } from "../../utils/kozane_constants";
-import { mark_local_changed } from "../../utils/mark_local_changed";
 import { get_box_line_crosspoint } from "./get_box_line_crosspoint";
 import { get_middle_point } from "./get_middle_point";
 import { Line } from "./Line";
+import { get_global_item_rect } from "./line_geometry";
 
 const arrow_angle = 30; // degrees
 const arrow_tan = Math.tan((arrow_angle / 180) * Math.PI);
 const arrow_sin = Math.sin((arrow_angle / 180) * Math.PI);
+const line_style_options: {
+  style: TLineEditStyle;
+  label: string;
+  title: string;
+}[] = [
+  { style: "line", label: "-", title: "Line" },
+  { style: "arrow", label: "->", title: "Arrow" },
+  { style: "double_heads", label: "<->", title: "Bidirectional arrow" },
+  { style: "double_lines", label: "=", title: "Double line" },
+];
+
+const get_line_style = (annotation: TLineAnnot): TLineEditStyle => {
+  if (annotation.is_doubled) return "double_lines";
+  if (annotation.heads[0] === "arrow" && annotation.heads[1] === "arrow") {
+    return "double_heads";
+  }
+  if (annotation.heads[1] === "arrow") return "arrow";
+  return "line";
+};
 
 export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
   const lines = [] as [V2, V2, number][];
@@ -87,20 +110,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     }
   }
 
-  const get_rect = (id: TItemId) => {
-    const parent = find_parent(id, g);
-    if (parent === null) {
-      return bounding_box_to_rect(get_item_bounding_box(id));
-    }
-    const offset = get_total_offset_of_parents(parent, g);
-    dev_log({ offset });
-    const { top, left, width, height } = bounding_box_to_rect(
-      get_item_bounding_box(id)
-    );
-    const [left2, top2] = add_v2([left, top], offset);
-    return { top: top2, left: left2, width, height };
-  };
-  const rects = a.items.map(get_rect);
+  const rects = a.items.map((id: TItemId) => get_global_item_rect(id, g));
   const crosspoints = a.items.map((id: TItemId, index: number) => {
     const p = positions[index]!;
     if (!equal_v2(p, center)) {
@@ -193,79 +203,37 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
 
   const is_clickable = false;
   const onClick = undefined;
-  const can_edit_label = g.mouseState !== "making_line";
-  const is_editing = g.editing_line_label?.annot_index === annot_index;
-  const editing_value = is_editing ? g.editing_line_label!.value : "";
+  const can_edit_line =
+    g.mouseState !== "making_line" &&
+    g.mouseState !== "drawing_line_anchor" &&
+    a.items.length === 2;
+  const is_editing = g.line_edit_state?.annot_index === annot_index;
+  const editing_value = is_editing ? g.line_edit_state!.value : "";
+  const current_style = get_line_style(a);
 
-  const startLabelEdit = (event: ReactMouseEvent<SVGLineElement>) => {
+  const startLineEdit = (event: ReactMouseEvent<SVGElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    if (!can_edit_label) return;
-    updateGlobal((draft) => {
-      draft.editing_line_label = {
-        annot_index,
-        value: a.label ?? "",
-      };
-      draft.disableHotKey = true;
-    });
-  };
-
-  const cancelLabelEdit = () => {
-    updateGlobal((draft) => {
-      draft.editing_line_label = null;
-      draft.disableHotKey = false;
-    });
-  };
-
-  const commitLabelEdit = (
-    value = g.editing_line_label?.annot_index === annot_index
-      ? g.editing_line_label.value
-      : ""
-  ) => {
-    const label = value.trim();
-    let did_change = false;
-    updateGlobal((draft) => {
-      const annotation = draft.annotations[annot_index];
-      if (annotation !== undefined && annotation.type === "line") {
-        if (label === "") {
-          if (annotation.label !== undefined) {
-            delete annotation.label;
-            did_change = true;
-          }
-        } else if ((annotation.label ?? "") !== label) {
-          annotation.label = label;
-          did_change = true;
-        }
-      }
-      draft.editing_line_label = null;
-      draft.disableHotKey = false;
-    });
-    if (did_change) {
-      mark_local_changed();
-    }
+    if (!can_edit_line) return;
+    openLineEdit(annot_index);
   };
 
   const onEditorChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    updateGlobal((draft) => {
-      if (draft.editing_line_label?.annot_index === annot_index) {
-        draft.editing_line_label.value = value;
-      }
-    });
+    updateLineEditValue(annot_index, event.currentTarget.value);
   };
 
   const onEditorKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     event.stopPropagation();
-    if (event.key === "Enter") {
+    if (event.key === "Enter" || event.key === "Escape") {
       event.preventDefault();
-      commitLabelEdit(event.currentTarget.value);
-    } else if (event.key === "Escape") {
-      event.preventDefault();
-      cancelLabelEdit();
+      commitLineEdit();
     }
   };
 
-  const stopMouseEvent = (event: ReactMouseEvent) => {
+  const stopMouseEvent = (event: ReactMouseEvent<Element>) => {
+    event.stopPropagation();
+  };
+  const stopPointerEvent = (event: ReactPointerEvent<Element>) => {
     event.stopPropagation();
   };
 
@@ -283,34 +251,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     );
   });
 
-  const hit_stroke_width = Math.max(stroke_width + 12, 16);
-  const hitElements = can_edit_label && !is_editing
-    ? lines.map(([p1, p2], index) => {
-        const [x1, y1] = p1;
-        const [x2, y2] = p2;
-        return (
-          <line
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="transparent"
-            strokeWidth={hit_stroke_width}
-            strokeLinecap="round"
-            pointerEvents="stroke"
-            onMouseDown={stopMouseEvent}
-            onMouseUp={stopMouseEvent}
-            onClick={stopMouseEvent}
-            onDoubleClick={startLabelEdit}
-            style={{ cursor: "text" }}
-            data-testid={`line-label-hit-${annot_index}-${index}`}
-            key={`line-label-hit-${annot_index}-${index}`}
-          />
-        );
-      })
-    : null;
-
-  const labelElement = a.label && !is_editing ? (
+  const labelElement = a.label && !is_editing && can_edit_line ? (
     <text
       x={center[0]}
       y={center[1]}
@@ -318,7 +259,17 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       dominantBaseline="middle"
       fontSize="12"
       fill="black"
-      style={{ pointerEvents: "none", userSelect: "none" }}
+      onClick={startLineEdit}
+      onMouseDown={stopMouseEvent}
+      onMouseUp={stopMouseEvent}
+      onPointerDown={stopPointerEvent}
+      onPointerUp={stopPointerEvent}
+      style={{
+        cursor: "text",
+        pointerEvents: "auto",
+        userSelect: "none",
+      }}
+      data-testid={`line-label-text-${annot_index}`}
     >
       <tspan
         x={center[0]}
@@ -327,7 +278,7 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
           fill: "white",
           stroke: "white",
           strokeWidth: "3",
-          paintOrder: "stroke"
+          paintOrder: "stroke",
         }}
       >
         {a.label}
@@ -338,47 +289,212 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
     </text>
   ) : null;
 
-  const editor_width = Math.max(
-    90,
-    Math.min(260, editing_value.length * 8 + 32)
-  );
-  const editor_height = 28;
-  const editorElement = is_editing ? (
-    <foreignObject
-      x={center[0] - editor_width / 2}
-      y={center[1] - editor_height / 2}
-      width={editor_width}
-      height={editor_height}
-      style={{ overflow: "visible", pointerEvents: "auto" }}
-    >
-      <input
-        autoFocus
-        data-testid={`line-label-editor-${annot_index}`}
-        value={editing_value}
-        onBlur={(event) => commitLabelEdit(event.currentTarget.value)}
-        onChange={onEditorChange}
-        onFocus={(event) => event.currentTarget.select()}
-        onKeyDown={onEditorKeyDown}
+  const midpointAffordance =
+    !a.label && !is_editing && can_edit_line ? (
+      <g
+        className="line-midpoint-affordance"
+        data-testid={`line-midpoint-affordance-${annot_index}`}
+        onClick={startLineEdit}
         onMouseDown={stopMouseEvent}
         onMouseUp={stopMouseEvent}
-        onClick={stopMouseEvent}
-        style={{
-          background: "white",
-          border: "1px solid #555",
-          borderRadius: "3px",
-          boxShadow: "0 1px 4px rgba(0, 0, 0, 0.25)",
-          boxSizing: "border-box",
-          color: "black",
-          fontSize: "12px",
-          height: "24px",
-          lineHeight: "20px",
-          outline: "none",
-          padding: "1px 4px",
-          textAlign: "center",
-          width: "100%",
-        }}
+        onPointerDown={stopPointerEvent}
+        onPointerUp={stopPointerEvent}
+        style={{ cursor: "text", pointerEvents: "auto" }}
+      >
+        <circle
+          cx={center[0]}
+          cy={center[1]}
+          r={10}
+          fill="black"
+          opacity={0.001}
+          data-testid={`line-midpoint-hit-${annot_index}`}
+          style={{ pointerEvents: "auto" }}
+        />
+        <circle
+          className="line-midpoint-dot"
+          cx={center[0]}
+          cy={center[1]}
+          r={2}
+          style={{ pointerEvents: "none" }}
+        />
+      </g>
+    ) : null;
+
+  const endpointHandles =
+    is_editing && can_edit_line
+      ? crosspoints.flatMap((point, endpoint) => {
+          if (endpoint > 1 || point === undefined) return [];
+          const endpoint_index = endpoint as 0 | 1;
+          const onHandlePointerDown = (
+            event: ReactPointerEvent<SVGCircleElement>
+          ) => {
+            startLineEndpointRetarget(event, annot_index, endpoint_index);
+          };
+          const onHandleMouseDown = (
+            event: ReactMouseEvent<SVGCircleElement>
+          ) => {
+            startLineEndpointRetarget(event, annot_index, endpoint_index);
+          };
+          return [
+            <g
+              data-line-editor-root="true"
+              key={`line-endpoint-handle-${annot_index}-${endpoint}`}
+              style={{ pointerEvents: "auto" }}
+            >
+              <circle
+                cx={point[0]}
+                cy={point[1]}
+                r={10}
+                fill="black"
+                opacity={0.001}
+                data-testid={`line-endpoint-hit-${annot_index}-${endpoint}`}
+                onClick={stopMouseEvent}
+                onMouseDown={onHandleMouseDown}
+                onPointerDown={onHandlePointerDown}
+                style={{ cursor: "grab", pointerEvents: "auto" }}
+              />
+              <circle
+                cx={point[0]}
+                cy={point[1]}
+                r={4}
+                fill="white"
+                stroke="black"
+                strokeWidth={1.5}
+                style={{ opacity: 0.78, pointerEvents: "none" }}
+              />
+            </g>,
+          ];
+        })
+      : null;
+
+  const editor_width = Math.max(178, Math.min(260, editing_value.length * 8 + 58));
+  const editor_height = 74;
+  const editor_top = center[1] + 18;
+  const editorElement = is_editing ? (
+    <>
+      <line
+        x1={center[0]}
+        y1={center[1] + 4}
+        x2={center[0]}
+        y2={editor_top}
+        stroke="black"
+        strokeWidth={1}
+        style={{ opacity: 0.32, pointerEvents: "none" }}
       />
-    </foreignObject>
+      <foreignObject
+        x={center[0] - editor_width / 2}
+        y={editor_top}
+        width={editor_width}
+        height={editor_height}
+        style={{ overflow: "visible", pointerEvents: "auto" }}
+      >
+        <div
+          data-line-editor-root="true"
+          data-testid={`line-edit-window-${annot_index}`}
+          onMouseDown={stopMouseEvent}
+          onMouseUp={stopMouseEvent}
+          onPointerDown={stopPointerEvent}
+          onPointerUp={stopPointerEvent}
+          onClick={stopMouseEvent}
+          style={{
+            background: "rgba(255, 255, 255, 0.96)",
+            border: "1px solid rgba(0, 0, 0, 0.36)",
+            borderRadius: "4px",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.22)",
+            boxSizing: "border-box",
+            color: "black",
+            fontSize: "12px",
+            padding: "6px",
+            width: "100%",
+          }}
+        >
+          <input
+            autoFocus
+            data-testid={`line-label-editor-${annot_index}`}
+            placeholder="label"
+            value={editing_value}
+            onChange={onEditorChange}
+            onFocus={(event) => event.currentTarget.select()}
+            onKeyDown={onEditorKeyDown}
+            style={{
+              background: "white",
+              border: "1px solid #777",
+              borderRadius: "3px",
+              boxSizing: "border-box",
+              color: "black",
+              fontSize: "12px",
+              height: "24px",
+              lineHeight: "20px",
+              outline: "none",
+              padding: "1px 5px",
+              textAlign: "center",
+              width: "100%",
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              gap: "4px",
+              justifyContent: "center",
+              marginTop: "6px",
+            }}
+          >
+            {line_style_options.map((option) => {
+              const active = current_style === option.style;
+              return (
+                <button
+                  data-testid={`line-style-${option.style}-${annot_index}`}
+                  key={option.style}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    setLineEditStyle(annot_index, option.style);
+                  }}
+                  title={option.title}
+                  type="button"
+                  style={{
+                    background: active ? "#222" : "#f7f7f7",
+                    border: "1px solid #777",
+                    borderRadius: "3px",
+                    color: active ? "white" : "black",
+                    cursor: "pointer",
+                    fontSize: "11px",
+                    height: "22px",
+                    minWidth: "30px",
+                    padding: "0 5px",
+                  }}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+            <button
+              data-testid={`line-delete-${annot_index}`}
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                deleteLineEditAnnotation(annot_index);
+              }}
+              title="Delete line"
+              type="button"
+              style={{
+                background: "#fff",
+                border: "1px solid #777",
+                borderRadius: "3px",
+                color: "black",
+                cursor: "pointer",
+                fontSize: "11px",
+                height: "22px",
+                minWidth: "34px",
+                padding: "0 5px",
+              }}
+            >
+              Del
+            </button>
+          </div>
+        </div>
+      </foreignObject>
+    </>
   ) : null;
 
   return (
@@ -386,8 +502,9 @@ export const LineAnnot = (g: State, a: TLineAnnot, annot_index: number) => {
       <g opacity={custom_opacity * group_opacity}>
         {result}
         {labelElement}
-        {hitElements}
+        {midpointAffordance}
       </g>
+      {endpointHandles}
       {editorElement}
     </g>
   );

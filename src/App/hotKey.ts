@@ -5,9 +5,30 @@ import { toggle_fit_to_contents } from "./toggle_fit_to_contents";
 import { moveCenter } from "../utils/moveCenter";
 import { open_dialog } from "../utils/open_dialog";
 import { dev_log } from "../utils/dev";
+import { commitLineEdit } from "../Global/line_edit_actions";
+
+const is_text_entry_target = (target: EventTarget | null): boolean => {
+  if (!(target instanceof HTMLElement)) return false;
+  return (
+    target instanceof HTMLInputElement ||
+    target instanceof HTMLTextAreaElement ||
+    target.isContentEditable
+  );
+};
 
 export const hotKey = (e: KeyboardEvent) => {
   const g = getGlobal();
+  if (g.line_edit_state !== null) {
+    if (
+      e.key === "Enter" ||
+      e.key === "Escape" ||
+      !is_text_entry_target(e.target)
+    ) {
+      commitLineEdit();
+      e.preventDefault();
+    }
+    return;
+  }
   if (g.disableHotKey) return;
 
   if (e.metaKey && e.key === "Enter") {

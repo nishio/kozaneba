@@ -3,8 +3,10 @@ import styled from "styled-components";
 import { TMenu } from "../Global/TMenu";
 import { updateGlobal } from "../Global/updateGlobal";
 import { get_client_pos, TInputEvent } from "../Event/input_event";
+import { commitLineEdit } from "../Global/line_edit_actions";
 
 export const show_menu = (menu: TMenu, event: TInputEvent<Element>) => {
+  commitLineEdit();
   const [x, y] = get_client_pos(event);
   updateGlobal((g) => {
     if (g.menu === menu) {

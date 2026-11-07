@@ -49,7 +49,8 @@ export const INITIAL_GLOBAL_STATE = {
   disableHotKey: false,
 
   annotations: [] as TAnnotation[],
-  editing_line_label: null as TEditingLineLabel,
+  line_edit_state: null as TLineEditState,
+  line_draft_state: null as TLineDraftState,
 
   scrapbox: "" as string,
   language: window.navigator.language,
@@ -62,16 +63,31 @@ export const INITIAL_GLOBAL_STATE = {
 
 // Implicit Mouse Mode
 type TDragTarget = "" | "selection" | TItemId;
-type TMouseState = "" | "selecting" | "middle_dragging" | "making_line";
+type TMouseState =
+  | ""
+  | "selecting"
+  | "middle_dragging"
+  | "making_line"
+  | "drawing_line_anchor"
+  | "retargeting_line_endpoint";
 export type TLineType =
   | "line"
   | "arrow"
   | "double_heads"
   | "double_lines"
   | "delete";
-type TEditingLineLabel = null | {
+export type TLineEditStyle = Exclude<TLineType, "delete">;
+type TLineEditState = null | {
   annot_index: number;
   value: string;
+  retarget_endpoint: null | 0 | 1;
+  pointer: TWorldCoord | null;
+  hover_target: "" | TItemId;
+};
+type TLineDraftState = null | {
+  start_id: TItemId;
+  pointer: TWorldCoord;
+  hover_target: "" | TItemId;
 };
 
 type TMenuAnchor = null | Element;

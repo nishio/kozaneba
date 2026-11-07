@@ -1,5 +1,6 @@
 import { screen_to_world, TWorldCoord } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
+import { commitLineEdit } from "../Global/line_edit_actions";
 import { constants } from "../API/constants";
 import { get_last_mouse_position } from "./onCanvasMouseMove";
 import { kozaneba } from "../API/KozanebaAPI";
@@ -39,6 +40,7 @@ let deltaX = 0;
 const toRequestIC = false;
 export const onWheel = (e: WheelEvent) => {
   e.preventDefault();
+  commitLineEdit();
   count++;
   const now = Date.now();
   if (now > prevTiming + 1000) {

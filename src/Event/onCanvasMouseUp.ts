@@ -13,6 +13,11 @@ import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
 import { move_front } from "../utils/move_front";
 import { updateGlobal } from "../Global/updateGlobal";
 import {
+  clearLineInteraction,
+  finishAnchorLineDrag,
+  finishLineEndpointRetarget,
+} from "../Global/line_edit_actions";
+import {
   release_pointer_capture,
   reset_target,
   is_draggeing,
@@ -53,6 +58,10 @@ export const onCanvasMouseUp = (
   if (should_ignore_compat_mouse_event(event)) return;
   dev_log("onCanvasMouseUp");
   clear_drop_group_highlight();
+  if (finishAnchorLineDrag(event) || finishLineEndpointRetarget(event)) {
+    release_pointer_capture();
+    return;
+  }
   if (handle_if_is_click(event)) {
     release_pointer_capture();
     return;
@@ -102,6 +111,7 @@ export const onCanvasPointerCancel = (
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
   clear_drop_group_highlight();
+  clearLineInteraction();
   updateGlobal((g) => {
     g.mouseState = "";
     g.drag_target = "";

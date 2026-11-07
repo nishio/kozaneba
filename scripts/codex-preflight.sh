@@ -61,7 +61,8 @@ if grep -q 'gstatic.com/firebasejs/ui' "$INDEX_HTML"; then
 fi
 
 grep -q 'Failed to run user script from localStorage.onLoad' src/API/run_user_script.ts
-grep -q 'line-label-hit-' src/Canvas/Annotation/LineAnnot.tsx
+grep -q 'line-midpoint-hit-' src/Canvas/Annotation/LineAnnot.tsx
+grep -q 'line-edit-window-' src/Canvas/Annotation/LineAnnot.tsx
 echo "#blank boot contract is served by the current implementation."
 
 section "Cypress"

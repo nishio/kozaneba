@@ -4,7 +4,9 @@ import React, { CSSProperties, useMemo, useCallback } from "react";
 import { useGlobal } from "reactn";
 import { kozaneba } from "../API/KozanebaAPI";
 import { TOffset } from "../dimension/TOffset";
+import { startAnchorLineDrag } from "../Global/line_edit_actions";
 import { onKozaneMouseDown } from "../Event/onKozaneMouseDown";
+import { TItemId } from "../Global/TItemId";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { KozaneDiv, KozaneDiv2 } from "./KozaneDiv";
 import { build_content } from "./parse_as_scrapbox";
@@ -15,6 +17,45 @@ type Props = {
   offset: TOffset;
   custom_style?: CSSProperties;
 };
+
+const anchor_sides = ["top", "right", "bottom", "left"] as const;
+
+const LineAnchors: React.FC<{ id: TItemId }> = React.memo(({ id }) => {
+  const onPointerDown = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      startAnchorLineDrag(event, id);
+    },
+    [id]
+  );
+  const onMouseDown = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      startAnchorLineDrag(event, id);
+    },
+    [id]
+  );
+  const stopClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  }, []);
+
+  return (
+    <div className="line-anchor-layer">
+      {anchor_sides.map((side) => (
+        <button
+          aria-label="Draw line"
+          className={`line-anchor line-anchor-${side}`}
+          data-testid={`line-anchor-${id}-${side}`}
+          key={side}
+          onClick={stopClick}
+          onMouseDown={onMouseDown}
+          onPointerDown={onPointerDown}
+          title="Draw line"
+          type="button"
+        />
+      ))}
+    </div>
+  );
+});
 
 export const Kozane: React.FC<Props> = React.memo(({
   value,
@@ -85,6 +126,7 @@ export const Kozane: React.FC<Props> = React.memo(({
       onPointerDown={onPointerDown}
     >
       {link_mark()}
+      <LineAnchors id={value.id} />
       <KozaneDiv2>{content}</KozaneDiv2>
     </KozaneDiv>
   );

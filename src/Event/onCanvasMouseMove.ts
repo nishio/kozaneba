@@ -1,6 +1,10 @@
 import { getGlobal } from "reactn";
 import { TScreenCoord } from "../dimension/world_to_screen";
 import { updateGlobal } from "../Global/updateGlobal";
+import {
+  updateAnchorLineDrag,
+  updateLineEndpointRetarget,
+} from "../Global/line_edit_actions";
 import { dev_log } from "../utils/dev";
 import { clear_drop_group_highlight, update_drop_group_highlight } from "./drop_target";
 import { move_target, move_target_on_screen } from "./fast_drag_manager";
@@ -17,6 +21,10 @@ export const onCanvasMouseMove = (
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
   last_mouse_position = get_client_pos(event);
+  if (updateAnchorLineDrag(event) || updateLineEndpointRetarget(event)) {
+    event.preventDefault();
+    return;
+  }
   const g = getGlobal();
   if (g.mouseState === "selecting") {
     clear_drop_group_highlight();
