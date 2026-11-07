@@ -28,6 +28,14 @@
 #                  #81 because it was unused and double-counted every alert.
 #   /functions  -> yarn.lock (yarn 1). Uses "resolutions" to pin transitive
 #                  dependencies, which is a yarn-only feature. Keep it on yarn.
+#
+# @types/node majors are ignored in both npm manifests. The types should match
+# the Node version the code runs on: Node 24 for the root (.nvmrc) and Node 22
+# for functions (engines.node, the Cloud Functions runtime). A newer major lets
+# code type-check against APIs the runtime does not have (#114 and #118, both
+# @types/node 26, closed on 2026-11-08). Minor and patch updates still come in
+# the group PRs. When the runtime moves to a new Node major, bump @types/node by
+# hand in the same change.
 version: 2
 
 updates:
@@ -36,6 +44,10 @@ updates:
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 5
+    ignore:
+      # Types follow the runtime: root runs on Node 24 (.nvmrc). See the note above.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       npm-security:
         applies-to: security-updates
@@ -57,6 +69,10 @@ updates:
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 5
+    ignore:
+      # Types follow the runtime: functions run on Node 22 (engines). See the note above.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       functions-security:
         applies-to: security-updates
