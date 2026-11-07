@@ -1,33 +1,12 @@
-import Dexie from "dexie";
 import { getGlobal } from "reactn";
 import { date_to_str } from "../utils/date_to_str";
 import { save_new } from "./save_new";
 import { stop_current_subscription } from "./set_up_read_subscription";
+import { local_db } from "./backup_store";
 
-export interface IBackup {
-  id?: number; // Primary key. Optional (autoincremented)
-  cloud_ba: string;
-  last_updated: number;
-  json: string;
-}
-
-class MyAppDatabase extends Dexie {
-  // Declare implicit table properties.
-  // (just to inform Typescript. Instanciated by Dexie in stores() method)
-  backup: Dexie.Table<IBackup, number>; // number = type of the primkey
-  //...other tables goes here...
-
-  constructor() {
-    super("Kozaneba");
-    this.version(2).stores({
-      backup: "++id,cloud_ba,last_updated",
-      //...other tables goes here...
-    });
-    // The following line is needed if your typescript
-    // is compiled using babel instead of tsc:
-    this.backup = this.table("backup");
-  }
-}
+// The Dexie database is in backup_store.ts; these are the console helpers.
+export { local_db } from "./backup_store";
+export type { IBackup } from "./backup_store";
 
 export const show_backup = () => {
   const g = getGlobal();
@@ -64,5 +43,3 @@ export const save_backup_as_new = (id: number, open = true) => {
       save_new(docdata);
     });
 };
-
-export const local_db = new MyAppDatabase();

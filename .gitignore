@@ -26,3 +26,10 @@ cypress/screenshots/*/*.cy.ts/*.png
 firebase-debug.log
 firestore-debug.log
 ui-debug.log
+
+# root は npm (package-lock.json) を使う。yarn は functions/ のみ。
+/yarn.lock
+
+# Playwright
+test-results/
+playwright-report/

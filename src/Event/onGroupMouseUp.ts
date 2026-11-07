@@ -9,7 +9,7 @@ import { drag_drop_item_into_group } from "./drag_drop_item_into_group";
 import { dev_log } from "../utils/dev";
 import { moveCenter } from "../utils/moveCenter";
 import { clear_drop_group_highlight } from "./drop_target";
-import { release_pointer_capture } from "./fast_drag_manager";
+import { pointer_id_of, release_pointer_capture } from "./fast_drag_manager";
 import { should_ignore_compat_mouse_event, TInputEvent } from "./input_event";
 
 export const onGroupMouseUp = (
@@ -22,7 +22,7 @@ export const onGroupMouseUp = (
   event.preventDefault();
   event.stopPropagation();
   if (handle_if_is_click(event)) {
-    release_pointer_capture();
+    release_pointer_capture(pointer_id_of(event));
     return;
   }
   const g = getGlobal();
@@ -51,5 +51,5 @@ export const onGroupMouseUp = (
 
     throw new Error();
   }
-  release_pointer_capture();
+  release_pointer_capture(pointer_id_of(event));
 };

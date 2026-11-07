@@ -10,18 +10,31 @@ import {
   TInputEvent,
 } from "./input_event";
 import { onCanvasMouseUp } from "./onCanvasMouseUp";
+import { pinch_pointer_down } from "./pinch_gesture";
+
+const is_on_line_hit = (event: TInputEvent<HTMLDivElement>) =>
+  event.target instanceof Element &&
+  event.target.closest("[data-line-hit]") !== null;
 
 export const onCanvasMouseDown = (
   event: TInputEvent<HTMLDivElement>
 ) => {
   if (should_ignore_compat_mouse_event(event)) return;
+  // A second finger on the canvas switches to a pinch/pan gesture; the first
+  // finger registers here and continues as normal selection.
+  if (pinch_pointer_down(event)) return;
   dev_log("onCanvasMouseDown");
   if (getGlobal().drag_target !== "") {
     dev_log("previous mouseUp was not handled");
     onCanvasMouseUp(event);
   }
 
-  capture_pointer_on_canvas(event);
+  // Do not capture a press on a line's hit area (LineAnnot): capturing sends
+  // the click / dblclick / contextmenu to #canvas, so the line could never
+  // open its label editor. The selection still starts as on empty canvas.
+  if (!is_on_line_hit(event)) {
+    capture_pointer_on_canvas(event);
+  }
   const [x, y] = get_client_pos(event);
   dev_log("onCanvasMouseDown", get_button(event));
   if (get_button(event) === 1 /* middle mouse button */) {

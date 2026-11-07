@@ -13,6 +13,7 @@ import { get_middle_point } from "../Canvas/Annotation/get_middle_point";
 import { sub_v2, normalize, mul_v2, add_v2w } from "../dimension/V2";
 import { KOZANE_HEIGHT } from "../utils/kozane_constants";
 import { TWorldCoord } from "../dimension/world_to_screen";
+import { mark_local_changed } from "../utils/mark_local_changed";
 
 type PropsType = { id: TItemId };
 
@@ -57,6 +58,7 @@ export const TearMenuItem = React.forwardRef<HTMLLIElement, PropsType>(
         });
       });
       delete_item_from_world(id);
+      mark_local_changed();
       close_context_menu();
     };
 

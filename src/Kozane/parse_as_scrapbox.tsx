@@ -12,6 +12,8 @@ export const build_content = (value: TKozaneItem) => {
     return value.text; // simple string
   } else {
     const page = parse("DUMMY_TITLE\n" + value.text);
+    // "code:..." / "table:..." parse as a code block / table, not a line
+    if (page[1]?.type !== "line") return value.text;
     const line = page[1] as Line;
     return line.nodes.map((node) => {
       if (node.type === "plain") {
@@ -59,6 +61,7 @@ export const get_scarpbox_links = (value: TKozaneItem) => {
   const proj = g.scrapbox;
   if (proj !== "") {
     const page = parse("DUMMY_TITLE\n" + value.text);
+    if (page[1]?.type !== "line") return links;
     const line = page[1] as Line;
 
     line.nodes.forEach((node) => {

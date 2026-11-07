@@ -8,6 +8,10 @@ import { can_write, is_cloud } from "../utils/can_write";
 export const LocalChangeWatcher = () => {
   const [is_local_change] = useGlobal("is_local_change");
   const [cloud_ba] = useGlobal("cloud_ba");
+  // mark_local_changed always bumps last_updated. Watching it re-runs the
+  // effect when is_local_change was left true (physics on, or not writable
+  // at that time), which would otherwise never save again.
+  const [last_updated] = useGlobal("last_updated");
 
   useEffect(() => {
     if (is_physics_on()) return;
@@ -20,6 +24,6 @@ export const LocalChangeWatcher = () => {
         save();
       }
     }
-  }, [cloud_ba, is_local_change]);
+  }, [cloud_ba, is_local_change, last_updated]);
   return null;
 };

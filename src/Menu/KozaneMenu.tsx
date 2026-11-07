@@ -18,6 +18,7 @@ import { get_scarpbox_links } from "../Kozane/parse_as_scrapbox";
 import { add_urls } from "../Scrapbox/add_scrapbox_links";
 import { AddLineMenuItem } from "./AddLineMenuItem";
 import { TearMenuItem } from "./TearMenuItem";
+import { mark_local_changed } from "../utils/mark_local_changed";
 
 export const KozaneMenu = () => {
   const [menu] = useGlobal("menu");
@@ -39,12 +40,14 @@ export const KozaneMenu = () => {
     new_kozane.id = create_new_itemid();
     new_kozane.position = get_center_of_screen();
     add_item(new_kozane);
+    mark_local_changed();
     close_context_menu();
   };
   const onLeaveFromLines = () => {
     updateGlobal((g) => {
       update_annotation_after_deletion(g, id);
     });
+    mark_local_changed();
     close_context_menu();
   };
 
