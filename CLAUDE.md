@@ -105,8 +105,8 @@ python kozaneba.py  # Kozanebaデータ構造を操作するためのPython API
 ### Firebaseデータモデル
 
 **Firestoreコレクション:**
-- `map` - 各baのデータ（`itemStore`, `drawOrder`, `annotations`, `title`, `writers`, `anyone_writable`など）
-- `key_to_map` - ba IDへのマッピング（レガシー）
+- `ba` - 各baのデータ（`itemStore`, `drawOrder`, `annotations`, `title`, `writers`, `anyone_writable`など。許されるフィールドは `firestore.rules` の `valid_shape()`）。Kozanebaが使うのはこのコレクションだけ
+- `map`, `key_to_map` - 前身のRegroup（https://regroup.netlify.app/ 、repo nishio/regroup）のデータ。同じFirebase projectを使っている。`map` が場の本体、`key_to_map` が共有URL `#/key=<id>` から `mapname` への対応。`firestore.rules` はdoc単位のgetだけを許す（Regroupの共有URLを開けるように。#107）。`src/Cloud/FirestoreIO.ts` の `create_new_map` はこの2つに書き込むが、呼び出し元はなく、rulesでも書き込みは拒否される
 
 **認証:** Firebase Authenticationを使用。匿名ログインとGoogle認証をサポート。
 
