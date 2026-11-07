@@ -245,6 +245,52 @@ test("app-bar controls meet the 44px touch target", async ({ page }) => {
   }
 });
 
+// B-17: the menu items must be >= 44px tall on touch. Measured as rendered
+// (offsetHeight and getBoundingClientRect after the open animation), because a
+// CSS min-height can lose to MUI's emotion rules: on the iPad width MUI sets
+// `min-height: auto` (sm and up) and dense items `min-height: 32px`, which made
+// the old `.MuiMenuItem-root { min-height: 44px }` in App.css a no-op (36px).
+async function menuItemHeights(page: Page, menuHas: string) {
+  const menu = page.locator(`[role='menu']:has(${menuHas})`);
+  await expect(menu).toBeVisible();
+  // wait out MUI's Grow transition (it scales the paper, which shrinks the rects)
+  await expect
+    .poll(() => menu.evaluate((m) => getComputedStyle(m.closest(".MuiPaper-root")!).transform))
+    .toBe("none");
+  return menu.evaluate((m) =>
+    [...m.querySelectorAll<HTMLElement>(".MuiMenuItem-root")].map((e) => ({
+      label: e.textContent?.trim() || e.querySelector("img")?.alt || "",
+      dense: e.classList.contains("MuiMenuItem-dense"),
+      offset: e.offsetHeight,
+      rect: Math.round(e.getBoundingClientRect().height * 10) / 10,
+    }))
+  );
+}
+
+const under44 = (items: { offset: number; rect: number }[]) =>
+  items.filter((i) => i.offset < 44 || i.rect < 44);
+
+test("kozane menu items (dense too) are at least 44px tall on touch", async ({ page }) => {
+  await page.evaluate(() =>
+    (window as any).movidea.make_one_kozane({ id: "1", text: "hi", position: [0, 0] })
+  );
+  const c = await centerOf(page, "1");
+  await page.touchscreen.tap(c.x, c.y); // a real tap, hit-tested by WebKit
+  const items = await menuItemHeights(page, "[data-testid='kozane-edit']");
+  expect(items.length).toBeGreaterThan(5);
+  expect(items.some((i) => i.dense)).toBeTruthy(); // the add-line icons are dense
+  expect(under44(items)).toEqual([]);
+});
+
+test("main menu items are at least 44px tall on touch", async ({ page }) => {
+  const b = await page.locator("[data-testid='main-menu']").boundingBox();
+  if (!b) throw new Error("no main-menu button");
+  await page.touchscreen.tap(b.x + b.width / 2, b.y + b.height / 2);
+  const items = await menuItemHeights(page, "li:text('Add Kozane')");
+  expect(items.length).toBeGreaterThan(3);
+  expect(under44(items)).toEqual([]);
+});
+
 test("manifest declares a standalone Kozaneba PWA", async ({ page }) => {
   const res = await page.request.get("/manifest.json");
   expect(res.ok()).toBeTruthy();
