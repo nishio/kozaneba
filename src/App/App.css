@@ -33,12 +33,19 @@ html {
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 
-/* Touch targets: ensure menu items and app-bar controls are at least ~44pt tall
-   for fingers. MUI defaults are already >=44px in comfortable density, so this
-   only raises dense ones and is a no-op otherwise. */
-.MuiMenuItem-root {
-  min-height: 44px;
+/* Touch targets: menu items at least ~44pt tall for fingers (B-17).
+   A plain `.MuiMenuItem-root { min-height: 44px }` loses to MUI's own emotion
+   rule of the same specificity, injected later: at the sm breakpoint and up
+   (the iPad width) MUI sets `min-height: auto` (36px items) and dense items
+   `min-height: 32px`. The doubled class raises the specificity so this wins.
+   Only on a coarse primary pointer (iPad, phones), so the desktop menus keep
+   MUI's compact height. */
+@media (pointer: coarse) {
+  .MuiMenuItem-root.MuiMenuItem-root {
+    min-height: 44px;
+  }
 }
+/* App-bar controls: `#appbar` already outranks MUI's single-class rules. */
 #appbar .MuiButtonBase-root {
   min-height: 44px;
   min-width: 44px;

@@ -16,3 +16,9 @@ To make one (iPad):
 
 Recordings carry pointer positions, timings and board layout. Kozane text
 is replaced by `x` of the same length.
+
+Taps are replayed by position, so a recording only matches the layout it was
+made on. A change that moves things on screen (for example #110, which made
+the menu items 44px tall on touch) can make an old recording tap a different
+menu item. `replay.spec.ts` then has to put the old layout back for that file
+(see `MENU_ITEMS_36PX`) until the session is recorded again on a device.
