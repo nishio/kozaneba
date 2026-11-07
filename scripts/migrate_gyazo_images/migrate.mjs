@@ -97,24 +97,32 @@ const migrate_ba = async (snap, report) => {
   // Only rewrite items that still have the URL we copied, in case someone
   // edited the Ba meanwhile. Bumping last_updated makes open clients take the
   // new state instead of overwriting it with their old one.
-  await db.runTransaction(async (tx) => {
+  // Firestore may re-run the transaction callback on contention, so counts are
+  // kept local to each attempt and added to the report only after it commits.
+  const counts = await db.runTransaction(async (tx) => {
     const ref = snap.ref;
     const fresh = (await tx.get(ref)).data();
     const updates = [];
+    let migrated = 0;
+    let skipped = 0;
     for (const [item_id, { old, url }] of new_urls) {
       const item = fresh?.itemStore?.[item_id];
       if (item?.url !== old) {
-        entry.skipped++;
+        skipped++;
         continue;
       }
       updates.push(new FieldPath("itemStore", item_id, "url"), url);
       updates.push(new FieldPath("itemStore", item_id, "text"), `[${url}]`);
-      entry.migrated++;
+      migrated++;
     }
-    if (updates.length === 0) return;
-    const last_updated = Math.max(Date.now(), (fresh.last_updated ?? 0) + 1);
-    tx.update(ref, new FieldPath("last_updated"), last_updated, ...updates);
+    if (updates.length > 0) {
+      const last_updated = Math.max(Date.now(), (fresh.last_updated ?? 0) + 1);
+      tx.update(ref, new FieldPath("last_updated"), last_updated, ...updates);
+    }
+    return { migrated, skipped };
   });
+  entry.migrated += counts.migrated;
+  entry.skipped += counts.skipped;
   console.log(`  migrated ${entry.migrated}, skipped ${entry.skipped}, failed ${entry.failed.length}`);
 };
 
