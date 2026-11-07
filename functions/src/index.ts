@@ -2,7 +2,6 @@
 // eslint-disable-next-line import/no-unresolved
 import * as functions from "firebase-functions/v1";
 import * as admin from "firebase-admin";
-import fetch from "node-fetch";
 // const { KintoneRestAPIClient } = require("@kintone/rest-api-client");
 
 admin.initializeApp();
