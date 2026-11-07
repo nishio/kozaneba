@@ -29,3 +29,7 @@ ui-debug.log
 
 # root は npm (package-lock.json) を使う。yarn は functions/ のみ。
 /yarn.lock
+
+# Playwright
+test-results/
+playwright-report/

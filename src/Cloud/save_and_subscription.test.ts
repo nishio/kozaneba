@@ -6,7 +6,8 @@ import {
   stop_current_subscription,
 } from "./set_up_read_subscription";
 import { save } from "./save";
-import { local_db } from "./LocalBackup";
+import { note_server_version } from "./sync_version";
+import { add_backup } from "./backup_store";
 
 // minimal fake of the compat Firestore API used by save / subscription
 const fake = vi.hoisted(() => {
@@ -26,13 +27,24 @@ const fake = vi.hoisted(() => {
         set: () => state.set_result,
       }),
     }),
+    // save() writes in a transaction; the server doc is at version 5
+    runTransaction: async (
+      fn: (t: { get: () => Promise<unknown>; set: () => void }) => Promise<unknown>
+    ) => {
+      const r = await fn({
+        get: async () => ({ exists: true, data: () => ({ last_updated: 5 }) }),
+        set: () => {},
+      });
+      await state.set_result;
+      return r;
+    },
   };
   return { state, db };
 });
 vi.mock("./init_firebase", () => ({ db: fake.db, auth: { currentUser: { uid: "u1" } } }));
 vi.mock("./FirestoreIO", () => ({ docdate_to_state: (x: unknown) => x }));
 vi.mock("./not_login_then_show_dialog", () => ({ not_login_then_show_dialog: () => false }));
-vi.mock("./LocalBackup", () => ({ local_db: { backup: { add: vi.fn() } } }));
+vi.mock("./backup_store", () => ({ add_backup: vi.fn(), backup_if_enabled: vi.fn() }));
 vi.mock("../API/KozanebaAPI", () => ({
   kozaneba: { constants: { to_make_local_backup: false } },
 }));
@@ -59,6 +71,7 @@ describe("read subscription", () => {
 describe("save", () => {
   beforeEach(() => {
     setGlobal({ ...INITIAL_GLOBAL_STATE, cloud_ba: "ba1", last_updated: 5 });
+    note_server_version("ba1", 5);
   });
 
   test("a rejected save is shown and backed up locally", async () => {
@@ -68,7 +81,8 @@ describe("save", () => {
     expect(getGlobal().statusBar.type).toBe("text");
     expect(getGlobal().save_error).toMatch(/too large/);
     expect(getGlobal().is_local_change).toBe(false);
-    expect(local_db.backup.add).toHaveBeenCalled();
+    // backups are off in this test (constants mocked), so this is the forced one
+    expect(add_backup).toHaveBeenCalledWith("ba1", expect.objectContaining({ last_updated: 5 }));
   });
 
   test("a successful save clears the error", async () => {

@@ -11,7 +11,13 @@ import { initGoogleAnalytics } from "./initGoogleAnalytics";
 import addReactNDevTools from "reactn-devtools";
 import { run_user_script } from "./API/run_user_script";
 import { expose_kozaneba_api } from "./API/KozanebaAPI";
+import { install_visual_viewport_height } from "./App/visual_viewport";
 import { dev_log } from "./utils/dev";
+import { install_recorder, is_record_requested, is_sample_requested } from "./Recorder/recorder";
+import { load_sample_board } from "./Recorder/sample_board";
+import { snapshot } from "./Recorder/snapshot";
+import { updateGlobal } from "./Global/updateGlobal";
+import { getGlobal } from "reactn";
 
 const initProduction = () => {
   initSentry();
@@ -33,7 +39,18 @@ if (import.meta.env.DEV) {
   initProduction();
 }
 
+// Touch session recorder (`#blank&record=sample`), and a read-only snapshot
+// hook that the replay harness uses on the dev server.
+if (is_record_requested()) {
+  if (is_sample_requested()) updateGlobal(load_sample_board);
+  install_recorder();
+}
+if (import.meta.env.DEV || is_record_requested()) {
+  window.__kozaneba_snapshot = () => snapshot(getGlobal());
+}
+
 expose_kozaneba_api();
+install_visual_viewport_height();
 run_user_script();
 
 window.matchMedia("print").addEventListener("change", (e) => {
