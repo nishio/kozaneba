@@ -1,5 +1,5 @@
 import { beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
-import { setGlobal } from "reactn";
+import { getGlobal, setGlobal } from "reactn";
 import { INITIAL_GLOBAL_STATE } from "./Global/initializeGlobalState";
 
 // What reaches the transport is what Sentry would send over the network.
@@ -110,5 +110,30 @@ describe("initSentry: what is sent to Sentry", () => {
     const event = theSentEvent();
     expect(event.contexts.kozaneba).toMatchObject({ num_top_level: 2 });
     expect(showReportDialog).not.toHaveBeenCalled();
+  });
+
+  // Known bug, pinned with the current (wrong) values; not fixed here.
+  // beforeSend sets disableHotKey for every event, also when no dialog opens,
+  // and the reset is passed as `onclose`, but the SDK (v7 and v11) only calls
+  // `onClose`. So after any event, hot keys stay off until something else
+  // (the line label editor) turns them back on.
+  test("known bug: hot keys stay disabled after an event that opens no dialog", async () => {
+    await setGlobal({ disableHotKey: false });
+    // Not "Click on nothing" again: Dedupe drops a repeat of the last event.
+    Sentry.captureMessage("drag_drop_item_into_group: target_id === group_id");
+    await Sentry.flush(2000);
+
+    theSentEvent();
+    expect(showReportDialog).not.toHaveBeenCalled();
+    expect(getGlobal().disableHotKey).toBe(true);
+  });
+
+  test("known bug: the dialog's close handler is passed as `onclose`, which the SDK never calls", async () => {
+    Sentry.captureException(new Error("boom-for-close"));
+    await Sentry.flush(2000);
+
+    const options = dialogOptions();
+    expect(typeof options.onclose).toBe("function");
+    expect(options.onClose).toBeUndefined();
   });
 });
