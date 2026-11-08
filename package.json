@@ -27,7 +27,7 @@
     "firebase": "^12.14.0",
     "firebaseui": "^6.1.0",
     "immer": "^10.0.4",
-    "normalize-url": "^8.0.1",
+    "normalize-url": "^10.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "reactn": "^2.2.7",
