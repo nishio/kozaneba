@@ -1,6 +1,5 @@
 import { getGlobal, setGlobal } from "reactn";
 import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
 import { device_context, sentry_context } from "./sentry_context";
 
 const CONFIG = {
@@ -27,7 +26,14 @@ const CONFIG_FOR_FEEDBACK = {
 export const initSentry = () => {
   Sentry.init({
     dsn: "https://c16fb727f35a4fb7bf8c7bb5899ca35b@o376998.ingest.sentry.io/5898295",
-    integrations: [new Integrations.BrowserTracing()],
+    integrations: [Sentry.browserTracingIntegration()],
+
+    // v8 made attachStacktrace default to true, which puts a synthetic
+    // `exception` on every captureMessage event. beforeSend below tells an
+    // exception from a message by `event.exception`, so keep the v7 default:
+    // otherwise "Click on nothing" would open the error report dialog and
+    // Manual Feedback would open it without the feedback labels.
+    attachStacktrace: false,
 
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
@@ -55,7 +61,9 @@ export const initSentry = () => {
   });
   // An event processor runs before the event is sent, so the context belongs
   // to this event (setContext in beforeSend only reached the next one).
-  Sentry.addGlobalEventProcessor((event) => {
+  // v8 removed addGlobalEventProcessor; the global scope's processors run for
+  // every event, as the old global processor did.
+  Sentry.getGlobalScope().addEventProcessor((event) => {
     event.contexts = {
       ...event.contexts,
       kozaneba: sentry_context(getGlobal()),
