@@ -9,9 +9,14 @@ import { INITIAL_GLOBAL_STATE } from "./Global/initializeGlobalState";
 // beforeSend and the envelope are the ones production runs.
 const sent = vi.hoisted(() => ({ envelopes: [] as unknown[] }));
 const showReportDialog = vi.hoisted(() => vi.fn());
+// The real showReportDialog, for the one test that checks the SDK's side.
+const realSdk = vi.hoisted(() => ({
+  showReportDialog: undefined as unknown as (options: Record<string, unknown>) => void,
+}));
 
 vi.mock("@sentry/react", async (importOriginal) => {
   const real = await importOriginal<typeof import("@sentry/react")>();
+  realSdk.showReportDialog = real.showReportDialog;
   const fakeTransport = () => ({
     send: async (envelope: unknown) => {
       sent.envelopes.push(envelope);
@@ -112,12 +117,9 @@ describe("initSentry: what is sent to Sentry", () => {
     expect(showReportDialog).not.toHaveBeenCalled();
   });
 
-  // Known bug, pinned with the current (wrong) values; not fixed here.
-  // beforeSend sets disableHotKey for every event, also when no dialog opens,
-  // and the reset is passed as `onclose`, but the SDK (v7 and v11) only calls
-  // `onClose`. So after any event, hot keys stay off until something else
-  // (the line label editor) turns them back on.
-  test("known bug: hot keys stay disabled after an event that opens no dialog", async () => {
+  // Hot keys are turned off only while a dialog is open, and turned back on
+  // when it closes. The SDK (v7 and v11) calls `onClose`, not `onclose`.
+  test("an event that opens no dialog leaves hot keys on", async () => {
     await setGlobal({ disableHotKey: false });
     // Not "Click on nothing" again: Dedupe drops a repeat of the last event.
     Sentry.captureMessage("drag_drop_item_into_group: target_id === group_id");
@@ -125,15 +127,48 @@ describe("initSentry: what is sent to Sentry", () => {
 
     theSentEvent();
     expect(showReportDialog).not.toHaveBeenCalled();
-    expect(getGlobal().disableHotKey).toBe(true);
+    expect(getGlobal().disableHotKey).toBe(false);
   });
 
-  test("known bug: the dialog's close handler is passed as `onclose`, which the SDK never calls", async () => {
+  test("the report dialog turns hot keys off, and closing it (onClose) turns them back on", async () => {
+    await setGlobal({ disableHotKey: false });
     Sentry.captureException(new Error("boom-for-close"));
     await Sentry.flush(2000);
 
     const options = dialogOptions();
-    expect(typeof options.onclose).toBe("function");
-    expect(options.onClose).toBeUndefined();
+    expect(getGlobal().disableHotKey).toBe(true);
+    expect(options.onclose).toBeUndefined();
+    expect(typeof options.onClose).toBe("function");
+
+    await (options.onClose as () => unknown)();
+    expect(getGlobal().disableHotKey).toBe(false);
+  });
+
+  test("the feedback dialog also turns hot keys back on when closed", async () => {
+    await setGlobal({ disableHotKey: false });
+    Sentry.captureMessage("Manual Feedback 456");
+    await Sentry.flush(2000);
+
+    const options = dialogOptions();
+    expect(options).toMatchObject({ title: "Feedback" });
+    expect(getGlobal().disableHotKey).toBe(true);
+
+    await (options.onClose as () => unknown)();
+    expect(getGlobal().disableHotKey).toBe(false);
+  });
+
+  // The two tests above call onClose themselves. This one gives the same
+  // options to the SDK's own showReportDialog and sends the message the
+  // dialog iframe posts when it closes, so it checks which name the SDK calls.
+  test("the SDK's report dialog calls our close handler when the dialog closes", async () => {
+    await setGlobal({ disableHotKey: false });
+    Sentry.captureException(new Error("boom-for-sdk-close"));
+    await Sentry.flush(2000);
+    const options = dialogOptions();
+    expect(getGlobal().disableHotKey).toBe(true);
+
+    realSdk.showReportDialog(options);
+    window.dispatchEvent(new MessageEvent("message", { data: "__sentry_reportdialog_closed__" }));
+    await vi.waitFor(() => expect(getGlobal().disableHotKey).toBe(false));
   });
 });
