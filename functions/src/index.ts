@@ -1,10 +1,13 @@
 // eslint-plugin-import cannot resolve package "exports" subpaths.
 // eslint-disable-next-line import/no-unresolved
 import * as functions from "firebase-functions/v1";
-import * as admin from "firebase-admin";
+// eslint-disable-next-line import/no-unresolved
+import {initializeApp} from "firebase-admin/app";
+// eslint-disable-next-line import/no-unresolved
+import {getFirestore} from "firebase-admin/firestore";
 // const { KintoneRestAPIClient } = require("@kintone/rest-api-client");
 
-admin.initializeApp();
+initializeApp();
 
 const SCRAPBOX_ORIGIN = "https://scrapbox.io";
 
@@ -153,7 +156,7 @@ export const create_ba = functions.https.onRequest(async (req, res) => {
     writers,
     annotations,
   };
-  const writeResult = await admin.firestore().collection("ba").add(docdata);
+  const writeResult = await getFirestore().collection("ba").add(docdata);
   res.json({
     cloud_ba: writeResult.id,
   });
