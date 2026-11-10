@@ -12,9 +12,9 @@ const CONFIG = {
     const t = document.getElementById("id_comments") as HTMLTextAreaElement;
     t.placeholder = "";
   },
-  onclose: () => {
-    setGlobal({ disableHotKey: false });
-  },
+  // The SDK calls `onClose` (it never called `onclose`, which left hot keys
+  // off after the dialog closed).
+  onClose: () => setGlobal({ disableHotKey: false }),
 };
 const CONFIG_FOR_FEEDBACK = {
   title: "Feedback",
@@ -41,14 +41,17 @@ export const initSentry = () => {
     tracesSampleRate: 1.0,
 
     beforeSend(event, hint) {
-      setGlobal({ disableHotKey: true });
+      // Hot keys are off only while a report dialog is open (CONFIG.onClose
+      // turns them back on), so events that open no dialog leave them on.
       // Check if it is an exception, and if so, show the report dialog
       if (event.exception) {
+        setGlobal({ disableHotKey: true });
         Sentry.showReportDialog({
           eventId: event.event_id,
           ...CONFIG,
         });
       } else if (event.message?.includes("Manual Feedback")) {
+        setGlobal({ disableHotKey: true });
         Sentry.showReportDialog({
           eventId: event.event_id,
           ...CONFIG,
