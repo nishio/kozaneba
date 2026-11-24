@@ -248,3 +248,61 @@ describe("normalize_group_position (without a draft)", () => {
     expect(absolute(s, id("k2"))).toEqual(world(0, 60));
   });
 });
+
+describe("the recorded iPad session (playwright/recordings/ipad-2026-10-29-sample-board.json)", () => {
+  // The board at checkpoint 15 of the recording (the open groups and the
+  // kozane the next two gestures touch). ga is centered on a1, a2; gn on n1
+  // is not (n1 at (0, 20)).
+  const checkpoint15 = () =>
+    setBoard(
+      ["ga", "gn"],
+      [
+        gr("ga", 230.9642436042504, -75.96819744736322, ["a1", "a2"], "ga"),
+        kz("a1", -90.96424360425041, -4.031802552636776),
+        kz("a2", 90.96424360425041, 4.031802552636776),
+        gr("gn", 434.4896364613546, 241.58560895399535, ["n1"], "gn"),
+        kz("n1", 0, 20),
+      ]
+    );
+  // The finger's movement in world coordinates (screen / scale 1.55):
+  // events 1076-1115 drag n1, events 1116-1196 drag gn.
+  const n1_move = [-14.514489189492378, 7.418516696851659];
+  const gn_move = [-157.40157165493957, -83.5389488906339];
+  const close = (a: TWorldCoord, b: number[]) => {
+    expect(a[0]).toBeCloseTo(b[0]!, 6);
+    expect(a[1]).toBeCloseTo(b[1]!, 6);
+  };
+
+  test("checkpoint 16: n1 dropped back on its own group gn stays where the finger left (K2)", () => {
+    checkpoint15();
+    // n1 starts at world (434.49, 261.59)
+    drag_drop_item_into_group(id("gn"), world(0 + n1_move[0]!, 20 + n1_move[1]!), id("n1"));
+    const s = getGlobal();
+    // (419.98, 269.00). The recording has (419.98, 289.00): on the iPad n1
+    // jumped 20 down, its old offset from gn's anchor.
+    close(absolute(s, id("n1")), [434.4896364613546 + n1_move[0]!, 261.58560895399535 + n1_move[1]!]);
+    close(s.itemStore.gn!.position, [419.9751472718622, 269.0041256508474]);
+  });
+
+  test("checkpoint 17: gn dropped into ga; a1 and a2 do not move, gn lands where the finger left", () => {
+    checkpoint15();
+    drag_drop_item_into_group(id("gn"), world(0 + n1_move[0]!, 20 + n1_move[1]!), id("n1"));
+    const before = getGlobal();
+    const gn0 = absolute(before, id("gn"));
+    const a1 = absolute(before, id("a1"));
+    const a2 = absolute(before, id("a2"));
+    // gn is a root group: the drop position is its world position
+    drag_drop_item_into_group(id("ga"), world(gn0[0] + gn_move[0]!, gn0[1] + gn_move[1]!), id("gn"));
+    const s = getGlobal();
+    expect(parentOf(s, id("gn"))).toBe("ga");
+    close(absolute(s, id("gn")), [gn0[0] + gn_move[0]!, gn0[1] + gn_move[1]!]);
+    close(absolute(s, id("n1")), [gn0[0] + gn_move[0]!, gn0[1] + gn_move[1]!]);
+    close(absolute(s, id("a1")), a1);
+    close(absolute(s, id("a2")), a2);
+    // the stored positions the replay expects at checkpoints 17-19
+    close(s.itemStore.ga!.position, [230.96424360425047, 52.73258838010665]);
+    close(s.itemStore.gn!.position, [31.60933201267224, 132.73258838010668]);
+    close(s.itemStore.a1!.position, [-90.96424360425047, -132.73258838010665]);
+    close(s.itemStore.a2!.position, [90.96424360425047, -124.6689832748331]);
+  });
+});
