@@ -92,7 +92,7 @@ lake build && .lake/build/bin/check  # 約 50 秒
 
 ## #141 で直したもの
 
-修正案 1〜3 と、版をタブの中で必ず増やす変更（`mark_local_changed` の `max(Date.now(), last_updated + 1)`）は #141。構成 H が #141 の後のコードに当たる。残るのは、端末どうしで同じミリ秒になる場合（構成 F）。
+修正案 1〜3 と、版をタブの中で必ず増やす変更（`mark_local_changed` の `max(Date.now(), last_updated + 1)`）は #141。構成 H が #141 の後のコードに当たる。端末どうしで同じミリ秒になる場合（構成 F）も、#141 で `last_updated` に乱数の端数を足して、構成 H の時計（端末どうしで重ならない）にした。
 
 ## 調べていないこと
 
