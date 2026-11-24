@@ -6,7 +6,9 @@ import { remove_item_from } from "./remove_item_from";
 import { update_annotation_after_deletion } from "./update_annotation_after_deletion";
 
 export const remove_item = (g: State, id: TItemId): void => {
-  let parent = find_parent(id);
+  // look the parent up in the draft being edited, not in getGlobal() (the
+  // state before this update), so a chain of removals in one update agrees
+  const parent = find_parent(id, g);
   if (parent === null) {
     g.drawOrder = remove_item_from(g.drawOrder, id);
   } else {
