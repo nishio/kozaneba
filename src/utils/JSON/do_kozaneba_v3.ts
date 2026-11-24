@@ -7,8 +7,13 @@ import { updateGlobal } from "../../Global/updateGlobal";
 import { GroupItem } from "../../Group/GroupItem";
 import { create_new_itemid } from "../create_new_itemid";
 import { normalize_group_position } from "../normalize_group_position";
+import { repair_nest, report_nest_repair } from "../repair_nest";
 
 export const do_kozaneba_v3 = (j: JSON_KozanebaV3) => {
+  // a cycle made visit recurse until the stack overflowed
+  const { nest, report } = repair_nest(j);
+  report_nest_repair(report, "json");
+  j = nest;
   const to_add: TItem[] = [];
   const visit = (old_id: string): TItemId => {
     const id = create_new_itemid();

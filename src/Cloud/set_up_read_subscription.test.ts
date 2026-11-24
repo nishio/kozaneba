@@ -22,6 +22,10 @@ const fake = vi.hoisted(() => {
 vi.mock("./init_firebase", () => ({ db: fake.db, auth: {} }));
 vi.mock("./FirestoreIO", () => ({
   docdate_to_state: (data: Record<string, unknown>) => ({ ...data }),
+  read_doc: (data: Record<string, unknown>) => ({
+    state: { ...data },
+    nest_report: null,
+  }),
 }));
 vi.mock("../utils/fit_to_contents", () => ({ fit_to_contents: () => ({}) }));
 

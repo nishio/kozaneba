@@ -1,7 +1,7 @@
 import { Alert, Button, Snackbar } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { getGlobal, setGlobal } from "reactn";
-import { docdate_to_state } from "../Cloud/FirestoreIO";
+import { read_doc } from "../Cloud/FirestoreIO";
 import {
   clear_local_draft,
   has_unsaved_work,
@@ -13,6 +13,8 @@ import {
 import { updateGlobal } from "../Global/updateGlobal";
 import { date_to_str } from "../utils/date_to_str";
 import { fit_to_contents } from "../utils/fit_to_contents";
+import { forget_missing_ids } from "../utils/forget_missing_ids";
+import { report_nest_repair } from "../utils/repair_nest";
 
 export const LOCAL_DRAFT_INTERVAL = 5000;
 
@@ -76,7 +78,10 @@ export const LocalDraftKeeper = () => {
       g.dialog = "";
       g.in_tutorial = false;
     });
-    setGlobal(docdate_to_state(offer.doc));
+    const { state, nest_report } = read_doc(offer.doc);
+    setGlobal(state);
+    report_nest_repair(nest_report, "draft");
+    updateGlobal(forget_missing_ids);
     setGlobal(fit_to_contents());
     close_offer();
   };
