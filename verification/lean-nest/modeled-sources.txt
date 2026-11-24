@@ -1,0 +1,30 @@
+# モデルに写したコードのファイルと、写した版の blob（git hash-object）。
+# CI はファイルの今の blob がこの中に無いと warning を出す（失敗にはしない）。
+# 「-」はその版ではファイルが無いこと。写し直したら README の「モデルとコードのずれ」の手順で足す。
+# path blob 版
+src/Event/drag_drop_item.ts 5b6f2453f0a7a04ab7473310567ac957ba2603d0 f531c54
+src/Event/drag_drop_item.ts 8ce4f4e0c6bff59478fe83cd585cfe12bc04fcc3 #137
+src/Event/drag_drop_item_into_group.ts 8ac6308bf5b9006d9a371e361b8573f471d2285b #136
+src/Event/drag_drop_item_into_group.ts a39f0362728ed36007592490290f9c710167c390 #137
+src/Event/drag_drop_item_into_group.ts c9587cf6b11e7b440d5bd7aa497d032570efae24 #136+#137 (main 317a6f7)
+src/Event/drag_drop_item_into_group.ts e654f8108a80878aa6a0a3a24afd5201d864b99d f531c54
+src/Event/drag_drop_selection_into_group.ts 6d3d12c682aca32a2a525a8127cc13cafa844ffb f531c54
+src/Event/drag_drop_selection_into_group.ts c0ed4f633596b146c80b96fc7a684bc7c63f5fd7 #136
+src/Event/drop_validity.ts ea2f2ee30aaaf6284508c85464013c28954082c1 f531c54
+src/Event/onCanvasMouseUp.ts 86f3d6493d239a6a771c23ba84d9082a3fe118cb f531c54
+src/Event/onGroupMouseUp.ts eb7e03fccaef427ab37687bd12aea1629b088fd6 f531c54
+src/Menu/ungroup.ts 916ce4845d82a5aca6911106bdb209ad1f2b1b38 f531c54
+src/utils/add_multiple_kozane.tsx 726d75f00517cdd94966cde219f090e14dca9398 #135
+src/utils/add_multiple_kozane.tsx eabe34dfa78b4c2bcefdd94f4c492287099a7a0f f531c54
+src/utils/delete_item_from_world.tsx 5f0ae2fc5a08f072c2edce9b33bf450d497100e6 f531c54
+src/utils/delete_item_from_world.tsx 6410c712ce3b44ef99da098e7cfa4d696e394af8 #137
+src/utils/find_parent.ts 5a062f16a55b08309eeeefc307691aca8e676acf f531c54
+src/utils/make_items_into_new_group.tsx b1a568ca8feb10cb0c1be7e6af2c719b820f4e67 f531c54
+src/utils/move_front.tsx c4b0d7fcce07519a930781408e18e622a49d60b3 f531c54
+src/utils/remove_empty_untitled_groups.ts - f531c54
+src/utils/remove_empty_untitled_groups.ts 74befd2f22e347f738fff106c33c7f2dadbb2496 #137
+src/utils/remove_item.ts 59923751d50e55050a2ffc9921b498ddaf8d8054 f531c54
+src/utils/remove_item.ts a85d37ce9652792d17a4e9cb75b0f6d488fe52c9 #137
+src/utils/remove_item_from.ts 9f0d8c56d04bf7b05f2cbbb40967754f038a8ab4 f531c54
+src/utils/repair_nest.ts - f531c54
+src/utils/repair_nest.ts c5eceb0c645054bbcf814b31fdd8c098832d767c #139
