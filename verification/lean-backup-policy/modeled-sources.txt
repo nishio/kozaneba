@@ -1,0 +1,7 @@
+# モデルに写したコードのファイルと、写した版の blob（git hash-object）。
+# 「-」はその版ではファイルが無いこと。写し直したら README の「モデルとコードのずれ」の手順で足す。
+# backup_store.ts は prune（場の間引き → 全体の上限）の順だけを写した。
+# path blob 版
+src/Cloud/backup_policy.ts f407fa560eac2e87ec46ba3e697988f8c288fbbf 4ff6400（修正 A・B の前。全数検査の「main」）
+src/Cloud/backup_policy.ts 4bbf612a30a9e0c8b9af83c01ef341fd65d41f8d この PR（修正 A・B の後。全数検査の「修正後」と diff/cases.json）
+src/Cloud/backup_store.ts c0463ca09dfbc0d8f4b06d33d6bdef9d1f01fd89 4ff6400
