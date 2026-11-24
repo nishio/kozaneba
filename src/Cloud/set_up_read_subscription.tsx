@@ -17,6 +17,7 @@ import {
 } from "./sync_version";
 import { can_write } from "../utils/can_write";
 import { backup_if_enabled } from "./backup_store";
+import { forget_missing_ids } from "../utils/forget_missing_ids";
 
 let unsubscribe = null as null | (() => void);
 
@@ -73,6 +74,7 @@ export const set_up_read_subscription = (ba: string) => {
         // server, whether its client clock was ahead or behind ours (D14).
         dev_log("update local with data from server", server);
         setGlobal(server);
+        updateGlobal(forget_missing_ids);
         setGlobal(fit_to_contents());
         note_server_version(ba, version);
         // the state before the first local edit, so that it can be restored

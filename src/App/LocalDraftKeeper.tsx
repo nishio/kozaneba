@@ -13,6 +13,7 @@ import {
 import { updateGlobal } from "../Global/updateGlobal";
 import { date_to_str } from "../utils/date_to_str";
 import { fit_to_contents } from "../utils/fit_to_contents";
+import { forget_missing_ids } from "../utils/forget_missing_ids";
 
 export const LOCAL_DRAFT_INTERVAL = 5000;
 
@@ -77,6 +78,7 @@ export const LocalDraftKeeper = () => {
       g.in_tutorial = false;
     });
     setGlobal(docdate_to_state(offer.doc));
+    updateGlobal(forget_missing_ids);
     setGlobal(fit_to_contents());
     close_offer();
   };

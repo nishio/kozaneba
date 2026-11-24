@@ -8,6 +8,7 @@ import { TGyazoItem } from "../Global/TGyazoItem";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
+import { repair_nest, report_nest_repair } from "../utils/repair_nest";
 import { dev_log } from "../utils/dev";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { auth, db } from "./init_firebase";
@@ -121,6 +122,24 @@ export const docdate_to_state = (
   }
   if (typeof data.scrapbox === "string") {
     ret.scrapbox = data.scrapbox;
+  }
+
+  // Every load of a doc (snapshot, local backup, local draft) comes here.
+  // Older clients saved broken nests (e.g. the orphan of #135); the repair
+  // is not saved by itself, but with the next edit (saves send the state).
+  // A drawOrder of a wrong type is not repaired: it was read as [], which
+  // would make every item an orphan to delete. The items are kept unshown,
+  // as before, so the doc can still be fixed by hand.
+  if (is_string_array(data.drawOrder)) {
+    const { nest, report } = repair_nest({
+      itemStore: ret.itemStore,
+      drawOrder: ret.drawOrder,
+      annotations: ret.annotations,
+    });
+    report_nest_repair(report, "doc");
+    ret.itemStore = nest.itemStore;
+    ret.drawOrder = nest.drawOrder;
+    if (nest.annotations !== undefined) ret.annotations = nest.annotations;
   }
   return ret;
 };

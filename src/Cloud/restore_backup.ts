@@ -1,6 +1,8 @@
 import { getGlobal, setGlobal } from "reactn";
 import { fit_to_contents } from "../utils/fit_to_contents";
 import { mark_local_changed } from "../utils/mark_local_changed";
+import { forget_missing_ids } from "../utils/forget_missing_ids";
+import { updateGlobal } from "../Global/updateGlobal";
 import { add_backup, get_backup_doc } from "./backup_store";
 import { docdate_to_state } from "./FirestoreIO";
 import { state_to_docdate } from "./state_to_docdate";
@@ -22,6 +24,7 @@ export const restore_backup = async (id: number): Promise<boolean> => {
     drawOrder: restored.drawOrder ?? [],
     annotations: restored.annotations ?? [],
   });
+  updateGlobal(forget_missing_ids);
   setGlobal(fit_to_contents());
   mark_local_changed();
   return true;

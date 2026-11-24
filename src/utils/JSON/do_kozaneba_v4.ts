@@ -11,6 +11,7 @@ import { normalize_group_position } from "../normalize_group_position";
 import { check_all_items } from "./check_all_items";
 import { isString } from "../is_string";
 import { TItemId } from "../../Global/TItemId";
+import { repair_nest, report_nest_repair } from "../repair_nest";
 
 export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
   if (!Array.isArray(j.drawOrder)) {
@@ -30,6 +31,22 @@ export const do_kozaneba_v4 = (j: JSON_KozanebaV4) => {
     console.error("itemStore should be an Object", typeof j.itemStore);
     return false;
   }
+  // A cycle made visit recurse until the stack overflowed, and a duplicate
+  // kept its id, so the same item was placed twice. (Lines are checked
+  // below; repair_nest only looks at lines whose items are an array.)
+  const has_lines = Array.isArray(j.annotation);
+  const { nest, report } = repair_nest({
+    itemStore: j.itemStore,
+    drawOrder: j.drawOrder,
+    annotations: has_lines ? j.annotation : undefined,
+  });
+  report_nest_repair(report, "json");
+  j = {
+    ...j,
+    itemStore: nest.itemStore,
+    drawOrder: nest.drawOrder,
+    annotation: has_lines ? nest.annotations! : j.annotation,
+  };
 
   const id_map: { [old_id: string]: TItemId } = {};
   const current = getGlobal();
