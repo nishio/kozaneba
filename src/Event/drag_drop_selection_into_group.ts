@@ -13,6 +13,7 @@ import { Sentry } from "../initSentry";
 import { getGlobal } from "reactn";
 import { get_valid_selection_drop_group_id } from "./drop_validity";
 import { drag_drop_selection } from "./drag_drop_selection";
+import { get_total_offset_of_parents } from "./get_total_offset_of_parents";
 
 export function drag_drop_selection_into_group(
   group_id: TItemId,
@@ -36,9 +37,12 @@ export function drag_drop_selection_into_group(
   }
   updateGlobal((g) => {
     const group_draft = get_group(g, group_id);
+    // The selected items are root items (world frame). The group may be
+    // nested, so its frame is offset by its own position and every ancestor's.
+    const group_offset = get_total_offset_of_parents(group_id, g);
     g.selected_items.forEach((id) => {
       const x = get_item(g, id);
-      x.position = sub_v2w(add_v2w(x.position, delta), group_draft.position);
+      x.position = sub_v2w(add_v2w(x.position, delta), group_offset);
       pin[id] = x.position;
       g.drawOrder = remove_item_from(g.drawOrder, id);
       group_draft.items.push(id);
