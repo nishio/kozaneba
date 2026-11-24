@@ -560,3 +560,24 @@ test("last_updated grows with every edit, also within one millisecond", async ()
   expect(b).toBeGreaterThan(a);
   expect(c).toBeGreaterThan(b);
 });
+
+test("another device that saves in the same millisecond is not taken for this tab", async () => {
+  await open_ba1();
+  const X = T0 + 50 * 60 * 1000;
+  const now = vi.spyOn(Date, "now").mockReturnValue(X);
+  let release = () => {};
+  fs.gate = new Promise<void>((r) => (release = r));
+  await edit("k3", "written on the laptop"); // its save waits at the gate
+  // the iPad saves in the very same millisecond (its own Date.now() is X too)
+  fs.asleep = true; // its snapshot reaches this tab only after the save
+  await other_device_saves(X);
+  await act(async () => {
+    release();
+  });
+  fs.gate = null;
+  await flush();
+  now.mockRestore();
+  // the laptop's save does not overwrite the iPad's: it ends in a conflict
+  expect(Object.keys(server().itemStore).sort()).toEqual(["k1", "k2"]);
+  expect(screen.getByTestId("save-conflict")).toBeInTheDocument();
+});

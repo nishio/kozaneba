@@ -8,6 +8,11 @@ export const mark_local_changed = () => {
     // or the clock moves back (NTP): two saves of the same version with
     // different contents, or a newer save with a smaller version, would let an
     // older save overwrite a newer one or end as "done" without writing.
-    g.last_updated = Math.max(Date.now(), g.last_updated + 1);
+    // The random fraction keeps two devices that save in the same
+    // millisecond from making the same version: each would take the other's
+    // save for its own and overwrite it. (A double near Date.now() keeps
+    // about 12 bits below the millisecond.)
+    g.last_updated =
+      Math.max(Date.now(), Math.floor(g.last_updated) + 1) + Math.random();
   });
 };
