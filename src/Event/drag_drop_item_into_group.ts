@@ -16,6 +16,7 @@ import { Sentry } from "../initSentry";
 import { drag_drop_item } from "./drag_drop_item";
 import { getGlobal } from "reactn";
 import { get_position_after_parent_change } from "./get_position_after_parent_change";
+import { is_self_or_descendant_group } from "./drop_validity";
 
 export function drag_drop_item_into_group(
   group_id: TItemId,
@@ -24,8 +25,16 @@ export function drag_drop_item_into_group(
 ) {
   dev_log(`drop item:${target_id} into group:${group_id}`);
 
-  if (target_id === group_id) {
-    Sentry.captureMessage("drag_drop_item_into_group: target_id === group_id");
+  // Dropping a group into itself or into one of its own descendants would
+  // make a cycle that is saved but no longer drawn. onCanvasMouseUp already
+  // filters these drops; onGroupMouseUp calls this directly, so guard here too
+  // and fall back to a plain move, as onCanvasMouseUp does.
+  if (is_self_or_descendant_group(group_id, target_id)) {
+    Sentry.captureMessage(
+      target_id === group_id
+        ? "drag_drop_item_into_group: target_id === group_id"
+        : "drag_drop_item_into_group: group_id is a descendant of target_id"
+    );
     drag_drop_item(getGlobal() /* not used */, delta, target_id);
     return;
   }
