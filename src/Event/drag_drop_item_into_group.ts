@@ -3,7 +3,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../utils/find_parent";
 import { TGroupItem } from "../Global/TGroupItem";
 import { normalize_group_position } from "../utils/normalize_group_position";
-import { remove_item } from "../utils/remove_item";
+import { remove_empty_untitled_groups } from "../utils/remove_empty_untitled_groups";
 import { pin } from "../Physics/pin";
 import { remove_item_from } from "../utils/remove_item_from";
 import { reset_target } from "./fast_drag_manager";
@@ -47,9 +47,12 @@ export function drag_drop_item_into_group(
         g
       );
 
-      if (p.items.length === 0 && p.text === "") {
-        remove_item(g, previous_parent);
-      } else {
+      const survivor = remove_empty_untitled_groups(g, previous_parent);
+      // Re-center the old parent only if it is still there. When it was
+      // removed, the surviving ancestor may be `group_id` itself, and
+      // normalizing that here (before target.position is set below) would shift
+      // the target; `group_id` and its ancestors are normalized after the update.
+      if (survivor === previous_parent) {
         normalize_group_position(previous_parent, g);
       }
     } else {

@@ -5,7 +5,7 @@ import { updateGlobal } from "../Global/updateGlobal";
 import { find_parent } from "../utils/find_parent";
 import { move_front } from "../utils/move_front";
 import { normalize_group_position } from "../utils/normalize_group_position";
-import { remove_item } from "../utils/remove_item";
+import { remove_empty_untitled_groups } from "../utils/remove_empty_untitled_groups";
 import { pin } from "../Physics/pin";
 import { remove_item_from } from "../utils/remove_item_from";
 import { reset_target } from "./fast_drag_manager";
@@ -36,10 +36,11 @@ export function drag_drop_item(
       pin[target_id] = x.position;
       g.drag_target = "";
 
-      if (p.items.length === 0 && p.text === "") {
-        remove_item(g, parent);
-      } else {
-        normalize_group_position(parent, g);
+      // the target already sits in drawOrder, so re-centering the nearest
+      // group that is still there cannot move it
+      const survivor = remove_empty_untitled_groups(g, parent);
+      if (survivor !== null) {
+        normalize_group_position(survivor, g);
       }
     });
   } else {
