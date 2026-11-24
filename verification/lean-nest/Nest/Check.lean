@@ -1,4 +1,5 @@
 import Nest.Model
+import Nest.Repair
 /-!
 # 全数検査
 
@@ -350,6 +351,146 @@ where go : List (ItemId × Loc) → Bool
   | [] => true
   | (p, _) :: rest => rest.all (fun (b, bl) => b != p && bl != some p) && go rest
 
+/-! ## 読み込み時の修復（PR #139 `repair_nest`）を、壊れた盤面にも当てる
+
+壊れた盤面は、id `0..n-1` の種類（無い・kozane・group）と、drawOrder と各 group の items を
+「長さ `L` 以下の、id の任意の列」にしたものすべて。重複・ぶら下がり（無い id）・孤児・循環を含む。
+題の有無は修復に関係しないので、group は無題だけにした（正しい盤面に対する「変えない」は、
+題のある group も含む上の `boards` で別に確かめる）。kozane は items を持たない（`leaf` は前提）。
+
+修復の結果に求めること（コードとは別に、素直な定義で計算して比べる）:
+* 結果は不変条件を満たす（`wfB`）
+* 入力が正しければ結果は入力のまま、そのときに限り報告（Sentry）が出ない
+* 孤児の根：itemStore にあるが drawOrder にもどの group の items にも無いもの
+* 消してよいもの：孤児の根から、drawOrder から届かないものだけをたどって届くもの
+* 残すもの：drawOrder から届かず、消してよいものでもないもの（循環とその中身）と、そこから届くもの
+* 消えるのは「消してよいもの」のうち「残すもの」でないものちょうど。drawOrder から届くものは消えない
+* 消えないものは、itemStore の中身（種類・題）が変わらない（変わるのは items だけ）
+-/
+
+/-- `seeds` から `next` で届くもの（`n + 1` 回まわす素直な不動点） -/
+def reachSet (n : Nat) (next : ItemId → List ItemId) (seeds : List ItemId) : List ItemId :=
+  go (n + 1) seeds.eraseDups
+where go : Nat → List ItemId → List ItemId
+  | 0, acc => acc
+  | f+1, acc => go f (acc ++ (acc.flatMap next).filter (!acc.contains ·)).eraseDups
+
+def itemsOf (s : Board) (x : ItemId) : List ItemId := (Repair.groupItems s x).getD []
+
+/-- 修復の検査で数えるもの -/
+structure RStat where
+  tried : Nat := 0
+  inputWF : Nat := 0
+  /-- 結果が不変条件を満たさない -/
+  notWF : Nat := 0
+  /-- 正しい盤面を変えた -/
+  changedWF : Nat := 0
+  /-- 報告の有無が「入力が壊れているか」と合わない -/
+  reportMismatch : Nat := 0
+  /-- 消してよいもの以外を消した（drawOrder から届くもの、残す循環とその中身を含む） -/
+  deletedProtected : Nat := 0
+  /-- 消してよいものを残した -/
+  keptDeletable : Nat := 0
+  /-- 消えないものの種類・題が変わった -/
+  nodeChanged : Nat := 0
+  fuelOut : Nat := 0
+  example? : Option String := none
+  -- 壊れ方の内訳（どの壊れ方を試したか）
+  withDangling : Nat := 0
+  withDup : Nat := 0
+  withOrphan : Nat := 0
+  withUnreachedCycle : Nat := 0
+  withShared : Nat := 0
+  withReachedCycle : Nat := 0
+
+def RStat.merge (a b : RStat) : RStat :=
+  { tried := a.tried + b.tried, inputWF := a.inputWF + b.inputWF, notWF := a.notWF + b.notWF,
+    changedWF := a.changedWF + b.changedWF, reportMismatch := a.reportMismatch + b.reportMismatch,
+    deletedProtected := a.deletedProtected + b.deletedProtected,
+    keptDeletable := a.keptDeletable + b.keptDeletable, nodeChanged := a.nodeChanged + b.nodeChanged,
+    fuelOut := a.fuelOut + b.fuelOut, example? := a.example?.orElse fun _ => b.example?,
+    withDangling := a.withDangling + b.withDangling, withDup := a.withDup + b.withDup,
+    withOrphan := a.withOrphan + b.withOrphan, withUnreachedCycle := a.withUnreachedCycle + b.withUnreachedCycle,
+    withShared := a.withShared + b.withShared, withReachedCycle := a.withReachedCycle + b.withReachedCycle }
+
+def RStat.failures (r : RStat) : Nat :=
+  r.notWF + r.changedWF + r.reportMismatch + r.deletedProtected + r.keptDeletable + r.nodeChanged + r.fuelOut
+
+def showAny (s : Board) : String :=
+  let item (x : ItemId) : String := match s.store x with
+    | some nd => if nd.isGroup then s!"{x}:G{if nd.titled then "t" else "u"}{nd.items}" else s!"{x}:K"
+    | none => ""
+  s!"drawOrder={s.roots} " ++ " ".intercalate ((ids s).map item)
+
+/-- 1 つの盤面に修復を当てて数える -/
+def RStat.add (r : RStat) (s : Board) : RStat :=
+  let out := Repair.repairNest s
+  let s' := out.board
+  let wfIn := wfB s
+  let all := ids s
+  let reached := reachSet s.n (itemsOf s) (s.roots.filter (present s))
+  let unreached := all.filter (!reached.contains ·)
+  let withinU (x : ItemId) := (itemsOf s x).filter (unreached.contains ·)
+  let placed := s.roots ++ all.flatMap (itemsOf s)
+  let orphanRoots := all.filter (!placed.contains ·)
+  let deletable := reachSet s.n withinU orphanRoots
+  let keepSeeds := unreached.filter (!deletable.contains ·)
+  let keep := reachSet s.n withinU keepSeeds
+  let gone := all.filter (!present s' ·)
+  let shouldGo := deletable.filter (!keep.contains ·)
+  let fails : List String :=
+    (if wfB s' then [] else ["結果が不変条件を満たさない: " ++ diagnose s']) ++
+    (if wfIn && !eqB s s' then ["正しい盤面を変えた"] else []) ++
+    (if wfIn != out.report.isNone then ["報告の有無が入力の壊れ方と合わない"] else []) ++
+    (if gone.all (shouldGo.contains ·) then [] else [s!"消してよいもの以外を消した: 消えた={gone} 消してよい={shouldGo}"]) ++
+    (if shouldGo.all (gone.contains ·) then [] else [s!"消してよいものを残した: 消えた={gone} 消してよい={shouldGo}"]) ++
+    (if all.all (fun x => gone.contains x || ((s.store x).map (fun nd => (nd.isGroup, nd.titled)) ==
+        (s'.store x).map (fun nd => (nd.isGroup, nd.titled)))) then [] else ["消えないものの種類・題が変わった"]) ++
+    (if (out.report.map (·.fuelOut)).getD false then ["燃料が尽きた"] else [])
+  let occAll (x : ItemId) := cnt x placed
+  let r := { r with
+    tried := r.tried + 1
+    inputWF := r.inputWF + (if wfIn then 1 else 0)
+    notWF := r.notWF + (if wfB s' then 0 else 1)
+    changedWF := r.changedWF + (if wfIn && !eqB s s' then 1 else 0)
+    reportMismatch := r.reportMismatch + (if wfIn != out.report.isNone then 1 else 0)
+    deletedProtected := r.deletedProtected + (if gone.all (shouldGo.contains ·) then 0 else 1)
+    keptDeletable := r.keptDeletable + (if shouldGo.all (gone.contains ·) then 0 else 1)
+    nodeChanged := r.nodeChanged + (if fails.any (·.startsWith "消えないもの") then 1 else 0)
+    fuelOut := r.fuelOut + (if fails.contains "燃料が尽きた" then 1 else 0)
+    withDangling := r.withDangling + (if placed.any (!present s ·) then 1 else 0)
+    withDup := r.withDup + (if all.any (occAll · > 1) then 1 else 0)
+    withOrphan := r.withOrphan + (if orphanRoots.isEmpty then 0 else 1)
+    withUnreachedCycle := r.withUnreachedCycle + (if keepSeeds.isEmpty then 0 else 1)
+    withShared := r.withShared + (if deletable.any (keep.contains ·) then 1 else 0)
+    withReachedCycle := r.withReachedCycle +
+      (if reached.any (fun x => (itemsOf s x).any fun c => descB s c x) then 1 else 0) }
+  if fails.isEmpty then r else
+  { r with
+    example? := r.example?.orElse fun _ =>
+      some s!"前: {showAny s}\n      後: {showAny s'}\n      {fails}" }
+
+/-- 長さ `L` 以下の、`0..n-1` の任意の列 -/
+def listsUpTo (n L : Nat) : List (List ItemId) :=
+  (List.range (L + 1)).flatMap (allLists (List.range n))
+
+/-- id `0..n-1` の種類と items のすべての組（drawOrder は別）。`none` は itemStore に無い。 -/
+def storesOf (n L : Nat) : List (List (Option Node)) :=
+  let opts : List (Option Node) :=
+    none :: some ⟨false, false, []⟩ :: (listsUpTo n L).map fun l => some ⟨true, false, l⟩
+  allLists opts n
+
+def boardOf (n : Nat) (roots : List ItemId) (nodes : Array (Option Node)) : Board :=
+  { n, roots, store := fun x => nodes.getD x none }
+
+/-- 壊れた盤面を含むすべてに修復を当てる。drawOrder ごとに Task に分ける。 -/
+def checkRepairBroken (n L : Nat) : IO RStat := do
+  -- `Task.spawn` に関数で渡す（`IO.asTask (return …)` だと計算が外に出され、並ばない）。
+  -- 盤面の列は Task ごとに作る（Task の間で共有すると参照カウントが atomic になって遅い）。
+  let tasks := (listsUpTo n L).map fun roots => Task.spawn (prio := .dedicated) fun _ =>
+    (storesOf n L).foldl (fun r nodes => r.add (boardOf n roots nodes.toArray)) ({} : RStat)
+  return tasks.foldl (fun acc t => acc.merge t.get) {}
+
 /-! ## 実行 -/
 
 structure Result where
@@ -411,7 +552,27 @@ def configs : List (String × Fix) :=
     ("#137 のみ（空の無題 group を連鎖で片付け）", { c := true }),
     ("#135 + #136 + #137", { a := true, b := true, c := true }) ]
 
-def run (maxN : Nat) : IO Unit := do
+/-- 修復を当てる壊れた盤面の範囲 `(id の個数, 列の長さの上限)`。`check 4` で
+`(1,5) (2,4) (3,3) (4,2)`。 -/
+def repairRanges (maxN : Nat) : List (Nat × Nat) :=
+  (List.range maxN).map fun k => (k + 1, maxN + 1 - k)
+
+/-- 修正前の版で、反例が出るはずの操作（出なくなったら検査が鈍ったので失敗にする） -/
+def expectedBroken : List String :=
+  [ "onGroupMouseUp: 1 アイテムを drop（呼び出し元にガードなし）",
+    "onGroupMouseUp: 選択を drop（呼び出し元にガードなし）",
+    "replace_multiple_kozane（kozane を 2 行に編集）" ]
+
+def printRStat (label : String) (r : RStat) : IO Unit := do
+  IO.println s!"\n■ {label}: {r.tried} 個（うち正しい盤面 {r.inputWF}）"
+  IO.println s!"    結果が不変条件を満たさない {r.notWF}、正しい盤面を変えた {r.changedWF}、報告の有無が合わない {r.reportMismatch}"
+  IO.println s!"    消してよいもの以外を消した {r.deletedProtected}、消してよいものを残した {r.keptDeletable}、消えないものの中身が変わった {r.nodeChanged}、燃料切れ {r.fuelOut}"
+  IO.println s!"    試した壊れ方: ぶら下がり {r.withDangling}、重複 {r.withDup}、孤児 {r.withOrphan}、届かない循環 {r.withUnreachedCycle}、孤児と残す循環が共有 {r.withShared}、drawOrder から届く循環 {r.withReachedCycle}"
+  if let some e := r.example? then IO.println s!"    例: {e}"
+
+/-- 全数検査。修正後の版・修復・突き合わせで 1 件でも崩れたら 1 を返す。 -/
+def run (maxN : Nat) : IO UInt32 := do
+  let mut failed : List String := []
   let bs := (List.range (maxN + 1)).flatMap boards
   IO.println s!"正しい盤面: {bs.length} 個（id ≤ {maxN} 個）"
   -- ガードの計算が Desc と一致するか
@@ -421,6 +582,7 @@ def run (maxN : Nat) : IO Unit := do
       else some s!"g={g} t={t}: {showBoard s}")) []
   IO.println s!"is_self_or_descendant_group(g,t) と「g は t の子孫か自身」の不一致: {guardMismatch.length} 件"
   for m in guardMismatch.take 3 do IO.println s!"  {m}"
+  if guardMismatch.length > 0 then failed := failed ++ ["is_self_or_descendant_group"]
   -- remove_empty_untitled_groups の写しと、証明で使う cleanupChain（祖先の道）の突き合わせ。
   -- x を親 p から外した直後の盤面（片付けを呼ぶ時点）で比べる。
   let (chainTried, chainMismatch, chainBad) := bs.foldl (fun (acc : Nat × Nat × Nat) s =>
@@ -433,10 +595,15 @@ def run (maxN : Nat) : IO Unit := do
         let bad := if chainOK s1 l then bad else bad + 1
         (t + 1, m, bad)) acc) (0, 0, 0)
   IO.println s!"remove_empty_untitled_groups の写しと cleanupChain(祖先の道) の不一致: {chainMismatch} 件 / {chainTried} 通り、道が cleanupChain_wf の前提を満たさない: {chainBad} 件"
+  if chainMismatch + chainBad > 0 then failed := failed ++ ["cleanupChain の突き合わせ"]
+  -- 操作ごと・版ごとに Task に分ける
+  let tasks := configs.map fun (_, fx) => (ops fx).map fun (name, cases) =>
+    Task.spawn (prio := .dedicated) fun _ =>
+      checkOp name ((List.range (maxN + 1)).flatMap boards) cases
   let mut table : List (List Result) := []
-  for (cname, fx) in configs do
+  for ((cname, _), ts) in configs.zip tasks do
     IO.println s!"\n========== {cname} =========="
-    let rs := (ops fx).map fun (name, cases) => checkOp name bs cases
+    let rs := ts.map Task.get
     for r in rs do
       IO.println s!"\n■ {r.name}: {r.tried} 通り、崩れた {r.broken}、空の無題 group が新しくできた {r.newEmptyUntitled}"
       if let some e := r.example? then IO.println s!"    例: {e}"
@@ -454,5 +621,36 @@ def run (maxN : Nat) : IO Unit := do
       | some r => toString r.tried
       | none => "?"
     IO.println ("| " ++ name ++ " | " ++ tried ++ " | " ++ " | ".intercalate cells ++ " |")
+  -- 修正後（3 つとも）の版で崩れたら失敗。修正前の反例は期待どおり（出なくなったら失敗）。
+  for r in (table.getLast?.getD []) do
+    if r.broken > 0 then failed := failed ++ [s!"修正後の {r.name} が崩れた"]
+  if maxN ≥ 2 then
+    for r in (table.head?.getD []) do
+      if expectedBroken.contains r.name && r.broken == 0 then
+        failed := failed ++ [s!"修正前の {r.name} で反例が出なくなった"]
+  -- 読み込み時の修復（PR #139）
+  IO.println "\n========== 読み込み時の修復（PR #139 repair_nest） =========="
+  let rWF := bs.foldl RStat.add {}
+  printRStat s!"正しい盤面（題の有無を含む、id ≤ {maxN} 個）" rWF
+  let mut rrows : List (String × RStat) := [(s!"正しい盤面（id ≤ {maxN}）", rWF)]
+  for (n, L) in repairRanges maxN do
+    let r ← checkRepairBroken n L
+    printRStat s!"壊れた盤面を含む全部（id {n} 個、列の長さ ≤ {L}）" r
+    rrows := rrows ++ [(s!"壊れた盤面を含む全部（id {n} 個、列の長さ ≤ {L}）", r)]
+  IO.println "\n| 盤面 | 個数 | 正しい盤面 | 結果が崩れた | 正しい盤面を変えた | 報告が合わない | 消してはいけないものを消した | 消してよいものを残した |"
+  IO.println "|---|---:|---:|---:|---:|---:|---:|---:|"
+  for (label, r) in rrows do
+    IO.println s!"| {label} | {r.tried} | {r.inputWF} | {r.notWF} | {r.changedWF} | {r.reportMismatch} | {r.deletedProtected} | {r.keptDeletable} |"
+    if r.failures > 0 then failed := failed ++ [s!"修復: {label}"]
+  IO.println "\n| 盤面 | ぶら下がり | 重複 | 孤児 | 届かない循環 | 孤児と残す循環が共有 | drawOrder から届く循環 |"
+  IO.println "|---|---:|---:|---:|---:|---:|---:|"
+  for (label, r) in rrows do
+    IO.println s!"| {label} | {r.withDangling} | {r.withDup} | {r.withOrphan} | {r.withUnreachedCycle} | {r.withShared} | {r.withReachedCycle} |"
+  if failed.isEmpty then
+    IO.println "\nOK: 修正後の版と修復で、崩れたものはありません"
+    return 0
+  else
+    IO.println s!"\nFAILED: {failed}"
+    return 1
 
 end Nest.Check

@@ -1,0 +1,107 @@
+name: Lean
+
+# verification/lean-nest: the nesting invariants of itemStore / drawOrder /
+# group.items, proved and checked exhaustively in Lean 4. Not a required check.
+#
+# Runs on every PR and every push to main, whatever files changed: the model
+# is a hand copy of the code, so a change in src does not change the result,
+# but the "Compare the modeled sources" step warns when a copied file is no
+# longer one of the versions the model was copied from.
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lean-nest:
+    name: Lean nest invariants
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: verification/lean-nest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # Warn (do not fail) when a file the model copies has changed
+      - name: Compare the modeled sources
+        run: |
+          stale=0
+          for p in $(grep -v '^#' modeled-sources.txt | awk '{print $1}' | sort -u); do
+            if [ -f "../../$p" ]; then b=$(git hash-object "../../$p"); else b=-; fi
+            if ! grep -q "^$p $b " modeled-sources.txt; then
+              echo "::warning file=$p::$p is not a version the Lean model (verification/lean-nest) was copied from. If it changes the tree (itemStore / drawOrder / group.items), update the model."
+              stale=1
+            fi
+          done
+          if [ "$stale" = 0 ]; then echo "every modeled source is a copied version"; fi
+
+      - name: Cache elan and the Lean toolchain
+        id: elan-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.elan
+          key: elan-${{ runner.os }}-${{ hashFiles('verification/lean-nest/lean-toolchain') }}
+
+      - name: Install elan
+        if: steps.elan-cache.outputs.cache-hit != 'true'
+        run: curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+
+      # The toolchain is the one in lean-toolchain (elan installs it on first use)
+      - name: Set up the toolchain
+        run: |
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/lean" --version
+
+      - name: Cache the build
+        uses: actions/cache@v6
+        with:
+          path: verification/lean-nest/.lake
+          key: lake-${{ runner.os }}-${{ hashFiles('verification/lean-nest/lean-toolchain', 'verification/lean-nest/lakefile.toml', 'verification/lean-nest/lake-manifest.json') }}-${{ hashFiles('verification/lean-nest/**/*.lean') }}
+          restore-keys: |
+            lake-${{ runner.os }}-${{ hashFiles('verification/lean-nest/lean-toolchain', 'verification/lean-nest/lakefile.toml', 'verification/lean-nest/lake-manifest.json') }}-
+
+      # Fails when a proof is broken; a proof left with sorry is a failure too
+      - name: Build the proofs and the checker
+        run: |
+          lake build 2>&1 | tee build.log
+          # Lean 4.36 writes `sorry` in backquotes, older ones in quotes
+          if grep -q "declaration uses .sorry." build.log; then
+            echo "::error::a declaration uses sorry"
+            exit 1
+          fi
+
+      - name: Axioms of the theorems
+        run: |
+          lake env lean Axioms.lean 2>&1 | tee axioms.log
+          if grep -q "sorryAx" axioms.log; then
+            echo "::error::a theorem depends on sorryAx"
+            exit 1
+          fi
+
+      # Exits non-zero when the fixed code or the load-time repair breaks an
+      # invariant, or the unfixed code no longer shows its counterexamples
+      - name: Exhaustive check (ids <= 4)
+        run: |
+          set +e
+          .lake/build/bin/check 4 | tee check.log
+          status=${PIPESTATUS[0]}
+          set -e
+          {
+            echo "## Lean: exhaustive check (ids <= 4)"
+            echo
+            awk '/^\|/ { print; t = 1; next } t { print ""; t = 0 } /^(OK|FAILED)/ { print }' check.log
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"
