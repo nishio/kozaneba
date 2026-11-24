@@ -708,7 +708,7 @@ describe("minimal cases", () => {
     const s = getGlobal();
     const [ax, ay] = get_global_position(id("A"), s);
     const b = get_group_bounding_box(s.itemStore.A as TGroupItem);
-    // actual: anchor x = 0, box from x = 104 to x = 296
+    // actual: anchor x = 0, box from x = 79 to x = 321
     expect(b.left <= ax && ax <= b.right && b.top <= ay && ay <= b.bottom).toBe(true);
   });
 });
