@@ -51,9 +51,13 @@ describe("select_thinned", () => {
     const has_near = (t: number, tol: number) => k.some((m) => Math.abs(m.saved_at - t) <= tol);
     expect(has_near(NOW - DAY, HOUR)).toBe(true);
     expect(has_near(NOW - 7 * DAY, DAY)).toBe(true);
-    // in the hourly range, at most one per hour (beyond the newest 20)
+    // in the hourly range, at most one per hour, split at the local midnight
+    // (beyond the newest 20). With a time zone of +5:30, a UTC hour that
+    // crosses the local midnight keeps one on each side of it.
     const hourly = k.filter((m) => m.id < id_of(19) && NOW - m.saved_at < BACKUP_POLICY.hourly_for);
-    const hours = hourly.map((m) => Math.floor(m.saved_at / HOUR));
+    const hours = hourly.map(
+      (m) => `${Math.floor(m.saved_at / HOUR)}-${new Date(m.saved_at).getDate()}`
+    );
     expect(new Set(hours).size).toBe(hours.length);
     // older than 30 days (Aug 18 .. Sep 27): one per month, August and September
     const monthly = k.filter((m) => NOW - m.saved_at >= BACKUP_POLICY.daily_for);

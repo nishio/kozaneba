@@ -2,7 +2,7 @@
 // Ba at that time, so select_thinned is applied again and again to what the
 // earlier calls left. These tests follow that sequence (without IndexedDB:
 // `prune` is select_thinned followed by deleting the returned ids).
-// The cases come from the Lean model in verification/lean-backup-policy.
+// The cases come from the Lean model of this policy (PR #146).
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { BACKUP_POLICY, select_thinned, TBackupMeta } from "./backup_policy";
 
