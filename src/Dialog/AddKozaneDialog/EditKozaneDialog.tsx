@@ -34,6 +34,9 @@ export const EditKozaneDialog = () => {
 
   const g = getGlobal();
   const id = g.clicked_target;
+  // the target can be gone while dialog is still "EditKozane" (a multi-line
+  // edit replaces it with a group); get_item would throw on a missing id
+  if (id === "" || g.itemStore[id] === undefined) return null;
   const item = get_item(g, id);
   const text = item.text;
 
