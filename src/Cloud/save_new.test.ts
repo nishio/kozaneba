@@ -6,6 +6,7 @@ import { make_copy } from "../utils/make_copy";
 import { initial_save } from "./initial_save";
 import { save } from "./save";
 import { is_ba_owner } from "../utils/can_write";
+import { mark_local_changed } from "../utils/mark_local_changed";
 
 // A fake Firestore that records what the client writes. Snapshots are never
 // delivered here, which is the situation of the real first snapshot after
@@ -95,6 +96,9 @@ describe("local state after save_new", () => {
     // the copier owns the copy and gets the Share selector
     expect(is_ba_owner()).toBe(true);
 
+    // the next edit (save() runs after mark_local_changed, which gives the
+    // state a new version; the version save_new wrote is not written again)
+    mark_local_changed();
     save();
     await flush();
     expect(fake.set).toHaveLength(1);
