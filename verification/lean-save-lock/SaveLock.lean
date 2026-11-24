@@ -78,7 +78,8 @@ deriving BEq, Hashable, Repr, Inhabited
 
 structure Cfg where
   name : String
-  /-- 0: 全体で一意に増える時計、1: クライアントごとに増える（クライアント間で同じ値がありうる）、2: 任意（戻りうる） -/
+  /-- 0: 全体で一意に増える時計、1: クライアントごとに増える（クライアント間で同じ値がありうる）、2: 任意（戻りうる）、
+      3: クライアントごとに増え、クライアント間で重ならない（大小の順は端末どうしでばらばら） -/
   clockMode : Nat := 0
   K : Nat := 4
   maxEdits : Nat := 3
@@ -131,6 +132,7 @@ def edits (cfg : Cfg) (s : St) (i : Nat) : List Step :=
   let vers : List Nat := match cfg.clockMode with
     | 0 => [s.clock + 1]
     | 1 => (List.range (cfg.K + 1)).filter (· > c.clk)
+    | 3 => (List.range (cfg.K + 1)).filter (fun v => v > c.clk && v % s.cs.length == i % s.cs.length)
     | _ => (List.range (cfg.K + 1)).filter (· ≥ 1)
   vers.map fun v =>
     (s!"c{i}: 編集 e{s.nextEdit}（last_updated={v}）",
@@ -279,6 +281,9 @@ def configs : List (Cfg × List String) := [
   ({ name := "E'. E + 修正案 3", loggedOut1 := true, canLogin := true, fixWatcherLogin := true }, []),
   ({ name := "ALL'. 時計は一意・一時的と恒久的なエラー・表示を閉じる・未ログインからログイン、と修正案 1〜3 すべて",
       transient := 1, permanent := 1, dismiss := true, loggedOut1 := true, canLogin := true,
+      fixSkipEq := true, fixKeepError := true, fixWatcherLogin := true }, []),
+  ({ name := "H. 時計はクライアントごとに増え、端末どうしで重ならない（大小はばらばら）・エラーと未ログインのすべて + 修正案 1〜3（#141 の後のコード）",
+      clockMode := 3, K := 7, transient := 1, permanent := 1, dismiss := true, loggedOut1 := true, canLogin := true,
       fixSkipEq := true, fixKeepError := true, fixWatcherLogin := true }, []),
   ({ name := "M1. 変異: snapshot を常に採用", mutAlwaysAdopt := true }, ["P2", "P1"]),
   ({ name := "M2. 変異: may_overwrite を常に true", mutAlwaysOverwrite := true }, ["P1"]),

@@ -8,3 +8,7 @@ src/App/LocalChangeWatcher.tsx cb540f6f6ac3c0e901ad9bbd70c02cc2525942af 4ff6400
 src/utils/mark_local_changed.ts 718f94180b418cc0f78c3fbbfb6a1baa15ec6951 4ff6400
 src/App/Blank.tsx 7240190d7d9e61ca38c53bd844ca4365bf7e4864 4ff6400
 src/Cloud/not_login_then_show_dialog.ts 44fef4199bd7fccf297731fedb057b756d628aac 4ff6400
+src/Cloud/save.ts 3df3b5999122a9ed3a1ed4fa2660cea6b8fd9bb0 #141
+src/App/LocalChangeWatcher.tsx 0fb9ccd7c12c8ea7e1220e54e2aea5052377d2c7 #141
+src/utils/mark_local_changed.ts 5d7f8f803d094aba06e6db2186e9dcd4b243e101 #141
+src/App/Blank.tsx 164fc956ac8c9ff8574c8b94159362bc53630d05 #141
