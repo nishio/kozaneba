@@ -1,0 +1,9 @@
+name = "nest"
+defaultTargets = ["Nest", "check"]
+
+[[lean_lib]]
+name = "Nest"
+
+[[lean_exe]]
+name = "check"
+root = "Main"
