@@ -105,3 +105,60 @@ jobs:
             awk '/^\|/ { print; t = 1; next } t { print ""; t = 0 } /^(OK|FAILED)/ { print }' check.log
           } >> "$GITHUB_STEP_SUMMARY"
           exit "$status"
+
+  # verification/lean-save-lock: model check of the optimistic lock on save
+  # (#98) over every interleaving of two clients. Fails when a configuration
+  # expected to be safe breaks a property, or when an expected counterexample
+  # (the unfixed hazards, the mutants) disappears.
+  lean-save-lock:
+    name: Lean save lock
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: verification/lean-save-lock
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Compare the modeled sources
+        run: |
+          stale=0
+          for p in $(grep -v '^#' modeled-sources.txt | awk '{print $1}' | sort -u); do
+            if [ -f "../../$p" ]; then b=$(git hash-object "../../$p"); else b=-; fi
+            if ! grep -q "^$p $b " modeled-sources.txt; then
+              echo "::warning file=$p::$p is not a version the Lean model (verification/lean-save-lock) was copied from. If it changes saving or snapshots, update the model."
+              stale=1
+            fi
+          done
+          if [ "$stale" = 0 ]; then echo "every modeled source is a copied version"; fi
+
+      - name: Cache elan and the Lean toolchain
+        id: elan-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.elan
+          key: elan-${{ runner.os }}-${{ hashFiles('verification/lean-save-lock/lean-toolchain') }}
+
+      - name: Install elan
+        if: steps.elan-cache.outputs.cache-hit != 'true'
+        run: curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+
+      - name: Set up the toolchain
+        run: |
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+          "$HOME/.elan/bin/lean" --version
+
+      - name: Build the checker
+        run: lake build
+
+      - name: Model check
+        run: |
+          set +e
+          .lake/build/bin/check | tee check.log
+          status=${PIPESTATUS[0]}
+          set -e
+          { echo "## Lean: save lock"; echo; grep '^■' check.log; } >> "$GITHUB_STEP_SUMMARY"
+          exit "$status"

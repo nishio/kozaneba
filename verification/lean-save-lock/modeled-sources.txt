@@ -1,0 +1,10 @@
+# モデルに写したコードのファイルと、写した版の blob（git hash-object）。
+# CI はファイルの今の blob がこの中に無いと warning を出す（失敗にはしない）。
+# path blob 版
+src/Cloud/save.ts 1f5fb7aa31085e16d3942477daba9a5e8f24fa83 4ff6400
+src/Cloud/sync_version.ts 48e8bdd0e37b24aa9e1b5dd6156baac1ff4c8d0e 4ff6400
+src/Cloud/set_up_read_subscription.tsx 43b75714dd76c64f63c446d255f90179c3bf86e2 4ff6400
+src/App/LocalChangeWatcher.tsx cb540f6f6ac3c0e901ad9bbd70c02cc2525942af 4ff6400
+src/utils/mark_local_changed.ts 718f94180b418cc0f78c3fbbfb6a1baa15ec6951 4ff6400
+src/App/Blank.tsx 7240190d7d9e61ca38c53bd844ca4365bf7e4864 4ff6400
+src/Cloud/not_login_then_show_dialog.ts 44fef4199bd7fccf297731fedb057b756d628aac 4ff6400
