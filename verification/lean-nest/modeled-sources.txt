@@ -6,6 +6,7 @@ src/Event/drag_drop_item.ts 5b6f2453f0a7a04ab7473310567ac957ba2603d0 f531c54
 src/Event/drag_drop_item.ts 8ce4f4e0c6bff59478fe83cd585cfe12bc04fcc3 #137
 src/Event/drag_drop_item_into_group.ts 8ac6308bf5b9006d9a371e361b8573f471d2285b #136
 src/Event/drag_drop_item_into_group.ts a39f0362728ed36007592490290f9c710167c390 #137
+src/Event/drag_drop_item_into_group.ts c9587cf6b11e7b440d5bd7aa497d032570efae24 #136+#137 (main 317a6f7)
 src/Event/drag_drop_item_into_group.ts e654f8108a80878aa6a0a3a24afd5201d864b99d f531c54
 src/Event/drag_drop_selection_into_group.ts 6d3d12c682aca32a2a525a8127cc13cafa844ffb f531c54
 src/Event/drag_drop_selection_into_group.ts c0ed4f633596b146c80b96fc7a684bc7c63f5fd7 #136
