@@ -4,7 +4,7 @@
 
 ```sh
 export PATH=$HOME/.elan/bin:$PATH   # elan は verification/lean-nest/README.md の手順で入れる
-lake build && .lake/build/bin/check  # 約 50 秒（並列で 4 分ぶんの CPU）
+lake build && .lake/build/bin/check  # 約 50 秒
 ```
 
 終了コードが 0 でなくなるのは、次のどちらかのとき。
