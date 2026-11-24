@@ -13,7 +13,7 @@ Kozaneba の itemStore / drawOrder / group.items が作る木が、操作の後�
 - [#137](https://github.com/nishio/kozaneba/pull/137) `ai/empty-untitled-group-cleanup`（bd45a9b）：空で題の無い group が、1 段上より上や削除の後に残る
 - [#139](https://github.com/nishio/kozaneba/pull/139) `ai/repair-nest-on-load`（01aea5f）：Firestore の doc・下書き・backup・貼り付けた JSON を読むときに、壊れた入れ子を直す（`repair_nest`）
 
-#135 は 2026-11-24 に main に入りました（7bba377）。#136 の今の head（aa1f778）は 8467dd1 に main を merge しただけで、写した部分は変わっていません。
+#135 と #136 は 2026-11-24 に main に入りました（7bba377、f638fc4）。#136 の merge した head（aa1f778）は 8467dd1 に main を merge しただけで、写した部分は変わっていません。
 
 CI（`.github/workflows/lean.yml`）で、PR と main への push のたびに build と全数検査が走ります（下の「CI」）。
 
