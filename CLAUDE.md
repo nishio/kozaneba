@@ -152,7 +152,7 @@ python kozaneba.py  # Kozanebaデータ構造を操作するためのPython API
 - **ダブルクリック**: その場でラベルを1行編集（`editing_line_label`、Enterで確定・Escで取消・空にすると削除）。ラベルが複数行なら1行の editor では改行が消えるので、代わりに `EditAnnotationDialog` を開く
 - **右クリック**: `clicked_annotation` を設定して `EditAnnotationDialog` を開く
 
-編集中の線は配列の index ではなく `TAnnotationRef`（index と items の組、`src/utils/annotation_ref.ts`）で指し、描画のたびに `resolve_annotation_ref` で引き直します。他のクライアントの保存で index がずれても同じ線を編集し、線が消えたらダイアログ・editor を閉じます。
+編集中の線は配列の index ではなく `TAnnotationRef`（items と、同じ items の線のうち何番目か・何本あったか。`src/utils/annotation_ref.ts`）で指し、描画のたびに `resolve_annotation_ref` で引き直します。他のクライアントの保存で index がずれても同じ線を編集し、線が消えたら、または同じ items の線（同じ 2 点を結ぶ線と矢印など）の本数が変わったら、別の線を編集しないようにダイアログ・editor を閉じます（`verification/lean-annotation-ref`）。
 
 `EditAnnotationDialog` で編集できるもの：
 - ラベルテキスト（複数行可）
