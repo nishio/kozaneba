@@ -1,0 +1,12 @@
+# モデルに写したコードのファイルと、写した版の blob（git hash-object）。
+# ファイルの今の blob がこの中に無ければ、写し直しが要るかを見る（README の「モデルとコードのずれ」）。
+# path blob 版
+src/utils/annotation_ref.ts 5e2e7d72028580f6ddf2b1829f588d360daf374c 4ff6400（Model.lean の resolve / refOf）
+src/utils/annotation_ref.ts 71e9ee4f9ae55ee865e2523c1b20eae75f73f914 この PR（Model.lean の resolveF / refOfF）
+src/utils/update_annotation_after_deletion.tsx af52589596edd3a282eb25d482cb40de859b4b8d 4ff6400
+src/Event/handle_making_line.ts d10f6bfed586bcfa01a44c908989d5eac57cb085 4ff6400
+src/API/add_arrow.ts 7942fa7af60eccb808d93cd8198eff34120ef639 4ff6400
+src/Dialog/EditAnnotationDialog.tsx ab60e6453970536a8f7c330bf7592e511a447d43 4ff6400
+src/Canvas/Annotation/LineAnnot.tsx 843bf623bfe54ae36ac9b578ccb125ab83ba8a82 4ff6400
+src/Canvas/Annotation/LineAnnot.tsx 5de95220a27d6c2bf75336d44286d5ac1a2c92e4 この PR
+src/Canvas/Annotation/AnnotationLayer.tsx e2aeeab34d6969b1547a887a4effaafd369c134e 4ff6400
