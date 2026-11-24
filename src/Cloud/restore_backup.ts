@@ -4,7 +4,8 @@ import { mark_local_changed } from "../utils/mark_local_changed";
 import { forget_missing_ids } from "../utils/forget_missing_ids";
 import { updateGlobal } from "../Global/updateGlobal";
 import { add_backup, get_backup_doc } from "./backup_store";
-import { docdate_to_state } from "./FirestoreIO";
+import { read_doc } from "./FirestoreIO";
+import { report_nest_repair } from "../utils/repair_nest";
 import { state_to_docdate } from "./state_to_docdate";
 
 // Loads a local backup into the canvas. It does not write the cloud doc
@@ -16,7 +17,7 @@ import { state_to_docdate } from "./state_to_docdate";
 export const restore_backup = async (id: number): Promise<boolean> => {
   const doc = await get_backup_doc(id);
   if (doc === null) return false;
-  const restored = docdate_to_state(doc);
+  const { state: restored, nest_report } = read_doc(doc);
   const g = getGlobal();
   await add_backup(g.cloud_ba, state_to_docdate(g));
   await setGlobal({
@@ -24,6 +25,7 @@ export const restore_backup = async (id: number): Promise<boolean> => {
     drawOrder: restored.drawOrder ?? [],
     annotations: restored.annotations ?? [],
   });
+  report_nest_repair(nest_report, "backup");
   updateGlobal(forget_missing_ids);
   setGlobal(fit_to_contents());
   mark_local_changed();

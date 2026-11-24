@@ -2,7 +2,8 @@ import { getGlobal, setGlobal } from "reactn";
 import { State } from "reactn/default";
 import { fit_to_contents } from "../utils/fit_to_contents";
 import { updateGlobal } from "../Global/updateGlobal";
-import { docdate_to_state } from "./FirestoreIO";
+import { read_doc } from "./FirestoreIO";
+import { report_nest_repair } from "../utils/repair_nest";
 import { db } from "./init_firebase";
 import { DocSnap } from "./FirebaseShortTypename";
 import { set_status } from "../utils/set_status";
@@ -46,10 +47,10 @@ export const set_up_read_subscription = (ba: string) => {
       }
 
       dev_log("new data from server");
-      const server = docdate_to_state(data);
+      const { state: server, nest_report } = read_doc(data);
       const local_latest = getGlobal().last_updated;
       const server_latest = server.last_updated;
-      // the version as stored (docdate_to_state may clamp last_updated)
+      // the version as stored (read_doc may clamp last_updated)
       const version = as_version(data.last_updated);
       if (server_latest === undefined) {
         dev_log("no valid last_updated in server data");
@@ -74,6 +75,9 @@ export const set_up_read_subscription = (ba: string) => {
         // server, whether its client clock was ahead or behind ours (D14).
         dev_log("update local with data from server", server);
         setGlobal(server);
+        // once per ba and page session: a broken ba that nobody edits is
+        // repaired again on every version adopted from elsewhere
+        report_nest_repair(nest_report, "snapshot", ba);
         updateGlobal(forget_missing_ids);
         setGlobal(fit_to_contents());
         note_server_version(ba, version);

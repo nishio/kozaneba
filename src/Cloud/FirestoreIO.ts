@@ -8,7 +8,7 @@ import { TGyazoItem } from "../Global/TGyazoItem";
 import { TKozaneItem } from "../Global/TKozaneItem";
 import { TGroupItem } from "../Global/TGroupItem";
 import { upgrade } from "../utils/piece_to_kozane";
-import { repair_nest, report_nest_repair } from "../utils/repair_nest";
+import { repair_nest, TNestReport } from "../utils/repair_nest";
 import { dev_log } from "../utils/dev";
 import { DocData, DocRef } from "./FirebaseShortTypename";
 import { auth, db } from "./init_firebase";
@@ -86,7 +86,16 @@ export const MAX_FUTURE_LAST_UPDATED = 24 * 60 * 60 * 1000;
 export const docdate_to_state = (
   data: DocData,
   now: number = Date.now()
-): Partial<State> => {
+): Partial<State> => read_doc(data, now).state;
+
+// docdate_to_state, and what repair_nest repaired. The caller reports it
+// (report_nest_repair) only when it puts the state in: a snapshot that is
+// not adopted (the same version, the ack of an own save, a conflict) is
+// parsed too.
+export const read_doc = (
+  data: DocData,
+  now: number = Date.now()
+): { state: Partial<State>; nest_report: TNestReport | null } => {
   const ret: Partial<State> = {};
 
   const itemStore = {} as { [key: string]: object };
@@ -130,18 +139,19 @@ export const docdate_to_state = (
   // A drawOrder of a wrong type is not repaired: it was read as [], which
   // would make every item an orphan to delete. The items are kept unshown,
   // as before, so the doc can still be fixed by hand.
+  let nest_report: TNestReport | null = null;
   if (is_string_array(data.drawOrder)) {
     const { nest, report } = repair_nest({
       itemStore: ret.itemStore,
       drawOrder: ret.drawOrder,
       annotations: ret.annotations,
     });
-    report_nest_repair(report, "doc");
+    nest_report = report;
     ret.itemStore = nest.itemStore;
     ret.drawOrder = nest.drawOrder;
     if (nest.annotations !== undefined) ret.annotations = nest.annotations;
   }
-  return ret;
+  return { state: ret, nest_report };
 };
 
 const new_docdata = () => {

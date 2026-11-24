@@ -20,7 +20,8 @@ import { Sentry } from "../initSentry";
 //    place is kept. The items of a non-group are not looked at.
 // 2. Of the items not reached, those that are in no unreached group's items
 //    (orphan roots) are deleted from itemStore with their unreached
-//    descendants. They were never shown.
+//    descendants. They were never shown. A descendant that a group of rule 3
+//    also holds is not deleted (with what it holds): it is under that cycle.
 // 3. What is still not reached is in a cycle that drawOrder does not reach
 //    (only the drop into a descendant, fixed in #136, could make one). It is
 //    the user's content, so one item of such a cycle (the smallest id) is
@@ -47,8 +48,11 @@ export type TNest<I extends TNestItem, A extends TNestAnnotation> = {
   annotations?: A[];
 };
 
-const is_group = (x: TNestItem | undefined): x is { items: unknown[] } =>
-  x !== undefined && x.type === "group" && Array.isArray(x.items);
+// pasted JSON is checked only after the repair, so an item may be null
+const is_object = (x: unknown): x is { [key: string]: unknown } =>
+  typeof x === "object" && x !== null;
+const is_group = (x: unknown): x is { items: unknown[] } =>
+  is_object(x) && x.type === "group" && Array.isArray(x.items);
 
 export const repair_nest = <
   I extends TNestItem,
@@ -106,22 +110,42 @@ export const repair_nest = <
   const deleted = new Set<string>();
   if (unreached.length > 0) {
     // rule 2
-    const contained = new Set<string>();
-    unreached.forEach((id) => {
+    const in_unreached = new Set(unreached);
+    const children = (id: string): string[] => {
       const item = store[id];
-      if (is_group(item)) item.items.forEach((c) => has(c) && contained.add(c));
-    });
+      if (!is_group(item)) return [];
+      return item.items.filter(
+        (c): c is string => typeof c === "string" && in_unreached.has(c)
+      );
+    };
+    const contained = new Set<string>();
+    unreached.forEach((id) => children(id).forEach((c) => contained.add(c)));
+    const under_orphan = new Set<string>();
     unreached.forEach((root) => {
       if (contained.has(root)) return;
       report.orphans++;
       const stack = [root];
       while (stack.length > 0) {
         const id = stack.pop()!;
-        if (deleted.has(id) || visited.has(id)) continue;
-        deleted.add(id);
-        const item = store[id];
-        if (is_group(item)) item.items.forEach((c) => has(c) && stack.push(c));
+        if (under_orphan.has(id)) continue;
+        under_orphan.add(id);
+        stack.push(...children(id));
       }
+    });
+    // An item under an orphan that a group on a surviving (unreached, not
+    // under an orphan) cycle also holds is the user's content under that
+    // cycle: it is kept, with what it holds, and rule 3 brings it back.
+    // Deleting it would leave its id in the surviving group (dangling).
+    const kept = new Set<string>();
+    const stack = unreached.filter((id) => !under_orphan.has(id));
+    while (stack.length > 0) {
+      const id = stack.pop()!;
+      if (kept.has(id)) continue;
+      kept.add(id);
+      stack.push(...children(id));
+    }
+    under_orphan.forEach((id) => {
+      if (!kept.has(id)) deleted.add(id);
     });
     report.deleted = deleted.size;
 
@@ -129,9 +153,12 @@ export const repair_nest = <
     const rest = unreached.filter((id) => !deleted.has(id)).sort();
     if (rest.length > 0) {
       // Every item of rest is in the items of a group of rest: a group that
-      // was reached would have reached it, and one that was deleted would
-      // have deleted it. So following "the (smallest) group that holds it"
-      // from any item of rest ends in a cycle.
+      // was reached would have reached it, an item not under an orphan has
+      // a holder not under an orphan, and an item kept from under an orphan
+      // was kept because a group of rest holds it. So following "the
+      // (smallest) group that holds it" from any item of rest ends in a
+      // cycle. And a group of rest holds no deleted item (it would have
+      // been kept), so walking rest leaves no dangling id.
       const in_rest = new Set(rest);
       const holder = new Map<string, string>();
       rest.forEach((gid) => {
@@ -180,6 +207,7 @@ export const repair_nest = <
     const next: A[] = [];
     annotations.forEach((a) => {
       if (
+        !is_object(a) ||
         a.type !== "line" ||
         !Array.isArray(a.items) ||
         !a.items.some((id) => deleted.has(id))
@@ -223,12 +251,22 @@ export const repair_nest = <
   return { nest, report };
 };
 
-// Only the counts: no ids, text or ba id (see sentry_context).
+// Only the counts and where the Ba came from: no ids or text (see
+// sentry_context). With once_key (the ba id, kept in memory only), a Ba is
+// reported at most once per page session: one that nobody edits is repaired
+// again on every snapshot that is adopted.
+const reported = new Set<string>();
 export const report_nest_repair = (
   report: TNestReport | null,
-  where: "doc" | "json"
+  where: "snapshot" | "backup" | "draft" | "json",
+  once_key?: string
 ) => {
   if (report === null) return;
+  if (once_key !== undefined) {
+    const key = `${where}:${once_key}`;
+    if (reported.has(key)) return;
+    reported.add(key);
+  }
   Sentry.captureMessage("repair_nest: repaired a broken nest", {
     level: "warning",
     extra: { where, ...report },

@@ -236,6 +236,63 @@ describe("repair_nest", () => {
     expect(report).toEqual({ orphans: 1, deleted: 3, dangling: 0, duplicates: 0, cycles: 0 });
   });
 
+  // Review of #139: d is held by the orphan group R and by c1 on an
+  // unreached cycle. Deleting d with R left "d" in c1 (dangling).
+  test("an item an orphan group shares with an unreached cycle is kept under the cycle", () => {
+    const input = nest(
+      [],
+      [group("R", ["d"]), kozane("d"), group("c1", ["c2", "d"]), group("c2", ["c1"])]
+    );
+    const { nest: out, report } = repair_nest(input);
+    expectWellFormed(out);
+    expect(out.drawOrder).toEqual(["c1"]);
+    expect(items_of(out, "c1")).toEqual(["c2", "d"]);
+    expect(out.itemStore["R"]).toBeUndefined();
+    expect(out.itemStore["d"]).toBeDefined();
+    expect(report).toEqual({ orphans: 1, deleted: 1, dangling: 0, duplicates: 1, cycles: 1 });
+    const twice = repair_nest(out);
+    expect(twice.nest).toBe(out);
+    expect(twice.report).toBeNull();
+  });
+
+  test("a shared group under an orphan is kept with what it holds, the rest of the orphan goes", () => {
+    // R -> H -> (k, S); S -> (j); the cycle c1 <-> c2 also holds S
+    const input = nest(
+      ["top"],
+      [
+        kozane("top"),
+        group("R", ["H"]),
+        group("H", ["k", "S"]),
+        kozane("k"),
+        group("S", ["j"]),
+        kozane("j"),
+        group("c1", ["c2"]),
+        group("c2", ["c1", "S"]),
+      ],
+      [line("k", "j"), line("top", "k", "j")]
+    );
+    const { nest: out, report } = repair_nest(input);
+    expectWellFormed(out);
+    expect(Object.keys(out.itemStore).sort()).toEqual(["S", "c1", "c2", "j", "top"]);
+    expect(out.drawOrder).toEqual(["top", "c1"]);
+    expect(items_of(out, "c2")).toEqual(["S"]);
+    expect(items_of(out, "S")).toEqual(["j"]);
+    expect(out.annotations).toEqual([{ ...line("top", "j"), heads: ["none", "arrow"] }]);
+    expect(report).toEqual({ orphans: 1, deleted: 3, dangling: 0, duplicates: 1, cycles: 1 });
+  });
+
+  // pasted JSON reaches repair_nest before its items and lines are checked
+  test("a null item or a null line does not throw", () => {
+    const input = {
+      itemStore: { k1: kozane("k1"), n: null, o: kozane("o") } as never,
+      drawOrder: ["k1", "n"],
+      annotations: [null, line("o", "k1")] as never[],
+    };
+    const { nest: out } = repair_nest(input);
+    expect(out.itemStore).not.toHaveProperty("o");
+    expect(out.annotations).toEqual([null]);
+  });
+
   test("the items of a non-group are not followed", () => {
     const k = { ...kozane("k1"), items: ["k2"] };
     const input = nest(["k1", "k2"], [k, kozane("k2")]);
@@ -261,12 +318,12 @@ describe("report_nest_repair", () => {
   test("sends only the counts", () => {
     sentry.captureMessage.mockClear();
     const { report } = repair_nest(nest(["3"], [kozane("0"), kozane("1"), group("3", ["1"])]));
-    report_nest_repair(report, "doc");
+    report_nest_repair(report, "snapshot");
     expect(sentry.captureMessage).toHaveBeenCalledTimes(1);
     const [message, context] = sentry.captureMessage.mock.calls[0]!;
     expect(JSON.stringify([message, context])).not.toContain("text of");
     expect(context.extra).toEqual({
-      where: "doc",
+      where: "snapshot",
       orphans: 1,
       deleted: 1,
       dangling: 0,
@@ -277,7 +334,19 @@ describe("report_nest_repair", () => {
 
   test("sends nothing when nothing was repaired", () => {
     sentry.captureMessage.mockClear();
-    report_nest_repair(null, "doc");
+    report_nest_repair(null, "snapshot");
     expect(sentry.captureMessage).not.toHaveBeenCalled();
+  });
+
+  test("with a key, sends once per key and place", () => {
+    sentry.captureMessage.mockClear();
+    const { report } = repair_nest(nest(["3"], [kozane("0"), group("3", [])]));
+    report_nest_repair(report, "snapshot", "ba-once");
+    report_nest_repair(report, "snapshot", "ba-once");
+    expect(sentry.captureMessage).toHaveBeenCalledTimes(1);
+    report_nest_repair(report, "snapshot", "ba-other");
+    report_nest_repair(report, "backup");
+    report_nest_repair(report, "backup");
+    expect(sentry.captureMessage).toHaveBeenCalledTimes(4);
   });
 });

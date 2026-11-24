@@ -10,7 +10,7 @@ import { INITIAL_GLOBAL_STATE } from "../Global/initializeGlobalState";
 import { expectWellFormed } from "../utils/expect_well_formed";
 import { LocalDraftKeeper } from "../App/LocalDraftKeeper";
 import { try_to_import_json } from "../utils/JSON/try_to_import_json";
-import { docdate_to_state } from "./FirestoreIO";
+import { read_doc } from "./FirestoreIO";
 import { restore_backup } from "./restore_backup";
 import { set_up_read_subscription } from "./set_up_read_subscription";
 
@@ -134,31 +134,29 @@ afterEach(() => {
 });
 
 describe("a doc from Firestore", () => {
-  test("docdate_to_state repairs it and reports the counts", () => {
-    const s = docdate_to_state(broken_doc(100) as never) as State;
-    expect_repaired(s);
-    expect(fake.sentry.captureMessage).toHaveBeenCalledTimes(1);
-    expect(fake.sentry.captureMessage.mock.calls[0]![1].extra).toMatchObject({
-      where: "doc",
-      orphans: 1,
-      cycles: 1,
-    });
+  // read_doc only returns the counts: the snapshots that are not adopted
+  // are parsed too, and those are not reported (review of #139)
+  test("read_doc repairs it and returns the counts, without sending them", () => {
+    const { state, nest_report } = read_doc(broken_doc(100) as never);
+    expect_repaired(state as State);
+    expect(nest_report).toMatchObject({ orphans: 1, cycles: 1 });
+    expect(fake.sentry.captureMessage).not.toHaveBeenCalled();
   });
 
-  test("docdate_to_state reports nothing for a well-formed doc", () => {
+  test("read_doc returns no counts for a well-formed doc", () => {
     const doc = broken_doc(100);
     doc.itemStore = { k1: kozane("k1"), k2: kozane("k2"), G: group("G", ["k1", "k2"]) } as never;
     doc.annotations = [];
-    docdate_to_state(doc as never);
-    expect(fake.sentry.captureMessage).not.toHaveBeenCalled();
+    expect(read_doc(doc as never).nest_report).toBeNull();
   });
 
   test("a doc whose drawOrder has a wrong type keeps its items (not deleted as orphans)", () => {
     const doc = { ...broken_doc(100), drawOrder: "G" };
-    const s = docdate_to_state(doc as never) as State;
+    const { state, nest_report } = read_doc(doc as never);
+    const s = state as State;
     expect(s.drawOrder).toEqual([]);
     expect(Object.keys(s.itemStore).sort()).toEqual(["G", "c1", "c2", "k0", "k1", "k2"]);
-    expect(fake.sentry.captureMessage).not.toHaveBeenCalled();
+    expect(nest_report).toBeNull();
   });
 
   test("a snapshot from elsewhere is repaired, not saved, and stale ids are forgotten", () => {
@@ -174,6 +172,69 @@ describe("a doc from Firestore", () => {
     // not marked as a local change: the repair is saved with the next edit
     expect(g.is_local_change).toBe(false);
     expect(g.last_updated).toBe(200);
+    expect(fake.sentry.captureMessage).toHaveBeenCalledTimes(1);
+    expect(fake.sentry.captureMessage.mock.calls[0]![1].extra).toMatchObject({
+      where: "snapshot",
+      orphans: 1,
+      cycles: 1,
+    });
+
+    // the same version again (not adopted), then a newer broken version of
+    // the same ba (adopted): reported once per ba in a page session
+    fake.state.listener!({
+      data: () => broken_doc(200),
+      metadata: { hasPendingWrites: false },
+    });
+    fake.state.listener!({
+      data: () => broken_doc(300),
+      metadata: { hasPendingWrites: false },
+    });
+    expect(getGlobal().last_updated).toBe(300);
+    expect(fake.sentry.captureMessage).toHaveBeenCalledTimes(1);
+  });
+
+  test("a broken snapshot that is not adopted is not reported", () => {
+    // this tab already has the version (e.g. the ack of its own save)
+    setGlobal(local_state({ cloud_ba: "ba2", last_updated: 200 }));
+    set_up_read_subscription("ba2");
+    fake.state.listener!({
+      data: () => broken_doc(200),
+      metadata: { hasPendingWrites: false },
+    });
+    expect(getGlobal().drawOrder).toEqual(["k0"]);
+    expect(fake.sentry.captureMessage).not.toHaveBeenCalled();
+  });
+
+  // The selection holds top-level items only: an item that still exists but
+  // that another client moved into a group leaves the selection too.
+  test("a selected item moved into a group elsewhere leaves the selection; a gone drag target is dropped", () => {
+    setGlobal(
+      local_state({
+        cloud_ba: "ba3",
+        itemStore: { k1: kozane("k1"), k2: kozane("k2"), k9: kozane("k9") } as never,
+        drawOrder: ["k1", "k2", "k9"],
+        selected_items: ["k1"],
+        clicked_target: "k2",
+        menu: "Kozane",
+        line_start: "",
+        drag_target: "k9",
+      } as unknown as Partial<State>)
+    );
+    set_up_read_subscription("ba3");
+    const doc = broken_doc(200);
+    doc.itemStore = { k1: kozane("k1"), k2: kozane("k2"), G: group("G", ["k1"]) } as never;
+    doc.drawOrder = ["G", "k2"];
+    doc.annotations = [];
+    fake.state.listener!({ data: () => doc, metadata: { hasPendingWrites: false } });
+    const g = getGlobal();
+    expectWellFormed(g);
+    expect(g.selected_items).toEqual([]);
+    expect(g.is_selected).toBe(false);
+    expect(g.drag_target).toBe("");
+    // k2 is still there: its menu stays open
+    expect(g.clicked_target).toBe("k2");
+    expect(g.menu).toBe("Kozane");
+    expect(fake.sentry.captureMessage).not.toHaveBeenCalled();
   });
 });
 
@@ -187,6 +248,10 @@ describe("a local backup", () => {
     const g = getGlobal();
     expect_repaired(g);
     expect_no_stale_ids(g);
+    expect(fake.sentry.captureMessage.mock.calls[0]![1].extra).toMatchObject({
+      where: "backup",
+      orphans: 1,
+    });
   });
 });
 
@@ -205,6 +270,10 @@ describe("the local draft", () => {
     const g = getGlobal();
     expect_repaired(g);
     expect_no_stale_ids(g);
+    expect(fake.sentry.captureMessage.mock.calls[0]![1].extra).toMatchObject({
+      where: "draft",
+      orphans: 1,
+    });
     window.localStorage.clear();
   });
 });
@@ -242,6 +311,30 @@ describe("pasted Kozaneba JSON", () => {
     expect(fake.sentry.captureMessage.mock.calls[0]![1].extra).toMatchObject({
       where: "json",
     });
+  });
+
+  // repair_nest runs before the items and lines are checked; garbage must
+  // still get the "not valid" alert (review of #139)
+  test("v4 with a null item or a null line is still rejected with the alert", () => {
+    const alert = vi.spyOn(window, "alert").mockImplementation(() => {});
+    const with_null_item = JSON.stringify({
+      format: "Kozaneba",
+      version: 4,
+      drawOrder: ["k1", "n"],
+      itemStore: { k1: kozane("k1"), n: null },
+      annotation: [],
+    });
+    expect(try_to_import_json(with_null_item)).toBe(false);
+    const with_null_line = JSON.stringify({
+      format: "Kozaneba",
+      version: 4,
+      drawOrder: ["k1"],
+      itemStore: { k1: kozane("k1"), k0: kozane("k0") },
+      annotation: [null],
+    });
+    expect(try_to_import_json(with_null_line)).toBe(false);
+    expect(alert).toHaveBeenCalledTimes(2);
+    alert.mockRestore();
   });
 
   test("v3 with a cycle is imported well-formed", () => {
