@@ -76,7 +76,14 @@ export const replace_multiple_kozane = (multiline: string) => {
       parent.items = remove_item_from(parent.items, target_id);
       parent.items.push(group.id);
     }
+    // the group takes the target's place, so the target leaves the world:
+    // without this it stays in itemStore with no parent (an invisible orphan
+    // that is saved to Firestore forever)
+    delete g.itemStore[target_id];
     update_annotation_after_deletion(g, target_id);
+    // clicked_target still names the deleted kozane. Clear it as delete and
+    // ungroup do: the dialog is closing, so nothing is targeted any more
+    g.clicked_target = "";
   });
 
   finish();
