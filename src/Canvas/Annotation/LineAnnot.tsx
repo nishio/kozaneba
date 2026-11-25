@@ -233,7 +233,7 @@ export const LineAnnot = (
 
   const openEditDialog = () => {
     updateGlobal((draft) => {
-      draft.clicked_annotation = ref_of_annotation(a, annot_index);
+      draft.clicked_annotation = ref_of_annotation(g.annotations, annot_index);
       draft.dialog = "EditAnnotation";
     });
   };
@@ -248,7 +248,7 @@ export const LineAnnot = (
     }
     updateGlobal((draft) => {
       draft.editing_line_label = {
-        target: ref_of_annotation(a, annot_index),
+        target: ref_of_annotation(g.annotations, annot_index),
         value: current_label,
       };
       draft.disableHotKey = true;

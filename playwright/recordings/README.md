@@ -22,3 +22,10 @@ made on. A change that moves things on screen (for example #110, which made
 the menu items 44px tall on touch) can make an old recording tap a different
 menu item. `replay.spec.ts` then has to put the old layout back for that file
 (see `MENU_ITEMS_36PX`) until the session is recorded again on a device.
+
+A fix can also change what a recording shows: if the person saw a bug that
+has since been fixed, the app no longer makes the recorded board.
+`FIXED_SINCE_RECORDING` in `replay.spec.ts` then replaces the affected stored
+positions in those checkpoints (old value, new value, and why), and the rest
+of the checkpoint is still checked. The recording file itself stays as it was
+recorded.

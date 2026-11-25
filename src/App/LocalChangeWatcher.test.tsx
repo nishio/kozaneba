@@ -9,6 +9,8 @@ import { mark_local_changed } from "../utils/mark_local_changed";
 const mocks = vi.hoisted(() => ({ save: vi.fn(), physics_on: false }));
 vi.mock("../Cloud/save", () => ({ save: () => mocks.save() }));
 vi.mock("../Physics/physics", () => ({ is_physics_on: () => mocks.physics_on }));
+// signed in (the watcher shows the sign-in dialog instead of saving otherwise)
+vi.mock("../Cloud/not_login_then_show_dialog", () => ({ not_login_then_show_dialog: () => false }));
 vi.mock("../utils/can_write", () => ({
   can_write: () => true,
   is_cloud: () => true,
