@@ -1,0 +1,13 @@
+name = "annotref"
+defaultTargets = ["AnnotRef", "check"]
+
+# warnings (a proof left with `sorry` among them) fail the build
+[leanOptions]
+warningAsError = true
+
+[[lean_lib]]
+name = "AnnotRef"
+
+[[lean_exe]]
+name = "check"
+root = "Main"

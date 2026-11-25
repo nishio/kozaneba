@@ -28,6 +28,59 @@ const MENU_ITEMS_36PX_CSS = `
 .MuiMenuItem-root.MuiMenuItem-root.MuiMenuItem-dense { min-height: 32px; }
 `;
 
+// Checkpoints where the recording shows a bug that was fixed after it was
+// recorded, so the app no longer makes the board the person saw. Each entry
+// replaces the stored position the recording has (`was`) with the one the
+// fixed app makes (`now`); everything else in the checkpoint is still checked.
+// An entry whose `was` is not in the recording fails the test, so it cannot
+// silently apply to another session. Re-record on a device and drop the entry.
+type TFix = { checkpoints: number[]; why: string; positions: { [id: string]: { was: [number, number]; now: [number, number] } } };
+const FIXED_SINCE_RECORDING: { [file: string]: TFix[] } = {
+  "ipad-2026-10-29-sample-board.json": [
+    {
+      // Events 1076-1115: n1 is dragged inside its group gn and dropped on gn
+      // again. On the iPad n1 jumped 20 down from where the finger left
+      // (world y 269 -> 289), by its old offset from gn's anchor: K2, fixed in
+      // #145. n1 is gn's only child, so gn's anchor carries the difference.
+      // See "the recorded iPad session" in src/Event/nested_coords_regressions.test.ts.
+      checkpoints: [16],
+      why: "K2 (#145): a drop into its own group no longer shifts the item",
+      positions: {
+        gn: { was: [419.9751472718622, 289.004125650847], now: [419.9751472718622, 269.004125650847] },
+      },
+    },
+    {
+      // Events 1116-1196 drop gn (20 higher than recorded, above) into ga.
+      // gn lands where the finger left, 20 higher than recorded; ga's anchor
+      // is re-centered on its children, 10 higher, and a1, a2 get +10 in ga's
+      // frame, so their world positions are the recorded ones. Later gestures
+      // do not touch these items.
+      checkpoints: [17, 18, 19],
+      why: "follows from checkpoint 16",
+      positions: {
+        ga: { was: [230.9642436042504, 62.732588380106534], now: [230.9642436042504, 52.73258838010665] },
+        gn: { was: [31.60933201267224, 142.73258838010656], now: [31.60933201267224, 132.73258838010668] },
+        a1: { was: [-90.96424360425041, -142.73258838010653], now: [-90.96424360425041, -132.73258838010665] },
+        a2: { was: [90.96424360425041, -134.66898327483298], now: [90.96424360425041, -124.6689832748331] },
+      },
+    },
+  ],
+};
+const apply_fixes = (rec: TRecording, fixes: TFix[]) => {
+  for (const fix of fixes) {
+    for (const cp of fix.checkpoints) {
+      const items = rec.checkpoints[cp]!.state.itemStore;
+      for (const [id, { was, now }] of Object.entries(fix.positions)) {
+        const p = items[id]!.position;
+        if (Math.abs(p[0] - was[0]) > 1e-6 || Math.abs(p[1] - was[1]) > 1e-6) {
+          throw new Error(`FIXED_SINCE_RECORDING (${fix.why}): checkpoint ${cp} item ${id} is ${p}, not ${was}`);
+        }
+        items[id]!.position = [...now];
+      }
+    }
+  }
+};
+
 const touch = async (cdp: CDPSession, type: string, points: { x: number; y: number }[]) => {
   await cdp.send("Input.dispatchTouchEvent", {
     type,
@@ -55,6 +108,7 @@ test.describe("replay of recorded touch sessions", () => {
     test(f, async ({ page, context }) => {
       const rec = JSON.parse(readFileSync(join(DIR, f), "utf8")) as TRecording;
       test.skip(rec.version !== 1, "unknown recording version");
+      apply_fixes(rec, FIXED_SINCE_RECORDING[f] ?? []);
       await page.setViewportSize(rec.viewport);
       await open_board(page, rec);
       if (MENU_ITEMS_36PX.has(f)) await page.addStyleTag({ content: MENU_ITEMS_36PX_CSS });

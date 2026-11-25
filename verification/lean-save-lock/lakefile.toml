@@ -1,0 +1,9 @@
+name = "savelock"
+defaultTargets = ["SaveLock", "check"]
+
+[[lean_lib]]
+name = "SaveLock"
+
+[[lean_exe]]
+name = "check"
+root = "Main"
