@@ -1,0 +1,9 @@
+name = "backuppolicy"
+defaultTargets = ["BackupPolicy", "check"]
+
+[[lean_lib]]
+name = "BackupPolicy"
+
+[[lean_exe]]
+name = "check"
+root = "Main"
