@@ -230,8 +230,8 @@ describe("pinch_gesture (real pointer handlers)", () => {
   // (scale by dist(2,3)/dist(1,2), and a pan by the midpoint difference)
   // although nothing moved. Fixed by recomputing prevDist/prevMid in
   // pinch_pointer_up when the pair changes.
-  test.fails(
-    "three fingers: (c) a move in which no finger moved does not change the view (BUG)",
+  test(
+    "three fingers: (c) a move in which no finger moved does not change the view (fixed in #145)",
     () => {
       const eventArb = fc.oneof(
         fc.record({
@@ -296,7 +296,7 @@ describe("pinch_gesture (real pointer handlers)", () => {
     }
   );
 
-  test.fails("three fingers, the first lifts: a move in place does not change the view (BUG, minimal case)", () => {
+  test("three fingers, the first lifts: a move in place does not change the view (minimal case, fixed in #145)", () => {
     setView(1, [0, 0] as TWorldCoord);
     const p1 = [0, 0] as TScreenCoord;
     const p2 = [100, 0] as TScreenCoord;
@@ -319,7 +319,7 @@ describe("pinch_gesture (real pointer handlers)", () => {
   // 0 (pinch, wheel, hotkeys), so only fit-to-contents or a reload brings the
   // board back. Physically two fingertips cannot report the same point, so
   // this is a hardening issue more than a reachable bug; see the PR.
-  test.fails("scale stays positive and finite even if both fingers meet (BUG, hardening)", () => {
+  test("scale stays positive and finite even if both fingers meet (hardening, fixed in #145)", () => {
     fc.assert(
       fc.property(
         fc.tuple(fc.integer({ min: 0, max: 20 }), fc.integer({ min: 0, max: 20 })),

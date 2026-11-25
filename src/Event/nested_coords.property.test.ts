@@ -221,8 +221,8 @@ const depthOf = (state: State, x: TItemId) => {
 };
 
 // Centers every group on its children. Deepest first, one level per call, so
-// it does not rely on normalize_group_position walking up (see the KNOWN BUG
-// below: that walk is lost when there is no draft).
+// it does not rely on normalize_group_position walking up (before #145, that
+// walk was lost when there was no draft; see the ancestors case below).
 const normalizeAllDeepestFirst = () => {
   const s = getGlobal();
   const groups = onBoard(s).filter((x) => s.itemStore[x]!.type === "group");
@@ -284,8 +284,8 @@ describe("moving items between groups keeps world positions (fast-check)", () =>
         const moving = subtree(s0, target);
         fc.pre(!moving.has(gid)); // filtered by onCanvasMouseUp, guarded inside
         const oldParent = parentMap(s0).get(target) ?? null;
-        fc.pre(oldParent !== gid); // same group: KNOWN BUG K2 below
-        // into an ancestor of the old parent: BUG below
+        fc.pre(oldParent !== gid); // same group: K2, tested below
+        // into an ancestor of the old parent: tested below
         fc.pre(oldParent === null || !ancestorsAndSelf(s0, oldParent).includes(gid));
         const before = snapshot(s0);
         const p = s0.itemStore[target]!.position;
@@ -301,12 +301,12 @@ describe("moving items between groups keeps world positions (fast-check)", () =>
     );
   });
 
-  // KNOWN BUG K2 (also pinned in nested_drag_invariants.test.ts): dropping an
+  // K2, fixed in #145 (also pinned in nested_drag_invariants.test.ts): dropping an
   // item into the group it is already in shifts it by the group's
   // re-centering offset. Shrunk counterexample (seed 20261125): root group
   // G0 (0,0) > K1 (0,-1e-9); drop K1 into G0 with m = 0: K1 moves by
   // (0,-1e-9), its share of G0's re-centering.
-  test.fails("drop into the group the item is already in keeps world positions (KNOWN BUG K2)", () => {
+  test("drop into the group the item is already in keeps world positions (K2, fixed in #145)", () => {
     fc.assert(
       fc.property(boardArb(), fc.nat(), moveArb, (specs, ti, m) => {
         const { ids } = buildBoard(specs);
@@ -328,7 +328,7 @@ describe("moving items between groups keeps world positions (fast-check)", () =>
     );
   });
 
-  // BUG (a sibling of K2): dropping an item into an ANCESTOR of its current
+  // Fixed in #145 (a sibling of K2): dropping an item into an ANCESTOR of its current
   // group, e.g. a kozane dragged out of an inner group B onto the outer group
   // A around it. drag_drop_item_into_group pushes the target into A, then
   // re-centers the old parent B with the draft -- and that call walks up and
@@ -340,7 +340,7 @@ describe("moving items between groups keeps world positions (fast-check)", () =>
   // (2e-9,0), K7 (0,0)]; drop K7 into G0 with m = 0: K7 moves, by its share
   // of G0's re-centering computed with K7 at its stale position. See the
   // minimal case below for one with visible numbers (50px).
-  test.fails("drop into an ancestor of the item's group keeps world positions (BUG)", () => {
+  test("drop into an ancestor of the item's group keeps world positions (fixed in #145)", () => {
     fc.assert(
       fc.property(boardArb({ allowClosed: true }), fc.nat(), fc.nat(), moveArb, (specs, ti, gi, m) => {
         const { ids } = buildBoard(specs);
@@ -405,7 +405,7 @@ describe("moving items between groups keeps world positions (fast-check)", () =>
     );
   });
 
-  // BUG: drag_drop_selection_into_group converts each selected (root) item
+  // Fixed in #145. Was: drag_drop_selection_into_group converts each selected (root) item
   // into the group's frame by subtracting only the group's own LOCAL
   // position, not the offset of the whole parent chain
   // (get_total_offset_of_parents). Dropping a selection into a group that is
@@ -413,7 +413,7 @@ describe("moving items between groups keeps world positions (fast-check)", () =>
   // positions. Shrunk counterexample (seed 20261125): G0 (1e-9,0) > G1
   // (0,0), empty; root K2 (0,0); select K2 and drop it into G1 with m = 0:
   // K2 lands at (1e-9,0), off by G0's position. Minimal case below.
-  test.fails("drop a selection into a NESTED group: the selection moves by m (BUG)", () => {
+  test("drop a selection into a NESTED group: the selection moves by m (fixed in #145)", () => {
     fc.assert(
       fc.property(boardArb(), fc.nat(), fc.nat(), moveArb, (specs, gi, sel, m) => {
         const { groups } = buildBoard(specs);
@@ -471,7 +471,7 @@ describe("re-centering groups (normalize_group_position, fast-check)", () => {
     );
   });
 
-  // BUG: normalize_group_position(gid) without a draft centers gid but not
+  // Fixed in #145. Was: normalize_group_position(gid) without a draft centers gid but not
   // its ancestors. It recurses with `normalize_group_position(parent, draft)`
   // where `draft` is still undefined, so the recursive call runs a second
   // updateGlobal inside the first one's producer: it reads the global state
@@ -484,7 +484,7 @@ describe("re-centering groups (normalize_group_position, fast-check)", () => {
   // Shrunk counterexample (seed 20261125): G0 (0,0) > G1 (-2e-6,0) > K3
   // (0,0); normalize G1: G1 is already centered on K3, and G0, which is not
   // centered on G1, is left as it is.
-  test.fails("normalize_group_position centers the group AND its ancestors (BUG: ancestors are not)", () => {
+  test("normalize_group_position centers the group AND its ancestors (fixed in #145)", () => {
     fc.assert(
       fc.property(boardArb({ allowClosed: true }), fc.nat(), (specs, gi) => {
         const { groups } = buildBoard(specs);
@@ -504,8 +504,9 @@ describe("re-centering groups (normalize_group_position, fast-check)", () => {
   // #137 review: "when the previous parent is removed, the surviving
   // ancestor is not normalized". On a board where every group is centered,
   // a drop into another group should leave every group centered.
-  // It does not, for two reasons (both reproduced as minimal cases below):
-  //   (1) the KNOWN BUG above: the destination's ancestors are not
+  // Before #145 it did not, for two reasons (both reproduced as minimal cases
+  // below):
+  //   (1) the ancestor case above (fixed in #145): the destination's ancestors are not
   //       re-centered,
   //   (2) the #137 review case: when the old parent was removed, the nearest
   //       surviving group (whose children changed) is not re-centered.
@@ -514,7 +515,7 @@ describe("re-centering groups (normalize_group_position, fast-check)", () => {
   // fast-check (seed 20261125) shrinks this to a 2-deep board with 1e-6
   // sized positions; the minimal cases below show each reason with visible
   // numbers.
-  test.fails("drop into another group keeps every group centered on its children (BUG)", () => {
+  test("drop into another group keeps every group centered on its children (fixed in #145)", () => {
     fc.assert(
       fc.property(boardArb(), fc.nat(), fc.nat(), moveArb, (specs, ti, gi, m) => {
         const { ids, groups } = buildBoard(specs);
@@ -639,7 +640,7 @@ describe("minimal cases", () => {
       ]
     );
 
-  test.fails("BUG: x dragged out of B and dropped on the outer group A stays where it was dropped", () => {
+  test("fixed in #145: x dragged out of B and dropped on the outer group A stays where it was dropped", () => {
     nestedAB();
     // no movement: delta is x's local position
     drag_drop_item_into_group(id("A"), world(-100, 0), id("x"));
@@ -647,7 +648,7 @@ describe("minimal cases", () => {
     expect(absolute(getGlobal(), id("x"))).toEqual(world(-100, 0));
   });
 
-  test.fails("BUG: a selection dropped into a nested group stays where it was dropped", () => {
+  test("fixed in #145: a selection dropped into a nested group stays where it was dropped", () => {
     // A (300,200) > B (0,0) > k (0,0); r at the root
     setBoard(["A", "r"], [gr("A", 300, 200, ["B"], "A"), gr("B", 0, 0, ["k"], "B"), kz("k", 0, 0), kz("r", 1000, 0)]);
     setGlobal({ selected_items: [id("r")], is_selected: true });
@@ -656,7 +657,7 @@ describe("minimal cases", () => {
     expect(absolute(getGlobal(), id("r"))).toEqual(world(1000, 0));
   });
 
-  test.fails("BUG: normalize_group_position re-centers the ancestors too", () => {
+  test("fixed in #145: normalize_group_position re-centers the ancestors too", () => {
     // A (0,0) > B (0,0) > [ k1 (0,0), k2 (100,0) ]; B is not centered
     setBoard(["A"], [gr("A", 0, 0, ["B"]), gr("B", 0, 0, ["k1", "k2"]), kz("k1", 0, 0), kz("k2", 100, 0)]);
     normalize_group_position(id("B"));
@@ -691,13 +692,13 @@ describe("minimal cases", () => {
     expect(absolute(s, id("z"))).toEqual(world(200, 0));
   });
 
-  test.fails("#137 review (BUG): the surviving group is re-centered on its children", () => {
+  test("#137 review (fixed in #145): the surviving group is re-centered on its children", () => {
     review137();
     drag_drop_item_into_group(id("G"), world(0, 0), id("t"));
     expect(getGlobal().itemStore.A!.position).toEqual(world(200, 0)); // actual (0, 0)
   });
 
-  test.fails("#137 review (BUG, what it looks like): the anchor lines aim at stays inside the group's box", () => {
+  test("#137 review (what it looks like, fixed in #145): the anchor lines aim at stays inside the group's box", () => {
     // A line to a group is drawn from get_global_position(group) to the
     // middle of the line, cut at the group's box (LineAnnot +
     // get_box_line_crosspoint). When the anchor is outside the box,
