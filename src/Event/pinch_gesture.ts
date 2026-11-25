@@ -47,6 +47,12 @@ const distance = (a: TScreenCoord, b: TScreenCoord) =>
 const midpoint = (a: TScreenCoord, b: TScreenCoord) =>
   [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2] as TScreenCoord;
 
+// Below this finger distance (px) a move does not change the view: the
+// distance ratio would be 0 or huge, and a scale of 0 never recovers (every
+// later zoom multiplies it). The pinch resumes from the last distance at or
+// above it.
+const MIN_PINCH_DIST = 1;
+
 const firstTwo = (): [TScreenCoord, TScreenCoord] | null => {
   const pts = Array.from(activePointers.values());
   if (pts.length < 2) return null;
@@ -118,7 +124,9 @@ export const pinch_pointer_move = (event: TInputEvent<Element>): boolean => {
   if (two === null) return true;
   const newDist = distance(two[0], two[1]);
   const newMid = midpoint(two[0], two[1]);
-  if (prevDist > 0) {
+  // fingers (almost) on the same point: keep the view and prevDist/prevMid
+  if (newDist < MIN_PINCH_DIST) return true;
+  if (prevDist >= MIN_PINCH_DIST) {
     const ratio = newDist / prevDist;
     const center = [
       document.body.clientWidth / 2,
@@ -154,6 +162,13 @@ export const pinch_pointer_up = (event: TInputEvent<Element>): boolean => {
   if (activePointers.size < 2) {
     pinchActive = false;
     prevDist = 0;
+  } else if (had) {
+    // With three or more fingers down, lifting one of the first two makes
+    // firstTwo() a different pair: measure it now, or the next move compares
+    // the new pair against the old one and the view jumps.
+    const two = firstTwo()!;
+    prevDist = distance(two[0], two[1]);
+    prevMid = midpoint(two[0], two[1]);
   }
   if (activePointers.size === 0) gestureLocked = false;
   // Consume every up of a pinched sequence, so no lifted finger triggers a

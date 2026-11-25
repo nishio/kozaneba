@@ -43,7 +43,10 @@ export const select_thinned = (metas: TBackupMeta[], now: number): number[] => {
   const newest_first = [...metas].sort((a, b) => b.saved_at - a.saved_at);
   // The backup taken last (ids are autoincremented) is kept even when it is
   // not the newest by saved_at: the clock went back, or 20 saves had the same
-  // millisecond.
+  // millisecond. Only this one is protected: while 20 or more backups from a
+  // clock that was ahead hold the recent slots, the save before it is deleted
+  // at the next prune (unless it is the newest of its own bucket), so the
+  // restore list goes back only one save until the clock catches up.
   const last_taken = metas.reduce((x, m) => Math.max(x, m.id), -Infinity);
   const seen = new Set<string>();
   const to_delete: number[] = [];

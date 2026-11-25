@@ -180,18 +180,12 @@ describe("nested drag world-coordinate invariants", () => {
     expect(absolutePosition(id("C"), state)).toEqual(before);
   });
 
-  // KNOWN BUG (do not "fix" by relaxing this test): dropping an item back into
-  // the group it already belongs to shifts its world position by the group's
-  // re-center offset. In drag_drop_item_into_group, when previous_parent ===
-  // group_id, normalize_group_position(previous_parent) runs before
-  // target.position is assigned, and the later assignment keeps the shifted
-  // group position while discarding the target's share of the normalization.
-  // Reachable from onGroupMouseUp when an item is released over its own group.
-  // Tracked in queue/drafts/K2-same-group-drop-shifts-world-position.md.
-  // test.fails keeps CI green and will start failing (prompting removal of
-  // `.fails`) the moment the underlying bug is fixed.
-  test.fails(
-    "dropping an item into its own group should be a no-op on world position (KNOWN BUG)",
+  // Was a KNOWN BUG (K2, queue/drafts/K2-same-group-drop-shifts-world-position.md):
+  // re-centering the old parent (= the group itself) ran before
+  // target.position was assigned, so the target lost its share of the shift.
+  // drag_drop_item_into_group now assigns target.position first.
+  test(
+    "dropping an item into its own group should be a no-op on world position",
     () => {
       buildNestedBoards();
       const before = absolutePosition(id("C"), getGlobal());

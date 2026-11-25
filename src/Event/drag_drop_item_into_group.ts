@@ -55,26 +55,32 @@ export function drag_drop_item_into_group(
         group_id,
         g
       );
-
-      const survivor = remove_empty_untitled_groups(g, previous_parent);
-      // Re-center the old parent only if it is still there. When it was
-      // removed, the surviving ancestor may be `group_id` itself, and
-      // normalizing that here (before target.position is set below) would shift
-      // the target; `group_id` and its ancestors are normalized after the update.
-      if (survivor === previous_parent) {
-        normalize_group_position(previous_parent, g);
-      }
     } else {
       g.drawOrder = remove_item_from(g.drawOrder, target_id);
       group_draft.items.push(target_id);
       position = get_position_after_parent_change(position, null, group_id, g);
     }
+    // Set the target's position before any group is re-centered. Re-centering
+    // shifts a group's anchor and subtracts the same shift from each child's
+    // local position; a child whose position is assigned afterwards loses
+    // that share and lands off by it. That happened when the old parent was
+    // `group_id` itself (K2) or inside it (a drop onto an outer group), since
+    // re-centering the old parent walks up through `group_id`.
     const target = get_item(g, target_id);
     target.position = position;
     pin[target_id] = target.position;
     g.drag_target = "";
+
+    if (previous_parent !== null) {
+      // the nearest group still there whose children changed: the old parent,
+      // or, when it was left empty and untitled and removed, its ancestor
+      const survivor = remove_empty_untitled_groups(g, previous_parent);
+      if (survivor !== null) {
+        normalize_group_position(survivor, g);
+      }
+    }
+    normalize_group_position(group_id, g);
   });
-  normalize_group_position(group_id);
   mark_local_changed();
   reset_target();
 }

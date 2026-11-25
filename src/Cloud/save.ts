@@ -60,8 +60,12 @@ const write_if_not_changed = (ba: string, doc: DocData) => {
     if (!may_overwrite(ba, server_version)) {
       throw new SaveConflict(`server has ${server_version}`);
     }
-    if (is_own_version(ba, server_version) && server_version! > version) {
-      // a newer save of this tab is already there (commits out of order)
+    if (is_own_version(ba, server_version) && server_version! >= version) {
+      // a newer save of this tab is already there (commits out of order), or
+      // this same version is (a retry sent it again while the first send was
+      // still in flight). Writing it again would make the listeners of other
+      // tabs see this older version after a newer one they saved themselves.
+      // A version has one content: mark_local_changed makes versions grow.
       return;
     }
     t.set(ref, doc);

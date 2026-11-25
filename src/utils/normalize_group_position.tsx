@@ -23,9 +23,13 @@ export const normalize_group_position = (gid: TItemId, draft?: State) => {
     });
     group.position = add_v2w(group.position, middle_point);
 
+    // Walk up inside this same update: pass `g`, not `draft`. Without a draft
+    // `draft` is undefined, and the recursive call would run a second
+    // updateGlobal that reads the state from before this update and is then
+    // overwritten by it, so the ancestors were never re-centered.
     const parent = find_parent(gid, g);
     if (parent !== null) {
-      normalize_group_position(parent, draft);
+      normalize_group_position(parent, g);
     }
   });
 };
