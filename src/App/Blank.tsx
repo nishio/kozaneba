@@ -1,4 +1,4 @@
-import { useEffect, useGlobal } from "reactn";
+import { useEffect, useGlobal, useState } from "reactn";
 import { MyAppBar } from "../AppBar/MyAppBar";
 import { AdjustFontSize } from "../Kozane/AdjustFontSize";
 import { ItemCanvas } from "../Canvas/ItemCanvas";
@@ -47,11 +47,14 @@ export const Blank = () => {
 
 const SaveErrorAlert = () => {
   const [save_error] = useGlobal("save_error");
-  if (save_error === "") return null;
+  // Closing hides the message only. save_error stays until a save succeeds:
+  // it is what tells the listener (and closing the tab) that this tab has
+  // changes that are not on the server. Clearing it let a save from another
+  // device silently replace them.
+  const [dismissed, setDismissed] = useState("");
+  if (save_error === "" || save_error === dismissed) return null;
   const onClose = () => {
-    updateGlobal((g) => {
-      g.save_error = "";
-    });
+    setDismissed(save_error);
   };
   return (
     <Snackbar open={true}>
