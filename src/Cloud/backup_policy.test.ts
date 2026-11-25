@@ -38,20 +38,26 @@ describe("select_thinned", () => {
 
   test("a save every 10 minutes for 70 days thins to recent + hourly + daily + monthly", () => {
     const n = (70 * DAY) / (10 * MIN);
-    const metas = Array.from({ length: n }, (_, i) => meta(i, NOW - i * 10 * MIN));
+    // ids are autoincremented, so the newest save has the largest id
+    const id_of = (i: number) => n - 1 - i;
+    const metas = Array.from({ length: n }, (_, i) => meta(id_of(i), NOW - i * 10 * MIN));
     const k = kept(metas);
     // bounded: 20 recent + ~48 hourly + ~30 daily + 2 monthly
     expect(k.length).toBeLessThan(20 + 49 + 31 + 3);
     expect(k.length).toBeGreaterThan(20 + 40 + 25);
     // the newest 20 are kept
-    for (let i = 0; i < 20; i++) expect(k.some((m) => m.id === i)).toBe(true);
+    for (let i = 0; i < 20; i++) expect(k.some((m) => m.id === id_of(i))).toBe(true);
     // something from about 1 day ago and 1 week ago is kept
     const has_near = (t: number, tol: number) => k.some((m) => Math.abs(m.saved_at - t) <= tol);
     expect(has_near(NOW - DAY, HOUR)).toBe(true);
     expect(has_near(NOW - 7 * DAY, DAY)).toBe(true);
-    // in the hourly range, at most one per hour (beyond the newest 20)
-    const hourly = k.filter((m) => m.id >= 20 && NOW - m.saved_at < BACKUP_POLICY.hourly_for);
-    const hours = hourly.map((m) => Math.floor(m.saved_at / HOUR));
+    // in the hourly range, at most one per hour, split at the local midnight
+    // (beyond the newest 20). With a time zone of +5:30, a UTC hour that
+    // crosses the local midnight keeps one on each side of it.
+    const hourly = k.filter((m) => m.id < id_of(19) && NOW - m.saved_at < BACKUP_POLICY.hourly_for);
+    const hours = hourly.map(
+      (m) => `${Math.floor(m.saved_at / HOUR)}-${new Date(m.saved_at).getDate()}`
+    );
     expect(new Set(hours).size).toBe(hours.length);
     // older than 30 days (Aug 18 .. Sep 27): one per month, August and September
     const monthly = k.filter((m) => NOW - m.saved_at >= BACKUP_POLICY.daily_for);

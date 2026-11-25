@@ -27,7 +27,12 @@ export const BACKUP_POLICY = {
 const bucket_of = (saved_at: number, now: number) => {
   const age = now - saved_at;
   const d = new Date(saved_at);
-  if (age < BACKUP_POLICY.hourly_for) return `h${Math.floor(saved_at / HOUR)}`;
+  // The hour is the UTC hour, cut at the local midnight: with a time zone of
+  // +5:30, one UTC hour holds the last 30 minutes of a day and the first 30
+  // of the next, and keeping only the newest would leave the earlier day with
+  // no backup once it is in the daily range.
+  if (age < BACKUP_POLICY.hourly_for)
+    return `h${Math.floor(saved_at / HOUR)}-${d.getDate()}`;
   if (age < BACKUP_POLICY.daily_for)
     return `d${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
   return `m${d.getFullYear()}-${d.getMonth()}`;
@@ -36,13 +41,20 @@ const bucket_of = (saved_at: number, now: number) => {
 // backups of one Ba -> ids to delete
 export const select_thinned = (metas: TBackupMeta[], now: number): number[] => {
   const newest_first = [...metas].sort((a, b) => b.saved_at - a.saved_at);
+  // The backup taken last (ids are autoincremented) is kept even when it is
+  // not the newest by saved_at: the clock went back, or 20 saves had the same
+  // millisecond. Only this one is protected: while 20 or more backups from a
+  // clock that was ahead hold the recent slots, the save before it is deleted
+  // at the next prune (unless it is the newest of its own bucket), so the
+  // restore list goes back only one save until the clock catches up.
+  const last_taken = metas.reduce((x, m) => Math.max(x, m.id), -Infinity);
   const seen = new Set<string>();
   const to_delete: number[] = [];
   newest_first.forEach((m, i) => {
     const bucket = bucket_of(m.saved_at, now);
     const is_first_of_bucket = !seen.has(bucket);
     seen.add(bucket);
-    if (i < BACKUP_POLICY.keep_recent || is_first_of_bucket) return;
+    if (i < BACKUP_POLICY.keep_recent || is_first_of_bucket || m.id === last_taken) return;
     to_delete.push(m.id);
   });
   return to_delete;
