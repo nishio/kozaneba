@@ -1,12 +1,22 @@
 name: Lean
 
-# verification/lean-nest: the nesting invariants of itemStore / drawOrder /
-# group.items, proved and checked exhaustively in Lean 4. Not a required check.
+# Every project under verification/lean-*/ (Lean 4, core only): the nesting
+# invariants (lean-nest), the optimistic lock on save (lean-save-lock), and
+# any later one. Not a required check.
 #
-# Runs on every PR and every push to main, whatever files changed: the model
-# is a hand copy of the code, so a change in src does not change the result,
-# but the "Compare the modeled sources" step warns when a copied file is no
-# longer one of the versions the model was copied from.
+# A project follows these conventions (see verification/*/README.md):
+# - `lake build` builds the proofs and an executable `check`
+# - `.lake/build/bin/check` exits non-zero when a property that should hold
+#   breaks, or an expected counterexample (the unfixed code, a mutant)
+#   disappears
+# - modeled-sources.txt lists the source files the model copies, with the
+#   blobs it was copied from
+# - Axioms.lean, if present, prints the axioms of the theorems
+#
+# Runs on every PR and every push to main, whatever files changed: the models
+# are hand copies of the code, so a change in src does not change the result,
+# but "Compare the modeled sources" warns when a copied file is no longer one
+# of the versions a model was copied from.
 on:
   pull_request:
   push:
@@ -22,14 +32,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lean-nest:
-    name: Lean nest invariants
+  projects:
+    name: Lean projects
+    runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.list.outputs.dirs }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: list
+        run: |
+          dirs=$(find verification -mindepth 1 -maxdepth 1 -type d -name 'lean-*' -exec test -f '{}/lakefile.toml' ';' -print | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "dirs=$dirs" >> "$GITHUB_OUTPUT"
+          echo "$dirs"
+
+  lean:
+    name: Lean ${{ matrix.dir }}
+    needs: projects
+    if: needs.projects.outputs.dirs != '[]'
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        dir: ${{ fromJSON(needs.projects.outputs.dirs) }}
     defaults:
       run:
         shell: bash
-        working-directory: verification/lean-nest
+        working-directory: ${{ matrix.dir }}
 
     steps:
       - name: Checkout
@@ -38,11 +67,12 @@ jobs:
       # Warn (do not fail) when a file the model copies has changed
       - name: Compare the modeled sources
         run: |
+          if [ ! -f modeled-sources.txt ]; then echo "no modeled-sources.txt"; exit 0; fi
           stale=0
           for p in $(grep -v '^#' modeled-sources.txt | awk '{print $1}' | sort -u); do
-            if [ -f "../../$p" ]; then b=$(git hash-object "../../$p"); else b=-; fi
+            if [ -f "$GITHUB_WORKSPACE/$p" ]; then b=$(git hash-object "$GITHUB_WORKSPACE/$p"); else b=-; fi
             if ! grep -q "^$p $b " modeled-sources.txt; then
-              echo "::warning file=$p::$p is not a version the Lean model (verification/lean-nest) was copied from. If it changes the tree (itemStore / drawOrder / group.items), update the model."
+              echo "::warning file=$p::$p is not a version the Lean model (${{ matrix.dir }}) was copied from. If the change matters to what the model checks, update the model."
               stale=1
             fi
           done
@@ -53,7 +83,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/.elan
-          key: elan-${{ runner.os }}-${{ hashFiles('verification/lean-nest/lean-toolchain') }}
+          key: elan-${{ runner.os }}-${{ hashFiles(format('{0}/lean-toolchain', matrix.dir)) }}
 
       - name: Install elan
         if: steps.elan-cache.outputs.cache-hit != 'true'
@@ -68,15 +98,17 @@ jobs:
       - name: Cache the build
         uses: actions/cache@v6
         with:
-          path: verification/lean-nest/.lake
-          key: lake-${{ runner.os }}-${{ hashFiles('verification/lean-nest/lean-toolchain', 'verification/lean-nest/lakefile.toml', 'verification/lean-nest/lake-manifest.json') }}-${{ hashFiles('verification/lean-nest/**/*.lean') }}
+          path: ${{ matrix.dir }}/.lake
+          key: lake-${{ runner.os }}-${{ matrix.dir }}-${{ hashFiles(format('{0}/lean-toolchain', matrix.dir), format('{0}/lakefile.toml', matrix.dir), format('{0}/lake-manifest.json', matrix.dir)) }}-${{ hashFiles(format('{0}/**/*.lean', matrix.dir)) }}
           restore-keys: |
-            lake-${{ runner.os }}-${{ hashFiles('verification/lean-nest/lean-toolchain', 'verification/lean-nest/lakefile.toml', 'verification/lean-nest/lake-manifest.json') }}-
+            lake-${{ runner.os }}-${{ matrix.dir }}-${{ hashFiles(format('{0}/lean-toolchain', matrix.dir), format('{0}/lakefile.toml', matrix.dir), format('{0}/lake-manifest.json', matrix.dir)) }}-
 
       # Fails when a proof is broken; a proof left with sorry is a failure too
-      - name: Build the proofs and the checker
+      - name: Build
         run: |
           lake build 2>&1 | tee build.log
+          status=${PIPESTATUS[0]}
+          if [ "$status" != 0 ]; then exit "$status"; fi
           # Lean 4.36 writes `sorry` in backquotes, older ones in quotes
           if grep -q "declaration uses .sorry." build.log; then
             echo "::error::a declaration uses sorry"
@@ -85,23 +117,24 @@ jobs:
 
       - name: Axioms of the theorems
         run: |
+          if [ ! -f Axioms.lean ]; then echo "no Axioms.lean"; exit 0; fi
           lake env lean Axioms.lean 2>&1 | tee axioms.log
           if grep -q "sorryAx" axioms.log; then
             echo "::error::a theorem depends on sorryAx"
             exit 1
           fi
 
-      # Exits non-zero when the fixed code or the load-time repair breaks an
-      # invariant, or the unfixed code no longer shows its counterexamples
-      - name: Exhaustive check (ids <= 4)
+      - name: Check
         run: |
           set +e
-          .lake/build/bin/check 4 | tee check.log
+          .lake/build/bin/check | tee check.log
           status=${PIPESTATUS[0]}
           set -e
           {
-            echo "## Lean: exhaustive check (ids <= 4)"
+            echo "## ${{ matrix.dir }}"
             echo
-            awk '/^\|/ { print; t = 1; next } t { print ""; t = 0 } /^(OK|FAILED)/ { print }' check.log
+            echo '```'
+            tail -n 60 check.log
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
           exit "$status"

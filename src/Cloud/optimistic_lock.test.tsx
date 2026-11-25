@@ -446,3 +446,138 @@ describe("closing the tab asks while this tab's edits are not on the server", ()
     if (retry) retry.first_ms = 2000;
   });
 });
+
+// Found by the Lean model check of the save protocol
+// (verification/lean-save-lock, configurations B, D and E).
+describe("unsaved edits keep their mark", () => {
+  test("a retry does not write again a version that is already on the server", async () => {
+    const retry = SAVE_RETRY as { first_ms: number };
+    retry.first_ms = 20;
+    const commit = vi.spyOn(fs, "commit");
+    await open_ba1();
+    let release = () => {};
+    fs.gate = new Promise<void>((r) => (release = r));
+    fs.fail_next = { code: "unavailable", message: "offline" };
+    await edit("k1", "edit 1"); // its save fails after the gate
+    await edit("k1", "edit 2"); // its save is in flight
+    const v2 = getGlobal().last_updated;
+    await act(async () => {
+      release();
+    });
+    fs.gate = null;
+    // the retry sends the current state (edit 2) again
+    for (let i = 0; i < 20; i++) {
+      await act(async () => {
+        await new Promise((r) => setTimeout(r, 20));
+      });
+    }
+    await flush();
+    expect(server().itemStore["k1"]!.text).toBe("edit 2");
+    const writes_of_v2 = commit.mock.calls.filter(
+      ([id, doc]) => id === "ba1" && (doc as { last_updated?: number } | undefined)?.last_updated === v2
+    );
+    expect(writes_of_v2).toHaveLength(1);
+    expect(getGlobal().statusBar.type).toBe("done");
+    commit.mockRestore();
+    retry.first_ms = 2000;
+  });
+
+  test("closing the save error does not let a save from another device replace the unsaved edit", async () => {
+    await open_ba1();
+    fs.fail_next = { code: "permission-denied", message: "denied" };
+    await edit("k3", "not saved on the laptop");
+    await flush();
+    expect(screen.getByText(/do not have permission/)).toBeInTheDocument();
+    await userEvent.click(screen.getByLabelText("Close"));
+    await flush();
+    expect(screen.queryByText(/do not have permission/)).toBeNull();
+    expect(getGlobal().save_error).not.toBe("");
+
+    await other_device_saves(Date.now() + 1000);
+    await flush();
+    expect(getGlobal().itemStore["k3"]).toMatchObject({ text: "not saved on the laptop" });
+    expect(screen.getByTestId("save-conflict")).toBeInTheDocument();
+  });
+
+  describe("an anyone_writable Ba edited without signing in", () => {
+    beforeEach(async () => {
+      fs.docs.set("ba1", { ...ba_v1(), anyone_writable: true });
+      fake.auth.currentUser = null as never;
+      await act(async () => {
+        setGlobal({ user: null });
+      });
+    });
+    afterEach(() => {
+      fake.auth.currentUser = { uid: "me", displayName: "me" };
+    });
+
+    test("a save from another device does not replace the edit", async () => {
+      await open_ba1();
+      await edit("k3", "written before signing in");
+      await flush();
+      expect(getGlobal().dialog).toBe("CloudSave");
+      expect(getGlobal().is_local_change).toBe(true);
+
+      await other_device_saves(Date.now() + 1000);
+      await flush();
+      expect(getGlobal().itemStore["k3"]).toMatchObject({ text: "written before signing in" });
+      expect(screen.getByTestId("save-conflict")).toBeInTheDocument();
+    });
+
+    test("the edit is saved once signed in", async () => {
+      await open_ba1();
+      await edit("k3", "written before signing in");
+      await flush();
+      expect(server().itemStore["k3"]).toBeUndefined();
+
+      fake.auth.currentUser = { uid: "me", displayName: "me" };
+      await act(async () => {
+        setGlobal({ user: { uid: "me" } as never });
+      });
+      await flush();
+      expect(server().itemStore["k3"]).toMatchObject({ text: "written before signing in" });
+    });
+  });
+});
+
+test("last_updated grows with every edit, also within one millisecond", async () => {
+  await open_ba1();
+  const now = vi.spyOn(Date, "now").mockReturnValue(T0 + 5000);
+  await act(async () => {
+    mark_local_changed();
+  });
+  const a = getGlobal().last_updated;
+  await act(async () => {
+    mark_local_changed();
+  });
+  const b = getGlobal().last_updated;
+  now.mockReturnValue(T0 + 1000); // the clock moves back
+  await act(async () => {
+    mark_local_changed();
+  });
+  const c = getGlobal().last_updated;
+  now.mockRestore();
+  expect(b).toBeGreaterThan(a);
+  expect(c).toBeGreaterThan(b);
+});
+
+test("another device that saves in the same millisecond is not taken for this tab", async () => {
+  await open_ba1();
+  const X = T0 + 50 * 60 * 1000;
+  const now = vi.spyOn(Date, "now").mockReturnValue(X);
+  let release = () => {};
+  fs.gate = new Promise<void>((r) => (release = r));
+  await edit("k3", "written on the laptop"); // its save waits at the gate
+  // the iPad saves in the very same millisecond (its own Date.now() is X too)
+  fs.asleep = true; // its snapshot reaches this tab only after the save
+  await other_device_saves(X);
+  await act(async () => {
+    release();
+  });
+  fs.gate = null;
+  await flush();
+  now.mockRestore();
+  // the laptop's save does not overwrite the iPad's: it ends in a conflict
+  expect(Object.keys(server().itemStore).sort()).toEqual(["k1", "k2"]);
+  expect(screen.getByTestId("save-conflict")).toBeInTheDocument();
+});
